@@ -19,6 +19,8 @@ Construire une PWA jouable de Magium a partir des textes originaux, avec :
 - Les fichiers `.magium` sont archives pour audit et regeneration, mais ne sont jamais lus directement par l'app.
 - Le runtime lit seulement des paquets generes sous `src/generated`.
 - Ces paquets sont compresses, encodes, decoupes par chapitre/langue, et verifies par SHA-256 avant decompression.
+- Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis generes en packs runtime `locales/<locale>/ui`.
+- `settings.uiLocale` pilote seulement la langue de l'interface ; `GameState.locale` reste la langue narrative du contenu charge.
 - Les sauvegardes sont stockees dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
 - localStorage ne doit contenir que des preferences UI non critiques.
 
@@ -73,6 +75,8 @@ Pour changer ces fichiers, modifier les scripts sous `tools/content/`, puis lanc
 pnpm content:all
 ```
 
+Exception source : `content/ui-locales/*.json` est editable a la main, car c'est la source des traductions UI. Les copies sous `content/canonical/v1/locales/*/ui.json` et les packs sous `src/generated` restent generes.
+
 ## Pipeline Contenu
 
 Ordre attendu :
@@ -88,9 +92,10 @@ Ordre attendu :
    - parse les `.magium` ;
    - ecrit le graphe logique dans `content/canonical/v1/story`;
    - ecrit les messages anglais dans `content/canonical/v1/locales/en`;
+   - copie les bundles UI depuis `content/ui-locales` vers `content/canonical/v1/locales/<locale>/ui.json` ;
    - genere les paquets runtime TS sous `src/generated`.
 4. `content:validate`
-   - verifie messages, targets, achievements, scene map, et absence de fuite brute dans les paquets generes.
+   - verifie messages, targets, achievements, scene map, couverture stricte des cles UI, packs UI generes, et absence de fuite brute dans les paquets generes.
 
 ## Invariants Architecture
 
@@ -106,6 +111,7 @@ Ordre attendu :
 - Ajouter une langue signifie ajouter des messages pour les memes `messageId`.
 - Le fallback runtime est `en`.
 - Les chunks runtime doivent rester lazy-loades par chapitre/langue.
+- La locale UI est independante de la locale narrative. Ne pas traduire le roman, les choix narratifs, les stat labels ou les achievements en changeant seulement `settings.uiLocale`.
 
 ## Anti-Triche Et Sauvegardes
 
@@ -148,7 +154,8 @@ Apres changement UI, verifier au moins :
 - panneau sauvegardes ;
 - panneau Abilities avant/apres revelation ;
 - panneau achievements ;
-- panneau settings/about.
+- panneau settings/about ;
+- bascule de langue UI FR/EN sans reset de partie.
 
 ## Pieges Connus
 
@@ -161,6 +168,6 @@ Apres changement UI, verifier au moins :
 
 - UI de selection de chapitre/livre.
 - Amelioration de la gestion des stats et stat checks.
-- Workflow i18n : export XLIFF/JSON de traduction, import, coverage report.
+- Workflow i18n narratif : export XLIFF/JSON de traduction, import, coverage report.
 - Tests navigateur automatises pour export/import et offline.
 - Gestion plus fine des saves incompatibles lors d'un changement de `contentVersion`.

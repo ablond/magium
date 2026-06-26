@@ -2,7 +2,7 @@
 
 Application PWA moderne pour jouer a Magium depuis les textes originaux du depot `raduprv/Magium`.
 
-La V1 est en anglais original. L'architecture separe deja la logique du texte pour permettre une future traduction i18n multi-langues.
+Le récit V1 reste en anglais original. L'interface joueur supporte déjà `en` et `fr`, avec une locale UI séparée de la future locale narrative.
 
 ## Etat Actuel
 
@@ -13,7 +13,7 @@ La V1 est en anglais original. L'architecture separe deja la logique du texte po
 - Paquets runtime compresses et verifies sous `src/generated/`.
 - Sauvegarde locale chiffrée dans IndexedDB, export/import `.magium-save`.
 - PWA installable avec service worker.
-- UI de lecture directe avec rail desktop libelle, panneau Abilities a revelation progressive, sauvegardes expliquees en langage joueur, settings de confort et attribution About.
+- UI de lecture directe avec rail desktop libellé, panneau Abilities a revelation progressive, sauvegardes expliquees en langage joueur, settings de confort, attribution About et sélection FR/EN de l'interface.
 
 ## Commandes
 
@@ -41,9 +41,11 @@ pnpm dist:check              # verifie dist apres build
 ```text
 content/archive/original/   Sources originales archivees, immuables.
 content/canonical/v1/       JSON canonique lisible, genere.
+content/ui-locales/         Sources traduisibles du shell UI.
 content/schemas/            Schemas documentaires.
 src/generated/              Paquets runtime generes, compresses, importes par l'app.
 src/lib/content/            Chargeur de paquets et verification d'integrite.
+src/lib/i18n/               Resolution de locale UI et interpolation.
 src/lib/story/              Types, moteur de jeu, conditions, stats, digest.
 src/lib/storage/            IndexedDB, chiffrement, export/import.
 tools/content/              Pipeline import, parse, pack, validate.
@@ -64,6 +66,7 @@ docs/                       Documentation technique detaillee.
 ## Regles Importantes
 
 - Ne jamais modifier a la main les fichiers sous `content/archive/original`, `content/canonical/v1` ou `src/generated`.
+- Les textes UI se modifient dans `content/ui-locales/*.json`, puis se régénèrent avec `pnpm content:all`.
 - Ne jamais mettre de `.magium` ni de JSON canonique dans `public/`.
 - L'app runtime ne doit pas lire les `.magium` directement.
 - La documentation doit etre maintenue et corrigee a chaque changement qui modifie commandes, architecture, pipeline, UI, sauvegardes, i18n ou limites de securite.
