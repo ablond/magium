@@ -1,0 +1,17 @@
+{
+  "name": "Magium",
+  "short_name": "Magium",
+  "description": "A modern offline reader for the original Magium interactive story.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0d12",
+  "theme_color": "#120f14",
+  "icons": [
+    {
+      "src": "/magium-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

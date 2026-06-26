@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magium.local/schemas/save.schema.json",
+  "title": "Magium encrypted save payload",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "contentVersion",
+    "slotId",
+    "locale",
+    "currentSceneId",
+    "variables",
+    "achievements",
+    "checkpoint",
+    "history",
+    "historyDigest",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "contentVersion": { "type": "string" },
+    "slotId": { "type": "string" },
+    "locale": { "type": "string" },
+    "currentSceneId": { "type": "string" },
+    "variables": { "type": "object" },
+    "achievements": { "type": "object" },
+    "checkpoint": { "type": ["object", "null"] },
+    "history": { "type": "array" },
+    "historyDigest": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  }
+}

@@ -1,0 +1,957 @@
+{
+  "formatVersion": 1,
+  "achievements": [
+    {
+      "id": "v_ac_ch1_coward",
+      "variable": "v_ac_ch1_coward",
+      "chapterKey": "b1ch1",
+      "titleMessageId": "achievement.v_ac_ch1_coward.title",
+      "captionMessageId": "achievement.v_ac_ch1_coward.caption"
+    },
+    {
+      "id": "v_ac_ch1_die",
+      "variable": "v_ac_ch1_die",
+      "chapterKey": "b1ch1",
+      "titleMessageId": "achievement.v_ac_ch1_die.title",
+      "captionMessageId": "achievement.v_ac_ch1_die.caption"
+    },
+    {
+      "id": "v_ac_ch1_honesty",
+      "variable": "v_ac_ch1_honesty",
+      "chapterKey": "b1ch1",
+      "titleMessageId": "achievement.v_ac_ch1_honesty.title",
+      "captionMessageId": "achievement.v_ac_ch1_honesty.caption"
+    },
+    {
+      "id": "v_ac_ch2_talker",
+      "variable": "v_ac_ch2_talker",
+      "chapterKey": "b1ch2",
+      "titleMessageId": "achievement.v_ac_ch2_talker.title",
+      "captionMessageId": "achievement.v_ac_ch2_talker.caption"
+    },
+    {
+      "id": "v_ac_ch2_nails",
+      "variable": "v_ac_ch2_nails",
+      "chapterKey": "b1ch2",
+      "titleMessageId": "achievement.v_ac_ch2_nails.title",
+      "captionMessageId": "achievement.v_ac_ch2_nails.caption"
+    },
+    {
+      "id": "v_ac_ch2_master",
+      "variable": "v_ac_ch2_master",
+      "chapterKey": "b1ch2",
+      "titleMessageId": "achievement.v_ac_ch2_master.title",
+      "captionMessageId": "achievement.v_ac_ch2_master.caption"
+    },
+    {
+      "id": "v_ac_ch2_unlikely",
+      "variable": "v_ac_ch2_unlikely",
+      "chapterKey": "b1ch2",
+      "titleMessageId": "achievement.v_ac_ch2_unlikely.title",
+      "captionMessageId": "achievement.v_ac_ch2_unlikely.caption"
+    },
+    {
+      "id": "v_ac_ch3_message",
+      "variable": "v_ac_ch3_message",
+      "chapterKey": "b1ch3",
+      "titleMessageId": "achievement.v_ac_ch3_message.title",
+      "captionMessageId": "achievement.v_ac_ch3_message.caption"
+    },
+    {
+      "id": "v_ac_ch3_army",
+      "variable": "v_ac_ch3_army",
+      "chapterKey": "b1ch3",
+      "titleMessageId": "achievement.v_ac_ch3_army.title",
+      "captionMessageId": "achievement.v_ac_ch3_army.caption"
+    },
+    {
+      "id": "v_ac_ch3_close",
+      "variable": "v_ac_ch3_close",
+      "chapterKey": "b1ch3",
+      "titleMessageId": "achievement.v_ac_ch3_close.title",
+      "captionMessageId": "achievement.v_ac_ch3_close.caption"
+    },
+    {
+      "id": "v_ac_ch4_noble",
+      "variable": "v_ac_ch4_noble",
+      "chapterKey": "b1ch4",
+      "titleMessageId": "achievement.v_ac_ch4_noble.title",
+      "captionMessageId": "achievement.v_ac_ch4_noble.caption"
+    },
+    {
+      "id": "v_ac_ch4_cutthroat",
+      "variable": "v_ac_ch4_cutthroat",
+      "chapterKey": "b1ch4",
+      "titleMessageId": "achievement.v_ac_ch4_cutthroat.title",
+      "captionMessageId": "achievement.v_ac_ch4_cutthroat.caption"
+    },
+    {
+      "id": "v_ac_ch4_kneed",
+      "variable": "v_ac_ch4_kneed",
+      "chapterKey": "b1ch4",
+      "titleMessageId": "achievement.v_ac_ch4_kneed.title",
+      "captionMessageId": "achievement.v_ac_ch4_kneed.caption"
+    },
+    {
+      "id": "v_ac_ch5_wielder",
+      "variable": "v_ac_ch5_wielder",
+      "chapterKey": "b1ch5",
+      "titleMessageId": "achievement.v_ac_ch5_wielder.title",
+      "captionMessageId": "achievement.v_ac_ch5_wielder.caption"
+    },
+    {
+      "id": "v_ac_ch5_liar",
+      "variable": "v_ac_ch5_liar",
+      "chapterKey": "b1ch5",
+      "titleMessageId": "achievement.v_ac_ch5_liar.title",
+      "captionMessageId": "achievement.v_ac_ch5_liar.caption"
+    },
+    {
+      "id": "v_ac_ch5_deed",
+      "variable": "v_ac_ch5_deed",
+      "chapterKey": "b1ch5",
+      "titleMessageId": "achievement.v_ac_ch5_deed.title",
+      "captionMessageId": "achievement.v_ac_ch5_deed.caption"
+    },
+    {
+      "id": "v_ac_ch5_shameless",
+      "variable": "v_ac_ch5_shameless",
+      "chapterKey": "b1ch5",
+      "titleMessageId": "achievement.v_ac_ch5_shameless.title",
+      "captionMessageId": "achievement.v_ac_ch5_shameless.caption"
+    },
+    {
+      "id": "v_ac_ch6_tyrath",
+      "variable": "v_ac_ch6_tyrath",
+      "chapterKey": "b1ch6",
+      "titleMessageId": "achievement.v_ac_ch6_tyrath.title",
+      "captionMessageId": "achievement.v_ac_ch6_tyrath.caption"
+    },
+    {
+      "id": "v_ac_ch6_berserker",
+      "variable": "v_ac_ch6_berserker",
+      "chapterKey": "b1ch6",
+      "titleMessageId": "achievement.v_ac_ch6_berserker.title",
+      "captionMessageId": "achievement.v_ac_ch6_berserker.caption"
+    },
+    {
+      "id": "v_ac_ch6_immersion",
+      "variable": "v_ac_ch6_immersion",
+      "chapterKey": "b1ch6",
+      "titleMessageId": "achievement.v_ac_ch6_immersion.title",
+      "captionMessageId": "achievement.v_ac_ch6_immersion.caption"
+    },
+    {
+      "id": "v_ac_ch7_answer",
+      "variable": "v_ac_ch7_answer",
+      "chapterKey": "b1ch7",
+      "titleMessageId": "achievement.v_ac_ch7_answer.title",
+      "captionMessageId": "achievement.v_ac_ch7_answer.caption"
+    },
+    {
+      "id": "v_ac_ch7_crusher",
+      "variable": "v_ac_ch7_crusher",
+      "chapterKey": "b1ch7",
+      "titleMessageId": "achievement.v_ac_ch7_crusher.title",
+      "captionMessageId": "achievement.v_ac_ch7_crusher.caption"
+    },
+    {
+      "id": "v_ac_ch7_hadrik",
+      "variable": "v_ac_ch7_hadrik",
+      "chapterKey": "b1ch7",
+      "titleMessageId": "achievement.v_ac_ch7_hadrik.title",
+      "captionMessageId": "achievement.v_ac_ch7_hadrik.caption"
+    },
+    {
+      "id": "v_ac_ch8_democratie",
+      "variable": "v_ac_ch8_democratie",
+      "chapterKey": "b1ch8",
+      "titleMessageId": "achievement.v_ac_ch8_democratie.title",
+      "captionMessageId": "achievement.v_ac_ch8_democratie.caption"
+    },
+    {
+      "id": "v_ac_ch8_first",
+      "variable": "v_ac_ch8_first",
+      "chapterKey": "b1ch8",
+      "titleMessageId": "achievement.v_ac_ch8_first.title",
+      "captionMessageId": "achievement.v_ac_ch8_first.caption"
+    },
+    {
+      "id": "v_ac_ch8_hydra",
+      "variable": "v_ac_ch8_hydra",
+      "chapterKey": "b1ch8",
+      "titleMessageId": "achievement.v_ac_ch8_hydra.title",
+      "captionMessageId": "achievement.v_ac_ch8_hydra.caption"
+    },
+    {
+      "id": "v_ac_ch9_observer",
+      "variable": "v_ac_ch9_observer",
+      "chapterKey": "b1ch9",
+      "titleMessageId": "achievement.v_ac_ch9_observer.title",
+      "captionMessageId": "achievement.v_ac_ch9_observer.caption"
+    },
+    {
+      "id": "v_ac_ch9_decision",
+      "variable": "v_ac_ch9_decision",
+      "chapterKey": "b1ch9",
+      "titleMessageId": "achievement.v_ac_ch9_decision.title",
+      "captionMessageId": "achievement.v_ac_ch9_decision.caption"
+    },
+    {
+      "id": "v_ac_ch10_shaman",
+      "variable": "v_ac_ch10_shaman",
+      "chapterKey": "b1ch10",
+      "titleMessageId": "achievement.v_ac_ch10_shaman.title",
+      "captionMessageId": "achievement.v_ac_ch10_shaman.caption"
+    },
+    {
+      "id": "v_ac_ch10_toast",
+      "variable": "v_ac_ch10_toast",
+      "chapterKey": "b1ch10",
+      "titleMessageId": "achievement.v_ac_ch10_toast.title",
+      "captionMessageId": "achievement.v_ac_ch10_toast.caption"
+    },
+    {
+      "id": "v_ac_ch10_reunion",
+      "variable": "v_ac_ch10_reunion",
+      "chapterKey": "b1ch10",
+      "titleMessageId": "achievement.v_ac_ch10_reunion.title",
+      "captionMessageId": "achievement.v_ac_ch10_reunion.caption"
+    },
+    {
+      "id": "v_ac_ch11_symbol",
+      "variable": "v_ac_ch11_symbol",
+      "chapterKey": "b1ch11",
+      "titleMessageId": "achievement.v_ac_ch11_symbol.title",
+      "captionMessageId": "achievement.v_ac_ch11_symbol.caption"
+    },
+    {
+      "id": "v_ac_ch11_stillwater",
+      "variable": "v_ac_ch11_stillwater",
+      "chapterKey": "b1ch11",
+      "titleMessageId": "achievement.v_ac_ch11_stillwater.title",
+      "captionMessageId": "achievement.v_ac_ch11_stillwater.caption"
+    },
+    {
+      "id": "v_ac_ch11_casualties",
+      "variable": "v_ac_ch11_casualties",
+      "chapterKey": "b1ch11",
+      "titleMessageId": "achievement.v_ac_ch11_casualties.title",
+      "captionMessageId": "achievement.v_ac_ch11_casualties.caption"
+    },
+    {
+      "id": "v_ac_ch11_average",
+      "variable": "v_ac_ch11_average",
+      "chapterKey": "b1ch11",
+      "titleMessageId": "achievement.v_ac_ch11_average.title",
+      "captionMessageId": "achievement.v_ac_ch11_average.caption"
+    },
+    {
+      "id": "v_ac_b2_ch1_news",
+      "variable": "v_ac_b2_ch1_news",
+      "chapterKey": "b2ch1",
+      "titleMessageId": "achievement.v_ac_b2_ch1_news.title",
+      "captionMessageId": "achievement.v_ac_b2_ch1_news.caption"
+    },
+    {
+      "id": "v_ac_b2_ch1_distance",
+      "variable": "v_ac_b2_ch1_distance",
+      "chapterKey": "b2ch1",
+      "titleMessageId": "achievement.v_ac_b2_ch1_distance.title",
+      "captionMessageId": "achievement.v_ac_b2_ch1_distance.caption"
+    },
+    {
+      "id": "v_ac_b2_ch1_second",
+      "variable": "v_ac_b2_ch1_second",
+      "chapterKey": "b2ch1",
+      "titleMessageId": "achievement.v_ac_b2_ch1_second.title",
+      "captionMessageId": "achievement.v_ac_b2_ch1_second.caption"
+    },
+    {
+      "id": "v_ac_b2_ch1_breed",
+      "variable": "v_ac_b2_ch1_breed",
+      "chapterKey": "b2ch1",
+      "titleMessageId": "achievement.v_ac_b2_ch1_breed.title",
+      "captionMessageId": "achievement.v_ac_b2_ch1_breed.caption"
+    },
+    {
+      "id": "v_ac_b2_ch2_bro",
+      "variable": "v_ac_b2_ch2_bro",
+      "chapterKey": "b2ch2",
+      "titleMessageId": "achievement.v_ac_b2_ch2_bro.title",
+      "captionMessageId": "achievement.v_ac_b2_ch2_bro.caption"
+    },
+    {
+      "id": "v_ac_b2_ch2_easy",
+      "variable": "v_ac_b2_ch2_easy",
+      "chapterKey": "b2ch2",
+      "titleMessageId": "achievement.v_ac_b2_ch2_easy.title",
+      "captionMessageId": "achievement.v_ac_b2_ch2_easy.caption"
+    },
+    {
+      "id": "v_ac_b2_ch2_wall",
+      "variable": "v_ac_b2_ch2_wall",
+      "chapterKey": "b2ch2",
+      "titleMessageId": "achievement.v_ac_b2_ch2_wall.title",
+      "captionMessageId": "achievement.v_ac_b2_ch2_wall.caption"
+    },
+    {
+      "id": "v_ac_b2_ch2_griffin",
+      "variable": "v_ac_b2_ch2_griffin",
+      "chapterKey": "b2ch2",
+      "titleMessageId": "achievement.v_ac_b2_ch2_griffin.title",
+      "captionMessageId": "achievement.v_ac_b2_ch2_griffin.caption"
+    },
+    {
+      "id": "v_ac_b2_ch3_enemy",
+      "variable": "v_ac_b2_ch3_enemy",
+      "chapterKey": "b2ch3",
+      "titleMessageId": "achievement.v_ac_b2_ch3_enemy.title",
+      "captionMessageId": "achievement.v_ac_b2_ch3_enemy.caption"
+    },
+    {
+      "id": "v_ac_b2_ch3_cage",
+      "variable": "v_ac_b2_ch3_cage",
+      "chapterKey": "b2ch3",
+      "titleMessageId": "achievement.v_ac_b2_ch3_cage.title",
+      "captionMessageId": "achievement.v_ac_b2_ch3_cage.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_player",
+      "variable": "v_ac_b2_ch4_player",
+      "chapterKey": "b2ch41",
+      "titleMessageId": "achievement.v_ac_b2_ch4_player.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_player.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_intimidation",
+      "variable": "v_ac_b2_ch4_intimidation",
+      "chapterKey": "b2ch41",
+      "titleMessageId": "achievement.v_ac_b2_ch4_intimidation.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_intimidation.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_hadrik",
+      "variable": "v_ac_b2_ch4_hadrik",
+      "chapterKey": "b2ch41",
+      "titleMessageId": "achievement.v_ac_b2_ch4_hadrik.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_hadrik.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_risk",
+      "variable": "v_ac_b2_ch4_risk",
+      "chapterKey": "b2ch41",
+      "titleMessageId": "achievement.v_ac_b2_ch4_risk.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_risk.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_trampler",
+      "variable": "v_ac_b2_ch4_trampler",
+      "chapterKey": "b2ch41",
+      "titleMessageId": "achievement.v_ac_b2_ch4_trampler.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_trampler.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_spear",
+      "variable": "v_ac_b2_ch4_spear",
+      "chapterKey": "b2ch42",
+      "titleMessageId": "achievement.v_ac_b2_ch4_spear.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_spear.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_stats",
+      "variable": "v_ac_b2_ch4_stats",
+      "chapterKey": "b2ch42",
+      "titleMessageId": "achievement.v_ac_b2_ch4_stats.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_stats.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_time",
+      "variable": "v_ac_b2_ch4_time",
+      "chapterKey": "b2ch42",
+      "titleMessageId": "achievement.v_ac_b2_ch4_time.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_time.caption"
+    },
+    {
+      "id": "v_ac_b2_ch4_motive",
+      "variable": "v_ac_b2_ch4_motive",
+      "chapterKey": "b2ch42",
+      "titleMessageId": "achievement.v_ac_b2_ch4_motive.title",
+      "captionMessageId": "achievement.v_ac_b2_ch4_motive.caption"
+    },
+    {
+      "id": "v_ac_b2_ch5_tribal",
+      "variable": "v_ac_b2_ch5_tribal",
+      "chapterKey": "b2ch5",
+      "titleMessageId": "achievement.v_ac_b2_ch5_tribal.title",
+      "captionMessageId": "achievement.v_ac_b2_ch5_tribal.caption"
+    },
+    {
+      "id": "v_ac_b2_ch5_divide",
+      "variable": "v_ac_b2_ch5_divide",
+      "chapterKey": "b2ch5",
+      "titleMessageId": "achievement.v_ac_b2_ch5_divide.title",
+      "captionMessageId": "achievement.v_ac_b2_ch5_divide.caption"
+    },
+    {
+      "id": "v_ac_b2_ch5_speaker",
+      "variable": "v_ac_b2_ch5_speaker",
+      "chapterKey": "b2ch5",
+      "titleMessageId": "achievement.v_ac_b2_ch5_speaker.title",
+      "captionMessageId": "achievement.v_ac_b2_ch5_speaker.caption"
+    },
+    {
+      "id": "v_ac_b2_ch5_united",
+      "variable": "v_ac_b2_ch5_united",
+      "chapterKey": "b2ch5",
+      "titleMessageId": "achievement.v_ac_b2_ch5_united.title",
+      "captionMessageId": "achievement.v_ac_b2_ch5_united.caption"
+    },
+    {
+      "id": "v_ac_b2_ch6_secret",
+      "variable": "v_ac_b2_ch6_secret",
+      "chapterKey": "b2ch6",
+      "titleMessageId": "achievement.v_ac_b2_ch6_secret.title",
+      "captionMessageId": "achievement.v_ac_b2_ch6_secret.caption"
+    },
+    {
+      "id": "v_ac_b2_ch6_edge",
+      "variable": "v_ac_b2_ch6_edge",
+      "chapterKey": "b2ch6",
+      "titleMessageId": "achievement.v_ac_b2_ch6_edge.title",
+      "captionMessageId": "achievement.v_ac_b2_ch6_edge.caption"
+    },
+    {
+      "id": "v_ac_b2_ch7_average",
+      "variable": "v_ac_b2_ch7_average",
+      "chapterKey": "b2ch7",
+      "titleMessageId": "achievement.v_ac_b2_ch7_average.title",
+      "captionMessageId": "achievement.v_ac_b2_ch7_average.caption"
+    },
+    {
+      "id": "v_ac_b2_ch7_culprit",
+      "variable": "v_ac_b2_ch7_culprit",
+      "chapterKey": "b2ch7",
+      "titleMessageId": "achievement.v_ac_b2_ch7_culprit.title",
+      "captionMessageId": "achievement.v_ac_b2_ch7_culprit.caption"
+    },
+    {
+      "id": "v_ac_b2_ch7_delivered",
+      "variable": "v_ac_b2_ch7_delivered",
+      "chapterKey": "b2ch7",
+      "titleMessageId": "achievement.v_ac_b2_ch7_delivered.title",
+      "captionMessageId": "achievement.v_ac_b2_ch7_delivered.caption"
+    },
+    {
+      "id": "v_ac_b2_ch7_cookie",
+      "variable": "v_ac_b2_ch7_cookie",
+      "chapterKey": "b2ch7",
+      "titleMessageId": "achievement.v_ac_b2_ch7_cookie.title",
+      "captionMessageId": "achievement.v_ac_b2_ch7_cookie.caption"
+    },
+    {
+      "id": "v_ac_b2_ch8_trivia",
+      "variable": "v_ac_b2_ch8_trivia",
+      "chapterKey": "b2ch8",
+      "titleMessageId": "achievement.v_ac_b2_ch8_trivia.title",
+      "captionMessageId": "achievement.v_ac_b2_ch8_trivia.caption"
+    },
+    {
+      "id": "v_ac_b2_ch8_savior",
+      "variable": "v_ac_b2_ch8_savior",
+      "chapterKey": "b2ch8",
+      "titleMessageId": "achievement.v_ac_b2_ch8_savior.title",
+      "captionMessageId": "achievement.v_ac_b2_ch8_savior.caption"
+    },
+    {
+      "id": "v_ac_b2_ch8_tree",
+      "variable": "v_ac_b2_ch8_tree",
+      "chapterKey": "b2ch8",
+      "titleMessageId": "achievement.v_ac_b2_ch8_tree.title",
+      "captionMessageId": "achievement.v_ac_b2_ch8_tree.caption"
+    },
+    {
+      "id": "v_ac_b2_ch8_effects",
+      "variable": "v_ac_b2_ch8_effects",
+      "chapterKey": "b2ch8",
+      "titleMessageId": "achievement.v_ac_b2_ch8_effects.title",
+      "captionMessageId": "achievement.v_ac_b2_ch8_effects.caption"
+    },
+    {
+      "id": "v_ac_b2_ch8_gentleman",
+      "variable": "v_ac_b2_ch8_gentleman",
+      "chapterKey": "b2ch8",
+      "titleMessageId": "achievement.v_ac_b2_ch8_gentleman.title",
+      "captionMessageId": "achievement.v_ac_b2_ch8_gentleman.caption"
+    },
+    {
+      "id": "v_ac_b2_ch9_missing",
+      "variable": "v_ac_b2_ch9_missing",
+      "chapterKey": "b2ch9",
+      "titleMessageId": "achievement.v_ac_b2_ch9_missing.title",
+      "captionMessageId": "achievement.v_ac_b2_ch9_missing.caption"
+    },
+    {
+      "id": "v_ac_b2_ch9_helper",
+      "variable": "v_ac_b2_ch9_helper",
+      "chapterKey": "b2ch9",
+      "titleMessageId": "achievement.v_ac_b2_ch9_helper.title",
+      "captionMessageId": "achievement.v_ac_b2_ch9_helper.caption"
+    },
+    {
+      "id": "v_ac_b2_ch9_king",
+      "variable": "v_ac_b2_ch9_king",
+      "chapterKey": "b2ch9",
+      "titleMessageId": "achievement.v_ac_b2_ch9_king.title",
+      "captionMessageId": "achievement.v_ac_b2_ch9_king.caption"
+    },
+    {
+      "id": "v_ac_b2_ch9_cards",
+      "variable": "v_ac_b2_ch9_cards",
+      "chapterKey": "b2ch9",
+      "titleMessageId": "achievement.v_ac_b2_ch9_cards.title",
+      "captionMessageId": "achievement.v_ac_b2_ch9_cards.caption"
+    },
+    {
+      "id": "v_ac_b2_ch10_creative",
+      "variable": "v_ac_b2_ch10_creative",
+      "chapterKey": "b2ch10",
+      "titleMessageId": "achievement.v_ac_b2_ch10_creative.title",
+      "captionMessageId": "achievement.v_ac_b2_ch10_creative.caption"
+    },
+    {
+      "id": "v_ac_b2_ch10_mammoth",
+      "variable": "v_ac_b2_ch10_mammoth",
+      "chapterKey": "b2ch10",
+      "titleMessageId": "achievement.v_ac_b2_ch10_mammoth.title",
+      "captionMessageId": "achievement.v_ac_b2_ch10_mammoth.caption"
+    },
+    {
+      "id": "v_ac_b2_ch10_demolition",
+      "variable": "v_ac_b2_ch10_demolition",
+      "chapterKey": "b2ch10",
+      "titleMessageId": "achievement.v_ac_b2_ch10_demolition.title",
+      "captionMessageId": "achievement.v_ac_b2_ch10_demolition.caption"
+    },
+    {
+      "id": "v_ac_b2_ch10_stalker",
+      "variable": "v_ac_b2_ch10_stalker",
+      "chapterKey": "b2ch10",
+      "titleMessageId": "achievement.v_ac_b2_ch10_stalker.title",
+      "captionMessageId": "achievement.v_ac_b2_ch10_stalker.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_supportive",
+      "variable": "v_ac_b2_ch11_supportive",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_supportive.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_supportive.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_madman",
+      "variable": "v_ac_b2_ch11_madman",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_madman.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_madman.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_cutthroat",
+      "variable": "v_ac_b2_ch11_cutthroat",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_cutthroat.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_cutthroat.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_average2",
+      "variable": "v_ac_b2_ch11_average2",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_average2.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_average2.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_hidden",
+      "variable": "v_ac_b2_ch11_hidden",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_hidden.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_hidden.caption"
+    },
+    {
+      "id": "v_ac_b2_ch11_elephant",
+      "variable": "v_ac_b2_ch11_elephant",
+      "chapterKey": "b2ch11",
+      "titleMessageId": "achievement.v_ac_b2_ch11_elephant.title",
+      "captionMessageId": "achievement.v_ac_b2_ch11_elephant.caption"
+    },
+    {
+      "id": "v_ac_b3_ch1_regrets",
+      "variable": "v_ac_b3_ch1_regrets",
+      "chapterKey": "b3ch1",
+      "titleMessageId": "achievement.v_ac_b3_ch1_regrets.title",
+      "captionMessageId": "achievement.v_ac_b3_ch1_regrets.caption"
+    },
+    {
+      "id": "v_ac_b3_ch1_password",
+      "variable": "v_ac_b3_ch1_password",
+      "chapterKey": "b3ch1",
+      "titleMessageId": "achievement.v_ac_b3_ch1_password.title",
+      "captionMessageId": "achievement.v_ac_b3_ch1_password.caption"
+    },
+    {
+      "id": "v_ac_b3_ch2_metal",
+      "variable": "v_ac_b3_ch2_metal",
+      "chapterKey": "b3ch2",
+      "titleMessageId": "achievement.v_ac_b3_ch2_metal.title",
+      "captionMessageId": "achievement.v_ac_b3_ch2_metal.caption"
+    },
+    {
+      "id": "v_ac_b3_ch2_serious",
+      "variable": "v_ac_b3_ch2_serious",
+      "chapterKey": "b3ch2",
+      "titleMessageId": "achievement.v_ac_b3_ch2_serious.title",
+      "captionMessageId": "achievement.v_ac_b3_ch2_serious.caption"
+    },
+    {
+      "id": "v_ac_b3_ch2_lie",
+      "variable": "v_ac_b3_ch2_lie",
+      "chapterKey": "b3ch2",
+      "titleMessageId": "achievement.v_ac_b3_ch2_lie.title",
+      "captionMessageId": "achievement.v_ac_b3_ch2_lie.caption"
+    },
+    {
+      "id": "v_ac_b3_ch2_reckless",
+      "variable": "v_ac_b3_ch2_reckless",
+      "chapterKey": "b3ch2",
+      "titleMessageId": "achievement.v_ac_b3_ch2_reckless.title",
+      "captionMessageId": "achievement.v_ac_b3_ch2_reckless.caption"
+    },
+    {
+      "id": "v_ac_b3_ch3_ominous",
+      "variable": "v_ac_b3_ch3_ominous",
+      "chapterKey": "b3ch3",
+      "titleMessageId": "achievement.v_ac_b3_ch3_ominous.title",
+      "captionMessageId": "achievement.v_ac_b3_ch3_ominous.caption"
+    },
+    {
+      "id": "v_ac_b3_ch3_unexpected",
+      "variable": "v_ac_b3_ch3_unexpected",
+      "chapterKey": "b3ch3",
+      "titleMessageId": "achievement.v_ac_b3_ch3_unexpected.title",
+      "captionMessageId": "achievement.v_ac_b3_ch3_unexpected.caption"
+    },
+    {
+      "id": "v_ac_b3_ch3_job",
+      "variable": "v_ac_b3_ch3_job",
+      "chapterKey": "b3ch3",
+      "titleMessageId": "achievement.v_ac_b3_ch3_job.title",
+      "captionMessageId": "achievement.v_ac_b3_ch3_job.caption"
+    },
+    {
+      "id": "v_ac_b3_ch3_unforeseen",
+      "variable": "v_ac_b3_ch3_unforeseen",
+      "chapterKey": "b3ch3",
+      "titleMessageId": "achievement.v_ac_b3_ch3_unforeseen.title",
+      "captionMessageId": "achievement.v_ac_b3_ch3_unforeseen.caption"
+    },
+    {
+      "id": "v_ac_b3_ch4_demolisher",
+      "variable": "v_ac_b3_ch4_demolisher",
+      "chapterKey": "b3ch4",
+      "titleMessageId": "achievement.v_ac_b3_ch4_demolisher.title",
+      "captionMessageId": "achievement.v_ac_b3_ch4_demolisher.caption"
+    },
+    {
+      "id": "v_ac_b3_ch4_alliance",
+      "variable": "v_ac_b3_ch4_alliance",
+      "chapterKey": "b3ch4",
+      "titleMessageId": "achievement.v_ac_b3_ch4_alliance.title",
+      "captionMessageId": "achievement.v_ac_b3_ch4_alliance.caption"
+    },
+    {
+      "id": "v_ac_b3_ch4_deception",
+      "variable": "v_ac_b3_ch4_deception",
+      "chapterKey": "b3ch4",
+      "titleMessageId": "achievement.v_ac_b3_ch4_deception.title",
+      "captionMessageId": "achievement.v_ac_b3_ch4_deception.caption"
+    },
+    {
+      "id": "v_ac_b3_ch4_thrower",
+      "variable": "v_ac_b3_ch4_thrower",
+      "chapterKey": "b3ch4",
+      "titleMessageId": "achievement.v_ac_b3_ch4_thrower.title",
+      "captionMessageId": "achievement.v_ac_b3_ch4_thrower.caption"
+    },
+    {
+      "id": "v_ac_b3_ch5_opportunist",
+      "variable": "v_ac_b3_ch5_opportunist",
+      "chapterKey": "b3ch5",
+      "titleMessageId": "achievement.v_ac_b3_ch5_opportunist.title",
+      "captionMessageId": "achievement.v_ac_b3_ch5_opportunist.caption"
+    },
+    {
+      "id": "v_ac_b3_ch5_days",
+      "variable": "v_ac_b3_ch5_days",
+      "chapterKey": "b3ch5",
+      "titleMessageId": "achievement.v_ac_b3_ch5_days.title",
+      "captionMessageId": "achievement.v_ac_b3_ch5_days.caption"
+    },
+    {
+      "id": "v_ac_b3_ch5_footsteps",
+      "variable": "v_ac_b3_ch5_footsteps",
+      "chapterKey": "b3ch5",
+      "titleMessageId": "achievement.v_ac_b3_ch5_footsteps.title",
+      "captionMessageId": "achievement.v_ac_b3_ch5_footsteps.caption"
+    },
+    {
+      "id": "v_ac_b3_ch5_passed",
+      "variable": "v_ac_b3_ch5_passed",
+      "chapterKey": "b3ch5",
+      "titleMessageId": "achievement.v_ac_b3_ch5_passed.title",
+      "captionMessageId": "achievement.v_ac_b3_ch5_passed.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_natural",
+      "variable": "v_ac_b3_ch6_natural",
+      "chapterKey": "b3ch61",
+      "titleMessageId": "achievement.v_ac_b3_ch6_natural.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_natural.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_assist",
+      "variable": "v_ac_b3_ch6_assist",
+      "chapterKey": "b3ch61",
+      "titleMessageId": "achievement.v_ac_b3_ch6_assist.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_assist.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_peek",
+      "variable": "v_ac_b3_ch6_peek",
+      "chapterKey": "b3ch61",
+      "titleMessageId": "achievement.v_ac_b3_ch6_peek.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_peek.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_credo",
+      "variable": "v_ac_b3_ch6_credo",
+      "chapterKey": "b3ch61",
+      "titleMessageId": "achievement.v_ac_b3_ch6_credo.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_credo.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_guardian",
+      "variable": "v_ac_b3_ch6_guardian",
+      "chapterKey": "b3ch61",
+      "titleMessageId": "achievement.v_ac_b3_ch6_guardian.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_guardian.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_freeze",
+      "variable": "v_ac_b3_ch6_freeze",
+      "chapterKey": "b3ch62",
+      "titleMessageId": "achievement.v_ac_b3_ch6_freeze.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_freeze.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_curiosity",
+      "variable": "v_ac_b3_ch6_curiosity",
+      "chapterKey": "b3ch62",
+      "titleMessageId": "achievement.v_ac_b3_ch6_curiosity.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_curiosity.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_average",
+      "variable": "v_ac_b3_ch6_average",
+      "chapterKey": "b3ch62",
+      "titleMessageId": "achievement.v_ac_b3_ch6_average.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_average.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_quarantine",
+      "variable": "v_ac_b3_ch6_quarantine",
+      "chapterKey": "b3ch62",
+      "titleMessageId": "achievement.v_ac_b3_ch6_quarantine.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_quarantine.caption"
+    },
+    {
+      "id": "v_ac_b3_ch6_echoes",
+      "variable": "v_ac_b3_ch6_echoes",
+      "chapterKey": "b3ch62",
+      "titleMessageId": "achievement.v_ac_b3_ch6_echoes.title",
+      "captionMessageId": "achievement.v_ac_b3_ch6_echoes.caption"
+    },
+    {
+      "id": "v_ac_b3_ch7_honorable",
+      "variable": "v_ac_b3_ch7_honorable",
+      "chapterKey": "b3ch7",
+      "titleMessageId": "achievement.v_ac_b3_ch7_honorable.title",
+      "captionMessageId": "achievement.v_ac_b3_ch7_honorable.caption"
+    },
+    {
+      "id": "v_ac_b3_ch7_sharpshooter",
+      "variable": "v_ac_b3_ch7_sharpshooter",
+      "chapterKey": "b3ch7",
+      "titleMessageId": "achievement.v_ac_b3_ch7_sharpshooter.title",
+      "captionMessageId": "achievement.v_ac_b3_ch7_sharpshooter.caption"
+    },
+    {
+      "id": "v_ac_b3_ch7_paranoid",
+      "variable": "v_ac_b3_ch7_paranoid",
+      "chapterKey": "b3ch7",
+      "titleMessageId": "achievement.v_ac_b3_ch7_paranoid.title",
+      "captionMessageId": "achievement.v_ac_b3_ch7_paranoid.caption"
+    },
+    {
+      "id": "v_ac_b3_ch8_bluffer",
+      "variable": "v_ac_b3_ch8_bluffer",
+      "chapterKey": "b3ch8",
+      "titleMessageId": "achievement.v_ac_b3_ch8_bluffer.title",
+      "captionMessageId": "achievement.v_ac_b3_ch8_bluffer.caption"
+    },
+    {
+      "id": "v_ac_b3_ch8_unusual",
+      "variable": "v_ac_b3_ch8_unusual",
+      "chapterKey": "b3ch8",
+      "titleMessageId": "achievement.v_ac_b3_ch8_unusual.title",
+      "captionMessageId": "achievement.v_ac_b3_ch8_unusual.caption"
+    },
+    {
+      "id": "v_ac_b3_ch8_heartfelt",
+      "variable": "v_ac_b3_ch8_heartfelt",
+      "chapterKey": "b3ch8",
+      "titleMessageId": "achievement.v_ac_b3_ch8_heartfelt.title",
+      "captionMessageId": "achievement.v_ac_b3_ch8_heartfelt.caption"
+    },
+    {
+      "id": "v_ac_b3_ch8_friend",
+      "variable": "v_ac_b3_ch8_friend",
+      "chapterKey": "b3ch8",
+      "titleMessageId": "achievement.v_ac_b3_ch8_friend.title",
+      "captionMessageId": "achievement.v_ac_b3_ch8_friend.caption"
+    },
+    {
+      "id": "v_ac_b3_ch9_prize",
+      "variable": "v_ac_b3_ch9_prize",
+      "chapterKey": "b3ch9",
+      "titleMessageId": "achievement.v_ac_b3_ch9_prize.title",
+      "captionMessageId": "achievement.v_ac_b3_ch9_prize.caption"
+    },
+    {
+      "id": "v_ac_b3_ch9_moment",
+      "variable": "v_ac_b3_ch9_moment",
+      "chapterKey": "b3ch9",
+      "titleMessageId": "achievement.v_ac_b3_ch9_moment.title",
+      "captionMessageId": "achievement.v_ac_b3_ch9_moment.caption"
+    },
+    {
+      "id": "v_ac_b3_ch9_targets",
+      "variable": "v_ac_b3_ch9_targets",
+      "chapterKey": "b3ch9",
+      "titleMessageId": "achievement.v_ac_b3_ch9_targets.title",
+      "captionMessageId": "achievement.v_ac_b3_ch9_targets.caption"
+    },
+    {
+      "id": "v_ac_b3_ch9_trinkets",
+      "variable": "v_ac_b3_ch9_trinkets",
+      "chapterKey": "b3ch9",
+      "titleMessageId": "achievement.v_ac_b3_ch9_trinkets.title",
+      "captionMessageId": "achievement.v_ac_b3_ch9_trinkets.caption"
+    },
+    {
+      "id": "v_ac_b3_ch10_benefits",
+      "variable": "v_ac_b3_ch10_benefits",
+      "chapterKey": "b3ch10",
+      "titleMessageId": "achievement.v_ac_b3_ch10_benefits.title",
+      "captionMessageId": "achievement.v_ac_b3_ch10_benefits.caption"
+    },
+    {
+      "id": "v_ac_b3_ch10_third",
+      "variable": "v_ac_b3_ch10_third",
+      "chapterKey": "b3ch10",
+      "titleMessageId": "achievement.v_ac_b3_ch10_third.title",
+      "captionMessageId": "achievement.v_ac_b3_ch10_third.caption"
+    },
+    {
+      "id": "v_ac_b3_ch10_behind",
+      "variable": "v_ac_b3_ch10_behind",
+      "chapterKey": "b3ch10",
+      "titleMessageId": "achievement.v_ac_b3_ch10_behind.title",
+      "captionMessageId": "achievement.v_ac_b3_ch10_behind.caption"
+    },
+    {
+      "id": "v_ac_b3_ch10_reasonable",
+      "variable": "v_ac_b3_ch10_reasonable",
+      "chapterKey": "b3ch10",
+      "titleMessageId": "achievement.v_ac_b3_ch10_reasonable.title",
+      "captionMessageId": "achievement.v_ac_b3_ch10_reasonable.caption"
+    },
+    {
+      "id": "v_ac_b3_ch10_forbidden",
+      "variable": "v_ac_b3_ch10_forbidden",
+      "chapterKey": "b3ch10",
+      "titleMessageId": "achievement.v_ac_b3_ch10_forbidden.title",
+      "captionMessageId": "achievement.v_ac_b3_ch10_forbidden.caption"
+    },
+    {
+      "id": "v_ac_b3_ch11_fourth",
+      "variable": "v_ac_b3_ch11_fourth",
+      "chapterKey": "b3ch11",
+      "titleMessageId": "achievement.v_ac_b3_ch11_fourth.title",
+      "captionMessageId": "achievement.v_ac_b3_ch11_fourth.caption"
+    },
+    {
+      "id": "v_ac_b3_ch11_taste",
+      "variable": "v_ac_b3_ch11_taste",
+      "chapterKey": "b3ch11",
+      "titleMessageId": "achievement.v_ac_b3_ch11_taste.title",
+      "captionMessageId": "achievement.v_ac_b3_ch11_taste.caption"
+    },
+    {
+      "id": "v_ac_b3_ch11_aftermath",
+      "variable": "v_ac_b3_ch11_aftermath",
+      "chapterKey": "b3ch11",
+      "titleMessageId": "achievement.v_ac_b3_ch11_aftermath.title",
+      "captionMessageId": "achievement.v_ac_b3_ch11_aftermath.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_battle",
+      "variable": "v_ac_b3_ch12_battle",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_battle.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_battle.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_hugger",
+      "variable": "v_ac_b3_ch12_hugger",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_hugger.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_hugger.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_liar",
+      "variable": "v_ac_b3_ch12_liar",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_liar.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_liar.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_dagger",
+      "variable": "v_ac_b3_ch12_dagger",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_dagger.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_dagger.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_delegator",
+      "variable": "v_ac_b3_ch12_delegator",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_delegator.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_delegator.caption"
+    },
+    {
+      "id": "v_ac_b3_ch12_average",
+      "variable": "v_ac_b3_ch12_average",
+      "chapterKey": "b3ch12",
+      "titleMessageId": "achievement.v_ac_b3_ch12_average.title",
+      "captionMessageId": "achievement.v_ac_b3_ch12_average.caption"
+    }
+  ]
+}
