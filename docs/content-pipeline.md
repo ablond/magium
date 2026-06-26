@@ -8,6 +8,7 @@ Le pipeline produit :
 
 - une archive brute immuable ;
 - un JSON canonique lisible ;
+- des bundles UI canoniques depuis les sources traduisibles locales ;
 - des paquets runtime compresses et verifies ;
 - un index global du contenu.
 
@@ -81,6 +82,8 @@ achievements.json
 story/<chapterId>.json
 locales/en/<chapterId>.json
 locales/en/achievements.json
+locales/en/ui.json
+locales/fr/ui.json
 ```
 
 Le graphe `story/<chapterId>.json` contient la logique :
@@ -100,6 +103,15 @@ La locale `locales/en/<chapterId>.json` contient les textes originaux :
 - textes d'achievement embarques dans une scene.
 
 `locales/en/achievements.json` contient les titres/captions du catalogue d'achievements.
+
+Les sources UI sont les fichiers éditables :
+
+```text
+content/ui-locales/en.json
+content/ui-locales/fr.json
+```
+
+`content:parse` les copie dans `content/canonical/v1/locales/<locale>/ui.json`, ajoute les locales disponibles dans `index.uiLocales`, puis génère les packs runtime `locales/<locale>/ui`. Ces bundles concernent seulement le shell UI ; ils ne traduisent ni paragraphes, ni choix narratifs, ni stat labels, ni achievements.
 
 ## Conditions
 
@@ -160,6 +172,8 @@ Le runtime :
 - targets existantes ou special explicite ;
 - messages presents pour tous les `messageId` ;
 - achievements connus ;
+- cles UI identiques entre `en` et les autres locales UI ;
+- presence des packs `locales/<locale>/ui` dans `src/generated/contentPacks.ts` ;
 - pas d'indice de `.magium` brut dans `src/generated/contentPacks.ts`.
 
 `pnpm dist:check` verifie apres build :

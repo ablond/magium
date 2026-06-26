@@ -11,7 +11,7 @@ Le systeme est decoupe en quatre couches :
    - conserves pour audit, regeneration et preuve de provenance.
 2. Contenu canonique
    - JSON lisible, normalise, genere depuis les sources ;
-   - separe logique et messages.
+   - separe logique, messages narratifs et messages UI.
 3. Paquets runtime
    - modules TypeScript generes contenant des blobs `base64+gzip` ;
    - charges dynamiquement par chapitre/langue ;
@@ -34,6 +34,13 @@ raduprv/Magium@main
   -> src/lib/content/packedContent.ts
   -> src/lib/story/engine.ts
   -> src/App.svelte
+
+content/ui-locales/*.json
+  -> tools/content/build-canonical.mjs
+  -> content/canonical/v1/locales/<locale>/ui.json
+  -> src/generated/packs/locales__<locale>__ui.ts
+  -> src/lib/i18n/ui.ts
+  -> src/App.svelte
 ```
 
 ## Choix Techniques
@@ -43,11 +50,14 @@ raduprv/Magium@main
 - IndexedDB natif : stockage local plus adapte que localStorage pour des blobs chiffrés et clés CryptoKey.
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
+- Locale UI séparée : `settings.uiLocale` change le shell FR/EN sans modifier `GameState.locale` ni la langue du récit.
 
 ## Reperes De Code
 
 - UI principale : `src/App.svelte`
 - Style global : `src/app.css`
+- Sources UI i18n : `content/ui-locales/*.json`
+- Helper UI i18n : `src/lib/i18n/ui.ts`
 - Chargeur runtime : `src/lib/content/packedContent.ts`
 - Moteur : `src/lib/story/engine.ts`
 - Conditions : `src/lib/story/conditions.ts`
@@ -62,3 +72,4 @@ raduprv/Magium@main
 - `public/` ne doit contenir que des assets publics non sensibles.
 - Le build ne doit pas exposer de fichier `.magium`.
 - L'app peut afficher les textes originaux, evidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement telechargeable.
+- Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.

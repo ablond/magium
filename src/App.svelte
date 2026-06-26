@@ -14,7 +14,8 @@
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
-  import { loadContextForScene, loadIndex } from './lib/content/packedContent'
+  import { loadContextForScene, loadIndex, loadUiLocale } from './lib/content/packedContent'
+  import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
   import { applyChoice, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
   import { AURA_STAT_VARIABLES, BASE_STAT_VARIABLES, readStats } from './lib/story/stats'
   import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StoryContext } from './lib/story/types'
@@ -28,11 +29,21 @@
     highContrast: false,
     typewriter: false,
     locale: 'en',
+    uiLocale: 'en',
+  }
+
+  const errorMessageKeys: Record<string, string> = {
+    'Choice is not available from the current state': 'errors.choiceUnavailable',
+    'This browser does not support runtime content decompression': 'errors.decompressionUnsupported',
+    'This save file does not match a playable route': 'errors.saveTamper',
+    'Unsupported save file': 'errors.unsupportedSave',
   }
 
   let context: StoryContext | null = null
   let state: GameState | null = null
   let rendered: RenderedScene | null = null
+  let uiMessages: Record<string, string> = {}
+  let availableUiLocales = [...DEFAULT_UI_LOCALES]
   let saveSummaries: SaveSummary[] = []
   let activePanel: Panel = 'none'
   let loading = true
@@ -46,7 +57,9 @@
   let importInput: HTMLInputElement
 
   $: achievementCount = rendered?.unlockedAchievements.length ?? 0
-  $: chapterTitle = state ? describeScene(state.currentSceneId) : 'Book 1 - Chapter 1'
+  $: chapterTitle = state
+    ? describeScene(state.currentSceneId, uiMessages)
+    : t(uiMessages, 'reader.chapterTitle', { book: '1', chapter: 1 }, 'Book 1 - Chapter 1')
   $: visibleStatVariables = state ? revealedStatVariables(state) : []
   $: stats = state ? readStats(state.variables, visibleStatVariables) : []
 
@@ -55,6 +68,14 @@
       settings = loadReaderSettings()
       applyReaderSettings(settings)
       const index = await loadIndex()
+      availableUiLocales = index.uiLocales.length ? index.uiLocales : [...DEFAULT_UI_LOCALES]
+      settings = {
+        ...settings,
+        uiLocale: resolveUiLocale(settings.uiLocale, [], availableUiLocales, index.defaultLocale),
+      }
+      persistReaderSettings(settings)
+      uiMessages = (await loadUiLocale(settings.uiLocale)).messages
+      applyReaderSettings(settings)
       context = await loadContextForScene(index.initialSceneId, settings.locale)
       const loaded = await loadGameState('autosave')
       if (loaded?.contentVersion === index.contentVersion) {
@@ -66,7 +87,7 @@
       }
       await refresh()
     } catch (caught) {
-      error = caught instanceof Error ? caught.message : String(caught)
+      error = formatCaughtError(caught)
     } finally {
       loading = false
     }
@@ -97,7 +118,7 @@
       await refresh()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (caught) {
-      error = caught instanceof Error ? caught.message : String(caught)
+      error = formatCaughtError(caught)
     } finally {
       busy = false
     }
@@ -128,7 +149,7 @@
     state = { ...state, slotId: 'autosave', updatedAt: new Date().toISOString() }
     await saveGameState(state)
     await refresh()
-    status = `Saved ${slotId}`
+    status = t(uiMessages, 'status.saved', { slotId }, `Saved ${slotId}`)
   }
 
   async function removeSlot(slotId: string) {
@@ -157,8 +178,8 @@
     anchor.click()
     URL.revokeObjectURL(url)
     status = passphrase.trim()
-      ? 'Portable backup exported'
-      : 'Backup exported for this browser'
+      ? t(uiMessages, 'status.exportPortable', {}, 'Portable backup exported')
+      : t(uiMessages, 'status.exportLocal', {}, 'Backup exported for this browser')
   }
 
   async function importSelectedSave(event: Event) {
@@ -173,10 +194,10 @@
       context = await loadContextForScene(imported.currentSceneId, imported.locale, context ?? undefined)
       state = imported
       await refresh()
-      status = 'Save imported and ready'
+      status = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
       activePanel = 'none'
     } catch (caught) {
-      error = caught instanceof Error ? caught.message : String(caught)
+      error = formatCaughtError(caught)
     } finally {
       if (importInput) importInput.value = ''
     }
@@ -184,28 +205,63 @@
 
   function updateSettings(next: Partial<ReaderSettings>) {
     settings = { ...settings, ...next }
-    localStorage.setItem('magium.readerSettings', JSON.stringify(settings))
+    persistReaderSettings(settings)
     applyReaderSettings(settings)
+  }
+
+  async function updateUiLocale(uiLocale: string) {
+    try {
+      const nextMessages = (await loadUiLocale(uiLocale)).messages
+      settings = { ...settings, uiLocale }
+      persistReaderSettings(settings)
+      applyReaderSettings(settings)
+      uiMessages = nextMessages
+      error = ''
+    } catch (caught) {
+      error = formatCaughtError(caught)
+    }
   }
 
   function applyReaderSettings(next: ReaderSettings) {
     document.documentElement.dataset.theme = next.theme
     document.documentElement.dataset.contrast = next.highContrast ? 'high' : 'normal'
+    document.documentElement.lang = next.uiLocale
     document.documentElement.style.setProperty('--reader-scale', String(next.textScale))
   }
 
   function loadReaderSettings(): ReaderSettings {
     try {
-      return { ...defaultSettings, ...JSON.parse(localStorage.getItem('magium.readerSettings') ?? '{}') }
+      const stored = JSON.parse(localStorage.getItem('magium.readerSettings') ?? '{}') as Partial<ReaderSettings>
+      const migratedUiLocale = typeof stored.uiLocale === 'string'
+        ? stored.uiLocale
+        : typeof stored.locale === 'string'
+          ? stored.locale
+          : undefined
+      return {
+        ...defaultSettings,
+        ...stored,
+        locale: defaultSettings.locale,
+        uiLocale: resolveUiLocale(migratedUiLocale, browserLanguages()),
+      }
     } catch {
-      return { ...defaultSettings }
+      return { ...defaultSettings, uiLocale: resolveUiLocale(null, browserLanguages()) }
     }
   }
 
-  function describeScene(sceneId: string) {
+  function persistReaderSettings(next: ReaderSettings) {
+    localStorage.setItem('magium.readerSettings', JSON.stringify(next))
+  }
+
+  function browserLanguages() {
+    return navigator.languages?.length ? navigator.languages : [navigator.language]
+  }
+
+  function describeScene(sceneId: string, messages: Record<string, string>) {
     const match = sceneId.match(/^(?:B(?<book>\d+)-)?Ch(?<chapter>\d+)/)
     if (!match?.groups) return sceneId
-    return `Book ${match.groups.book ?? '1'} - Chapter ${Number(match.groups.chapter)}`
+    const book = match.groups.book ?? '1'
+    const chapter = Number(match.groups.chapter)
+    return t(messages, 'reader.chapterTitle', { book, chapter }, `Book ${book} - Chapter ${chapter}`)
   }
 
   function achievementText(messageId: string) {
@@ -238,6 +294,12 @@
   function canUseDropCap(text: string) {
     return /^[A-Za-z]/.test(text.trim())
   }
+
+  function formatCaughtError(caught: unknown) {
+    const message = caught instanceof Error ? caught.message : String(caught)
+    const key = errorMessageKeys[message]
+    return key ? t(uiMessages, key, {}, message) : message
+  }
 </script>
 
 <svelte:head>
@@ -249,7 +311,7 @@
 {#if loading}
   <main class="boot">
     <ArcaneSigil />
-    <p>Opening the tournament...</p>
+    <p>{t(uiMessages, 'boot.opening', {}, 'Opening the tournament...')}</p>
   </main>
 {:else if error && !state}
   <main class="boot">
@@ -260,41 +322,41 @@
   <main class="shell" class:panel-open={activePanel !== 'none'}>
     <aside class="brand-rail" aria-label="Magium">
       <div class="brand-mark"><ArcaneSigil /></div>
-      <button class:active={activePanel === 'none'} title="Read" aria-label="Read" on:click={() => activePanel = 'none'}>
+      <button class:active={activePanel === 'none'} title={t(uiMessages, 'nav.read', {}, 'Read')} aria-label={t(uiMessages, 'nav.read', {}, 'Read')} on:click={() => activePanel = 'none'}>
         <BookOpen size={19} />
-        <span class="nav-label">Read</span>
+        <span class="nav-label">{t(uiMessages, 'nav.read', {}, 'Read')}</span>
       </button>
-      <button class:active={activePanel === 'abilities'} title="Abilities" aria-label="Abilities" on:click={() => togglePanel('abilities')}>
+      <button class:active={activePanel === 'abilities'} title={t(uiMessages, 'nav.abilities', {}, 'Abilities')} aria-label={t(uiMessages, 'nav.abilities', {}, 'Abilities')} on:click={() => togglePanel('abilities')}>
         <SlidersHorizontal size={19} />
-        <span class="nav-label">Abilities</span>
+        <span class="nav-label">{t(uiMessages, 'nav.abilities', {}, 'Abilities')}</span>
       </button>
-      <button class:active={activePanel === 'saves'} title="Saves" aria-label="Saves" on:click={() => togglePanel('saves')}>
+      <button class:active={activePanel === 'saves'} title={t(uiMessages, 'nav.saves', {}, 'Saves')} aria-label={t(uiMessages, 'nav.saves', {}, 'Saves')} on:click={() => togglePanel('saves')}>
         <Save size={19} />
-        <span class="nav-label">Saves</span>
+        <span class="nav-label">{t(uiMessages, 'nav.saves', {}, 'Saves')}</span>
       </button>
-      <button class:active={activePanel === 'achievements'} title="Achievements" aria-label="Achievements" on:click={() => togglePanel('achievements')}>
+      <button class:active={activePanel === 'achievements'} title={t(uiMessages, 'nav.achievements', {}, 'Achievements')} aria-label={t(uiMessages, 'nav.achievements', {}, 'Achievements')} on:click={() => togglePanel('achievements')}>
         <Trophy size={19} />
-        <span class="nav-label">Achievements</span>
+        <span class="nav-label">{t(uiMessages, 'nav.achievements', {}, 'Achievements')}</span>
       </button>
-      <button class:active={activePanel === 'settings'} title="Settings" aria-label="Settings" on:click={() => togglePanel('settings')}>
+      <button class:active={activePanel === 'settings'} title={t(uiMessages, 'nav.settings', {}, 'Settings')} aria-label={t(uiMessages, 'nav.settings', {}, 'Settings')} on:click={() => togglePanel('settings')}>
         <Settings size={19} />
-        <span class="nav-label">Settings</span>
+        <span class="nav-label">{t(uiMessages, 'nav.settings', {}, 'Settings')}</span>
       </button>
-      <button class:active={activePanel === 'about'} title="About" aria-label="About" on:click={() => togglePanel('about')}>
+      <button class:active={activePanel === 'about'} title={t(uiMessages, 'nav.about', {}, 'About')} aria-label={t(uiMessages, 'nav.about', {}, 'About')} on:click={() => togglePanel('about')}>
         <ShieldCheck size={19} />
-        <span class="nav-label">About</span>
+        <span class="nav-label">{t(uiMessages, 'nav.about', {}, 'About')}</span>
       </button>
     </aside>
 
     <section class="reader" aria-live="polite">
       <header class="reader-header">
         <div>
-          <p class="eyebrow">Magium</p>
+          <p class="eyebrow">{t(uiMessages, 'reader.eyebrow', {}, 'Magium')}</p>
           <h1>{chapterTitle}</h1>
         </div>
         <div class="reader-status">
           <span><Trophy size={15} /> {achievementCount}</span>
-          <span><Save size={15} /> Autosave</span>
+          <span><Save size={15} /> {t(uiMessages, 'reader.autosave', {}, 'Autosave')}</span>
         </div>
       </header>
 
@@ -308,7 +370,7 @@
           {/each}
         </article>
 
-        <div class="choices" aria-label="Choices">
+        <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
             <button disabled={busy} on:click={() => choose(choice)}>
               <ScrollText size={18} />
@@ -328,45 +390,45 @@
     {#if activePanel !== 'none'}
       <aside class="panel">
         {#if activePanel === 'saves' && state}
-          <h2>Saves</h2>
-          <p class="panel-copy">The game saves after every choice. Named saves let you keep several routes. Export creates a backup file; add a password if you want to restore it in another browser. Import resumes a compatible backup.</p>
+          <h2>{t(uiMessages, 'saves.title', {}, 'Saves')}</h2>
+          <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves after every choice. Named saves let you keep several routes. Export creates a backup file; add a password if you want to restore it in another browser. Import resumes a compatible backup.')}</p>
           <div class="panel-actions">
-            <button on:click={startNewGame}><RotateCcw size={17} /> New game</button>
-            <button disabled={!state.checkpoint} on:click={restoreLastCheckpoint}><Library size={17} /> Checkpoint</button>
+            <button on:click={startNewGame}><RotateCcw size={17} /> {t(uiMessages, 'saves.newGame', {}, 'New game')}</button>
+            <button disabled={!state.checkpoint} on:click={restoreLastCheckpoint}><Library size={17} /> {t(uiMessages, 'saves.checkpoint', {}, 'Checkpoint')}</button>
           </div>
           <label>
-            Save name
+            {t(uiMessages, 'saves.saveName', {}, 'Save name')}
             <input bind:value={manualSlotId} />
           </label>
-          <button class="wide" on:click={saveManualSlot}><Save size={17} /> Save named route</button>
+          <button class="wide" on:click={saveManualSlot}><Save size={17} /> {t(uiMessages, 'saves.saveNamedRoute', {}, 'Save named route')}</button>
           <div class="save-list">
             {#each saveSummaries as save}
               <div class="save-row">
                 <button on:click={() => loadSlot(save.slotId)}>
                   <strong>{save.slotId}</strong>
-                  <span>{new Date(save.updatedAt).toLocaleString()}</span>
+                  <span>{new Date(save.updatedAt).toLocaleString(settings.uiLocale)}</span>
                 </button>
                 {#if save.slotId !== 'autosave'}
-                  <button class="icon-danger" title="Delete save" aria-label="Delete save" on:click={() => removeSlot(save.slotId)}>×</button>
+                  <button class="icon-danger" title={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} aria-label={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} on:click={() => removeSlot(save.slotId)}>×</button>
                 {/if}
               </div>
             {/each}
           </div>
           <label>
-            Backup password
-            <span class="help">Leave it empty for a backup that only restores in this browser.</span>
+            {t(uiMessages, 'saves.backupPassword', {}, 'Backup password')}
+            <span class="help">{t(uiMessages, 'saves.backupPasswordHelp', {}, 'Leave it empty for a backup that only restores in this browser.')}</span>
             <input type="password" bind:value={passphrase} autocomplete="new-password" />
           </label>
-          <button class="wide" on:click={downloadSave}><Download size={17} /> Export backup</button>
+          <button class="wide" on:click={downloadSave}><Download size={17} /> {t(uiMessages, 'saves.exportBackup', {}, 'Export backup')}</button>
           <label>
-            Restore password
-            <span class="help">Use the same password you chose when exporting the backup.</span>
+            {t(uiMessages, 'saves.restorePassword', {}, 'Restore password')}
+            <span class="help">{t(uiMessages, 'saves.restorePasswordHelp', {}, 'Use the same password you chose when exporting the backup.')}</span>
             <input type="password" bind:value={importPassphrase} autocomplete="current-password" />
           </label>
           <input class="file-input" bind:this={importInput} type="file" accept=".magium-save,application/json" on:change={importSelectedSave} />
-          <button class="wide" on:click={() => importInput?.click()}><Upload size={17} /> Import backup</button>
+          <button class="wide" on:click={() => importInput?.click()}><Upload size={17} /> {t(uiMessages, 'saves.importBackup', {}, 'Import backup')}</button>
         {:else if activePanel === 'abilities'}
-          <h2>Abilities</h2>
+          <h2>{t(uiMessages, 'abilities.title', {}, 'Abilities')}</h2>
           {#if stats.length}
             <div class="stat-list">
               {#each stats as stat}
@@ -377,10 +439,10 @@
               {/each}
             </div>
           {:else}
-            <p class="empty-state">Your abilities will appear here after Barry checks the stat device.</p>
+            <p class="empty-state">{t(uiMessages, 'abilities.empty', {}, 'Your abilities will appear here after Barry checks the stat device.')}</p>
           {/if}
         {:else if activePanel === 'achievements'}
-          <h2>Achievements</h2>
+          <h2>{t(uiMessages, 'achievements.title', {}, 'Achievements')}</h2>
           <div class="achievement-list">
             {#each context?.achievements.achievements ?? [] as achievement}
               <div class:locked={!state?.achievements[achievement.variable]} class="achievement">
@@ -390,41 +452,52 @@
             {/each}
           </div>
         {:else if activePanel === 'settings'}
-          <h2>Settings</h2>
-          <p class="panel-copy">These choices only affect reading comfort. The story and your progress stay the same.</p>
+          <h2>{t(uiMessages, 'settings.title', {}, 'Settings')}</h2>
+          <p class="panel-copy">{t(uiMessages, 'settings.copy', {}, 'These choices only affect reading comfort. The story and your progress stay the same.')}</p>
+          <div class="setting-group">
+            <p class="field-label">{t(uiMessages, 'settings.language', {}, 'Interface language')}</p>
+            <div class="segmented">
+              {#if availableUiLocales.includes('fr')}
+                <button class:active={settings.uiLocale === 'fr'} on:click={() => updateUiLocale('fr')}>{t(uiMessages, 'settings.languageFrench', {}, 'French')}</button>
+              {/if}
+              {#if availableUiLocales.includes('en')}
+                <button class:active={settings.uiLocale === 'en'} on:click={() => updateUiLocale('en')}>{t(uiMessages, 'settings.languageEnglish', {}, 'English')}</button>
+              {/if}
+            </div>
+          </div>
           <div class="segmented">
-            <button class:active={settings.theme === 'dark'} on:click={() => updateSettings({ theme: 'dark' })}>Dark</button>
-            <button class:active={settings.theme === 'light'} on:click={() => updateSettings({ theme: 'light' })}>Light</button>
+            <button class:active={settings.theme === 'dark'} on:click={() => updateSettings({ theme: 'dark' })}>{t(uiMessages, 'settings.dark', {}, 'Dark')}</button>
+            <button class:active={settings.theme === 'light'} on:click={() => updateSettings({ theme: 'light' })}>{t(uiMessages, 'settings.light', {}, 'Light')}</button>
           </div>
           <label>
-            Text size
-            <span class="help">Adjust the story text for longer reading sessions.</span>
+            {t(uiMessages, 'settings.textSize', {}, 'Text size')}
+            <span class="help">{t(uiMessages, 'settings.textSizeHelp', {}, 'Adjust the story text for longer reading sessions.')}</span>
             <input type="range" min="0.88" max="1.24" step="0.04" bind:value={settings.textScale} on:input={() => updateSettings({ textScale: Number(settings.textScale) })} />
           </label>
           <label class="toggle">
             <input type="checkbox" checked={settings.highContrast} on:change={(event) => updateSettings({ highContrast: event.currentTarget.checked })} />
             <span>
-              High contrast
-              <span class="help">Make text and controls stand out more strongly.</span>
+              {t(uiMessages, 'settings.highContrast', {}, 'High contrast')}
+              <span class="help">{t(uiMessages, 'settings.highContrastHelp', {}, 'Make text and controls stand out more strongly.')}</span>
             </span>
           </label>
           <label class="toggle">
             <input type="checkbox" checked={settings.typewriter} on:change={(event) => updateSettings({ typewriter: event.currentTarget.checked })} />
             <span>
-              Scene reveal
-              <span class="help">Fade in the newest paragraph when a scene opens.</span>
+              {t(uiMessages, 'settings.sceneReveal', {}, 'Scene reveal')}
+              <span class="help">{t(uiMessages, 'settings.sceneRevealHelp', {}, 'Fade in the newest paragraph when a scene opens.')}</span>
             </span>
           </label>
         {:else if activePanel === 'about'}
-          <h2>About</h2>
+          <h2>{t(uiMessages, 'about.title', {}, 'About')}</h2>
           <div class="about-list">
-            <p class="meta">Based on “Magium” by Cristian Mihailescu / Chris Michael Wilson.</p>
-            <p class="meta">Original story/data licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).</p>
-            <p class="meta">French translation and adaptation by Foobar, 2026.</p>
-            <p class="meta">This is an unofficial adaptation and is not endorsed by the original author’s estate or the Magium community maintainers.</p>
-            <p class="meta">Source: <a href="https://github.com/raduprv/Magium" rel="noreferrer" target="_blank">https://github.com/raduprv/Magium</a></p>
-            <p class="meta">License: <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" target="_blank">https://creativecommons.org/licenses/by/4.0/</a></p>
-            <p class="meta">Changes: French translation, UI adaptation, technical restructuring, additional interface features.</p>
+            <p class="meta">{t(uiMessages, 'about.basedOn', {}, 'Based on "Magium" by Cristian Mihailescu / Chris Michael Wilson.')}</p>
+            <p class="meta">{t(uiMessages, 'about.license', {}, 'Original story/data licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).')}</p>
+            <p class="meta">{t(uiMessages, 'about.translation', {}, 'French translation and adaptation by Foobar, 2026.')}</p>
+            <p class="meta">{t(uiMessages, 'about.unofficial', {}, "This is an unofficial adaptation and is not endorsed by the original author's estate or the Magium community maintainers.")}</p>
+            <p class="meta">{t(uiMessages, 'about.sourceLabel', {}, 'Source:')} <a href="https://github.com/raduprv/Magium" rel="noreferrer" target="_blank">https://github.com/raduprv/Magium</a></p>
+            <p class="meta">{t(uiMessages, 'about.licenseLabel', {}, 'License:')} <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" target="_blank">https://creativecommons.org/licenses/by/4.0/</a></p>
+            <p class="meta">{t(uiMessages, 'about.changes', {}, 'Changes: French translation, UI adaptation, technical restructuring, additional interface features.')}</p>
           </div>
         {/if}
       </aside>

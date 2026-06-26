@@ -5,6 +5,8 @@ export const RUNTIME_FORMAT_VERSION = 1
 export const CONTENT_PACKAGE_LOADERS = {
   "index": () => import('./packs/index').then((module) => module.PACKAGE),
   "achievements": () => import('./packs/achievements').then((module) => module.PACKAGE),
+  "locales/en/ui": () => import('./packs/locales__en__ui').then((module) => module.PACKAGE),
+  "locales/fr/ui": () => import('./packs/locales__fr__ui').then((module) => module.PACKAGE),
   "locales/en/achievements": () => import('./packs/locales__en__achievements').then((module) => module.PACKAGE),
   "story/b2ch1": () => import('./packs/story__b2ch1').then((module) => module.PACKAGE),
   "locales/en/b2ch1": () => import('./packs/locales__en__b2ch1').then((module) => module.PACKAGE),
