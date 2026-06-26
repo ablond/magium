@@ -1,0 +1,2349 @@
+{
+  "formatVersion": 1,
+  "chapterId": "ch4",
+  "sourceFile": "chapters/ch4.magium",
+  "sceneOrder": [
+    "Ch4-Intro",
+    "Ch4-Intro2",
+    "Ch4-Beacon",
+    "Ch4-Survivor",
+    "Ch4-Accept",
+    "Ch4-Propose",
+    "Ch4-Dave-vs-Eiden",
+    "Ch4-Fewer-enemies",
+    "Ch4-Lie",
+    "Ch4-Truth",
+    "Ch4-Gruesome-fate",
+    "Ch4-Barry-vs-Dave",
+    "Ch4-Persuade",
+    "Ch4-Agree",
+    "Ch4-Kate-meets-Eiden",
+    "Ch4-Face-shown",
+    "Ch4-Doubted",
+    "Ch4-Hiding",
+    "Ch4-Relieved",
+    "Ch4-Strategy",
+    "Ch4-Busy",
+    "Ch4-Busy2",
+    "Ch4-Daren-kill",
+    "Ch4-Daren-spare",
+    "Ch4-Bait-kill",
+    "Ch4-Bait-spare",
+    "Ch4-Defeat",
+    "Ch4-Defeat2",
+    "Ch4-Defeat-kill",
+    "Ch4-Defeat-spare"
+  ],
+  "scenes": {
+    "Ch4-Intro": {
+      "id": "Ch4-Intro",
+      "blocks": [
+        {
+          "id": "Ch4-Intro:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro.p1",
+          "conditions": {
+            "raw": "v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Intro:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro.p2",
+          "conditions": {
+            "raw": "v_ch3_bloodied == 1 && v_ch3_kate_badly_hurt == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Intro:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro.p3",
+          "conditions": {
+            "raw": "v_ch3_kate_badly_hurt == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Intro:c1",
+          "messageId": "ch4.Ch4_Intro.c1",
+          "target": "Ch4-Intro2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Intro2"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            },
+            {
+              "variable": "v_ch4_objectives",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Intro:c2",
+          "messageId": "ch4.Ch4_Intro.c2",
+          "target": "Ch4-Intro2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Intro2"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            },
+            {
+              "variable": "v_ch4_objectives",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Intro:c3",
+          "messageId": "ch4.Ch4_Intro.c3",
+          "target": "Ch4-Intro2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Intro2"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            },
+            {
+              "variable": "v_ch4_objectives",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Intro2": {
+      "id": "Ch4-Intro2",
+      "blocks": [
+        {
+          "id": "Ch4-Intro2:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro2.p1",
+          "conditions": {
+            "raw": "v_ch4_objectives == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_objectives",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Intro2:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro2.p2",
+          "conditions": {
+            "raw": "v_ch4_objectives == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_objectives",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Intro2:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Intro2.p3",
+          "conditions": {
+            "raw": "v_ch4_objectives == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_objectives",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Intro2:c1",
+          "messageId": "ch4.Ch4_Intro2.c1",
+          "target": "Ch4-Beacon",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Beacon"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Intro2:c2",
+          "messageId": "ch4.Ch4_Intro2.c2",
+          "target": "Ch4-Survivor",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Survivor"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Beacon": {
+      "id": "Ch4-Beacon",
+      "blocks": [
+        {
+          "id": "Ch4-Beacon:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Beacon.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Beacon:c1",
+          "messageId": "ch4.Ch4_Beacon.c1",
+          "target": "Ch4-Accept",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Accept"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Beacon:c2",
+          "messageId": "ch4.Ch4_Beacon.c2",
+          "target": "Ch4-Propose",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Propose"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Survivor": {
+      "id": "Ch4-Survivor",
+      "blocks": [
+        {
+          "id": "Ch4-Survivor:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Survivor.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Survivor:c1",
+          "messageId": "ch4.Ch4_Survivor.c1",
+          "target": "Ch4-Accept",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Accept"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Survivor:c2",
+          "messageId": "ch4.Ch4_Survivor.c2",
+          "target": "Ch4-Propose",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Propose"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Accept": {
+      "id": "Ch4-Accept",
+      "blocks": [
+        {
+          "id": "Ch4-Accept:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Accept.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Accept:c1",
+          "messageId": "ch4.Ch4_Accept.c1",
+          "target": "Ch1-Intro1",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch1-Intro1"
+            }
+          ],
+          "special": "restart",
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Accept:c2",
+          "messageId": "ch4.Ch4_Accept.c2",
+          "target": "",
+          "setVariables": [
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            }
+          ],
+          "special": "checkpoint_load",
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Accept:c3",
+          "messageId": "ch4.Ch4_Accept.c3",
+          "target": "",
+          "setVariables": [],
+          "special": "saves",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Accept:s1",
+          "variable": "v_ac_ch4_noble",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch4-Accept:a1",
+          "messageId": "ch4.Ch4_Accept.a1",
+          "variable": "v_ac_ch4_noble"
+        }
+      ]
+    },
+    "Ch4-Propose": {
+      "id": "Ch4-Propose",
+      "blocks": [
+        {
+          "id": "Ch4-Propose:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Propose.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Propose:c1",
+          "messageId": "ch4.Ch4_Propose.c1",
+          "target": "Ch4-Dave-vs-Eiden",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Dave-vs-Eiden) if (v_ch1_show_yourself != 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Propose:c2",
+          "messageId": "ch4.Ch4_Propose.c2",
+          "target": "Ch4-Face-shown",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Face-shown) if (v_ch1_show_yourself == 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Dave-vs-Eiden": {
+      "id": "Ch4-Dave-vs-Eiden",
+      "blocks": [
+        {
+          "id": "Ch4-Dave-vs-Eiden:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Dave_vs_Eiden.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Dave-vs-Eiden:c1",
+          "messageId": "ch4.Ch4_Dave_vs_Eiden.c1",
+          "target": "Ch4-Fewer-enemies",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Fewer-enemies"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Dave-vs-Eiden:c2",
+          "messageId": "ch4.Ch4_Dave_vs_Eiden.c2",
+          "target": "Ch4-Gruesome-fate",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Gruesome-fate"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Fewer-enemies": {
+      "id": "Ch4-Fewer-enemies",
+      "blocks": [
+        {
+          "id": "Ch4-Fewer-enemies:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Fewer_enemies.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Fewer-enemies:c1",
+          "messageId": "ch4.Ch4_Fewer_enemies.c1",
+          "target": "Ch4-Truth",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Truth"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Fewer-enemies:c2",
+          "messageId": "ch4.Ch4_Fewer_enemies.c2",
+          "target": "Ch4-Lie",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Lie"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Lie": {
+      "id": "Ch4-Lie",
+      "blocks": [
+        {
+          "id": "Ch4-Lie:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Lie.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Lie:c1",
+          "messageId": "ch4.Ch4_Lie.c1",
+          "target": "Ch1-Intro1",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch1-Intro1"
+            }
+          ],
+          "special": "restart",
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Lie:c2",
+          "messageId": "ch4.Ch4_Lie.c2",
+          "target": "",
+          "setVariables": [
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            }
+          ],
+          "special": "checkpoint_load",
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Lie:c3",
+          "messageId": "ch4.Ch4_Lie.c3",
+          "target": "",
+          "setVariables": [],
+          "special": "saves",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Truth": {
+      "id": "Ch4-Truth",
+      "blocks": [
+        {
+          "id": "Ch4-Truth:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Truth.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Truth:c1",
+          "messageId": "ch4.Ch4_Truth.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 1
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Truth:s1",
+          "variable": "v_ac_ch4_kneed",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch4-Truth:a1",
+          "messageId": "ch4.Ch4_Truth.a1",
+          "variable": "v_ac_ch4_kneed"
+        }
+      ]
+    },
+    "Ch4-Gruesome-fate": {
+      "id": "Ch4-Gruesome-fate",
+      "blocks": [
+        {
+          "id": "Ch4-Gruesome-fate:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Gruesome_fate.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Gruesome-fate:c1",
+          "messageId": "ch4.Ch4_Gruesome_fate.c1",
+          "target": "Ch4-Barry-vs-Dave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Barry-vs-Dave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Barry-vs-Dave": {
+      "id": "Ch4-Barry-vs-Dave",
+      "blocks": [
+        {
+          "id": "Ch4-Barry-vs-Dave:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.p1",
+          "conditions": {
+            "raw": "v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Barry-vs-Dave:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.p2",
+          "conditions": {
+            "raw": "v_ch3_bloodied == 1 && v_ch3_kate_badly_hurt == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Barry-vs-Dave:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.p3",
+          "conditions": {
+            "raw": "v_ch3_kate_badly_hurt == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Barry-vs-Dave:c1",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.c1",
+          "target": "Ch4-Persuade",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Persuade) if (v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Barry-vs-Dave:c2",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.c2",
+          "target": "Ch4-Agree",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Agree) if (v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Barry-vs-Dave:c3",
+          "messageId": "ch4.Ch4_Barry_vs_Dave.c3",
+          "target": "Ch4-Strategy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Strategy) if (v_ch3_bloodied == 1 || v_ch3_kate_badly_hurt == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Persuade": {
+      "id": "Ch4-Persuade",
+      "blocks": [
+        {
+          "id": "Ch4-Persuade:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Persuade.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Persuade:c1",
+          "messageId": "ch4.Ch4_Persuade.c1",
+          "target": "Ch4-Kate-meets-Eiden",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Kate-meets-Eiden"
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Agree": {
+      "id": "Ch4-Agree",
+      "blocks": [
+        {
+          "id": "Ch4-Agree:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Agree.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Agree:c1",
+          "messageId": "ch4.Ch4_Agree.c1",
+          "target": "Ch4-Kate-meets-Eiden",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Kate-meets-Eiden"
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Kate-meets-Eiden": {
+      "id": "Ch4-Kate-meets-Eiden",
+      "blocks": [
+        {
+          "id": "Ch4-Kate-meets-Eiden:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Kate_meets_Eiden.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Kate-meets-Eiden:c1",
+          "messageId": "ch4.Ch4_Kate_meets_Eiden.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 2
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Face-shown": {
+      "id": "Ch4-Face-shown",
+      "blocks": [
+        {
+          "id": "Ch4-Face-shown:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Face_shown.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Face-shown:c1",
+          "messageId": "ch4.Ch4_Face_shown.c1",
+          "target": "Ch4-Doubted",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Doubted"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Face-shown:c2",
+          "messageId": "ch4.Ch4_Face_shown.c2",
+          "target": "Ch4-Hiding",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Hiding"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Face-shown:c3",
+          "messageId": "ch4.Ch4_Face_shown.c3",
+          "target": "Ch4-Relieved",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Relieved"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Doubted": {
+      "id": "Ch4-Doubted",
+      "blocks": [
+        {
+          "id": "Ch4-Doubted:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Doubted.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Doubted:c1",
+          "messageId": "ch4.Ch4_Doubted.c1",
+          "target": "Ch4-Barry-vs-Dave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Barry-vs-Dave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Hiding": {
+      "id": "Ch4-Hiding",
+      "blocks": [
+        {
+          "id": "Ch4-Hiding:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Hiding.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Hiding:c1",
+          "messageId": "ch4.Ch4_Hiding.c1",
+          "target": "Ch4-Barry-vs-Dave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Barry-vs-Dave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Relieved": {
+      "id": "Ch4-Relieved",
+      "blocks": [
+        {
+          "id": "Ch4-Relieved:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Relieved.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Relieved:c1",
+          "messageId": "ch4.Ch4_Relieved.c1",
+          "target": "Ch4-Barry-vs-Dave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Barry-vs-Dave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Strategy": {
+      "id": "Ch4-Strategy",
+      "blocks": [
+        {
+          "id": "Ch4-Strategy:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Strategy.p1",
+          "conditions": {
+            "raw": "v_ch3_tactics == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Strategy:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Strategy.p2",
+          "conditions": {
+            "raw": "v_ch3_tactics == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Strategy:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Strategy.p3",
+          "conditions": {
+            "raw": "v_ch3_tactics == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Strategy:c1",
+          "messageId": "ch4.Ch4_Strategy.c1",
+          "target": "Ch4-Busy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Busy"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Strategy:c2",
+          "messageId": "ch4.Ch4_Strategy.c2",
+          "target": "Ch4-Defeat",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Busy": {
+      "id": "Ch4-Busy",
+      "blocks": [
+        {
+          "id": "Ch4-Busy:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy.p1",
+          "conditions": {
+            "raw": "v_ch3_tactics != 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Busy:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy.p2",
+          "conditions": {
+            "raw": "v_ch3_tactics == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Busy:c1",
+          "messageId": "ch4.Ch4_Busy.c1",
+          "target": "Ch4-Busy2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Busy2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Busy2": {
+      "id": "Ch4-Busy2",
+      "blocks": [
+        {
+          "id": "Ch4-Busy2:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy2.p1",
+          "conditions": {
+            "raw": "v_reflexes == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Busy2:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy2.p2",
+          "conditions": {
+            "raw": "v_agility == 3 && v_reflexes < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Busy2:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy2.p3",
+          "conditions": {
+            "raw": "v_perception == 3 && v_agility < 3 && v_reflexes < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Busy2:p4",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Busy2.p4",
+          "conditions": {
+            "raw": "v_agility < 3 && v_perception < 3 && v_reflexes < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Busy2:c1",
+          "messageId": "ch4.Ch4_Busy2.c1",
+          "target": "Ch4-Daren-kill",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Daren-kill) if (v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Busy2:c2",
+          "messageId": "ch4.Ch4_Busy2.c2",
+          "target": "Ch4-Daren-spare",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Daren-spare) if (v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Busy2:c3",
+          "messageId": "ch4.Ch4_Busy2.c3",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 4
+            }
+          ],
+          "special": "checkpoint_save) if (v_agility < 3 && v_perception < 3 && v_reflexes < 3",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Busy2:s1",
+          "variable": "v_is_dead",
+          "value": 0,
+          "conditions": {
+            "raw": "(v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Busy2:s2",
+          "variable": "v_is_dead",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_agility < 3 && v_perception < 3 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": []
+    },
+    "Ch4-Daren-kill": {
+      "id": "Ch4-Daren-kill",
+      "blocks": [
+        {
+          "id": "Ch4-Daren-kill:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Daren_kill.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Daren-kill:c1",
+          "messageId": "ch4.Ch4_Daren_kill.c1",
+          "target": "Ch4-Bait-kill",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Bait-kill"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Daren-kill:c2",
+          "messageId": "ch4.Ch4_Daren_kill.c2",
+          "target": "Ch4-Bait-spare",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Bait-spare"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Daren-spare": {
+      "id": "Ch4-Daren-spare",
+      "blocks": [
+        {
+          "id": "Ch4-Daren-spare:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Daren_spare.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Daren-spare:c1",
+          "messageId": "ch4.Ch4_Daren_spare.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 3
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 1
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Bait-kill": {
+      "id": "Ch4-Bait-kill",
+      "blocks": [
+        {
+          "id": "Ch4-Bait-kill:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Bait_kill.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Bait-kill:c1",
+          "messageId": "ch4.Ch4_Bait_kill.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 3
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 0
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Bait-spare": {
+      "id": "Ch4-Bait-spare",
+      "blocks": [
+        {
+          "id": "Ch4-Bait-spare:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Bait_spare.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Bait-spare:c1",
+          "messageId": "ch4.Ch4_Bait_spare.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 3
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 1
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Defeat": {
+      "id": "Ch4-Defeat",
+      "blocks": [
+        {
+          "id": "Ch4-Defeat:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat.p1",
+          "conditions": {
+            "raw": "v_ch3_tactics != 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "!=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat.p2",
+          "conditions": {
+            "raw": "v_ch3_tactics == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_tactics",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Defeat:c1",
+          "messageId": "ch4.Ch4_Defeat.c1",
+          "target": "Ch4-Defeat2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch4-Defeat2": {
+      "id": "Ch4-Defeat2",
+      "blocks": [
+        {
+          "id": "Ch4-Defeat2:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat2.p1",
+          "conditions": {
+            "raw": "v_strength == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat2.p2",
+          "conditions": {
+            "raw": "v_agility == 3 && v_strength < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat2.p3",
+          "conditions": {
+            "raw": "v_reflexes == 3 && v_agility < 3 && v_strength < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:p4",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat2.p4",
+          "conditions": {
+            "raw": "v_agility < 3 && v_reflexes < 3 && v_strength < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Defeat2:c1",
+          "messageId": "ch4.Ch4_Defeat2.c1",
+          "target": "Ch4-Defeat-kill",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat-kill) if (v_strength == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Defeat2:c2",
+          "messageId": "ch4.Ch4_Defeat2.c2",
+          "target": "Ch4-Defeat-spare",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat-spare) if (v_strength == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Defeat2:c3",
+          "messageId": "ch4.Ch4_Defeat2.c3",
+          "target": "Ch4-Defeat-kill",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat-kill) if (v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Defeat2:c4",
+          "messageId": "ch4.Ch4_Defeat2.c4",
+          "target": "Ch4-Defeat-spare",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch4-Defeat-spare) if (v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch4-Defeat2:c5",
+          "messageId": "ch4.Ch4_Defeat2.c5",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 6
+            }
+          ],
+          "special": "checkpoint_save) if (v_agility < 3 && v_reflexes < 3 && v_strength < 3",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Defeat2:s1",
+          "variable": "v_ch4_dave_defeat",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_strength == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:s2",
+          "variable": "v_ch4_dave_defeat",
+          "value": 2,
+          "conditions": {
+            "raw": "(v_agility == 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:s3",
+          "variable": "v_ch4_dave_defeat",
+          "value": 3,
+          "conditions": {
+            "raw": "(v_reflexes == 3 && v_agility < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:s4",
+          "variable": "v_ch4_dave_defeat",
+          "value": 0,
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:s5",
+          "variable": "v_is_dead",
+          "value": 0,
+          "conditions": {
+            "raw": "(v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3 || v_strength == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat2:s6",
+          "variable": "v_is_dead",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": []
+    },
+    "Ch4-Defeat-kill": {
+      "id": "Ch4-Defeat-kill",
+      "blocks": [
+        {
+          "id": "Ch4-Defeat-kill:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_kill.p1",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat-kill:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_kill.p2",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat-kill:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_kill.p3",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Defeat-kill:c1",
+          "messageId": "ch4.Ch4_Defeat_kill.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 5
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 0
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Defeat-kill:s1",
+          "variable": "v_ac_ch4_cutthroat",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch4-Defeat-kill:a1",
+          "messageId": "ch4.Ch4_Defeat_kill.a1",
+          "variable": "v_ac_ch4_cutthroat"
+        }
+      ]
+    },
+    "Ch4-Defeat-spare": {
+      "id": "Ch4-Defeat-spare",
+      "blocks": [
+        {
+          "id": "Ch4-Defeat-spare:p1",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_spare.p1",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat-spare:p2",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_spare.p2",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch4-Defeat-spare:p3",
+          "type": "paragraph",
+          "messageId": "ch4.Ch4_Defeat_spare.p3",
+          "conditions": {
+            "raw": "v_ch4_dave_defeat == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_dave_defeat",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch4-Defeat-spare:c1",
+          "messageId": "ch4.Ch4_Defeat_spare.c1",
+          "target": "Ch5-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch5-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_spared_dave",
+              "value": 1
+            },
+            {
+              "variable": "v_ch4_ending",
+              "value": 5
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch4-Defeat-spare:s1",
+          "variable": "v_ac_ch4_cutthroat",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch4-Defeat-spare:a1",
+          "messageId": "ch4.Ch4_Defeat_spare.a1",
+          "variable": "v_ac_ch4_cutthroat"
+        }
+      ]
+    }
+  }
+}

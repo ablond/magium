@@ -1,0 +1,2736 @@
+{
+  "formatVersion": 1,
+  "chapterId": "b3ch8b",
+  "sourceFile": "chapters/b3ch8b.magium",
+  "sceneOrder": [
+    "B3-Ch08b-Pardon",
+    "B3-Ch08b-King",
+    "B3-Ch08b-Kelrim",
+    "B3-Ch08b-King2",
+    "B3-Ch08b-King3",
+    "B3-Ch08b-Kelrim2",
+    "B3-Ch08b-Kelrim3",
+    "B3-Ch08b-Kelrim4",
+    "B3-Ch08b-Developments",
+    "B3-Ch08b-Resistance",
+    "B3-Ch08b-Populated",
+    "B3-Ch08b-Workshop",
+    "B3-Ch08b-Workshop2",
+    "B3-Ch08b-Answer",
+    "B3-Ch08b-Hadrik",
+    "B3-Ch08b-Hadrik-Leila",
+    "B3-Ch08b-Leila",
+    "B3-Ch08b-Leila2",
+    "B3-Ch08b-Leila3",
+    "B3-Ch08b-Leila4",
+    "B3-Ch08b-Skeptical",
+    "B3-Ch08b-Oblivious",
+    "B3-Ch08b-Leila5",
+    "B3-Ch08b-Hadrik2",
+    "B3-Ch08b-Hadrik3",
+    "B3-Ch08b-Hadrik4",
+    "B3-Ch08b-Hadrik5",
+    "B3-Ch08b-Hadrik6",
+    "B3-Ch08b-Ending",
+    "B3-Ch08b-Credits"
+  ],
+  "scenes": {
+    "B3-Ch08b-Pardon": {
+      "id": "B3-Ch08b-Pardon",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Pardon:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.p1",
+          "conditions": {
+            "raw": "v_b3_ch6_kelrim != 1 && v_b3_ch6_plan != 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_kelrim",
+                    "operator": "!=",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_plan",
+                    "operator": "!=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Pardon:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.p2",
+          "conditions": {
+            "raw": "v_b3_ch6_kelrim == 1 || v_b3_ch6_plan == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_kelrim",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_plan",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Pardon:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.p3",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Pardon:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c1",
+          "target": "B3-Ch08b-King",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King"
+            },
+            {
+              "variable": "v_b3_ch8_king",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Pardon:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c2",
+          "target": "B3-Ch08b-King",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King"
+            },
+            {
+              "variable": "v_b3_ch8_king",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Pardon:c3",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c3",
+          "target": "B3-Ch08b-King",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King"
+            },
+            {
+              "variable": "v_b3_ch8_king",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Pardon:c4",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c4",
+          "target": "B3-Ch08b-King",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King"
+            },
+            {
+              "variable": "v_b3_ch8_king",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Pardon:c5",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c5",
+          "target": "B3-Ch08b-King",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King"
+            },
+            {
+              "variable": "v_b3_ch8_king",
+              "value": "4) if (v_b3_ch6_kelrim == 1 || v_b3_ch6_plan == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Pardon:c6",
+          "messageId": "b3ch8b.B3_Ch08b_Pardon.c6",
+          "target": "B3-Ch08b-Kelrim",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Kelrim) if (v_b3_ch6_kelrim == 1 && v_b3_ch6_password == 3 || v_b3_ch6_kelrim == 1 && v_b3_ch6_labels >= 2 || v_b3_ch6_password == 3 && v_b3_ch6_plan == 3 || v_b3_ch6_plan == 3 && v_b3_ch6_labels >= 2 || v_b3_ch6_kelrim == 1 && v_ch11_saved_rose == 1 && v_b3_ch6_secret >= 1 || v_b3_ch6_plan == 3 && v_ch11_saved_rose == 1 && v_b3_ch6_secret >= 1 || v_b3_ch6_kelrim == 1 && v_b3_ch6_secret == 0 && v_b3_ch6_sleep == 0 && v_ch11_saved_rose == 1 || v_b3_ch6_plan == 3 && v_b3_ch6_secret == 0 && v_b3_ch6_sleep == 0 && v_ch11_saved_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-King": {
+      "id": "B3-Ch08b-King",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-King:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p4",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p5",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King:p6",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King.p6",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0 || v_b3_ch8_king == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-King:c1",
+          "messageId": "b3ch8b.B3_Ch08b_King.c1",
+          "target": "B3-Ch08b-King2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Kelrim": {
+      "id": "B3-Ch08b-Kelrim",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Kelrim:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Kelrim:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim.c1",
+          "target": "B3-Ch08b-Kelrim2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Kelrim2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "B3-Ch08b-Kelrim:s1",
+          "variable": "v_b3_ch8_king",
+          "value": 5,
+          "conditions": null
+        }
+      ],
+      "achievements": []
+    },
+    "B3-Ch08b-King2": {
+      "id": "B3-Ch08b-King2",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-King2:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p1",
+          "conditions": {
+            "raw": "v_b3_ch6_kelrim == 1 && v_b3_ch8_king != 4 || v_b3_ch6_plan == 3 && v_b3_ch8_king != 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_kelrim",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_plan",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p2",
+          "conditions": {
+            "raw": "v_b3_ch6_kelrim != 1 && v_b3_ch6_plan != 3 || v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_kelrim",
+                    "operator": "!=",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch6_plan",
+                    "operator": "!=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p4",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p5",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p6",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p6",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 3 || v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-King2:p7",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King2.p7",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0 || v_b3_ch8_king == 1 || v_b3_ch8_king == 2 || v_b3_ch8_king == 3 || v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-King2:c1",
+          "messageId": "b3ch8b.B3_Ch08b_King2.c1",
+          "target": "B3-Ch08b-King3",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-King3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-King3": {
+      "id": "B3-Ch08b-King3",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-King3:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_King3.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-King3:c1",
+          "messageId": "b3ch8b.B3_Ch08b_King3.c1",
+          "target": "B3-Ch08b-Resistance",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Resistance"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Kelrim2": {
+      "id": "B3-Ch08b-Kelrim2",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Kelrim2:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Kelrim2:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim2.c1",
+          "target": "B3-Ch08b-Kelrim3",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Kelrim3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Kelrim3": {
+      "id": "B3-Ch08b-Kelrim3",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Kelrim3:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim3.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Kelrim3:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim3.c1",
+          "target": "B3-Ch08b-Kelrim4",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Kelrim4"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Kelrim4": {
+      "id": "B3-Ch08b-Kelrim4",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Kelrim4:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.p1",
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Kelrim4:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_next == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_next",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Kelrim4:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.c1",
+          "target": "B3-Ch08b-Developments",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Developments"
+            },
+            {
+              "variable": "v_b3_ch8_defeat",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Kelrim4:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.c2",
+          "target": "B3-Ch08b-Developments",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Developments"
+            },
+            {
+              "variable": "v_b3_ch8_defeat",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Kelrim4:c3",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.c3",
+          "target": "B3-Ch08b-Developments",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Developments"
+            },
+            {
+              "variable": "v_b3_ch8_defeat",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "B3-Ch08b-Kelrim4:s1",
+          "variable": "v_ac_b3_ch8_unusual",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "B3-Ch08b-Kelrim4:a1",
+          "messageId": "b3ch8b.B3_Ch08b_Kelrim4.a1",
+          "variable": "v_ac_b3_ch8_unusual"
+        }
+      ]
+    },
+    "B3-Ch08b-Developments": {
+      "id": "B3-Ch08b-Developments",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Developments:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Developments.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_defeat == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_defeat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Developments:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Developments.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_defeat == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_defeat",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Developments:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Developments.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_defeat == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_defeat",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Developments:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Developments.p4",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Developments:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Developments.c1",
+          "target": "B3-Ch08b-Resistance",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Resistance"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Resistance": {
+      "id": "B3-Ch08b-Resistance",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Resistance:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_watching == 0 && v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Resistance:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_watching == 1 && v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Resistance:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 5 && v_b3_ch8_watching == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Resistance:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.p4",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 5 && v_b3_ch8_watching == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Resistance:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.p5",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Resistance:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.c1",
+          "target": "B3-Ch08b-Populated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Populated"
+            },
+            {
+              "variable": "v_b3_ch8_detected",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Resistance:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Resistance.c2",
+          "target": "B3-Ch08b-Populated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Populated"
+            },
+            {
+              "variable": "v_b3_ch8_detected",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Populated": {
+      "id": "B3-Ch08b-Populated",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Populated:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_detected == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_detected",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_detected == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_detected",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p4",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p5",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p6",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p6",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 3 || v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p7",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p7",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Populated:p8",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.p8",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 0 || v_b3_ch8_king == 1 || v_b3_ch8_king == 2 || v_b3_ch8_king == 3 || v_b3_ch8_king == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Populated:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Populated.c1",
+          "target": "B3-Ch08b-Workshop",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Workshop"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Workshop": {
+      "id": "B3-Ch08b-Workshop",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Workshop:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.p1",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_king == 5 || v_b3_ch4_billy == 8 && v_b3_ch8_king == 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Workshop:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 5 && v_b3_ch4_billy != 7 && v_b3_ch4_billy != 8",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 8
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Workshop:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.p3",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_king != 5 || v_b3_ch4_billy == 8 && v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Workshop:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.p4",
+          "conditions": {
+            "raw": "v_b3_ch4_billy != 7 && v_b3_ch4_billy != 8 && v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Workshop:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.p5",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Workshop:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop.c1",
+          "target": "B3-Ch08b-Workshop2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Workshop2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Workshop2": {
+      "id": "B3-Ch08b-Workshop2",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Workshop2:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Workshop2:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop2.c1",
+          "target": "B3-Ch08b-Answer",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Answer"
+            },
+            {
+              "variable": "v_b3_ch8_overseer2",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Workshop2:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Workshop2.c2",
+          "target": "B3-Ch08b-Answer",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Answer"
+            },
+            {
+              "variable": "v_b3_ch8_overseer2",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Answer": {
+      "id": "B3-Ch08b-Answer",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Answer:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_overseer2 == 0 && v_b3_ch4_billy != 7 && v_b3_ch4_billy != 8",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 8
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Answer:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p2",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_overseer2 == 0 || v_b3_ch4_billy == 8 && v_b3_ch8_overseer2 == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Answer:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p3",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 9 && v_b3_ch8_overseer2 == 1 || v_b3_ch8_overseer2 == 1 && v_b3_ch4_billy <= 6 && v_b3_ch4_billy != 7 && v_b3_ch4_billy != 8",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 9
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "<=",
+                    "value": 6
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "!=",
+                    "value": 8
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Answer:p4",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p4",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_overseer2 == 1 && v_b3_ch8_king != 5 || v_b3_ch4_billy == 8 && v_b3_ch8_overseer2 == 1 && v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Answer:p5",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p5",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_king == 5 && v_b3_ch8_overseer2 == 1 || v_b3_ch4_billy == 8 && v_b3_ch8_king == 5 && v_b3_ch8_overseer2 == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Answer:p6",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.p6",
+          "conditions": {
+            "raw": "v_b3_ch4_billy == 7 && v_b3_ch8_king == 5 || v_b3_ch4_billy == 8 && v_b3_ch8_king == 5 || v_b3_ch8_overseer2 == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 7
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch4_billy",
+                    "operator": "==",
+                    "value": 8
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Answer:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.c1",
+          "target": "B3-Ch08b-Hadrik",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik) if (v_b3_ch4_billy == 7 && v_b3_ch6_shift == 0 || v_b3_ch4_billy == 8 && v_b3_ch6_shift == 0 || v_b3_ch4_billy == 9 && v_b3_ch6_shift == 0 || v_b3_ch6_shift == 0 && v_b3_ch8_overseer2 == 0 || v_b3_ch6_shift == 0 && v_b3_ch4_billy <= 6"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Answer:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Answer.c2",
+          "target": "B3-Ch08b-Leila",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila) if (v_b3_ch4_billy == 7 && v_b3_ch6_shift == 1 || v_b3_ch4_billy == 8 && v_b3_ch6_shift == 1 || v_b3_ch4_billy == 9 && v_b3_ch6_shift == 1 || v_b3_ch6_shift == 1 && v_b3_ch8_overseer2 == 0 || v_b3_ch6_shift == 1 && v_b3_ch4_billy <= 6"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Hadrik": {
+      "id": "B3-Ch08b-Hadrik",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik.c1",
+          "target": "B3-Ch08b-Hadrik2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik2"
+            },
+            {
+              "variable": "v_b3_ch8_three",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Hadrik:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik.c2",
+          "target": "B3-Ch08b-Hadrik-Leila",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik-Leila"
+            },
+            {
+              "variable": "v_b3_ch8_three",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Hadrik-Leila": {
+      "id": "B3-Ch08b-Hadrik-Leila",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik-Leila:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik_Leila.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik-Leila:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik_Leila.c1",
+          "target": "B3-Ch08b-Leila2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Leila": {
+      "id": "B3-Ch08b-Leila",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Leila:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Leila:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila.c1",
+          "target": "B3-Ch08b-Leila2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Leila2": {
+      "id": "B3-Ch08b-Leila2",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Leila2:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Leila2:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila2.c1",
+          "target": "B3-Ch08b-Leila3",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila3"
+            },
+            {
+              "variable": "v_b3_ch8_voice",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Leila2:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Leila2.c2",
+          "target": "B3-Ch08b-Leila3",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila3"
+            },
+            {
+              "variable": "v_b3_ch8_voice",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Leila3": {
+      "id": "B3-Ch08b-Leila3",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Leila3:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila3.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_voice == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_voice",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Leila3:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila3.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_voice == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_voice",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Leila3:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila3.p3",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Leila3:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila3.c1",
+          "target": "B3-Ch08b-Leila4",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila4"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Leila4": {
+      "id": "B3-Ch08b-Leila4",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Leila4:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila4.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Leila4:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila4.c1",
+          "target": "B3-Ch08b-Skeptical",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Skeptical"
+            },
+            {
+              "variable": "v_b3_ch8_heartfelt",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Leila4:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Leila4.c2",
+          "target": "B3-Ch08b-Skeptical",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Skeptical"
+            },
+            {
+              "variable": "v_b3_ch8_heartfelt",
+              "value": "1) if (v_b3_ch3_plans != 5"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Leila4:c3",
+          "messageId": "b3ch8b.B3_Ch08b_Leila4.c3",
+          "target": "B3-Ch08b-Oblivious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Oblivious) if (v_b3_ch3_plans == 5"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Skeptical": {
+      "id": "B3-Ch08b-Skeptical",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Skeptical:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Skeptical.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_heartfelt == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Skeptical:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Skeptical.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_heartfelt == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Skeptical:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Skeptical.p3",
+          "conditions": {
+            "raw": "v_b3_ch8_heartfelt == 0 || v_b3_ch8_heartfelt == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Skeptical:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Skeptical.c1",
+          "target": "B3-Ch08b-Ending",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Ending"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Oblivious": {
+      "id": "B3-Ch08b-Oblivious",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Oblivious:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Oblivious.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Oblivious:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Oblivious.c1",
+          "target": "B3-Ch08b-Leila5",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila5"
+            },
+            {
+              "variable": "v_b3_ch8_heartfelt",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Oblivious:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Oblivious.c2",
+          "target": "B3-Ch08b-Leila5",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Leila5"
+            },
+            {
+              "variable": "v_b3_ch8_heartfelt",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Leila5": {
+      "id": "B3-Ch08b-Leila5",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Leila5:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila5.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_heartfelt == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Leila5:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Leila5.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_heartfelt == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Leila5:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila5.c1",
+          "target": "B3-Ch08b-Ending",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Ending"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "B3-Ch08b-Leila5:s1",
+          "variable": "v_ac_b3_ch8_heartfelt",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_b3_ch8_heartfelt == 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": [
+        {
+          "id": "B3-Ch08b-Leila5:a1",
+          "messageId": "b3ch8b.B3_Ch08b_Leila5.a1",
+          "variable": "v_ac_b3_ch8_heartfelt"
+        }
+      ]
+    },
+    "B3-Ch08b-Hadrik2": {
+      "id": "B3-Ch08b-Hadrik2",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik2:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik2:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik2.c1",
+          "target": "B3-Ch08b-Hadrik3",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Hadrik3": {
+      "id": "B3-Ch08b-Hadrik3",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik3:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik3.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik3:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik3.c1",
+          "target": "B3-Ch08b-Hadrik4",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik4"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Hadrik4": {
+      "id": "B3-Ch08b-Hadrik4",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik4:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik4.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik4:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik4.c1",
+          "target": "B3-Ch08b-Hadrik5",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik5"
+            },
+            {
+              "variable": "v_b3_ch8_three",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Hadrik4:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik4.c2",
+          "target": "B3-Ch08b-Hadrik5",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik5"
+            },
+            {
+              "variable": "v_b3_ch8_three",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Hadrik5": {
+      "id": "B3-Ch08b-Hadrik5",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik5:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik5.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_three == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_three",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Hadrik5:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik5.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_three == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_three",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik5:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik5.c1",
+          "target": "B3-Ch08b-Ending",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Ending) if (v_b3_ch8_three == 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "B3-Ch08b-Hadrik5:c2",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik5.c2",
+          "target": "B3-Ch08b-Hadrik6",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Hadrik6) if (v_b3_ch8_three == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "B3-Ch08b-Hadrik5:s1",
+          "variable": "v_ac_b3_ch8_friend",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_b3_ch8_three == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_three",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": [
+        {
+          "id": "B3-Ch08b-Hadrik5:a1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik5.a1",
+          "variable": "v_ac_b3_ch8_friend"
+        }
+      ]
+    },
+    "B3-Ch08b-Hadrik6": {
+      "id": "B3-Ch08b-Hadrik6",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Hadrik6:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik6.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Hadrik6:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Hadrik6.c1",
+          "target": "B3-Ch08b-Ending",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Ending"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Ending": {
+      "id": "B3-Ch08b-Ending",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Ending:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Ending.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_king != 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "!=",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Ending:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Ending.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_king == 5",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_king",
+                    "operator": "==",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Ending:p3",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Ending.p3",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Ending:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Ending.c1",
+          "target": "B3-Ch08b-Credits",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch08b-Credits"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "B3-Ch08b-Credits": {
+      "id": "B3-Ch08b-Credits",
+      "blocks": [
+        {
+          "id": "B3-Ch08b-Credits:p1",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Credits.p1",
+          "conditions": {
+            "raw": "v_b3_ch8_overseer2 == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "B3-Ch08b-Credits:p2",
+          "type": "paragraph",
+          "messageId": "b3ch8b.B3_Ch08b_Credits.p2",
+          "conditions": {
+            "raw": "v_b3_ch8_overseer2 == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "B3-Ch08b-Credits:c1",
+          "messageId": "b3ch8b.B3_Ch08b_Credits.c1",
+          "target": "B3-Ch09a-Intro",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "B3-Ch09a-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    }
+  }
+}

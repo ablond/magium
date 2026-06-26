@@ -1,0 +1,32 @@
+{
+  "name": "magium",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "pnpm content:all && vite build && pnpm dist:check",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+    "test": "pnpm content:all && vitest run",
+    "content:import": "node tools/content/import-original.mjs",
+    "content:archive:check": "node tools/content/archive-check.mjs",
+    "content:parse": "node tools/content/build-canonical.mjs",
+    "content:validate": "node tools/content/validate-content.mjs",
+    "content:all": "pnpm content:import && pnpm content:archive:check && pnpm content:parse && pnpm content:validate",
+    "dist:check": "node tools/content/check-dist.mjs"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/node": "^24.13.2",
+    "svelte": "^5.56.3",
+    "svelte-check": "^4.6.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0",
+    "vitest": "^4.1.9"
+  },
+  "dependencies": {
+    "@lucide/svelte": "^1.21.0"
+  }
+}

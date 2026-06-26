@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magium.local/schemas/story.schema.json",
+  "title": "Magium canonical story graph",
+  "type": "object",
+  "required": ["formatVersion", "chapterId", "sourceFile", "sceneOrder", "scenes"],
+  "properties": {
+    "formatVersion": { "type": "integer", "const": 1 },
+    "chapterId": { "type": "string" },
+    "sourceFile": { "type": "string" },
+    "sceneOrder": { "type": "array", "items": { "type": "string" } },
+    "scenes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["id", "blocks", "choices", "setVariables", "achievements"],
+        "properties": {
+          "id": { "type": "string" },
+          "blocks": { "type": "array" },
+          "choices": { "type": "array" },
+          "setVariables": { "type": "array" },
+          "achievements": { "type": "array" }
+        }
+      }
+    }
+  }
+}
