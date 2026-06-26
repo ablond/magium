@@ -12,6 +12,7 @@
   --accent-strong: #ffd77d;
   --danger: #ff806f;
   --shadow: rgba(0, 0, 0, 0.44);
+  --rail-width: 176px;
   --reader-width: 820px;
   --ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --serif: Georgia, "Times New Roman", serif;
@@ -89,14 +90,14 @@ button {
 .shell {
   min-height: 100svh;
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: var(--rail-width) minmax(0, 1fr);
   background:
     linear-gradient(90deg, rgba(0, 0, 0, 0.4), transparent 16rem),
     linear-gradient(180deg, rgba(246, 194, 95, 0.08), transparent 18rem);
 }
 
 .shell.panel-open {
-  grid-template-columns: 72px minmax(0, 1fr) minmax(320px, 380px);
+  grid-template-columns: var(--rail-width) minmax(0, 1fr) minmax(320px, 380px);
 }
 
 .brand-rail {
@@ -105,9 +106,9 @@ button {
   height: 100svh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 12px;
-  padding: 14px 10px;
+  padding: 14px 12px;
   border-right: 1px solid var(--line);
   background: rgba(9, 8, 11, 0.76);
   backdrop-filter: blur(18px);
@@ -118,6 +119,7 @@ button {
   width: 48px;
   height: 48px;
   margin-bottom: 8px;
+  align-self: center;
 }
 
 .brand-rail button,
@@ -132,12 +134,25 @@ button {
 }
 
 .brand-rail button {
-  width: 46px;
+  width: 100%;
   height: 46px;
   display: grid;
-  place-items: center;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
   cursor: pointer;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 720;
   transition: border-color 160ms ease, color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .brand-rail button:hover,
@@ -149,7 +164,7 @@ button {
 }
 
 .reader {
-  width: min(var(--reader-width), calc(100vw - 72px));
+  width: min(var(--reader-width), calc(100vw - var(--rail-width)));
   margin: 0 auto;
   padding: clamp(24px, 5vw, 64px) clamp(18px, 4vw, 40px) 56px;
 }
@@ -373,6 +388,21 @@ input[type="range"] {
   margin: 18px 0;
 }
 
+.panel-copy,
+.empty-state {
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.92rem;
+  margin-bottom: 18px;
+}
+
+.help {
+  display: block;
+  color: var(--faint);
+  line-height: 1.45;
+  font-size: 0.78rem;
+}
+
 .save-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 38px;
@@ -428,6 +458,16 @@ input[type="range"] {
   line-height: 1.5;
 }
 
+.about-list {
+  display: grid;
+  gap: 12px;
+}
+
+.panel a {
+  color: var(--accent-strong);
+  overflow-wrap: anywhere;
+}
+
 .achievement.locked {
   opacity: 0.42;
 }
@@ -460,8 +500,10 @@ input[type="range"] {
     height: 66px;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     border-right: none;
     border-top: 1px solid var(--line);
+    overflow-x: auto;
   }
 
   .brand-mark {
@@ -471,6 +513,18 @@ input[type="range"] {
   .reader {
     width: min(var(--reader-width), 100vw);
     padding-bottom: 24px;
+  }
+
+  .brand-rail button {
+    width: 46px;
+    min-width: 46px;
+    grid-template-columns: 1fr;
+    place-items: center;
+    padding: 0;
+  }
+
+  .nav-label {
+    display: none;
   }
 
   .reader-header {
@@ -499,6 +553,7 @@ input[type="range"] {
 
   .brand-rail button {
     width: 42px;
+    min-width: 42px;
     height: 42px;
   }
 

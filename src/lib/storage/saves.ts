@@ -83,7 +83,7 @@ export async function importSave(
 ): Promise<GameState> {
   const container = JSON.parse(raw) as SaveContainer
   if (container.kind !== 'magium-save' || container.version !== 1) {
-    throw new Error('Unsupported save container')
+    throw new Error('Unsupported save file')
   }
   const key = container.encryption === 'pbkdf2'
     ? await derivePassphraseKey(passphrase, base64ToBytes(container.salt ?? ''))
@@ -91,7 +91,7 @@ export async function importSave(
   const state = await decryptJson<GameState>(container.encrypted, key, container.associatedData)
   const valid = await replayAndValidate(contextForScene, state)
   if (!valid) {
-    throw new Error('Save was decrypted but failed progression validation')
+    throw new Error('This save file does not match a playable route')
   }
   await saveGameState(state)
   return state

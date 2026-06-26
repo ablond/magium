@@ -13,6 +13,7 @@ La V1 est en anglais original. L'architecture separe deja la logique du texte po
 - Paquets runtime compresses et verifies sous `src/generated/`.
 - Sauvegarde locale chiffrée dans IndexedDB, export/import `.magium-save`.
 - PWA installable avec service worker.
+- UI de lecture directe avec rail desktop libelle, panneau Abilities a revelation progressive, sauvegardes expliquees en langage joueur, settings de confort et attribution About.
 
 ## Commandes
 
@@ -68,3 +69,4 @@ docs/                       Documentation technique detaillee.
 - La documentation doit etre maintenue et corrigee a chaque changement qui modifie commandes, architecture, pipeline, UI, sauvegardes, i18n ou limites de securite.
 - Toute modification du parser, du moteur, du stockage ou du pipeline doit etre suivie de `pnpm check`, `pnpm test` et `pnpm build`.
 - L'anti-triche est une resistance client-side, pas une garantie absolue sans backend.
+- L'UI joueur ne doit pas exposer de vocabulaire d'implementation inutile ; garder les details techniques dans la documentation.
