@@ -72,6 +72,18 @@ Attention : appeler cette fonction apres creation d'un nouvel etat ou apres appl
 
 Le rendu ne modifie pas l'etat.
 
+## Affichage Des Abilities
+
+Le moteur conserve toutes les variables de stats dans `GameState.variables`, mais l'UI ne les montre pas toutes des le depart.
+
+Dans `src/App.svelte`, le panneau `Abilities` revele :
+
+- aucune ability avant que Barry atteigne `Ch2-Stats` ;
+- les abilities de base apres `Ch2-Stats` ou `Ch2-Stats-spent` ;
+- `Bluff`, `Magical sense` et `Aura hardening` apres l'introduction aura de `B3-Ch04a`.
+
+Les entrees non introduites par le contenu actuel restent invisibles, meme si elles existent dans `STAT_LABELS`.
+
 ## Application D'Un Choix
 
 `applyChoice(context, state, choice)` :
@@ -90,6 +102,7 @@ Le rendu ne modifie pas l'etat.
 - `restart`
 - `checkpoint_save`
 - `saves` cote UI quand le target est vide
+- `stats` cote UI pour ouvrir le panneau `Abilities`
 
 D'autres `special:*` peuvent exister dans le corpus. Si une nouvelle valeur doit avoir un effet moteur, l'ajouter dans `applyChoice` et couvrir par test.
 
