@@ -146,7 +146,9 @@ Apres changement UI, verifier au moins :
 - scene avec paragraphe long ;
 - scene qui commence par `...` ;
 - panneau sauvegardes ;
-- panneau stats/achievements.
+- panneau Abilities avant/apres revelation ;
+- panneau achievements ;
+- panneau settings/about.
 
 ## Pieges Connus
 

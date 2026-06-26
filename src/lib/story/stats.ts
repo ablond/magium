@@ -17,10 +17,28 @@ export const STAT_LABELS: Record<string, string> = {
   v_magical_knowledge: 'Magical knowledge',
 }
 
-export function readStats(variables: Record<string, PrimitiveValue>) {
-  return Object.entries(STAT_LABELS).map(([variable, label]) => ({
+export const BASE_STAT_VARIABLES = [
+  'v_strength',
+  'v_toughness',
+  'v_agility',
+  'v_reflexes',
+  'v_hearing',
+  'v_perception',
+  'v_ancient_languages',
+  'v_combat_technique',
+  'v_premonition',
+]
+
+export const AURA_STAT_VARIABLES = [
+  'v_bluff',
+  'v_magical_sense',
+  'v_aura_hardening',
+]
+
+export function readStats(variables: Record<string, PrimitiveValue>, visibleVariables = Object.keys(STAT_LABELS)) {
+  return visibleVariables.map((variable) => ({
     variable,
-    label,
+    label: STAT_LABELS[variable] ?? variable,
     value: Number(variables[variable] ?? 0),
   }))
 }

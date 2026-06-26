@@ -66,9 +66,21 @@ Autosave :
 
 Slots manuels :
 
-- crees depuis le panneau Saves ;
+- crees depuis le panneau Saves sous forme de routes nommees ;
 - stockes dans le meme object store ;
 - chaque record reste chiffre.
+
+## UX Du Panneau Saves
+
+Le panneau explique le comportement sans vocabulaire technique :
+
+- la progression est sauvegardee apres chaque choix ;
+- les saves nommees servent a conserver plusieurs routes ;
+- l'export cree un fichier de secours ;
+- un mot de passe rend ce fichier restaurable dans un autre navigateur ;
+- l'import reprend seulement un backup compatible avec l'aventure.
+
+Les statuts visibles restent orientes joueur, par exemple `Portable backup exported` ou `Save imported and ready`.
 
 ## Export
 
@@ -109,6 +121,8 @@ L'import :
 6. sauvegarde seulement si la validation passe.
 
 Une sauvegarde decryptee mais incoherente doit etre rejetee.
+
+Les erreurs affichees cote UI doivent rester comprehensibles, par exemple `Unsupported save file` ou `This save file does not match a playable route`.
 
 ## Donnees Non Chiffrees Acceptables
 

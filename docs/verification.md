@@ -59,12 +59,15 @@ Verifier :
 1. la page charge directement le livre 1 chapitre 1 ;
 2. cliquer `Excited` affiche la scene suivante ;
 3. recharger la page reprend la progression ;
-4. le panneau Saves affiche `autosave` ;
-5. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
-6. export avec phrase de passe produit `.magium-save` ;
-7. import avec la meme phrase de passe restaure la progression ;
-8. mobile 390 x 844 : pas de chevauchement UI/texte ;
-9. desktop 1280 x 720 : lecture et panneaux utilisables.
+4. desktop 1280 x 720 : le rail gauche affiche les libelles `Read`, `Abilities`, `Saves`, `Achievements`, `Settings`, `About` ;
+5. mobile 390 x 844 : la navigation reste compacte et il n'y a pas de chevauchement UI/texte ;
+6. le panneau Saves affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
+7. le panneau Abilities est vide au debut, puis affiche les abilities de base apres `Ch2-Stats` et les abilities aura apres l'introduction de `B3-Ch04a` ;
+8. le panneau Settings explique theme, taille du texte, contraste et scene reveal comme confort de lecture ;
+9. le panneau About affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
+10. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
+11. export avec phrase de passe produit `.magium-save` ;
+12. import avec la meme phrase de passe restaure la progression.
 
 ## Exemple De Verification IndexedDB
 
