@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magium.local/schemas/locale.schema.json",
+  "title": "Magium locale messages",
+  "type": "object",
+  "required": ["locale", "messages"],
+  "properties": {
+    "locale": { "type": "string" },
+    "chapterId": { "type": "string" },
+    "messages": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

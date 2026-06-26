@@ -1,0 +1,3175 @@
+{
+  "formatVersion": 1,
+  "chapterId": "ch9",
+  "sourceFile": "chapters/ch9.magium",
+  "sceneOrder": [
+    "Ch9-Intro",
+    "Ch9-Introduce",
+    "Ch9-Silence",
+    "Ch9-Awakening",
+    "Ch9-Space-out",
+    "Ch9-Imagination",
+    "Ch9-Doctor",
+    "Ch9-Beacon",
+    "Ch9-Crossroads",
+    "Ch9-Acting",
+    "Ch9-Developed",
+    "Ch9-Leader",
+    "Ch9-Dispel",
+    "Ch9-Getting-along",
+    "Ch9-Life-with-Arraka",
+    "Ch9-Smartest",
+    "Ch9-Whimpers",
+    "Ch9-Hiding-fear",
+    "Ch9-Stat-device",
+    "Ch9-Crazy",
+    "Ch9-Blushing",
+    "Ch9-Annoying",
+    "Ch9-Trust",
+    "Ch9-Morning",
+    "Ch9-Curious",
+    "Ch9-Sleep",
+    "Ch9-Inventory",
+    "Ch9-Right",
+    "Ch9-Know",
+    "Ch9-Weather",
+    "Ch9-Sandwich",
+    "Ch9-Magic",
+    "Ch9-Multiplied",
+    "Ch9-Calm",
+    "Ch9-Fused",
+    "Ch9-Fight",
+    "Ch9-Intervention",
+    "Ch9-Guide",
+    "Ch9-Sake",
+    "Ch9-Love",
+    "Ch9-Backpack",
+    "Ch9-Strategy",
+    "Ch9-Take-Rose",
+    "Ch9-Sloppy",
+    "Ch9-Trap",
+    "Ch9-Lunch",
+    "Ch9-Moved",
+    "Ch9-Worry",
+    "Ch9-Final-march",
+    "Ch9-Nice",
+    "Ch9-Muffled",
+    "Ch9-Open",
+    "Ch9-Ignore",
+    "Ch9-Ogre-club",
+    "Ch9-Brave",
+    "Ch9-Monster",
+    "Ch9-Sacred",
+    "Ch9-Merry",
+    "Ch9-Persuade",
+    "Ch9-Crossbow",
+    "Ch9-Throw",
+    "Ch9-Submission",
+    "Ch9-Interrupt",
+    "Ch9-Traitorous",
+    "Ch9-Mechanisms"
+  ],
+  "scenes": {
+    "Ch9-Intro": {
+      "id": "Ch9-Intro",
+      "blocks": [
+        {
+          "id": "Ch9-Intro:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Intro.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Intro:c1",
+          "messageId": "ch9.Ch9_Intro.c1",
+          "target": "Ch9-Introduce",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Introduce"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Intro:c2",
+          "messageId": "ch9.Ch9_Intro.c2",
+          "target": "Ch9-Silence",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Silence"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Introduce": {
+      "id": "Ch9-Introduce",
+      "blocks": [
+        {
+          "id": "Ch9-Introduce:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Introduce.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Introduce:c1",
+          "messageId": "ch9.Ch9_Introduce.c1",
+          "target": "Ch9-Awakening",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Awakening"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Silence": {
+      "id": "Ch9-Silence",
+      "blocks": [
+        {
+          "id": "Ch9-Silence:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Silence.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Silence:c1",
+          "messageId": "ch9.Ch9_Silence.c1",
+          "target": "Ch9-Awakening",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Awakening"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Awakening": {
+      "id": "Ch9-Awakening",
+      "blocks": [
+        {
+          "id": "Ch9-Awakening:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Awakening.p1",
+          "conditions": {
+            "raw": "v_ch8_old == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch8_old",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Awakening:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Awakening.p2",
+          "conditions": {
+            "raw": "v_ch8_old == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch8_old",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Awakening:c1",
+          "messageId": "ch9.Ch9_Awakening.c1",
+          "target": "Ch9-Space-out",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Space-out"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Awakening:c2",
+          "messageId": "ch9.Ch9_Awakening.c2",
+          "target": "Ch9-Imagination",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Imagination"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Awakening:c3",
+          "messageId": "ch9.Ch9_Awakening.c3",
+          "target": "Ch9-Doctor",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Doctor"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Space-out": {
+      "id": "Ch9-Space-out",
+      "blocks": [
+        {
+          "id": "Ch9-Space-out:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Space_out.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Space-out:c1",
+          "messageId": "ch9.Ch9_Space_out.c1",
+          "target": "Ch9-Beacon",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Beacon"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Imagination": {
+      "id": "Ch9-Imagination",
+      "blocks": [
+        {
+          "id": "Ch9-Imagination:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Imagination.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Imagination:c1",
+          "messageId": "ch9.Ch9_Imagination.c1",
+          "target": "Ch9-Beacon",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Beacon"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Doctor": {
+      "id": "Ch9-Doctor",
+      "blocks": [
+        {
+          "id": "Ch9-Doctor:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Doctor.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Doctor:c1",
+          "messageId": "ch9.Ch9_Doctor.c1",
+          "target": "Ch9-Beacon",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Beacon"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Beacon": {
+      "id": "Ch9-Beacon",
+      "blocks": [
+        {
+          "id": "Ch9-Beacon:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Beacon.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Beacon:c1",
+          "messageId": "ch9.Ch9_Beacon.c1",
+          "target": "Ch9-Crossroads",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Crossroads"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Crossroads": {
+      "id": "Ch9-Crossroads",
+      "blocks": [
+        {
+          "id": "Ch9-Crossroads:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Crossroads.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Crossroads:c1",
+          "messageId": "ch9.Ch9_Crossroads.c1",
+          "target": "Ch9-Acting",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Acting"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Crossroads:c2",
+          "messageId": "ch9.Ch9_Crossroads.c2",
+          "target": "Ch9-Developed",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Developed"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Acting": {
+      "id": "Ch9-Acting",
+      "blocks": [
+        {
+          "id": "Ch9-Acting:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Acting.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Acting:c1",
+          "messageId": "ch9.Ch9_Acting.c1",
+          "target": "Ch9-Leader",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Leader"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Developed": {
+      "id": "Ch9-Developed",
+      "blocks": [
+        {
+          "id": "Ch9-Developed:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Developed.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Developed:c1",
+          "messageId": "ch9.Ch9_Developed.c1",
+          "target": "Ch9-Leader",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Leader"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Leader": {
+      "id": "Ch9-Leader",
+      "blocks": [
+        {
+          "id": "Ch9-Leader:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Leader.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Leader:c1",
+          "messageId": "ch9.Ch9_Leader.c1",
+          "target": "Ch9-Dispel",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Dispel"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Dispel": {
+      "id": "Ch9-Dispel",
+      "blocks": [
+        {
+          "id": "Ch9-Dispel:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Dispel.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Dispel:c1",
+          "messageId": "ch9.Ch9_Dispel.c1",
+          "target": "Ch9-Getting-along",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Getting-along"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Dispel:c2",
+          "messageId": "ch9.Ch9_Dispel.c2",
+          "target": "Ch9-Life-with-Arraka",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Life-with-Arraka"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Dispel:c3",
+          "messageId": "ch9.Ch9_Dispel.c3",
+          "target": "Ch9-Smartest",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Smartest"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Getting-along": {
+      "id": "Ch9-Getting-along",
+      "blocks": [
+        {
+          "id": "Ch9-Getting-along:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Getting_along.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Getting-along:c1",
+          "messageId": "ch9.Ch9_Getting_along.c1",
+          "target": "Ch9-Whimpers",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Whimpers"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Life-with-Arraka": {
+      "id": "Ch9-Life-with-Arraka",
+      "blocks": [
+        {
+          "id": "Ch9-Life-with-Arraka:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Life_with_Arraka.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Life-with-Arraka:c1",
+          "messageId": "ch9.Ch9_Life_with_Arraka.c1",
+          "target": "Ch9-Whimpers",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Whimpers"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Smartest": {
+      "id": "Ch9-Smartest",
+      "blocks": [
+        {
+          "id": "Ch9-Smartest:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Smartest.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Smartest:c1",
+          "messageId": "ch9.Ch9_Smartest.c1",
+          "target": "Ch9-Whimpers",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Whimpers"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Whimpers": {
+      "id": "Ch9-Whimpers",
+      "blocks": [
+        {
+          "id": "Ch9-Whimpers:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Whimpers.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Whimpers:c1",
+          "messageId": "ch9.Ch9_Whimpers.c1",
+          "target": "Ch9-Hiding-fear",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Hiding-fear"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Whimpers:c2",
+          "messageId": "ch9.Ch9_Whimpers.c2",
+          "target": "Ch9-Stat-device",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Stat-device"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Whimpers:c3",
+          "messageId": "ch9.Ch9_Whimpers.c3",
+          "target": "Ch9-Crazy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Crazy"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Hiding-fear": {
+      "id": "Ch9-Hiding-fear",
+      "blocks": [
+        {
+          "id": "Ch9-Hiding-fear:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Hiding_fear.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Hiding-fear:c1",
+          "messageId": "ch9.Ch9_Hiding_fear.c1",
+          "target": "Ch9-Blushing",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Blushing"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Stat-device": {
+      "id": "Ch9-Stat-device",
+      "blocks": [
+        {
+          "id": "Ch9-Stat-device:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Stat_device.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Stat-device:c1",
+          "messageId": "ch9.Ch9_Stat_device.c1",
+          "target": "Ch9-Blushing",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Blushing"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Crazy": {
+      "id": "Ch9-Crazy",
+      "blocks": [
+        {
+          "id": "Ch9-Crazy:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Crazy.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Crazy:c1",
+          "messageId": "ch9.Ch9_Crazy.c1",
+          "target": "Ch9-Blushing",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Blushing"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Blushing": {
+      "id": "Ch9-Blushing",
+      "blocks": [
+        {
+          "id": "Ch9-Blushing:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Blushing.p1",
+          "conditions": {
+            "raw": "v_ch6_flirt != 2 && v_ch6_flirt != 3 && v_ch6_flirt != 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "!=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "!=",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "!=",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Blushing:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Blushing.p2",
+          "conditions": {
+            "raw": "v_ch6_flirt == 3 || v_ch6_flirt == 4",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "==",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Blushing:p3",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Blushing.p3",
+          "conditions": {
+            "raw": "v_ch6_flirt == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Blushing:c1",
+          "messageId": "ch9.Ch9_Blushing.c1",
+          "target": "Ch9-Annoying",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Annoying"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Blushing:c2",
+          "messageId": "ch9.Ch9_Blushing.c2",
+          "target": "Ch9-Trust",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Trust"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Blushing:c3",
+          "messageId": "ch9.Ch9_Blushing.c3",
+          "target": "Ch9-Morning",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Morning"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Blushing:c4",
+          "messageId": "ch9.Ch9_Blushing.c4",
+          "target": "Ch9-Curious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Curious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Annoying": {
+      "id": "Ch9-Annoying",
+      "blocks": [
+        {
+          "id": "Ch9-Annoying:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Annoying.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Annoying:c1",
+          "messageId": "ch9.Ch9_Annoying.c1",
+          "target": "Ch9-Sleep",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sleep"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Trust": {
+      "id": "Ch9-Trust",
+      "blocks": [
+        {
+          "id": "Ch9-Trust:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Trust.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Trust:c1",
+          "messageId": "ch9.Ch9_Trust.c1",
+          "target": "Ch9-Sleep",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sleep"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Morning": {
+      "id": "Ch9-Morning",
+      "blocks": [
+        {
+          "id": "Ch9-Morning:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Morning.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Morning:c1",
+          "messageId": "ch9.Ch9_Morning.c1",
+          "target": "Ch9-Sleep",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sleep"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Curious": {
+      "id": "Ch9-Curious",
+      "blocks": [
+        {
+          "id": "Ch9-Curious:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Curious.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Curious:c1",
+          "messageId": "ch9.Ch9_Curious.c1",
+          "target": "Ch9-Sleep",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sleep"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Sleep": {
+      "id": "Ch9-Sleep",
+      "blocks": [
+        {
+          "id": "Ch9-Sleep:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sleep.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Sleep:c1",
+          "messageId": "ch9.Ch9_Sleep.c1",
+          "target": "Ch9-Inventory",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Inventory"
+            },
+            {
+              "variable": "v_ch9_inventory",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Sleep:c2",
+          "messageId": "ch9.Ch9_Sleep.c2",
+          "target": "Ch9-Inventory",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Inventory"
+            },
+            {
+              "variable": "v_ch9_inventory",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Inventory": {
+      "id": "Ch9-Inventory",
+      "blocks": [
+        {
+          "id": "Ch9-Inventory:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Inventory.p1",
+          "conditions": {
+            "raw": "v_ch9_inventory == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Inventory:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Inventory.p2",
+          "conditions": {
+            "raw": "v_ch9_inventory == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Inventory:c1",
+          "messageId": "ch9.Ch9_Inventory.c1",
+          "target": "Ch9-Right",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Right"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Inventory:c2",
+          "messageId": "ch9.Ch9_Inventory.c2",
+          "target": "Ch9-Know",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Know"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Inventory:c3",
+          "messageId": "ch9.Ch9_Inventory.c3",
+          "target": "Ch9-Weather",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Weather"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Right": {
+      "id": "Ch9-Right",
+      "blocks": [
+        {
+          "id": "Ch9-Right:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Right.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Right:c1",
+          "messageId": "ch9.Ch9_Right.c1",
+          "target": "Ch9-Sandwich",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sandwich"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Know": {
+      "id": "Ch9-Know",
+      "blocks": [
+        {
+          "id": "Ch9-Know:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Know.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Know:c1",
+          "messageId": "ch9.Ch9_Know.c1",
+          "target": "Ch9-Sandwich",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sandwich"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Weather": {
+      "id": "Ch9-Weather",
+      "blocks": [
+        {
+          "id": "Ch9-Weather:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Weather.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Weather:c1",
+          "messageId": "ch9.Ch9_Weather.c1",
+          "target": "Ch9-Sandwich",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sandwich"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Sandwich": {
+      "id": "Ch9-Sandwich",
+      "blocks": [
+        {
+          "id": "Ch9-Sandwich:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sandwich.p1",
+          "conditions": {
+            "raw": "v_ch9_inventory == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Sandwich:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sandwich.p2",
+          "conditions": {
+            "raw": "v_ch9_inventory == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Sandwich:c1",
+          "messageId": "ch9.Ch9_Sandwich.c1",
+          "target": "Ch9-Multiplied",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Multiplied) if (v_ch9_inventory == 0"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Sandwich:c2",
+          "messageId": "ch9.Ch9_Sandwich.c2",
+          "target": "Ch9-Magic",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Magic) if (v_ch9_inventory == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Magic": {
+      "id": "Ch9-Magic",
+      "blocks": [
+        {
+          "id": "Ch9-Magic:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Magic.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Magic:c1",
+          "messageId": "ch9.Ch9_Magic.c1",
+          "target": "Ch9-Multiplied",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Multiplied"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Multiplied": {
+      "id": "Ch9-Multiplied",
+      "blocks": [
+        {
+          "id": "Ch9-Multiplied:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Multiplied.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Multiplied:c1",
+          "messageId": "ch9.Ch9_Multiplied.c1",
+          "target": "Ch9-Calm",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Calm"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Multiplied:c2",
+          "messageId": "ch9.Ch9_Multiplied.c2",
+          "target": "Ch9-Fused",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Fused"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Multiplied:c3",
+          "messageId": "ch9.Ch9_Multiplied.c3",
+          "target": "Ch9-Fight",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Fight"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Calm": {
+      "id": "Ch9-Calm",
+      "blocks": [
+        {
+          "id": "Ch9-Calm:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Calm.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Calm:c1",
+          "messageId": "ch9.Ch9_Calm.c1",
+          "target": "Ch9-Intervention",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Intervention"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Fused": {
+      "id": "Ch9-Fused",
+      "blocks": [
+        {
+          "id": "Ch9-Fused:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Fused.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Fused:c1",
+          "messageId": "ch9.Ch9_Fused.c1",
+          "target": "Ch9-Intervention",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Intervention"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Fight": {
+      "id": "Ch9-Fight",
+      "blocks": [
+        {
+          "id": "Ch9-Fight:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Fight.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Fight:c1",
+          "messageId": "ch9.Ch9_Fight.c1",
+          "target": "Ch9-Intervention",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Intervention"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Intervention": {
+      "id": "Ch9-Intervention",
+      "blocks": [
+        {
+          "id": "Ch9-Intervention:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Intervention.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Intervention:c1",
+          "messageId": "ch9.Ch9_Intervention.c1",
+          "target": "Ch9-Guide",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Guide"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Intervention:c2",
+          "messageId": "ch9.Ch9_Intervention.c2",
+          "target": "Ch9-Sake",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sake"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Intervention:c3",
+          "messageId": "ch9.Ch9_Intervention.c3",
+          "target": "Ch9-Love",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Love"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Guide": {
+      "id": "Ch9-Guide",
+      "blocks": [
+        {
+          "id": "Ch9-Guide:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Guide.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Guide:c1",
+          "messageId": "ch9.Ch9_Guide.c1",
+          "target": "Ch9-Backpack",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Backpack"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Sake": {
+      "id": "Ch9-Sake",
+      "blocks": [
+        {
+          "id": "Ch9-Sake:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sake.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Sake:c1",
+          "messageId": "ch9.Ch9_Sake.c1",
+          "target": "Ch9-Backpack",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Backpack"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Love": {
+      "id": "Ch9-Love",
+      "blocks": [
+        {
+          "id": "Ch9-Love:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Love.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Love:c1",
+          "messageId": "ch9.Ch9_Love.c1",
+          "target": "Ch9-Backpack",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Backpack"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Backpack": {
+      "id": "Ch9-Backpack",
+      "blocks": [
+        {
+          "id": "Ch9-Backpack:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Backpack.p1",
+          "conditions": {
+            "raw": "v_ch9_inventory == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Backpack:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Backpack.p2",
+          "conditions": {
+            "raw": "v_ch9_inventory == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_inventory",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Backpack:c1",
+          "messageId": "ch9.Ch9_Backpack.c1",
+          "target": "Ch9-Strategy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Strategy"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Strategy": {
+      "id": "Ch9-Strategy",
+      "blocks": [
+        {
+          "id": "Ch9-Strategy:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Strategy.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Strategy:c1",
+          "messageId": "ch9.Ch9_Strategy.c1",
+          "target": "Ch9-Take-Rose",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Take-Rose"
+            },
+            {
+              "variable": "v_ch9_take_rose",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Strategy:c2",
+          "messageId": "ch9.Ch9_Strategy.c2",
+          "target": "Ch9-Take-Rose",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Take-Rose"
+            },
+            {
+              "variable": "v_ch9_take_rose",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Take-Rose": {
+      "id": "Ch9-Take-Rose",
+      "blocks": [
+        {
+          "id": "Ch9-Take-Rose:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Take_Rose.p1",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Take-Rose:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Take_Rose.p2",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Take-Rose:c1",
+          "messageId": "ch9.Ch9_Take_Rose.c1",
+          "target": "Ch9-Sloppy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sloppy"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Sloppy": {
+      "id": "Ch9-Sloppy",
+      "blocks": [
+        {
+          "id": "Ch9-Sloppy:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sloppy.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Sloppy:c1",
+          "messageId": "ch9.Ch9_Sloppy.c1",
+          "target": "Ch9-Trap",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Trap"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Sloppy:c2",
+          "messageId": "ch9.Ch9_Sloppy.c2",
+          "target": "Ch9-Lunch",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Lunch"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Sloppy:c3",
+          "messageId": "ch9.Ch9_Sloppy.c3",
+          "target": "Ch9-Moved",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Moved"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Trap": {
+      "id": "Ch9-Trap",
+      "blocks": [
+        {
+          "id": "Ch9-Trap:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Trap.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Trap:c1",
+          "messageId": "ch9.Ch9_Trap.c1",
+          "target": "Ch9-Worry",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Worry"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Lunch": {
+      "id": "Ch9-Lunch",
+      "blocks": [
+        {
+          "id": "Ch9-Lunch:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Lunch.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Lunch:c1",
+          "messageId": "ch9.Ch9_Lunch.c1",
+          "target": "Ch9-Worry",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Worry"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Moved": {
+      "id": "Ch9-Moved",
+      "blocks": [
+        {
+          "id": "Ch9-Moved:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Moved.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Moved:c1",
+          "messageId": "ch9.Ch9_Moved.c1",
+          "target": "Ch9-Worry",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Worry"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Worry": {
+      "id": "Ch9-Worry",
+      "blocks": [
+        {
+          "id": "Ch9-Worry:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Worry.p1",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Worry:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Worry.p2",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Worry:c1",
+          "messageId": "ch9.Ch9_Worry.c1",
+          "target": "Ch9-Final-march",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Final-march"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Final-march": {
+      "id": "Ch9-Final-march",
+      "blocks": [
+        {
+          "id": "Ch9-Final-march:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Final_march.p1",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 0 && v_hearing < 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Final_march.p2",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 1 && v_hearing < 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:p3",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Final_march.p3",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 0 && v_perception == 0 && v_hearing >= 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:p4",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Final_march.p4",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 1 && v_perception == 0 && v_hearing >= 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:p5",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Final_march.p5",
+          "conditions": {
+            "raw": "v_hearing >= 2 && v_perception >= 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Final-march:c1",
+          "messageId": "ch9.Ch9_Final_march.c1",
+          "target": "Ch9-Open",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Open) if (v_hearing < 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Final-march:c2",
+          "messageId": "ch9.Ch9_Final_march.c2",
+          "target": "Ch9-Ignore",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Ignore) if (v_hearing < 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Final-march:c3",
+          "messageId": "ch9.Ch9_Final_march.c3",
+          "target": "Ch9-Muffled",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Muffled) if (v_perception == 0 && v_hearing >= 2"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Final-march:c4",
+          "messageId": "ch9.Ch9_Final_march.c4",
+          "target": "Ch9-Nice",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Nice) if (v_hearing >= 2 && v_perception >= 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch9-Final-march:s1",
+          "variable": "v_ac_ch9_observer",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_hearing >= 2 && v_perception >= 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:s2",
+          "variable": "v_ch9_ogres",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_ch9_take_rose == 0 && v_hearing < 2 || v_ch9_take_rose == 1 && v_hearing < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:s3",
+          "variable": "v_ch9_ogres",
+          "value": 2,
+          "conditions": {
+            "raw": "(v_ch9_take_rose == 0 && v_perception == 0 && v_hearing >= 2 || v_ch9_take_rose == 1 && v_perception == 0 && v_hearing >= 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Final-march:s4",
+          "variable": "v_ch9_ogres",
+          "value": 3,
+          "conditions": {
+            "raw": "(v_hearing >= 2 && v_perception >= 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": ">=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch9-Final-march:a1",
+          "messageId": "ch9.Ch9_Final_march.a1",
+          "variable": "v_ac_ch9_observer"
+        }
+      ]
+    },
+    "Ch9-Nice": {
+      "id": "Ch9-Nice",
+      "blocks": [
+        {
+          "id": "Ch9-Nice:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Nice.p1",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Nice:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Nice.p2",
+          "conditions": {
+            "raw": "v_ch9_take_rose == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_take_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Nice:c1",
+          "messageId": "ch9.Ch9_Nice.c1",
+          "target": "Ch9-Muffled",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Muffled"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Muffled": {
+      "id": "Ch9-Muffled",
+      "blocks": [
+        {
+          "id": "Ch9-Muffled:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Muffled.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Muffled:c1",
+          "messageId": "ch9.Ch9_Muffled.c1",
+          "target": "Ch9-Open",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Open"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Muffled:c2",
+          "messageId": "ch9.Ch9_Muffled.c2",
+          "target": "Ch9-Ignore",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Ignore"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Open": {
+      "id": "Ch9-Open",
+      "blocks": [
+        {
+          "id": "Ch9-Open:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Open.p1",
+          "conditions": {
+            "raw": "v_ch9_ogres != 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_ogres",
+                    "operator": "!=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Open:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Open.p2",
+          "conditions": {
+            "raw": "v_ch9_ogres == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_ogres",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Open:c1",
+          "messageId": "ch9.Ch9_Open.c1",
+          "target": "Ch9-Brave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Brave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Ignore": {
+      "id": "Ch9-Ignore",
+      "blocks": [
+        {
+          "id": "Ch9-Ignore:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Ignore.p1",
+          "conditions": {
+            "raw": "v_ch9_ogres == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_ogres",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Ignore:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Ignore.p2",
+          "conditions": {
+            "raw": "v_ch9_ogres != 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch9_ogres",
+                    "operator": "!=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Ignore:c1",
+          "messageId": "ch9.Ch9_Ignore.c1",
+          "target": "Ch9-Brave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Brave) if (v_ch9_ogres == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Ignore:c2",
+          "messageId": "ch9.Ch9_Ignore.c2",
+          "target": "Ch9-Ogre-club",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Ogre-club) if (v_ch9_ogres != 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Ogre-club": {
+      "id": "Ch9-Ogre-club",
+      "blocks": [
+        {
+          "id": "Ch9-Ogre-club:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Ogre_club.p1",
+          "conditions": {
+            "raw": "v_reflexes < 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Ogre-club:p2",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Ogre_club.p2",
+          "conditions": {
+            "raw": "v_reflexes >= 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Ogre-club:c1",
+          "messageId": "ch9.Ch9_Ogre_club.c1",
+          "target": "Ch1-Intro1",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch1-Intro1"
+            }
+          ],
+          "special": "restart) if (v_reflexes < 3",
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Ogre-club:c2",
+          "messageId": "ch9.Ch9_Ogre_club.c2",
+          "target": "",
+          "setVariables": [
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            }
+          ],
+          "special": "checkpoint_load) if (v_reflexes < 3",
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Ogre-club:c3",
+          "messageId": "ch9.Ch9_Ogre_club.c3",
+          "target": "",
+          "setVariables": [],
+          "special": "saves) if (v_reflexes < 3",
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Ogre-club:c4",
+          "messageId": "ch9.Ch9_Ogre_club.c4",
+          "target": "Ch9-Brave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Brave) if (v_reflexes >= 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch9-Ogre-club:s1",
+          "variable": "v_is_dead",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch9-Ogre-club:s2",
+          "variable": "v_is_dead",
+          "value": 0,
+          "conditions": {
+            "raw": "(v_reflexes >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": []
+    },
+    "Ch9-Brave": {
+      "id": "Ch9-Brave",
+      "blocks": [
+        {
+          "id": "Ch9-Brave:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Brave.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Brave:c1",
+          "messageId": "ch9.Ch9_Brave.c1",
+          "target": "Ch9-Monster",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Monster"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Brave:c2",
+          "messageId": "ch9.Ch9_Brave.c2",
+          "target": "Ch9-Sacred",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Sacred"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Brave:c3",
+          "messageId": "ch9.Ch9_Brave.c3",
+          "target": "Ch9-Merry",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Merry"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Monster": {
+      "id": "Ch9-Monster",
+      "blocks": [
+        {
+          "id": "Ch9-Monster:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Monster.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Monster:c1",
+          "messageId": "ch9.Ch9_Monster.c1",
+          "target": "Ch9-Persuade",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Persuade) if (v_ch9_take_rose == 0 && v_ch9_ogres != 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Monster:c2",
+          "messageId": "ch9.Ch9_Monster.c2",
+          "target": "Ch9-Submission",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Submission) if (v_ch9_ogres == 3 || v_ch9_take_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Sacred": {
+      "id": "Ch9-Sacred",
+      "blocks": [
+        {
+          "id": "Ch9-Sacred:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Sacred.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Sacred:c1",
+          "messageId": "ch9.Ch9_Sacred.c1",
+          "target": "Ch9-Persuade",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Persuade) if (v_ch9_take_rose == 0 && v_ch9_ogres != 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Sacred:c2",
+          "messageId": "ch9.Ch9_Sacred.c2",
+          "target": "Ch9-Submission",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Submission) if (v_ch9_ogres == 3 || v_ch9_take_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Merry": {
+      "id": "Ch9-Merry",
+      "blocks": [
+        {
+          "id": "Ch9-Merry:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Merry.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Merry:c1",
+          "messageId": "ch9.Ch9_Merry.c1",
+          "target": "Ch9-Persuade",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Persuade) if (v_ch9_take_rose == 0 && v_ch9_ogres != 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Merry:c2",
+          "messageId": "ch9.Ch9_Merry.c2",
+          "target": "Ch9-Submission",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Submission) if (v_ch9_ogres == 3 || v_ch9_take_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Persuade": {
+      "id": "Ch9-Persuade",
+      "blocks": [
+        {
+          "id": "Ch9-Persuade:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Persuade.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Persuade:c1",
+          "messageId": "ch9.Ch9_Persuade.c1",
+          "target": "Ch9-Throw",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Throw"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Persuade:c2",
+          "messageId": "ch9.Ch9_Persuade.c2",
+          "target": "Ch9-Crossbow",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Crossbow"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Crossbow": {
+      "id": "Ch9-Crossbow",
+      "blocks": [
+        {
+          "id": "Ch9-Crossbow:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Crossbow.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Crossbow:c1",
+          "messageId": "ch9.Ch9_Crossbow.c1",
+          "target": "Ch1-Intro1",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch1-Intro1"
+            }
+          ],
+          "special": "restart",
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Crossbow:c2",
+          "messageId": "ch9.Ch9_Crossbow.c2",
+          "target": "",
+          "setVariables": [
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            }
+          ],
+          "special": "checkpoint_load",
+          "conditions": null
+        },
+        {
+          "id": "Ch9-Crossbow:c3",
+          "messageId": "ch9.Ch9_Crossbow.c3",
+          "target": "",
+          "setVariables": [],
+          "special": "saves",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Throw": {
+      "id": "Ch9-Throw",
+      "blocks": [
+        {
+          "id": "Ch9-Throw:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Throw.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Throw:c1",
+          "messageId": "ch9.Ch9_Throw.c1",
+          "target": "Ch9-Interrupt",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Interrupt"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch9-Throw:s1",
+          "variable": "v_ac_ch9_decision",
+          "value": 1,
+          "conditions": null
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch9-Throw:a1",
+          "messageId": "ch9.Ch9_Throw.a1",
+          "variable": "v_ac_ch9_decision"
+        }
+      ]
+    },
+    "Ch9-Submission": {
+      "id": "Ch9-Submission",
+      "blocks": [
+        {
+          "id": "Ch9-Submission:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Submission.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Submission:c1",
+          "messageId": "ch9.Ch9_Submission.c1",
+          "target": "Ch9-Traitorous",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Traitorous"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Interrupt": {
+      "id": "Ch9-Interrupt",
+      "blocks": [
+        {
+          "id": "Ch9-Interrupt:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Interrupt.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Interrupt:c1",
+          "messageId": "ch9.Ch9_Interrupt.c1",
+          "target": "Ch9-Traitorous",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Traitorous"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Traitorous": {
+      "id": "Ch9-Traitorous",
+      "blocks": [
+        {
+          "id": "Ch9-Traitorous:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Traitorous.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Traitorous:c1",
+          "messageId": "ch9.Ch9_Traitorous.c1",
+          "target": "Ch9-Mechanisms",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch9-Mechanisms"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch9-Mechanisms": {
+      "id": "Ch9-Mechanisms",
+      "blocks": [
+        {
+          "id": "Ch9-Mechanisms:p1",
+          "type": "paragraph",
+          "messageId": "ch9.Ch9_Mechanisms.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch9-Mechanisms:c1",
+          "messageId": "ch9.Ch9_Mechanisms.c1",
+          "target": "Ch10-Intro",
+          "setVariables": [
+            {
+              "variable": "v_next_chapter_crash",
+              "value": 1
+            },
+            {
+              "variable": "v_current_scene",
+              "value": "Ch10-Intro"
+            },
+            {
+              "variable": "v_chapter_save_counter",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 1
+            }
+          ],
+          "special": "checkpoint_save",
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    }
+  }
+}

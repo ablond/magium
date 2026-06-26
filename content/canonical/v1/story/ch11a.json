@@ -1,0 +1,2245 @@
+{
+  "formatVersion": 1,
+  "chapterId": "ch11a",
+  "sourceFile": "chapters/ch11a.magium",
+  "sceneOrder": [
+    "Ch11a-Intro",
+    "Ch11a-Intro2",
+    "Ch11a-Definitely",
+    "Ch11a-Break",
+    "Ch11a-Alone",
+    "Ch11a-Luxurious",
+    "Ch11a-Families",
+    "Ch11a-Thugs",
+    "Ch11a-Slave",
+    "Ch11a-Favor",
+    "Ch11a-Nothing",
+    "Ch11a-Civilization",
+    "Ch11a-Silent",
+    "Ch11a-Wonderful",
+    "Ch11a-Power",
+    "Ch11a-Thousands",
+    "Ch11a-Difference",
+    "Ch11a-Boots",
+    "Ch11a-Free",
+    "Ch11a-House",
+    "Ch11a-Details",
+    "Ch11a-Modest",
+    "Ch11a-Passion",
+    "Ch11a-Toy",
+    "Ch11a-Prevented",
+    "Ch11a-Business",
+    "Ch11a-Risky",
+    "Ch11a-Clown",
+    "Ch11a-Stats-spent1",
+    "Ch11a-Serious",
+    "Ch11a-Task",
+    "Ch11a-Loyalty",
+    "Ch11a-Suspicious",
+    "Ch11a-Bushes",
+    "Ch11a-Braided",
+    "Ch11a-Exhaustion",
+    "Ch11a-Comfort",
+    "Ch11a-Someone-else",
+    "Ch11a-Fever",
+    "Ch11a-Stats-spent2",
+    "Ch11a-Knock",
+    "Ch11a-Feelings",
+    "Ch11a-Racing",
+    "Ch11a-Racing2",
+    "Ch11a-Feelings2",
+    "Ch11a-Romance",
+    "Ch11a-Incriminated",
+    "Ch11a-Hostages",
+    "Ch11a-People",
+    "Ch11a-Poster"
+  ],
+  "scenes": {
+    "Ch11a-Intro": {
+      "id": "Ch11a-Intro",
+      "blocks": [
+        {
+          "id": "Ch11a-Intro:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Intro.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Intro:c1",
+          "messageId": "ch11a.Ch11a_Intro.c1",
+          "target": "Ch11a-Intro2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Intro2"
+            },
+            {
+              "variable": "v_checkpoint_rich",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Intro2": {
+      "id": "Ch11a-Intro2",
+      "blocks": [
+        {
+          "id": "Ch11a-Intro2:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Intro2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Intro2:c1",
+          "messageId": "ch11a.Ch11a_Intro2.c1",
+          "target": "Ch11a-Definitely",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Definitely"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Intro2:c2",
+          "messageId": "ch11a.Ch11a_Intro2.c2",
+          "target": "Ch11a-Break",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Break"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Intro2:c3",
+          "messageId": "ch11a.Ch11a_Intro2.c3",
+          "target": "Ch11a-Alone",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Alone"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Definitely": {
+      "id": "Ch11a-Definitely",
+      "blocks": [
+        {
+          "id": "Ch11a-Definitely:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Definitely.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Definitely:c1",
+          "messageId": "ch11a.Ch11a_Definitely.c1",
+          "target": "Ch11a-Luxurious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Luxurious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Break": {
+      "id": "Ch11a-Break",
+      "blocks": [
+        {
+          "id": "Ch11a-Break:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Break.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Break:c1",
+          "messageId": "ch11a.Ch11a_Break.c1",
+          "target": "Ch11a-Luxurious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Luxurious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Alone": {
+      "id": "Ch11a-Alone",
+      "blocks": [
+        {
+          "id": "Ch11a-Alone:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Alone.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Alone:c1",
+          "messageId": "ch11a.Ch11a_Alone.c1",
+          "target": "Ch11a-Luxurious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Luxurious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Luxurious": {
+      "id": "Ch11a-Luxurious",
+      "blocks": [
+        {
+          "id": "Ch11a-Luxurious:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Luxurious.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Luxurious:c1",
+          "messageId": "ch11a.Ch11a_Luxurious.c1",
+          "target": "Ch11a-Families",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Families"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Luxurious:c2",
+          "messageId": "ch11a.Ch11a_Luxurious.c2",
+          "target": "Ch11a-Thugs",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Thugs"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Families": {
+      "id": "Ch11a-Families",
+      "blocks": [
+        {
+          "id": "Ch11a-Families:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Families.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Families:c1",
+          "messageId": "ch11a.Ch11a_Families.c1",
+          "target": "Ch11a-Slave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Slave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Thugs": {
+      "id": "Ch11a-Thugs",
+      "blocks": [
+        {
+          "id": "Ch11a-Thugs:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Thugs.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Thugs:c1",
+          "messageId": "ch11a.Ch11a_Thugs.c1",
+          "target": "Ch11a-Slave",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Slave"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Slave": {
+      "id": "Ch11a-Slave",
+      "blocks": [
+        {
+          "id": "Ch11a-Slave:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Slave.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Slave:c1",
+          "messageId": "ch11a.Ch11a_Slave.c1",
+          "target": "Ch11a-Favor",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Favor"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Favor": {
+      "id": "Ch11a-Favor",
+      "blocks": [
+        {
+          "id": "Ch11a-Favor:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Favor.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Favor:c1",
+          "messageId": "ch11a.Ch11a_Favor.c1",
+          "target": "Ch11a-Power",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Power"
+            },
+            {
+              "variable": "v_ch11_saved_slave",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Favor:c2",
+          "messageId": "ch11a.Ch11a_Favor.c2",
+          "target": "Ch11a-Nothing",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Nothing"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Nothing": {
+      "id": "Ch11a-Nothing",
+      "blocks": [
+        {
+          "id": "Ch11a-Nothing:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Nothing.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Nothing:c1",
+          "messageId": "ch11a.Ch11a_Nothing.c1",
+          "target": "Ch11a-Civilization",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Civilization"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Civilization": {
+      "id": "Ch11a-Civilization",
+      "blocks": [
+        {
+          "id": "Ch11a-Civilization:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Civilization.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Civilization:c1",
+          "messageId": "ch11a.Ch11a_Civilization.c1",
+          "target": "Ch11a-Power",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Power"
+            },
+            {
+              "variable": "v_ch11_saved_slave",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Civilization:c2",
+          "messageId": "ch11a.Ch11a_Civilization.c2",
+          "target": "Ch11a-Silent",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Silent"
+            },
+            {
+              "variable": "v_ch11_saved_slave",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Silent": {
+      "id": "Ch11a-Silent",
+      "blocks": [
+        {
+          "id": "Ch11a-Silent:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Silent.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Silent:c1",
+          "messageId": "ch11a.Ch11a_Silent.c1",
+          "target": "Ch11a-Wonderful",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Wonderful"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Wonderful": {
+      "id": "Ch11a-Wonderful",
+      "blocks": [
+        {
+          "id": "Ch11a-Wonderful:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Wonderful.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Wonderful:c1",
+          "messageId": "ch11a.Ch11a_Wonderful.c1",
+          "target": "Ch11a-Modest",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Modest"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Power": {
+      "id": "Ch11a-Power",
+      "blocks": [
+        {
+          "id": "Ch11a-Power:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Power.p1",
+          "conditions": {
+            "raw": "v_ch11_saved_slave == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Power:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Power.p2",
+          "conditions": {
+            "raw": "v_ch11_saved_slave == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Power:p3",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Power.p3",
+          "conditions": {
+            "raw": "v_ch11_saved_slave == 1 || v_ch11_saved_slave == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Power:c1",
+          "messageId": "ch11a.Ch11a_Power.c1",
+          "target": "Ch11a-Thousands",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Thousands"
+            },
+            {
+              "variable": "v_ch11_kill_noble",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Power:c2",
+          "messageId": "ch11a.Ch11a_Power.c2",
+          "target": "Ch11a-Thousands",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Thousands"
+            },
+            {
+              "variable": "v_ch11_kill_noble",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Thousands": {
+      "id": "Ch11a-Thousands",
+      "blocks": [
+        {
+          "id": "Ch11a-Thousands:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Thousands.p1",
+          "conditions": {
+            "raw": "v_ch11_kill_noble == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_kill_noble",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Thousands:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Thousands.p2",
+          "conditions": {
+            "raw": "v_ch11_kill_noble == 0 && v_ch11_saved_slave == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_kill_noble",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Thousands:p3",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Thousands.p3",
+          "conditions": {
+            "raw": "v_ch11_kill_noble == 0 && v_ch11_saved_slave == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_kill_noble",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Thousands:p4",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Thousands.p4",
+          "conditions": {
+            "raw": "v_ch11_kill_noble == 0 && v_ch11_saved_slave == 1 || v_ch11_kill_noble == 0 && v_ch11_saved_slave == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_kill_noble",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_kill_noble",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_slave",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Thousands:c1",
+          "messageId": "ch11a.Ch11a_Thousands.c1",
+          "target": "Ch11a-Difference",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Difference"
+            },
+            {
+              "variable": "v_ch11_difference",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Thousands:c2",
+          "messageId": "ch11a.Ch11a_Thousands.c2",
+          "target": "Ch11a-Difference",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Difference"
+            },
+            {
+              "variable": "v_ch11_difference",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Thousands:c3",
+          "messageId": "ch11a.Ch11a_Thousands.c3",
+          "target": "Ch11a-Difference",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Difference"
+            },
+            {
+              "variable": "v_ch11_difference",
+              "value": 3
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Difference": {
+      "id": "Ch11a-Difference",
+      "blocks": [
+        {
+          "id": "Ch11a-Difference:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Difference.p1",
+          "conditions": {
+            "raw": "v_ch11_difference == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_difference",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Difference:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Difference.p2",
+          "conditions": {
+            "raw": "v_ch11_difference == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_difference",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Difference:p3",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Difference.p3",
+          "conditions": {
+            "raw": "v_ch11_difference == 3",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_difference",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Difference:p4",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Difference.p4",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Difference:c1",
+          "messageId": "ch11a.Ch11a_Difference.c1",
+          "target": "Ch11a-Boots",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Boots"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Difference:c2",
+          "messageId": "ch11a.Ch11a_Difference.c2",
+          "target": "Ch11a-Free",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Free"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Difference:c3",
+          "messageId": "ch11a.Ch11a_Difference.c3",
+          "target": "Ch11a-House",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-House"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Boots": {
+      "id": "Ch11a-Boots",
+      "blocks": [
+        {
+          "id": "Ch11a-Boots:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Boots.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Boots:c1",
+          "messageId": "ch11a.Ch11a_Boots.c1",
+          "target": "Ch11a-Details",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Details"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Free": {
+      "id": "Ch11a-Free",
+      "blocks": [
+        {
+          "id": "Ch11a-Free:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Free.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Free:c1",
+          "messageId": "ch11a.Ch11a_Free.c1",
+          "target": "Ch11a-Details",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Details"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-House": {
+      "id": "Ch11a-House",
+      "blocks": [
+        {
+          "id": "Ch11a-House:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_House.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-House:c1",
+          "messageId": "ch11a.Ch11a_House.c1",
+          "target": "Ch11a-Details",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Details"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Details": {
+      "id": "Ch11a-Details",
+      "blocks": [
+        {
+          "id": "Ch11a-Details:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Details.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Details:c1",
+          "messageId": "ch11a.Ch11a_Details.c1",
+          "target": "Ch11a-Modest",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Modest"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Modest": {
+      "id": "Ch11a-Modest",
+      "blocks": [
+        {
+          "id": "Ch11a-Modest:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Modest.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Modest:c1",
+          "messageId": "ch11a.Ch11a_Modest.c1",
+          "target": "Ch11a-Passion",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Passion"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Passion": {
+      "id": "Ch11a-Passion",
+      "blocks": [
+        {
+          "id": "Ch11a-Passion:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Passion.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Passion:c1",
+          "messageId": "ch11a.Ch11a_Passion.c1",
+          "target": "Ch11a-Toy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Toy"
+            },
+            {
+              "variable": "v_ch11_toy",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Passion:c2",
+          "messageId": "ch11a.Ch11a_Passion.c2",
+          "target": "Ch11a-Toy",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Toy"
+            },
+            {
+              "variable": "v_ch11_toy",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Toy": {
+      "id": "Ch11a-Toy",
+      "blocks": [
+        {
+          "id": "Ch11a-Toy:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Toy.p1",
+          "conditions": {
+            "raw": "v_ch11_toy == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_toy",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Toy:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Toy.p2",
+          "conditions": {
+            "raw": "v_ch11_toy == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_toy",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Toy:c1",
+          "messageId": "ch11a.Ch11a_Toy.c1",
+          "target": "Ch11a-Prevented",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Prevented) if (v_ch11_saved_slave == 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Toy:c2",
+          "messageId": "ch11a.Ch11a_Toy.c2",
+          "target": "Ch11a-Task",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Task) if (v_ch11_saved_slave != 3"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [
+        {
+          "id": "Ch11a-Toy:s1",
+          "variable": "v_ac_ch11_symbol",
+          "value": 1,
+          "conditions": {
+            "raw": "(v_ch11_toy == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_toy",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "achievements": [
+        {
+          "id": "Ch11a-Toy:a1",
+          "messageId": "ch11a.Ch11a_Toy.a1",
+          "variable": "v_ac_ch11_symbol"
+        }
+      ]
+    },
+    "Ch11a-Prevented": {
+      "id": "Ch11a-Prevented",
+      "blocks": [
+        {
+          "id": "Ch11a-Prevented:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Prevented.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Prevented:c1",
+          "messageId": "ch11a.Ch11a_Prevented.c1",
+          "target": "Ch11a-Business",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Business"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Prevented:c2",
+          "messageId": "ch11a.Ch11a_Prevented.c2",
+          "target": "Ch11a-Risky",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Risky"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Business": {
+      "id": "Ch11a-Business",
+      "blocks": [
+        {
+          "id": "Ch11a-Business:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Business.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Business:c1",
+          "messageId": "ch11a.Ch11a_Business.c1",
+          "target": "Ch11a-Clown",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Clown"
+            },
+            {
+              "variable": "v_available_points",
+              "value": 2
+            },
+            {
+              "variable": "v_available_points_aux",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Risky": {
+      "id": "Ch11a-Risky",
+      "blocks": [
+        {
+          "id": "Ch11a-Risky:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Risky.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Risky:c1",
+          "messageId": "ch11a.Ch11a_Risky.c1",
+          "target": "Ch11a-Clown",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Clown"
+            },
+            {
+              "variable": "v_available_points",
+              "value": 2
+            },
+            {
+              "variable": "v_available_points_aux",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Clown": {
+      "id": "Ch11a-Clown",
+      "blocks": [
+        {
+          "id": "Ch11a-Clown:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Clown.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Clown:c1",
+          "messageId": "ch11a.Ch11a_Clown.c1",
+          "target": "Ch11a-Stats-spent1",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Stats-spent1"
+            }
+          ],
+          "special": "stats",
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Clown:c2",
+          "messageId": "ch11a.Ch11a_Clown.c2",
+          "target": "Ch11a-Serious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Serious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Stats-spent1": {
+      "id": "Ch11a-Stats-spent1",
+      "blocks": [
+        {
+          "id": "Ch11a-Stats-spent1:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Stats_spent1.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Stats-spent1:c1",
+          "messageId": "ch11a.Ch11a_Stats_spent1.c1",
+          "target": "Ch11a-Serious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Serious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Serious": {
+      "id": "Ch11a-Serious",
+      "blocks": [
+        {
+          "id": "Ch11a-Serious:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Serious.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Serious:c1",
+          "messageId": "ch11a.Ch11a_Serious.c1",
+          "target": "Ch11a-Incriminated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Incriminated"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Task": {
+      "id": "Ch11a-Task",
+      "blocks": [
+        {
+          "id": "Ch11a-Task:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Task.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Task:c1",
+          "messageId": "ch11a.Ch11a_Task.c1",
+          "target": "Ch11a-Loyalty",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Loyalty"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Loyalty": {
+      "id": "Ch11a-Loyalty",
+      "blocks": [
+        {
+          "id": "Ch11a-Loyalty:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Loyalty.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Loyalty:c1",
+          "messageId": "ch11a.Ch11a_Loyalty.c1",
+          "target": "Ch11a-Suspicious",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Suspicious"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Loyalty:c2",
+          "messageId": "ch11a.Ch11a_Loyalty.c2",
+          "target": "Ch11a-Bushes",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Bushes"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Suspicious": {
+      "id": "Ch11a-Suspicious",
+      "blocks": [
+        {
+          "id": "Ch11a-Suspicious:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Suspicious.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Suspicious:c1",
+          "messageId": "ch11a.Ch11a_Suspicious.c1",
+          "target": "Ch11a-Braided",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Braided"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Bushes": {
+      "id": "Ch11a-Bushes",
+      "blocks": [
+        {
+          "id": "Ch11a-Bushes:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Bushes.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Bushes:c1",
+          "messageId": "ch11a.Ch11a_Bushes.c1",
+          "target": "Ch11a-Braided",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Braided"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Braided": {
+      "id": "Ch11a-Braided",
+      "blocks": [
+        {
+          "id": "Ch11a-Braided:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Braided.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Braided:c1",
+          "messageId": "ch11a.Ch11a_Braided.c1",
+          "target": "Ch11a-Exhaustion",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Exhaustion"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Exhaustion": {
+      "id": "Ch11a-Exhaustion",
+      "blocks": [
+        {
+          "id": "Ch11a-Exhaustion:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Exhaustion.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Exhaustion:c1",
+          "messageId": "ch11a.Ch11a_Exhaustion.c1",
+          "target": "Ch11a-Comfort",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Comfort"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Exhaustion:c2",
+          "messageId": "ch11a.Ch11a_Exhaustion.c2",
+          "target": "Ch11a-Someone-else",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Someone-else"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Comfort": {
+      "id": "Ch11a-Comfort",
+      "blocks": [
+        {
+          "id": "Ch11a-Comfort:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Comfort.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Comfort:c1",
+          "messageId": "ch11a.Ch11a_Comfort.c1",
+          "target": "Ch11a-Fever",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Fever"
+            },
+            {
+              "variable": "v_available_points",
+              "value": 2
+            },
+            {
+              "variable": "v_available_points_aux",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Someone-else": {
+      "id": "Ch11a-Someone-else",
+      "blocks": [
+        {
+          "id": "Ch11a-Someone-else:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Someone_else.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Someone-else:c1",
+          "messageId": "ch11a.Ch11a_Someone_else.c1",
+          "target": "Ch11a-Fever",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Fever"
+            },
+            {
+              "variable": "v_available_points",
+              "value": 2
+            },
+            {
+              "variable": "v_available_points_aux",
+              "value": 2
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Fever": {
+      "id": "Ch11a-Fever",
+      "blocks": [
+        {
+          "id": "Ch11a-Fever:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Fever.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Fever:c1",
+          "messageId": "ch11a.Ch11a_Fever.c1",
+          "target": "Ch11a-Stats-spent2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Stats-spent2"
+            }
+          ],
+          "special": "stats",
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Fever:c2",
+          "messageId": "ch11a.Ch11a_Fever.c2",
+          "target": "Ch11a-Knock",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Knock"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Stats-spent2": {
+      "id": "Ch11a-Stats-spent2",
+      "blocks": [
+        {
+          "id": "Ch11a-Stats-spent2:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Stats_spent2.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Stats-spent2:c1",
+          "messageId": "ch11a.Ch11a_Stats_spent2.c1",
+          "target": "Ch11a-Knock",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Knock"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Knock": {
+      "id": "Ch11a-Knock",
+      "blocks": [
+        {
+          "id": "Ch11a-Knock:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Knock.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Knock:c1",
+          "messageId": "ch11a.Ch11a_Knock.c1",
+          "target": "Ch11a-Feelings",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Feelings) if (v_ch6_flirt == 2 || v_ch6_flirt == 3 || v_ch6_flirt == 4 || v_ch6_flirt == 6"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Knock:c2",
+          "messageId": "ch11a.Ch11a_Knock.c2",
+          "target": "Ch11a-Racing",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Racing) if (v_ch6_flirt == 1 || v_ch6_flirt == 5"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Feelings": {
+      "id": "Ch11a-Feelings",
+      "blocks": [
+        {
+          "id": "Ch11a-Feelings:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Feelings.p1",
+          "conditions": {
+            "raw": "v_ch6_flirt == 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Feelings:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Feelings.p2",
+          "conditions": {
+            "raw": "v_ch6_flirt != 2",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch6_flirt",
+                    "operator": "!=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Feelings:c1",
+          "messageId": "ch11a.Ch11a_Feelings.c1",
+          "target": "Ch11a-Feelings2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Feelings2"
+            },
+            {
+              "variable": "v_ch11_romance_rose",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Feelings:c2",
+          "messageId": "ch11a.Ch11a_Feelings.c2",
+          "target": "Ch11a-Feelings2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Feelings2"
+            },
+            {
+              "variable": "v_ch11_romance_rose",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Racing": {
+      "id": "Ch11a-Racing",
+      "blocks": [
+        {
+          "id": "Ch11a-Racing:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Racing.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Racing:c1",
+          "messageId": "ch11a.Ch11a_Racing.c1",
+          "target": "Ch11a-Racing2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Racing2"
+            },
+            {
+              "variable": "v_ch11_romance_rose",
+              "value": 1
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Racing:c2",
+          "messageId": "ch11a.Ch11a_Racing.c2",
+          "target": "Ch11a-Racing2",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Racing2"
+            },
+            {
+              "variable": "v_ch11_romance_rose",
+              "value": 0
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Racing2": {
+      "id": "Ch11a-Racing2",
+      "blocks": [
+        {
+          "id": "Ch11a-Racing2:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Racing2.p1",
+          "conditions": {
+            "raw": "v_ch11_romance_rose == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Racing2:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Racing2.p2",
+          "conditions": {
+            "raw": "v_ch11_romance_rose == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Racing2:c1",
+          "messageId": "ch11a.Ch11a_Racing2.c1",
+          "target": "Ch11a-Incriminated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Incriminated) if (v_ch11_romance_rose == 0"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Racing2:c2",
+          "messageId": "ch11a.Ch11a_Racing2.c2",
+          "target": "Ch11a-Romance",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Romance) if (v_ch11_romance_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Feelings2": {
+      "id": "Ch11a-Feelings2",
+      "blocks": [
+        {
+          "id": "Ch11a-Feelings2:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Feelings2.p1",
+          "conditions": {
+            "raw": "v_ch11_romance_rose == 0",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "Ch11a-Feelings2:p2",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Feelings2.p2",
+          "conditions": {
+            "raw": "v_ch11_romance_rose == 1",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Feelings2:c1",
+          "messageId": "ch11a.Ch11a_Feelings2.c1",
+          "target": "Ch11a-Incriminated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Incriminated) if (v_ch11_romance_rose == 0"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Feelings2:c2",
+          "messageId": "ch11a.Ch11a_Feelings2.c2",
+          "target": "Ch11a-Romance",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Romance) if (v_ch11_romance_rose == 1"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Romance": {
+      "id": "Ch11a-Romance",
+      "blocks": [
+        {
+          "id": "Ch11a-Romance:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Romance.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Romance:c1",
+          "messageId": "ch11a.Ch11a_Romance.c1",
+          "target": "Ch11a-Incriminated",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Incriminated"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Incriminated": {
+      "id": "Ch11a-Incriminated",
+      "blocks": [
+        {
+          "id": "Ch11a-Incriminated:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Incriminated.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Incriminated:c1",
+          "messageId": "ch11a.Ch11a_Incriminated.c1",
+          "target": "Ch11a-Hostages",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Hostages"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        },
+        {
+          "id": "Ch11a-Incriminated:c2",
+          "messageId": "ch11a.Ch11a_Incriminated.c2",
+          "target": "Ch11a-People",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-People"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Hostages": {
+      "id": "Ch11a-Hostages",
+      "blocks": [
+        {
+          "id": "Ch11a-Hostages:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Hostages.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Hostages:c1",
+          "messageId": "ch11a.Ch11a_Hostages.c1",
+          "target": "Ch11a-Poster",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Poster"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-People": {
+      "id": "Ch11a-People",
+      "blocks": [
+        {
+          "id": "Ch11a-People:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_People.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-People:c1",
+          "messageId": "ch11a.Ch11a_People.c1",
+          "target": "Ch11a-Poster",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11a-Poster"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    },
+    "Ch11a-Poster": {
+      "id": "Ch11a-Poster",
+      "blocks": [
+        {
+          "id": "Ch11a-Poster:p1",
+          "type": "paragraph",
+          "messageId": "ch11a.Ch11a_Poster.p1",
+          "conditions": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "Ch11a-Poster:c1",
+          "messageId": "ch11a.Ch11a_Poster.c1",
+          "target": "Ch11b-Clones",
+          "setVariables": [
+            {
+              "variable": "v_current_scene",
+              "value": "Ch11b-Clones"
+            }
+          ],
+          "special": null,
+          "conditions": null
+        }
+      ],
+      "setVariables": [],
+      "achievements": []
+    }
+  }
+}

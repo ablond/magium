@@ -1,0 +1,1408 @@
+{
+  "source": {
+    "repository": "https://github.com/raduprv/Magium",
+    "ref": "main",
+    "commit": "0f472bc7193c60bb29ccb1efb7425df8b8defcbe",
+    "importedAt": "2026-06-26T14:07:24.232Z"
+  },
+  "license": {
+    "software": "MIT",
+    "data": "CC BY 4.0, as stated in the original repository README"
+  },
+  "counts": {
+    "files": 278,
+    "magiumFiles": 54
+  },
+  "files": [
+    {
+      "path": "chapters/achievements_logic1.txt",
+      "size": 27222,
+      "sha256": "5830c6a44191bc6d57b0eaedcd03265cbddc0ef9234034c7e999ccec1ab71c8f"
+    },
+    {
+      "path": "chapters/achievements_logic2.txt",
+      "size": 35342,
+      "sha256": "a182736363d9d4d18f1afdbebded1ce7bbcbdffc294b90fccdbf08c0ab3ee064"
+    },
+    {
+      "path": "chapters/achievements_logic3.txt",
+      "size": 64118,
+      "sha256": "b30e82269a625c55f8d154481d8ec5dfd99ae25a01883405d54d39b4b20c3e59"
+    },
+    {
+      "path": "chapters/achievements1.json",
+      "size": 7976,
+      "sha256": "dd5e87ff43c6bb1ad343b318a9db0daae1e2f00a3a6fb6e9a704adf03818cdca"
+    },
+    {
+      "path": "chapters/achievements2.json",
+      "size": 11646,
+      "sha256": "f6eccbafe914022481639576e089d2a6951c1cc1e13badc8d75f7228867d64cd"
+    },
+    {
+      "path": "chapters/achievements3.json",
+      "size": 12868,
+      "sha256": "7132b0f597eecb2455ed457cf7f5da0c95848509474f77e6e3e988b7e28c2458"
+    },
+    {
+      "path": "chapters/b2ch1.magium",
+      "size": 136955,
+      "sha256": "ac733ecfa74f20fea96751497da8b54a15380624e7934f69e77d13f557c02d3b"
+    },
+    {
+      "path": "chapters/b2ch1/logic.txt",
+      "size": 60385,
+      "sha256": "7723c34e5db2417e18ba8d49b6cf77ed4a1bc48ef3a7d61d68f855566d3edeba"
+    },
+    {
+      "path": "chapters/b2ch1/paragraphs1.txt",
+      "size": 147940,
+      "sha256": "5bcc5535fb8c704f497a15115b24fe7cd7c74045ed6b248c5918f29706355a55"
+    },
+    {
+      "path": "chapters/b2ch1/paragraphs2.txt",
+      "size": 106762,
+      "sha256": "6c8ed2da14c352acc3060005b9b0a6bd33534aeddaccef86f03c4ea2f60ccef0"
+    },
+    {
+      "path": "chapters/b2ch1/paragraphs3.txt",
+      "size": 4394,
+      "sha256": "9668dbd64b153159e53773ecdcd0121960c0465ecd2693f4f48c4d0fbb057e52"
+    },
+    {
+      "path": "chapters/b2ch2.magium",
+      "size": 168475,
+      "sha256": "d3968fdf207ca9852b0a02d9cb0d863bee70d27c299b0c993c9dc4e141c7f275"
+    },
+    {
+      "path": "chapters/b2ch2/logic.txt",
+      "size": 97078,
+      "sha256": "cdda5b6b4d0e53342f4e6e333e1674d113eabac3ed088adac0bb4568784e4085"
+    },
+    {
+      "path": "chapters/b2ch2/paragraphs1.txt",
+      "size": 200032,
+      "sha256": "54169dbbb135dcf1a8ac4dcc9b36ac44a1f630966bda2a7cc404db120cdde4b4"
+    },
+    {
+      "path": "chapters/b2ch2/paragraphs2.txt",
+      "size": 96288,
+      "sha256": "2fcfa8c58b1dd8ddf7ecea525a09da43d84a5bbdaea03156b6ae183e8ab9d3f3"
+    },
+    {
+      "path": "chapters/b2ch2/paragraphs3.txt",
+      "size": 7704,
+      "sha256": "cd810989dfdbe77b6bca59f57060284fb604538ff7d78c7d1df1871b36900b38"
+    },
+    {
+      "path": "chapters/b2ch3.magium",
+      "size": 115506,
+      "sha256": "7dc500bc44288770df2d4deeb029c9fedb7c1a25a7b952e2d64774ff820d0d75"
+    },
+    {
+      "path": "chapters/b2ch3/logic.txt",
+      "size": 60254,
+      "sha256": "578ddc1c239b36673b4231d0ada1f9955ffcb25803aa11217920a910d8490fe1"
+    },
+    {
+      "path": "chapters/b2ch3/paragraphs1.txt",
+      "size": 128292,
+      "sha256": "01b6434f3419d84eb0c30c8e93a9775211f60ab86a043fcd460b9ab86fc80a2e"
+    },
+    {
+      "path": "chapters/b2ch3/paragraphs2.txt",
+      "size": 68258,
+      "sha256": "7871c8cfb238322ee3877fd8c2c09bfd2ea395888567903d1a23e99f17cba5d7"
+    },
+    {
+      "path": "chapters/b2ch3/paragraphs3.txt",
+      "size": 3608,
+      "sha256": "5279d563fa12fd467f15315eef0d17922a8d31d570cef6b1fe2073974099bbb7"
+    },
+    {
+      "path": "chapters/b2ch4a.magium",
+      "size": 129860,
+      "sha256": "4c60f16de7d1eebc7783251db1a4adc60f75221043a8eb73544a965f4243ef82"
+    },
+    {
+      "path": "chapters/b2ch4a/logic.txt",
+      "size": 67065,
+      "sha256": "3a77f04a94727e87d66afb5e89f7210c4ee12861b8675509dc0f2d2d460756b1"
+    },
+    {
+      "path": "chapters/b2ch4a/paragraphs1.txt",
+      "size": 155850,
+      "sha256": "931791e28f52c8ba4f32444011dae714c9f467c332b85f3eacc11a91ee181a80"
+    },
+    {
+      "path": "chapters/b2ch4a/paragraphs2.txt",
+      "size": 75604,
+      "sha256": "6bafa01d52aa9e3b278badfc14d1b52347110d03025239953e6a148c813f6597"
+    },
+    {
+      "path": "chapters/b2ch4a/paragraphs3.txt",
+      "size": 5968,
+      "sha256": "9aef6851c0805f192989170a82cac1523b77a5ec6cf1ffe75714edc054cadd72"
+    },
+    {
+      "path": "chapters/b2ch4b.magium",
+      "size": 160600,
+      "sha256": "dfa888219f4555a3f4dc8c854dd720a52a75575c1eab20538f559ed6e2df6f75"
+    },
+    {
+      "path": "chapters/b2ch4b/logic.txt",
+      "size": 111385,
+      "sha256": "8b1516e96f6fa15bdf2095e58fe0e967b12e48b1fdfe8056d88c695f57979515"
+    },
+    {
+      "path": "chapters/b2ch4b/paragraphs1.txt",
+      "size": 195448,
+      "sha256": "295e98591ffff1c485855d50034ef55a306d46570064ebabfa770aa39a522e3f"
+    },
+    {
+      "path": "chapters/b2ch4b/paragraphs2.txt",
+      "size": 74766,
+      "sha256": "ea234b1527a697dce435482fa846fdb2a8f76b98af038d0bf4c670b54a5799fe"
+    },
+    {
+      "path": "chapters/b2ch4b/paragraphs3.txt",
+      "size": 2004,
+      "sha256": "b59371a66ecb85aa8843c706a2f48a5f246110dde3f598b0800edc17801e8cc3"
+    },
+    {
+      "path": "chapters/b2ch5a.magium",
+      "size": 113505,
+      "sha256": "b4a7e9a0ec8f545e988e09daf0882f8dfe2c68486115772b5430911fcdbd1832"
+    },
+    {
+      "path": "chapters/b2ch5a/logic.txt",
+      "size": 86414,
+      "sha256": "d7b2e790c5796b33b545e388cd79b75dbfadb5ab25d7f8a7d9c0f4042062a9eb"
+    },
+    {
+      "path": "chapters/b2ch5a/paragraphs1.txt",
+      "size": 133300,
+      "sha256": "bb869d40d0ea2fa213e746071459a00e1021488230513770055bec3937c3d071"
+    },
+    {
+      "path": "chapters/b2ch5a/paragraphs2.txt",
+      "size": 40000,
+      "sha256": "986025981d3bb28e06231f725e4513b8c086caa602d00586b2ac520e8654fbb6"
+    },
+    {
+      "path": "chapters/b2ch5a/paragraphs3.txt",
+      "size": 3714,
+      "sha256": "bbebc98dcf4fd5aeebcec56a600e7076e5ad8033a66d7d5302de41db3884f826"
+    },
+    {
+      "path": "chapters/b2ch5b.magium",
+      "size": 127626,
+      "sha256": "d7688b85fb41e7392bcf1c9238b12fb2ccd8e02d4963dca9470f9e30d03e7e74"
+    },
+    {
+      "path": "chapters/b2ch5b/logic.txt",
+      "size": 68593,
+      "sha256": "9d3f98350da2e773cd4629c6f501c0bb31eaaac3f74c4a4ab4ebe66d5656b101"
+    },
+    {
+      "path": "chapters/b2ch5b/paragraphs1.txt",
+      "size": 150354,
+      "sha256": "eefdeeaed0751dc4eaa0d903f078becba53bebe4d143a69346003c31223a8779"
+    },
+    {
+      "path": "chapters/b2ch5b/paragraphs2.txt",
+      "size": 70140,
+      "sha256": "3d79539c23c67dcc8c139a731e367ef4144a6d6bbf0837e46fae3ea9b9ea23c6"
+    },
+    {
+      "path": "chapters/b2ch5b/paragraphs3.txt",
+      "size": 6344,
+      "sha256": "01748868bd52698d68f2eb57e8fb342b4da440cb6ca6159506ab8099174ca968"
+    },
+    {
+      "path": "chapters/b2ch6.magium",
+      "size": 115765,
+      "sha256": "b61a962e37d76934faa0a3b7ed478264a3242e310f071a13181b172110c8190d"
+    },
+    {
+      "path": "chapters/b2ch6/logic.txt",
+      "size": 57067,
+      "sha256": "cd3790d03a18bc5473188a90306d342d8b3e12d433bf34a4dea58ab863f9bd97"
+    },
+    {
+      "path": "chapters/b2ch6/paragraphs1.txt",
+      "size": 108734,
+      "sha256": "5c0a3a7d6831eac3b46cf160591942e525d3a1f279c195801b857344524a79d5"
+    },
+    {
+      "path": "chapters/b2ch6/paragraphs2.txt",
+      "size": 85630,
+      "sha256": "958f095bc1e9693212319d6cefdeb73587998e6779f74de664b7327bcd472e17"
+    },
+    {
+      "path": "chapters/b2ch6/paragraphs3.txt",
+      "size": 16748,
+      "sha256": "ddaabbd093cc43d457d5dd3be523a12ff344067f5f9d2a69f384811e9f3d6121"
+    },
+    {
+      "path": "chapters/b2ch7.magium",
+      "size": 152406,
+      "sha256": "3121ea932e133ed8203a1eb8babb7b519d02a6d85c5109ae429bf6f3a0116962"
+    },
+    {
+      "path": "chapters/b2ch7/logic.txt",
+      "size": 91079,
+      "sha256": "41ef4e3470ec9cab974ebb63806f813ab0209338c6bc4190eb8cb2e75f60c9bb"
+    },
+    {
+      "path": "chapters/b2ch7/paragraphs1.txt",
+      "size": 170220,
+      "sha256": "d2bf0ee07f34a6657b509153922abd315a49221c4e6ef2768f5965a3d9a31841"
+    },
+    {
+      "path": "chapters/b2ch7/paragraphs2.txt",
+      "size": 83178,
+      "sha256": "b0ff9705ee6e85e68be0ddad71c3822d397686555a33ed98e4bb5d115858f731"
+    },
+    {
+      "path": "chapters/b2ch7/paragraphs3.txt",
+      "size": 15222,
+      "sha256": "a3665b9e05302b4d397b017f6464aaba0332b2a4d40a025bc19b2bf951641c98"
+    },
+    {
+      "path": "chapters/b2ch8.magium",
+      "size": 162870,
+      "sha256": "f0cfd3b985a81962beb23372ef63065f0c513fdbab0855eab244dbe93f950c44"
+    },
+    {
+      "path": "chapters/b2ch8/logic.txt",
+      "size": 86825,
+      "sha256": "ae266734544dcfe27167bf7e833b6fd0e1789de4d016aa9a15e181f2db769903"
+    },
+    {
+      "path": "chapters/b2ch8/paragraphs1.txt",
+      "size": 173072,
+      "sha256": "550b69e3e746afe0097dc33eea8cd3b525842dd4976513077f059b94225aafd8"
+    },
+    {
+      "path": "chapters/b2ch8/paragraphs2.txt",
+      "size": 104642,
+      "sha256": "9d5dd98feca4e07f407f2598417a43ac55abd074951166b879f3af9f79550bf4"
+    },
+    {
+      "path": "chapters/b2ch8/paragraphs3.txt",
+      "size": 7090,
+      "sha256": "c9aa535c2446f22be30a0f381883ea3fdbec07367c2889947fddae8c5c737019"
+    },
+    {
+      "path": "chapters/b2ch9a.magium",
+      "size": 130818,
+      "sha256": "cba1ea714f98b10ff2c586a1b7b840b0d4916be08dbb805736ffabe77ad64dc4"
+    },
+    {
+      "path": "chapters/b2ch9a/logic.txt",
+      "size": 60602,
+      "sha256": "1d6fe229e5217ed537bed54b58c947983d5aac217159a7600979c97a3e00c5aa"
+    },
+    {
+      "path": "chapters/b2ch9a/paragraphs1.txt",
+      "size": 104778,
+      "sha256": "d15d0719b1aaf347ff33c0d11423916ba69a8c0b748b064bb1cf24de2b4c56e3"
+    },
+    {
+      "path": "chapters/b2ch9a/paragraphs2.txt",
+      "size": 91346,
+      "sha256": "691411e4ea41705f833af60158ff12e2b1a31c201b174aec5aef4bc9640e4d56"
+    },
+    {
+      "path": "chapters/b2ch9a/paragraphs3.txt",
+      "size": 36568,
+      "sha256": "05fb64b22e2efc1ec7c905e55c860241ac1ad15c0bc8f354a36c0d8af75e9ae1"
+    },
+    {
+      "path": "chapters/b2ch9b.magium",
+      "size": 77740,
+      "sha256": "3d491b7d2d0a59e03e3b7fbb285639d8b6c98e2c56ab3a4fb1b0d78d1abbb48e"
+    },
+    {
+      "path": "chapters/b2ch9b/logic.txt",
+      "size": 44438,
+      "sha256": "72827b106da4ff833d18fb1bd6f7b206042fd57e9bfd4719d8c96b01fab5fc36"
+    },
+    {
+      "path": "chapters/b2ch9b/paragraphs1.txt",
+      "size": 76938,
+      "sha256": "375826a0e91a2e7f1a6c6d4cd46d69418a9c4d20a1ed127b195bc746b32e98f7"
+    },
+    {
+      "path": "chapters/b2ch9b/paragraphs2.txt",
+      "size": 52688,
+      "sha256": "3933c95791252f883374e0936678299872bb6e567e02548c84ef6ef751a1cf29"
+    },
+    {
+      "path": "chapters/b2ch9b/paragraphs3.txt",
+      "size": 10444,
+      "sha256": "bf0f0810a5829afb1ea07e9ef2748cb6786a9984532cb3c896690257e867aeca"
+    },
+    {
+      "path": "chapters/b2ch10a.magium",
+      "size": 125867,
+      "sha256": "7331ac50db217512f458a003fc270a7886a5aafa031160e94299545796a9222b"
+    },
+    {
+      "path": "chapters/b2ch10a/logic.txt",
+      "size": 67636,
+      "sha256": "bb5de3cddc9c42ce0b6da8572b44fddd1004900625c56332e84aa18751baa3ed"
+    },
+    {
+      "path": "chapters/b2ch10a/paragraphs1.txt",
+      "size": 98634,
+      "sha256": "5b7fc2fc43124b9dacd31fe45cda3fbb82b2b6b652677153cb32d564f238f58c"
+    },
+    {
+      "path": "chapters/b2ch10a/paragraphs2.txt",
+      "size": 88988,
+      "sha256": "a6b288d8ca1e0388474ad4a250454ac3a8ffc19da2dda4fdc26114a920650bd8"
+    },
+    {
+      "path": "chapters/b2ch10a/paragraphs3.txt",
+      "size": 32244,
+      "sha256": "3afa9248554cde63f9b69b6e4df2eb7f05b4762483ec2c6fe8fda64192dc9fce"
+    },
+    {
+      "path": "chapters/b2ch10b.magium",
+      "size": 149260,
+      "sha256": "b635ac186772b58ec64370aab61c5da0564aa80f1f6b6c1083f58a63bd755ecf"
+    },
+    {
+      "path": "chapters/b2ch10b/logic.txt",
+      "size": 71088,
+      "sha256": "6850f3e78648d95bbade28789cbb79579561abceaf6d4d84b00fa5edf320e2a9"
+    },
+    {
+      "path": "chapters/b2ch10b/paragraphs1.txt",
+      "size": 129870,
+      "sha256": "1e45b2d05f1f7ba8581eb5ab9f5c7f6520bf572e99308e56f2e81ee477ba93b3"
+    },
+    {
+      "path": "chapters/b2ch10b/paragraphs2.txt",
+      "size": 80520,
+      "sha256": "7ec833ed127153d7b20ac8c4f8617a8dff8f8b0a4e7c59aae42640aa31d52e88"
+    },
+    {
+      "path": "chapters/b2ch10b/paragraphs3.txt",
+      "size": 45180,
+      "sha256": "f4180d1164cae18ea5789ef36273fb99e02491c03d80c6171f5985fbcc5ee199"
+    },
+    {
+      "path": "chapters/b2ch11a.magium",
+      "size": 132260,
+      "sha256": "8ca751e9dbf6ac37276ae0a26ad616ac6dca9ff07324c9f1c5a2f8d9c9fa4604"
+    },
+    {
+      "path": "chapters/b2ch11a/logic.txt",
+      "size": 53429,
+      "sha256": "59ce33e01e4e6e3cebd3375f81cc3ee8f865380074d7a2e6b8fc7c02cfd17b99"
+    },
+    {
+      "path": "chapters/b2ch11a/paragraphs1.txt",
+      "size": 106418,
+      "sha256": "77e83d2f0a9a58d474db87a458c116522726c81a4bbde2b5a4542b6d1c10fec0"
+    },
+    {
+      "path": "chapters/b2ch11a/paragraphs2.txt",
+      "size": 95336,
+      "sha256": "0c2deb0f874e706576bfb56d592d144c544b86f5b96d24742bbf1579728ced46"
+    },
+    {
+      "path": "chapters/b2ch11a/paragraphs3.txt",
+      "size": 40864,
+      "sha256": "b87117b236cc6b9e05c2e4c7f3c6f3325358b51017e6bd3ba969ff377abd70ac"
+    },
+    {
+      "path": "chapters/b2ch11b.magium",
+      "size": 107481,
+      "sha256": "698b525a8dee0e876a5238127df0bcfc4babfbccaa0bc946d0a92dee4d4ef09a"
+    },
+    {
+      "path": "chapters/b2ch11b/logic.txt",
+      "size": 40857,
+      "sha256": "dacf6bd73249549049a371c1ea974517b4a17957debadfd756f6bbec055f4b81"
+    },
+    {
+      "path": "chapters/b2ch11b/paragraphs1.txt",
+      "size": 77812,
+      "sha256": "39f5db093e9c12dc3def1e983005dd4ada7c17099214d851da79c0e76bce9c06"
+    },
+    {
+      "path": "chapters/b2ch11b/paragraphs2.txt",
+      "size": 49498,
+      "sha256": "61ed09c87173464855b5d5b9933868e96f12e5117f37be65770cb72f15adee39"
+    },
+    {
+      "path": "chapters/b2ch11b/paragraphs3.txt",
+      "size": 45394,
+      "sha256": "978c136f53142b12626a0b96936b51f10132e1860db37001ba36e593653495b0"
+    },
+    {
+      "path": "chapters/b2ch11c.magium",
+      "size": 146113,
+      "sha256": "a330c7821b2546ad42b90afc0bd3ccfadafc8be98b19d9f86c53d254e01ba031"
+    },
+    {
+      "path": "chapters/b2ch11c/logic.txt",
+      "size": 68986,
+      "sha256": "8b45601cbd2f46f695d8359678161e5cdc1495db63d35b4880c1793df16fa377"
+    },
+    {
+      "path": "chapters/b2ch11c/paragraphs1.txt",
+      "size": 103470,
+      "sha256": "36ef61ba7f6b77152a9e0a16bd1b3c748170a168d543caa512fd871f0edc1fab"
+    },
+    {
+      "path": "chapters/b2ch11c/paragraphs2.txt",
+      "size": 97678,
+      "sha256": "7cfd728ac34b4b3f6fa9f0861c4c719de087ad756e557246d63f038b32f32b45"
+    },
+    {
+      "path": "chapters/b2ch11c/paragraphs3.txt",
+      "size": 55026,
+      "sha256": "c5961f61bfe61bc83b57d2d5c18e4521d7062014b26bec10742f0497508ea13c"
+    },
+    {
+      "path": "chapters/b3ch1.magium",
+      "size": 123699,
+      "sha256": "b0cf19bd648e8bae2fceb336ca9e20a02122639eb0612fde71600825e807ddcb"
+    },
+    {
+      "path": "chapters/b3ch1/logic.txt",
+      "size": 52907,
+      "sha256": "bba137d2d881a647bbf805ebeafe7cc2ff2ac42f7eb93f3986d54d72794b26bd"
+    },
+    {
+      "path": "chapters/b3ch1/paragraphs1.txt",
+      "size": 104580,
+      "sha256": "61c69898d15087e873f72bbb4207f11c85cf2e96eb8525e2f68bdddd4c37e672"
+    },
+    {
+      "path": "chapters/b3ch1/paragraphs2.txt",
+      "size": 66044,
+      "sha256": "378a37248d106153bf39d2e4f8045275f83784840e913e9fcfccf517958286ba"
+    },
+    {
+      "path": "chapters/b3ch1/paragraphs3.txt",
+      "size": 33822,
+      "sha256": "a334d82e43c7d35ac6612b19b8bbd0911e2f9536215992e0597f79d9185119a2"
+    },
+    {
+      "path": "chapters/b3ch2a.magium",
+      "size": 111462,
+      "sha256": "1062fa0184e4f80fe9e9ca7da407d86da5c72e8baf06d5ef0121d438ae83b213"
+    },
+    {
+      "path": "chapters/b3ch2a/logic.txt",
+      "size": 67379,
+      "sha256": "0024ce7a1a26b811fb74b7cd36e72cf5e388d5d696d603bbe64b6061202791e4"
+    },
+    {
+      "path": "chapters/b3ch2a/paragraphs1.txt",
+      "size": 103374,
+      "sha256": "c9c8e19d780131c0ecd0a835fd56266cb6ed8207a396fa3c1464cadaf4c63a57"
+    },
+    {
+      "path": "chapters/b3ch2a/paragraphs2.txt",
+      "size": 83792,
+      "sha256": "2b62cbde6986480185b7fb756de3a884abb299582e585cddbfa1f09ecf9ded0e"
+    },
+    {
+      "path": "chapters/b3ch2a/paragraphs3.txt",
+      "size": 24312,
+      "sha256": "ebdc2dbeb238ce00e1b8f0df3e8cd9f0e85db31d53d16a08d512b811130c45f6"
+    },
+    {
+      "path": "chapters/b3ch2b.magium",
+      "size": 120944,
+      "sha256": "222367421854984c56f7918d245f5d145dbf005c341df359ebd9208b263d7394"
+    },
+    {
+      "path": "chapters/b3ch2b/logic.txt",
+      "size": 76936,
+      "sha256": "31c446b8f5f25862ccffdfcd0ffbeb17facc72bf2c6c2119442b1c0ee0d319d8"
+    },
+    {
+      "path": "chapters/b3ch2b/paragraphs1.txt",
+      "size": 111206,
+      "sha256": "818dee5ec4c58e74a8ae2b361782cdbab00e4b9b44cf865189cb913d6ef6e656"
+    },
+    {
+      "path": "chapters/b3ch2b/paragraphs2.txt",
+      "size": 72610,
+      "sha256": "a27bacade36fc0c1ed5ecf758f6efd3aa071e37ad59f8d51b419faf11d025e77"
+    },
+    {
+      "path": "chapters/b3ch2b/paragraphs3.txt",
+      "size": 30134,
+      "sha256": "14c798bde6041bea48cdb328d2cd4f1cf6c2b0fdf0f9f3072e6fee4ff08f640a"
+    },
+    {
+      "path": "chapters/b3ch2c.magium",
+      "size": 96138,
+      "sha256": "7ab868ae48941c4fa553621d93114c0dbd4b728115d1a42d3d7591d04cfa6a59"
+    },
+    {
+      "path": "chapters/b3ch2c/logic.txt",
+      "size": 29607,
+      "sha256": "65fc643d28e7e8f8cfd342318c38ebd13528c446e7c8366f73cc4457af51b322"
+    },
+    {
+      "path": "chapters/b3ch2c/paragraphs1.txt",
+      "size": 71046,
+      "sha256": "119bee1b97d0d4653da81e2954bbfc5665d0947301f8082a20d181517436f6c7"
+    },
+    {
+      "path": "chapters/b3ch2c/paragraphs2.txt",
+      "size": 61772,
+      "sha256": "3874d7ab2f588419c5fa23f59f15cf169239cc755f8c344f0e10737a40994977"
+    },
+    {
+      "path": "chapters/b3ch2c/paragraphs3.txt",
+      "size": 33500,
+      "sha256": "66f8c0457a72c393bf6b5b9ffd884310b8f25be21ac5be27b20d9ab8691b7c7a"
+    },
+    {
+      "path": "chapters/b3ch3a.magium",
+      "size": 149448,
+      "sha256": "e926d56513a8e459aeb59f0d4f078672d25dd3c0ba414a06fcf41753fd7f95ab"
+    },
+    {
+      "path": "chapters/b3ch3a/logic.txt",
+      "size": 61801,
+      "sha256": "4754989b671be293615f4ac628f9c4339e53615da611aceeee9ecce0dc186d5e"
+    },
+    {
+      "path": "chapters/b3ch3a/paragraphs1.txt",
+      "size": 115544,
+      "sha256": "877049b2174b240ab107304e07803564ac42336a0c23fb5e27c7caa9e29a8d8b"
+    },
+    {
+      "path": "chapters/b3ch3a/paragraphs2.txt",
+      "size": 57700,
+      "sha256": "ddb295ef52c4758c92d5e6308768714fe143b6f9b9b66460552d4baabe673cb0"
+    },
+    {
+      "path": "chapters/b3ch3a/paragraphs3.txt",
+      "size": 51974,
+      "sha256": "191c1905054d9369359cc159a2649f924cded4c5b4ae5ce687a97ceb185b4b00"
+    },
+    {
+      "path": "chapters/b3ch3b.magium",
+      "size": 109450,
+      "sha256": "c3c7c6801d2539c22375b0d6d1d5ddce78ad62cb56a8543325f43902ffd75581"
+    },
+    {
+      "path": "chapters/b3ch3b/logic.txt",
+      "size": 45981,
+      "sha256": "fc026205f65a6d8abd951b9a1530c49573d1687749851a286dbf19874a0f735f"
+    },
+    {
+      "path": "chapters/b3ch3b/paragraphs1.txt",
+      "size": 81150,
+      "sha256": "bc5c0be619540e8ddaafdf887aada56895a41ee27cc52de81779b19bffccaa85"
+    },
+    {
+      "path": "chapters/b3ch3b/paragraphs2.txt",
+      "size": 52878,
+      "sha256": "97eb916068fa0a99a2ba574dc8986251c8b00783b1f46b6eb35cb490ed55e2d3"
+    },
+    {
+      "path": "chapters/b3ch3b/paragraphs3.txt",
+      "size": 49570,
+      "sha256": "5c8a2184f3574b46f73e3db82ec79399f256c287ab40d2fc682f125b449f3062"
+    },
+    {
+      "path": "chapters/b3ch4a.magium",
+      "size": 618344,
+      "sha256": "ef149c27b5096edc4434d8d89fb383aaa6d031bba890d8ace01b12294b4036e8"
+    },
+    {
+      "path": "chapters/b3ch4a/logic.txt",
+      "size": 62421,
+      "sha256": "2f7c7c2c2d081d4378fd770022715089faa19ff9029f2e29b56eb7455ce7c5c7"
+    },
+    {
+      "path": "chapters/b3ch4a/paragraphs1.txt",
+      "size": 102480,
+      "sha256": "f28f8569f896c1554530e448a80a2f78eb585e08a2d9dcbf234ae2b3e75a1106"
+    },
+    {
+      "path": "chapters/b3ch4a/paragraphs2.txt",
+      "size": 59600,
+      "sha256": "da1b75a1e19d72475e54ca94028fb83b83e1cc4de9a1bae2b1591843735b0500"
+    },
+    {
+      "path": "chapters/b3ch4a/paragraphs3.txt",
+      "size": 36058,
+      "sha256": "e6382bc82a71356e6b4239b5fc6c8ace800d442c65b184b46f1cdd2146ab5e3b"
+    },
+    {
+      "path": "chapters/b3ch4b.magium",
+      "size": 125742,
+      "sha256": "30d57d55666347b660eec06c1e1c8b1f90d6dce1ec884b9e95e4ab5b6666a716"
+    },
+    {
+      "path": "chapters/b3ch4b/logic.txt",
+      "size": 69428,
+      "sha256": "0950ae63dd4137b659496c77428f7f8dc2f28ea951e36461337c6a13f5b2fd48"
+    },
+    {
+      "path": "chapters/b3ch4b/paragraphs1.txt",
+      "size": 112794,
+      "sha256": "254da6f0056268652336bd4cccb00b0a2dcd65bda575430ebb862e5b95b90019"
+    },
+    {
+      "path": "chapters/b3ch4b/paragraphs2.txt",
+      "size": 65454,
+      "sha256": "8895ba3efd5cfde48ee0d573ea3c7403cbcd1dc271b2693304c3d4f396690c0e"
+    },
+    {
+      "path": "chapters/b3ch4b/paragraphs3.txt",
+      "size": 25200,
+      "sha256": "9013f9cb12eab4cad6806789fa8944767eb55d6d65e9a74cc706b79ef2454f06"
+    },
+    {
+      "path": "chapters/b3ch5a.magium",
+      "size": 133891,
+      "sha256": "fd62732181c3c5665894a3fdd45a1e0a864bd4613f79eeb1b7306491a4474456"
+    },
+    {
+      "path": "chapters/b3ch5a/logic.txt",
+      "size": 57518,
+      "sha256": "f8d4ec0d72a9788982164d7e122f88a68288cd23554ba661b2833f26410e945f"
+    },
+    {
+      "path": "chapters/b3ch5a/paragraphs1.txt",
+      "size": 90646,
+      "sha256": "1149883d0571cedb7b7e43300160bd92b3f3dca731767e79459af5b3ff1283e6"
+    },
+    {
+      "path": "chapters/b3ch5a/paragraphs2.txt",
+      "size": 56710,
+      "sha256": "9863453f003f0fd7731e8d0abe7037ba6ef6b51f82b4b8601626759927a2310f"
+    },
+    {
+      "path": "chapters/b3ch5a/paragraphs3.txt",
+      "size": 54472,
+      "sha256": "5fc24203fb051dacd21e8db0d4916c051bf3223433e0111c15d1822f7242b21c"
+    },
+    {
+      "path": "chapters/b3ch5b.magium",
+      "size": 88009,
+      "sha256": "3cdc2bb2fb21f1ba840ee01a051630e33b7cf0fd21fa375bebcd6afc75278b52"
+    },
+    {
+      "path": "chapters/b3ch5b/logic.txt",
+      "size": 34284,
+      "sha256": "554cd972f5cb1771269296c80b2138f5d4ec7974e2544fab3ad6122334667a57"
+    },
+    {
+      "path": "chapters/b3ch5b/paragraphs1.txt",
+      "size": 74100,
+      "sha256": "7a946940e90a5662705587aa1ef370b81200b5363752203400b79832d93f2eb7"
+    },
+    {
+      "path": "chapters/b3ch5b/paragraphs2.txt",
+      "size": 51790,
+      "sha256": "fdbb4098a78a29307c091444dba3e2739e069b0ba2afd5c12e1363c254890e7b"
+    },
+    {
+      "path": "chapters/b3ch5b/paragraphs3.txt",
+      "size": 27788,
+      "sha256": "25c0dd81646b7939f0055948fa13aa81c9109bbb8b750d6ccfde030ee3d87184"
+    },
+    {
+      "path": "chapters/b3ch6a.magium",
+      "size": 174569,
+      "sha256": "5085137e26fad5ccd60ccd3299894ef23dd7539fa84855178e66d3fdc4fb8fb2"
+    },
+    {
+      "path": "chapters/b3ch6a/logic.txt",
+      "size": 87287,
+      "sha256": "e3959688789500bab7fcf4bdae34364cc8e454358139f687a8ecccd1dd83bb03"
+    },
+    {
+      "path": "chapters/b3ch6a/paragraphs1.txt",
+      "size": 151662,
+      "sha256": "659f1b9e8849b6ff3a7c096e7eb8199291065f9bcc3e7b7193705a0ec871bccc"
+    },
+    {
+      "path": "chapters/b3ch6a/paragraphs2.txt",
+      "size": 105226,
+      "sha256": "77bf472c01cd5fedb33d224e585140568025c80e7978cfc46dd29c1b0ea62fba"
+    },
+    {
+      "path": "chapters/b3ch6a/paragraphs3.txt",
+      "size": 56404,
+      "sha256": "1402a8e27a7b9d1e309f18d749af142d84c97ef368aa460893dde6be1e66408b"
+    },
+    {
+      "path": "chapters/b3ch6b.magium",
+      "size": 204449,
+      "sha256": "46e25698e75d85ce1511c5c54902c6087c243a5308b8369b8656bcc9e53d8bb9"
+    },
+    {
+      "path": "chapters/b3ch6b/logic.txt",
+      "size": 119024,
+      "sha256": "288d00dcca65bc7bd081b3189b59ba044cef2b9130dd38d0cf7fb383bf92bef5"
+    },
+    {
+      "path": "chapters/b3ch6b/paragraphs1.txt",
+      "size": 148976,
+      "sha256": "b63533cb1acf34a525bc4078a3e8c418a20298a3df1817d0810352b49219dcf9"
+    },
+    {
+      "path": "chapters/b3ch6b/paragraphs2.txt",
+      "size": 106146,
+      "sha256": "9f42423d9b0b421ace63e03e8af7e0f46cd6318cd4a1b91872e11c231d4f2217"
+    },
+    {
+      "path": "chapters/b3ch6b/paragraphs3.txt",
+      "size": 72308,
+      "sha256": "1810ef1940ee490e3bd9d8ef0eabe497feb6de866766b3a9d60bb93b5b353f1e"
+    },
+    {
+      "path": "chapters/b3ch6c.magium",
+      "size": 45691,
+      "sha256": "ff830b17beeab167636a726793f00c7ac5d094f4b477b3ff293685f344484f0f"
+    },
+    {
+      "path": "chapters/b3ch6c/logic.txt",
+      "size": 19450,
+      "sha256": "16112b351f3d3836f258aa4c08a9e91df9f25bcfdb7cdf703386f11a16acb9ae"
+    },
+    {
+      "path": "chapters/b3ch6c/paragraphs1.txt",
+      "size": 32412,
+      "sha256": "05fa07bc21958bbd065306b9c9aa4a06ace894d966ea54fc3037d9b73795d9b8"
+    },
+    {
+      "path": "chapters/b3ch6c/paragraphs2.txt",
+      "size": 31822,
+      "sha256": "bf287af2d66543e588f6a6e37542ae1764868f2a6b36a75de001bb1389ef3624"
+    },
+    {
+      "path": "chapters/b3ch6c/paragraphs3.txt",
+      "size": 21148,
+      "sha256": "e3ad24dd03409b2b79673f4a748f3158d8c86244d8dca4bb1081162648cfb80e"
+    },
+    {
+      "path": "chapters/b3ch7a.magium",
+      "size": 172791,
+      "sha256": "9683fe9567a49eb7288b4cf36d84a395d9c018010c6658922a9802a70ec57da3"
+    },
+    {
+      "path": "chapters/b3ch7a/logic.txt",
+      "size": 86812,
+      "sha256": "cfcac1aa081c9b8b467f2c2cea33f4f6d5c38a8b2a0ab20f5581b1c53d678be1"
+    },
+    {
+      "path": "chapters/b3ch7a/paragraphs1.txt",
+      "size": 147756,
+      "sha256": "ef1529e45f01224a120c559d2115fdcd2d1464577f5e5c9e0e8d103eff46cc61"
+    },
+    {
+      "path": "chapters/b3ch7a/paragraphs2.txt",
+      "size": 99142,
+      "sha256": "280396014487433419863e82e691aee9a557abdf242bd5653c127f09ea4ced4c"
+    },
+    {
+      "path": "chapters/b3ch7a/paragraphs3.txt",
+      "size": 51236,
+      "sha256": "d78d1e302cf3e9b94ba2a4d838f131eff775bcdd70d7523de1f357a1cb7c49fa"
+    },
+    {
+      "path": "chapters/b3ch8a.magium",
+      "size": 99049,
+      "sha256": "7e760d4e16934255c02c06e22f4b80a650a1ddf02a415dfe844e3b1a8c9ab4ec"
+    },
+    {
+      "path": "chapters/b3ch8a/logic.txt",
+      "size": 39227,
+      "sha256": "e3797c4b457bc4c3d90b59951db7691bfbc1fb2b264c72d282786bb5586a0a41"
+    },
+    {
+      "path": "chapters/b3ch8a/paragraphs1.txt",
+      "size": 77116,
+      "sha256": "fb0b945fd1cbbc3a36fc08330ecd17e4f651e899c5a2166cbb195d77b68c7afe"
+    },
+    {
+      "path": "chapters/b3ch8a/paragraphs2.txt",
+      "size": 47766,
+      "sha256": "07c1d279655b09a83977d5d9c745c75b9c1e4800edcfc693ca5ccf4193bb1caf"
+    },
+    {
+      "path": "chapters/b3ch8a/paragraphs3.txt",
+      "size": 30074,
+      "sha256": "eaf1f0891838b4cb469ec31aca87a7385387128431055e8c7bb08b3654830e7b"
+    },
+    {
+      "path": "chapters/b3ch8b.magium",
+      "size": 126456,
+      "sha256": "be21ccb6bc91a3567648b2257c89e4c4df521bc7b294590e47e0e63e1c72857f"
+    },
+    {
+      "path": "chapters/b3ch8b/logic.txt",
+      "size": 54358,
+      "sha256": "6e7142ec6a7608c0e2d7c53dfe1a0ad6f3e23596df8c17a6288a5d5ffe4b1b0e"
+    },
+    {
+      "path": "chapters/b3ch8b/paragraphs1.txt",
+      "size": 109784,
+      "sha256": "9b99aaf131263c5582d1828da2f4259e4899cf68b5bdebb579f8347a57a3263d"
+    },
+    {
+      "path": "chapters/b3ch8b/paragraphs2.txt",
+      "size": 81728,
+      "sha256": "0f777974714bdc5499eeb2609352817784c084aa3638a45d14feb75943db57a6"
+    },
+    {
+      "path": "chapters/b3ch8b/paragraphs3.txt",
+      "size": 41518,
+      "sha256": "1e518e47ae433a86abd556e8a02f4111358786dac95d61b0ef51427392960481"
+    },
+    {
+      "path": "chapters/b3ch9a.magium",
+      "size": 139127,
+      "sha256": "881663c5e1049aa7c00eed2fcd9d31ad476c0fa2288efe905489d95c095c15bc"
+    },
+    {
+      "path": "chapters/b3ch9a/logic.txt",
+      "size": 63449,
+      "sha256": "3f22468cba7d6b7961e72c7ddfb5d78470908dbaa8765a7404626aeb8defcc64"
+    },
+    {
+      "path": "chapters/b3ch9a/paragraphs1.txt",
+      "size": 114608,
+      "sha256": "0d8a43aabdde658d71026cefc9560cb584b62969e21a555ab349e8842f529a3e"
+    },
+    {
+      "path": "chapters/b3ch9a/paragraphs2.txt",
+      "size": 88678,
+      "sha256": "b7e6973c549660997eee29a296e91deea28740711633621c3280e3dfc71f0aac"
+    },
+    {
+      "path": "chapters/b3ch9a/paragraphs3.txt",
+      "size": 52928,
+      "sha256": "756718fd066abce01586d1a9cfcee7fa12de44b1fdabd2505536cbb9070b8b35"
+    },
+    {
+      "path": "chapters/b3ch9b.magium",
+      "size": 172939,
+      "sha256": "54cba59e55b390babd11275b0de575b51b91c98348a4a5919d611b6d6fb0faea"
+    },
+    {
+      "path": "chapters/b3ch9b/logic.txt",
+      "size": 65571,
+      "sha256": "1b1911ee43e1510b4d33ae780ea02b32589b479e189e2a8626879dac7a5f598d"
+    },
+    {
+      "path": "chapters/b3ch9b/paragraphs1.txt",
+      "size": 118094,
+      "sha256": "8f3def09a909cc5bd8a6484282846ee896b2f644f135893a2f5ffc4461e84d11"
+    },
+    {
+      "path": "chapters/b3ch9b/paragraphs2.txt",
+      "size": 113284,
+      "sha256": "4f0839af3f0636fba85e31b8ad516dcfb75399d3ecf5e8c0ecdf57fa270f0fb9"
+    },
+    {
+      "path": "chapters/b3ch9b/paragraphs3.txt",
+      "size": 44390,
+      "sha256": "e1b70f85da552efd34e480b3042811e292db1eb0b5295f62368e037455dce1b5"
+    },
+    {
+      "path": "chapters/b3ch9c.magium",
+      "size": 147062,
+      "sha256": "cdd8b0514abcbca886bb4628f48b73b24bf236655ebdb44ead72a0fd19fe9bb5"
+    },
+    {
+      "path": "chapters/b3ch9c/logic.txt",
+      "size": 62640,
+      "sha256": "a31bb7954757a8ea9cf17349d85715680f8a8053d8deca1f4190458f32cc80df"
+    },
+    {
+      "path": "chapters/b3ch9c/paragraphs1.txt",
+      "size": 114758,
+      "sha256": "8d68cf9f5189dbe2703be49c8251ede01fe2ee1e69f690b466a3adb6e9879184"
+    },
+    {
+      "path": "chapters/b3ch9c/paragraphs2.txt",
+      "size": 90476,
+      "sha256": "54f3f5d23312ce3eff68fec8ecc1209262a2e5353c083912dfec330e34a8af4b"
+    },
+    {
+      "path": "chapters/b3ch9c/paragraphs3.txt",
+      "size": 55224,
+      "sha256": "b2d73d8aa39ffd1d75a66b716d0759765e143b700bd044aa04d6ac2bcbc2fa0c"
+    },
+    {
+      "path": "chapters/b3ch10a.magium",
+      "size": 194290,
+      "sha256": "7a9e965d6f9b67e12693e758f8983d4c6d6542537dd46546948c417605cedc0a"
+    },
+    {
+      "path": "chapters/b3ch10a/logic.txt",
+      "size": 82668,
+      "sha256": "d3a506603df1a6f8495d49d6a0768093dcbe64d640758468412b86e55ffb6502"
+    },
+    {
+      "path": "chapters/b3ch10a/paragraphs1.txt",
+      "size": 144318,
+      "sha256": "ef69599dd2c2c9f3cc8ee5964a5b041ff91432e6f1fe0f797cb177aa426a7bd2"
+    },
+    {
+      "path": "chapters/b3ch10a/paragraphs2.txt",
+      "size": 120010,
+      "sha256": "5d8398437a081d1d209e21799cfbaeaca23e301a2770c8207b5c21978144bbda"
+    },
+    {
+      "path": "chapters/b3ch10a/paragraphs3.txt",
+      "size": 84076,
+      "sha256": "784e5784e263b3601342f6c9f2928bd497f3608b6a007f61ae3a2135ea68ffe2"
+    },
+    {
+      "path": "chapters/b3ch10b.magium",
+      "size": 129942,
+      "sha256": "e14e40d79c5e7af4b6ce13681032de5de6d755c02160f646eb0ffd7196662b58"
+    },
+    {
+      "path": "chapters/b3ch10b/logic.txt",
+      "size": 42278,
+      "sha256": "815825e7d67163036123e76d47bc191a22413e782faa47e39cded3b37d85654e"
+    },
+    {
+      "path": "chapters/b3ch10b/paragraphs1.txt",
+      "size": 106490,
+      "sha256": "8e3a634e877fcec9bb3296f8678fc17bae9dc0ed23506c30a8503c8842d0926d"
+    },
+    {
+      "path": "chapters/b3ch10b/paragraphs2.txt",
+      "size": 66998,
+      "sha256": "d9a912378e95ec7bd64eefed5aa7e4eb0187f55703b64ece1749bd7bfa40355e"
+    },
+    {
+      "path": "chapters/b3ch10b/paragraphs3.txt",
+      "size": 54612,
+      "sha256": "110a4746c74f70dd7731c73108363be33247b4d96144d3844b14e5cabfafffca"
+    },
+    {
+      "path": "chapters/b3ch10c.magium",
+      "size": 128935,
+      "sha256": "584cbee308ebeb2fdc978b6a6aaaf79e0d602ee218548965b424f1b9bc131d00"
+    },
+    {
+      "path": "chapters/b3ch10c/logic.txt",
+      "size": 42806,
+      "sha256": "93ccd4acdb96ecebfd31d888e8cefd157d611f95e4e06fb1ce4f6c497a6712da"
+    },
+    {
+      "path": "chapters/b3ch10c/paragraphs1.txt",
+      "size": 99540,
+      "sha256": "91158d4b643e021f5b8a08da8009cec4d3aa059d46000058e358b4d4f4a2c3c8"
+    },
+    {
+      "path": "chapters/b3ch10c/paragraphs2.txt",
+      "size": 73330,
+      "sha256": "cf0875f2a654f927ebfe7aa41770fdec963c97523d0b9afe5671b26af51f3616"
+    },
+    {
+      "path": "chapters/b3ch10c/paragraphs3.txt",
+      "size": 49150,
+      "sha256": "0ff62f00fc348651a349cddf9b438df3639a460bcf3251537561658853e5dfdb"
+    },
+    {
+      "path": "chapters/b3ch11a.magium",
+      "size": 180299,
+      "sha256": "75cebb45b1fccfc8c3100ebba3d5c4972edde1303f75c1de8816d2ab117518f3"
+    },
+    {
+      "path": "chapters/b3ch11a/logic.txt",
+      "size": 67760,
+      "sha256": "f65ce723a7fa32d2e5679e6ee1ce031995695800fcde7666b5ceb11f69f7bb2e"
+    },
+    {
+      "path": "chapters/b3ch11a/paragraphs1.txt",
+      "size": 152386,
+      "sha256": "73bb4184077de8da2ec4898e6feb8e2d422310969f8523d1603de06b47aedff2"
+    },
+    {
+      "path": "chapters/b3ch11a/paragraphs2.txt",
+      "size": 103024,
+      "sha256": "1242d53b51caa700e38584732f474c907b12d416c3feb89b25ffdcb8b189e737"
+    },
+    {
+      "path": "chapters/b3ch11a/paragraphs3.txt",
+      "size": 72242,
+      "sha256": "e67990eecaed40d88a72dd1be4503176fb27e99302ca44ae5073ecbba0e8ca27"
+    },
+    {
+      "path": "chapters/b3ch12a.magium",
+      "size": 132674,
+      "sha256": "fec1e8085e6f42a53c733e2da0237ace12e0ad8acf02889fd943694ab4718031"
+    },
+    {
+      "path": "chapters/b3ch12a/logic.txt",
+      "size": 53139,
+      "sha256": "3ed06f772e98476a518cf995550a004dcab8fedce400fa22448218bc135fb6c9"
+    },
+    {
+      "path": "chapters/b3ch12a/paragraphs1.txt",
+      "size": 111036,
+      "sha256": "2fbc5df7a459d6c8a6b03958ac642ae1271f86cf2ea63304245148f098d8fdf5"
+    },
+    {
+      "path": "chapters/b3ch12a/paragraphs2.txt",
+      "size": 81488,
+      "sha256": "a1b40ca3a371533749da60c5608ed59c75218eb54d1afe7b41df015314a1f6ae"
+    },
+    {
+      "path": "chapters/b3ch12a/paragraphs3.txt",
+      "size": 55000,
+      "sha256": "63ca500e52ba49c0cb9634229f2700d74ebb5add2e716c002e44caf357b81652"
+    },
+    {
+      "path": "chapters/b3ch12b.magium",
+      "size": 175939,
+      "sha256": "c4a0a40372f1000379f9637f278f1c2f092c967bc050641dd2240ea85571fbbf"
+    },
+    {
+      "path": "chapters/b3ch12b/logic.txt",
+      "size": 97833,
+      "sha256": "ac4d0e37dc75b54b53ecb050b5943b0e52f3415e0f38cc729afb758ac0c60d7c"
+    },
+    {
+      "path": "chapters/b3ch12b/paragraphs1.txt",
+      "size": 142228,
+      "sha256": "beba64dfeed9a7a8a4e85d5803351a37d44422d50b0f7610a808ae972644a2a3"
+    },
+    {
+      "path": "chapters/b3ch12b/paragraphs2.txt",
+      "size": 103734,
+      "sha256": "0a1298860653760283ff913086ab214c73dca018eb11f90e64153fb17c508094"
+    },
+    {
+      "path": "chapters/b3ch12b/paragraphs3.txt",
+      "size": 71554,
+      "sha256": "3b5587b7ca21960d683d86ab50af42f50cbe31534c0d00f5fbe9356e27cb19a4"
+    },
+    {
+      "path": "chapters/ch1.magium",
+      "size": 41776,
+      "sha256": "5b2f9fbc588600162af3f8277552945609393f5751145367d4b5a74e1ee43edf"
+    },
+    {
+      "path": "chapters/ch1/logic.txt",
+      "size": 25514,
+      "sha256": "e7df92f971382c33b3b38a5b534e2b8826a21d15144ac3bff38e16271f4176c7"
+    },
+    {
+      "path": "chapters/ch1/paragraphs1.txt",
+      "size": 23154,
+      "sha256": "0c742ff6e39d19e282154bffeadc65ab443a55ea95d6c7b9510c863d10053d56"
+    },
+    {
+      "path": "chapters/ch1/paragraphs2.txt",
+      "size": 16366,
+      "sha256": "1ed1e5902c1120891ae88e26fbf8ca29fa20b20637875cc3b2e103556d5c52f9"
+    },
+    {
+      "path": "chapters/ch1/paragraphs3.txt",
+      "size": 564,
+      "sha256": "0e737bfacd42940bf7176b5f2b6bdf181905d74d7726381eb0271e06c663051a"
+    },
+    {
+      "path": "chapters/ch2.magium",
+      "size": 73645,
+      "sha256": "1da25853d781909eee25d39add8ad7922fe920550322ba4e427e98682d1f6ec2"
+    },
+    {
+      "path": "chapters/ch2/logic.txt",
+      "size": 69809,
+      "sha256": "06e66d4cdd1fc800ca4b8e3709d8944059e70f1aab8e25be4581eb58c2f99501"
+    },
+    {
+      "path": "chapters/ch2/paragraphs1.txt",
+      "size": 42131,
+      "sha256": "d31124e83991661721b3dd7ba62e9a7d01d2ff2a58034d0e0e1b14e88d1f351d"
+    },
+    {
+      "path": "chapters/ch2/paragraphs2.txt",
+      "size": 16634,
+      "sha256": "52912c76feefaa2593b8024026d1add8995b9460e54c630fff75132d9e28bbd0"
+    },
+    {
+      "path": "chapters/ch2/paragraphs3.txt",
+      "size": 4266,
+      "sha256": "3c08dc0320ad5cb9bb5d120505de817736d2563158539d3d121a6b3f06907afd"
+    },
+    {
+      "path": "chapters/ch3.magium",
+      "size": 222259,
+      "sha256": "3b931a9cb7831243b431622fb78205eb3d86a1c066dfbcd5340d5ca34a72a64f"
+    },
+    {
+      "path": "chapters/ch3/logic.txt",
+      "size": 166514,
+      "sha256": "865542e1fbb55eca0403c6913b91ed86e8b4fc4e6045bd51b73f152d3037018a"
+    },
+    {
+      "path": "chapters/ch3/paragraphs1.txt",
+      "size": 128183,
+      "sha256": "671b80ef0bfaa5ac546e31db2d884154b6f90ddfb4ecb558fbc4d8232084dd33"
+    },
+    {
+      "path": "chapters/ch3/paragraphs2.txt",
+      "size": 54764,
+      "sha256": "334e0273507e25be4dcc8e6dfaf265874403602e6010b1fb0e9f12b950045656"
+    },
+    {
+      "path": "chapters/ch3/paragraphs3.txt",
+      "size": 5436,
+      "sha256": "2e396ddc9ea5674b6c8aa239cc6f394995e118c70cefbfc50f9cd267ca8f5256"
+    },
+    {
+      "path": "chapters/ch4.magium",
+      "size": 90885,
+      "sha256": "a6579d75aa06a19961de57f5fb8719f8a500af40ad55729e71bd03016f193bdb"
+    },
+    {
+      "path": "chapters/ch4/logic.txt",
+      "size": 53633,
+      "sha256": "2aa1de20b0521e856b80d49febb0c6bf14d704ea70c03085af3521df4a97740f"
+    },
+    {
+      "path": "chapters/ch4/paragraphs1.txt",
+      "size": 49558,
+      "sha256": "af0d573acaf644d2dfca1f0cf2d34095b1059d36079d0c70284ebcf9cfc57c1f"
+    },
+    {
+      "path": "chapters/ch4/paragraphs2.txt",
+      "size": 31292,
+      "sha256": "78072dfb992da55425b7c0b25a32c0cc9d4752216955f2150bdbcb5ca6036e9f"
+    },
+    {
+      "path": "chapters/ch4/paragraphs3.txt",
+      "size": 6704,
+      "sha256": "afdf3cef9a8ef59846c341c097384d038ff8a53383cf26dd145604556884a64f"
+    },
+    {
+      "path": "chapters/ch5.magium",
+      "size": 83558,
+      "sha256": "3e1c787af968e215f7f85a0fb8a27d2028e7650572c4f2c6aaa9d711ba55e8ed"
+    },
+    {
+      "path": "chapters/ch5/logic.txt",
+      "size": 51558,
+      "sha256": "4fdfe932d7e8c39fe42652028d34366077dea758fc01f59886ed074fd4b028e2"
+    },
+    {
+      "path": "chapters/ch5/paragraphs1.txt",
+      "size": 49510,
+      "sha256": "ae5a6b3b5be2d772b0f81a402c15089937b11cff1f4c9efd11c35b438fba6274"
+    },
+    {
+      "path": "chapters/ch5/paragraphs2.txt",
+      "size": 29561,
+      "sha256": "6a40d6f5d4ea16ff5b50378192275ba0c72f87e2c9d41bf65317127656dc604d"
+    },
+    {
+      "path": "chapters/ch5/paragraphs3.txt",
+      "size": 4172,
+      "sha256": "4f1685ad6b1481ff42ac15801fee2f0b6b7d63d3e3fde6a4a6e9cf0f81c28ea0"
+    },
+    {
+      "path": "chapters/ch6.magium",
+      "size": 209912,
+      "sha256": "fb95d72d7f249bad6067d385bc860d356170fad1344fc21783c6f9b00d2bc0df"
+    },
+    {
+      "path": "chapters/ch6/logic.txt",
+      "size": 123947,
+      "sha256": "1ec25860adecb43480649b53df8c80950cb75b71dfcd8f7eba8e472b47a7fed5"
+    },
+    {
+      "path": "chapters/ch6/paragraphs1.txt",
+      "size": 120094,
+      "sha256": "9fa93910d641280d4231e822e6a1abf081f3b3ca6c1050ad8703b9a176a75a29"
+    },
+    {
+      "path": "chapters/ch6/paragraphs2.txt",
+      "size": 65148,
+      "sha256": "0df54ca0c954e680db707d671335b3d48c4d9a72061dbd77dea216a6aaea24e3"
+    },
+    {
+      "path": "chapters/ch6/paragraphs3.txt",
+      "size": 5240,
+      "sha256": "ef847700a0ed0d88a288ba33b1016fd5e9e863e49654e689a06bad5db4e3f24c"
+    },
+    {
+      "path": "chapters/ch7.magium",
+      "size": 219073,
+      "sha256": "79cb1bcd3a48ce6ab02498204455a7e320f28c3caf27bbf829034414493f279f"
+    },
+    {
+      "path": "chapters/ch7/logic.txt",
+      "size": 121973,
+      "sha256": "f00894f0d4ac1ee08abbcacfb43f1b48a711b7690d4c529427368cd629a93c56"
+    },
+    {
+      "path": "chapters/ch7/paragraphs1.txt",
+      "size": 267348,
+      "sha256": "ddbade572a859b0711e2c37309508c88c42e037794e9be59db3b8df37efaab9d"
+    },
+    {
+      "path": "chapters/ch7/paragraphs2.txt",
+      "size": 163522,
+      "sha256": "ffa3b5f15d78f7dbedb0928149e0076d9a28cc64d7a89055f56c15c451f462f3"
+    },
+    {
+      "path": "chapters/ch7/paragraphs3.txt",
+      "size": 5624,
+      "sha256": "1ffa139eda36038c06d49f9be5aabb28a24f58872f4d45f84f8c599b842e3aed"
+    },
+    {
+      "path": "chapters/ch8.magium",
+      "size": 130250,
+      "sha256": "4f7f3bea31952add9072eb8007cd98b99371b457ebb0ef42e6ec7f199d67fc04"
+    },
+    {
+      "path": "chapters/ch8/logic.txt",
+      "size": 67698,
+      "sha256": "b1f5381f5008875c0de1945e52d4dcd9b26bef6265a640612a671eaa87a221c7"
+    },
+    {
+      "path": "chapters/ch8/paragraphs1.txt",
+      "size": 139954,
+      "sha256": "e61fdee7f9dbf5cc82fbfeeb4c5b1ff226c139a07aace87945157e7b83de47f3"
+    },
+    {
+      "path": "chapters/ch8/paragraphs2.txt",
+      "size": 88654,
+      "sha256": "88bf9c6f845c28fb15c6e6ad215933884a680bfe00e1ecd3aa20ef509d2ec54c"
+    },
+    {
+      "path": "chapters/ch8/paragraphs3.txt",
+      "size": 12574,
+      "sha256": "4e246b313189ae04f8cee92c9a0f845c03a82327d9d01a2aa2090f364be9cb54"
+    },
+    {
+      "path": "chapters/ch9.magium",
+      "size": 138564,
+      "sha256": "ce4941b39bb89b8ef0316990cf06e622d670776d8b909d500febc2093709257e"
+    },
+    {
+      "path": "chapters/ch9/logic.txt",
+      "size": 84565,
+      "sha256": "e1c8faade4591ec45426391d528d28fc281850b0154be5afc0b59ae7bcb927b8"
+    },
+    {
+      "path": "chapters/ch9/paragraphs1.txt",
+      "size": 177842,
+      "sha256": "1204500c7dc34e205fc87702899789984b31a0455b47d59ed5cae6482ccb911d"
+    },
+    {
+      "path": "chapters/ch9/paragraphs2.txt",
+      "size": 57282,
+      "sha256": "be869e17e614fab96ea3ed48148e850b159d94143b9cf05065a720dbc854353d"
+    },
+    {
+      "path": "chapters/ch9/paragraphs3.txt",
+      "size": 4396,
+      "sha256": "a55ad6a9dd0188d08fa4f2c1c77a28dcc6bfdd1f13885cd7266053de6c600624"
+    },
+    {
+      "path": "chapters/ch10.magium",
+      "size": 196222,
+      "sha256": "7ab8a4f5fc72eadcaf316b25a9af1d46a15c6a2dfbd8c6c22cce76c8bc82e6f5"
+    },
+    {
+      "path": "chapters/ch10/logic.txt",
+      "size": 91769,
+      "sha256": "49a7d656014c86108b6ef34a7f829262f24bad0b345ab648958e4c4700cf2d59"
+    },
+    {
+      "path": "chapters/ch10/paragraphs1.txt",
+      "size": 210074,
+      "sha256": "62a8a42d423fc1fe1b542a7a46bf2c53a8dba21ea990bf416bdc8ffc8f0a3754"
+    },
+    {
+      "path": "chapters/ch10/paragraphs2.txt",
+      "size": 121622,
+      "sha256": "4f80b6950f8290f6eb68f8a3fb69eea939fff3df2af79a8b784506cd30e7bb0d"
+    },
+    {
+      "path": "chapters/ch10/paragraphs3.txt",
+      "size": 9004,
+      "sha256": "9600c88b814124face60d6fc5d2fbf283865ed9be601b8789a5e0ea72dd98073"
+    },
+    {
+      "path": "chapters/ch11a.magium",
+      "size": 132795,
+      "sha256": "1c47acd05d99d7c826b114d455215d99633b22e83f3ceb95b4ace18713509789"
+    },
+    {
+      "path": "chapters/ch11a/logic.txt",
+      "size": 78342,
+      "sha256": "5b5abaea0c8e753b3be549f3e0482aac6f688932adc83860a20642431aa41c42"
+    },
+    {
+      "path": "chapters/ch11a/paragraphs1.txt",
+      "size": 125746,
+      "sha256": "e7392818550812e2159e8d8ea5e57eaa015b65df3fdaca8deff7e99f9fb59c75"
+    },
+    {
+      "path": "chapters/ch11a/paragraphs2.txt",
+      "size": 78108,
+      "sha256": "8e9641453376a81816caea38abd93d2c7e86cac76f9b851f83f2bc6b626d1c1e"
+    },
+    {
+      "path": "chapters/ch11a/paragraphs3.txt",
+      "size": 10792,
+      "sha256": "c9fe244b64e5ae4e84b4dc71a48f225348514a541dc9d6c5f7a6d9dd3eb571fa"
+    },
+    {
+      "path": "chapters/ch11b.magium",
+      "size": 100238,
+      "sha256": "95d8b71c976aa362843ce8ce4e2e8fc2bcba30899844e8091dd1a8f8d82a1222"
+    },
+    {
+      "path": "chapters/ch11b/logic.txt",
+      "size": 51571,
+      "sha256": "58f142a9daf20c573c5317a2200c09a89f8b44a539fa0009e8a1b2c7e30bf1a7"
+    },
+    {
+      "path": "chapters/ch11b/paragraphs1.txt",
+      "size": 95958,
+      "sha256": "419a18e039c07e15ae8cef31d79c791fa2c6c754129d7bcafbc55636124fff67"
+    },
+    {
+      "path": "chapters/ch11b/paragraphs2.txt",
+      "size": 75128,
+      "sha256": "a317a80b9e50fafdbe47567f6236a2294bcd79cefc9bb31761bdcd4cc9945067"
+    },
+    {
+      "path": "chapters/ch11b/paragraphs3.txt",
+      "size": 11962,
+      "sha256": "bb4029f72ea137c41a6afda2d708b04cfa7c24a88eded36b25bbce23fb01f2d8"
+    },
+    {
+      "path": "LICENSE",
+      "size": 1076,
+      "sha256": "3f39e86bc2569fd7a92d057aa9ca4ad50b1bb0add254380a008829c29440f3f5"
+    },
+    {
+      "path": "README.md",
+      "size": 962,
+      "sha256": "39196355fcb898d72222ee68df5ef429285abb9c42fa127dfd4955fab27493a3"
+    }
+  ]
+}
