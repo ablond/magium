@@ -7,6 +7,7 @@ import {
   GENERATED_ROOT,
   INITIAL_SCENE_ID,
   RUNTIME_FORMAT_VERSION,
+  UI_LOCALES_ROOT,
 } from "./constants.mjs";
 import { chapterIdFromFileName, chapterKeyFromFileName, parseMagiumChapter } from "./parser.mjs";
 import {
@@ -45,6 +46,7 @@ async function main() {
     sourceCommit: pointer.sourceCommit,
     defaultLocale: DEFAULT_LOCALE,
     initialSceneId: INITIAL_SCENE_ID,
+    uiLocales: [],
     chapters: [],
     sceneToChapter: {},
   };
@@ -87,10 +89,42 @@ async function main() {
     messages: achievementMessages,
   });
 
+  index.uiLocales = await writeCanonicalUiLocales();
+
   await writeJson(path.join(CANONICAL_ROOT, "index.json"), index);
-  await writeRuntimePacks({ index, chapterFiles, achievements, achievementMessages });
+  await writeRuntimePacks({ index, chapterFiles, uiLocales: index.uiLocales });
 
   console.log(`Canonical content generated for ${chapterFiles.length} chapters`);
+}
+
+async function writeCanonicalUiLocales() {
+  const files = (await fs.readdir(UI_LOCALES_ROOT))
+    .filter((file) => file.endsWith(".json"))
+    .sort(naturalCompare);
+  const locales = [];
+
+  for (const file of files) {
+    const locale = file.replace(/\.json$/, "");
+    const bundle = await readJson(path.join(UI_LOCALES_ROOT, file));
+    if (bundle.locale !== locale) {
+      throw new Error(`UI locale ${file} declares locale "${bundle.locale}"`);
+    }
+    if (!bundle.messages || typeof bundle.messages !== "object" || Array.isArray(bundle.messages)) {
+      throw new Error(`UI locale ${file} must contain a messages object`);
+    }
+    await ensureDir(path.join(CANONICAL_ROOT, "locales", locale));
+    await writeJson(path.join(CANONICAL_ROOT, "locales", locale, "ui.json"), bundle);
+    locales.push(locale);
+  }
+
+  if (!locales.includes(DEFAULT_LOCALE)) {
+    throw new Error(`Missing default UI locale ${DEFAULT_LOCALE}`);
+  }
+
+  return [
+    DEFAULT_LOCALE,
+    ...locales.filter((locale) => locale !== DEFAULT_LOCALE),
+  ];
 }
 
 async function parseAchievements(archiveRoot) {
@@ -120,7 +154,7 @@ async function parseAchievements(archiveRoot) {
   return { achievements, achievementMessages };
 }
 
-async function writeRuntimePacks({ index, chapterFiles }) {
+async function writeRuntimePacks({ index, chapterFiles, uiLocales }) {
   await fs.rm(GENERATED_ROOT, { recursive: true, force: true });
   await ensureDir(path.join(GENERATED_ROOT, "packs"));
   const entries = [];
@@ -128,6 +162,12 @@ async function writeRuntimePacks({ index, chapterFiles }) {
   entries.push("index");
   await writePackModule("achievements", await packFile(path.join(CANONICAL_ROOT, "achievements.json")));
   entries.push("achievements");
+  for (const locale of uiLocales) {
+    await writePackModule(`locales/${locale}/ui`, await packFile(
+      path.join(CANONICAL_ROOT, "locales", locale, "ui.json"),
+    ));
+    entries.push(`locales/${locale}/ui`);
+  }
   await writePackModule("locales/en/achievements", await packFile(
     path.join(CANONICAL_ROOT, "locales", DEFAULT_LOCALE, "achievements.json"),
   ));

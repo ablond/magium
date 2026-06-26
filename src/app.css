@@ -355,6 +355,17 @@ label {
   font-size: 0.88rem;
 }
 
+.setting-group {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 input[type="text"],
 input[type="password"],
 input:not([type]) {

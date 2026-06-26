@@ -15,6 +15,9 @@ async function main() {
   const achievementCatalog = await readJson(path.join(CANONICAL_ROOT, "achievements.json"));
   const achievementLocale = await readJson(path.join(CANONICAL_ROOT, "locales/en/achievements.json"));
   const achievementIds = new Set(achievementCatalog.achievements.map((achievement) => achievement.id));
+  const generated = await fs.readFile(path.resolve("src/generated/contentPacks.ts"), "utf8");
+
+  await validateUiLocales(index, generated);
 
   for (const achievement of achievementCatalog.achievements) {
     assertMessage(achievementLocale.messages, achievement.titleMessageId, "achievement title");
@@ -56,12 +59,55 @@ async function main() {
     }
   }
 
-  const generated = await fs.readFile(path.resolve("src/generated/contentPacks.ts"), "utf8");
   if (generated.includes("ID: Ch1-Intro1") || generated.includes(".magium")) {
     throw new Error("Generated runtime content appears to contain raw .magium text");
   }
 
   console.log(`Content validated: ${index.chapters.length} chapters, ${achievementCatalog.achievements.length} achievements`);
+}
+
+async function validateUiLocales(index, generated) {
+  if (!Array.isArray(index.uiLocales) || index.uiLocales.length === 0) {
+    throw new Error("Index must declare uiLocales");
+  }
+  if (!index.uiLocales.includes("en")) {
+    throw new Error("Index uiLocales must include en");
+  }
+
+  const base = await readJson(path.join(CANONICAL_ROOT, "locales/en/ui.json"));
+  validateLocaleBundle(base, "en UI");
+  const baseKeys = Object.keys(base.messages).sort();
+
+  for (const locale of index.uiLocales) {
+    const bundle = await readJson(path.join(CANONICAL_ROOT, "locales", locale, "ui.json"));
+    validateLocaleBundle(bundle, `${locale} UI`);
+    if (bundle.locale !== locale) {
+      throw new Error(`${locale} UI bundle declares locale ${bundle.locale}`);
+    }
+    assertSameMessageKeys(baseKeys, Object.keys(bundle.messages).sort(), `${locale} UI`);
+    if (!generated.includes(JSON.stringify(`locales/${locale}/ui`))) {
+      throw new Error(`Missing generated UI locale pack for ${locale}`);
+    }
+  }
+}
+
+function validateLocaleBundle(bundle, context) {
+  if (!bundle.messages || typeof bundle.messages !== "object" || Array.isArray(bundle.messages)) {
+    throw new Error(`${context} locale must contain a messages object`);
+  }
+  for (const [key, value] of Object.entries(bundle.messages)) {
+    if (typeof value !== "string") {
+      throw new Error(`${context} message ${key} must be a string`);
+    }
+  }
+}
+
+function assertSameMessageKeys(expected, actual, context) {
+  const missing = expected.filter((key) => !actual.includes(key));
+  const extra = actual.filter((key) => !expected.includes(key));
+  if (missing.length || extra.length) {
+    throw new Error(`${context} keys mismatch: missing [${missing.join(", ")}], extra [${extra.join(", ")}]`);
+  }
 }
 
 function assertMessage(messages, id, context) {

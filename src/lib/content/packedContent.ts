@@ -22,6 +22,14 @@ export async function loadAchievementLocale(locale: LocaleCode): Promise<LocaleB
   return loadPackage(locale === 'en' ? 'locales/en/achievements' : 'locales/en/achievements')
 }
 
+export async function loadUiLocale(locale: LocaleCode): Promise<LocaleBundle> {
+  const localeKey = `locales/${locale}/ui` as ContentPackageKey
+  if (localeKey in CONTENT_PACKAGE_LOADERS) {
+    return loadPackage(localeKey)
+  }
+  return loadPackage('locales/en/ui' as ContentPackageKey)
+}
+
 export async function loadStoryChapter(chapterId: string): Promise<StoryChapter> {
   return loadPackage(`story/${chapterId}` as ContentPackageKey)
 }

@@ -82,6 +82,7 @@ export type ContentIndex = {
   sourceCommit: string
   defaultLocale: LocaleCode
   initialSceneId: string
+  uiLocales: LocaleCode[]
   chapters: Array<{ id: string; key: string; sourceFile: string; sceneCount: number }>
   sceneToChapter: Record<string, string>
 }
@@ -137,4 +138,5 @@ export type Settings = {
   highContrast: boolean
   typewriter: boolean
   locale: LocaleCode
+  uiLocale: LocaleCode
 }

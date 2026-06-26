@@ -4,6 +4,10 @@
   "sourceCommit": "0f472bc7193c60bb29ccb1efb7425df8b8defcbe",
   "defaultLocale": "en",
   "initialSceneId": "Ch1-Intro1",
+  "uiLocales": [
+    "en",
+    "fr"
+  ],
   "chapters": [
     {
       "id": "b2ch1",
