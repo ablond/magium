@@ -62,7 +62,7 @@ content/story-locales/<locale>/*.json
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
 - Langue globale : le setting FR/EN met a jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
-- Docker de production : le stage builder execute `pnpm build`, puis le stage runtime `nginxinc/nginx-unprivileged` ne contient que les assets publics de `dist/`. Coolify consomme l'image preconstruite `ghcr.io/ablond/magium` sur le port `8080`.
+- Docker de production : le `Dockerfile` racine est compatible avec le build pack Dockerfile de Coolify via GitHub App. Le stage builder execute `pnpm build`, puis le stage runtime `nginxinc/nginx-unprivileged` ne contient que les assets publics de `dist/` et expose le port `8080`.
 
 ## Reperes De Code
 
