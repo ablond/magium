@@ -18,6 +18,7 @@ async function main() {
   const generated = await fs.readFile(path.resolve("src/generated/contentPacks.ts"), "utf8");
 
   await validateUiLocales(index, generated);
+  await validateStoryLocales(index, achievementLocale, generated);
 
   for (const achievement of achievementCatalog.achievements) {
     assertMessage(achievementLocale.messages, achievement.titleMessageId, "achievement title");
@@ -66,6 +67,63 @@ async function main() {
   console.log(`Content validated: ${index.chapters.length} chapters, ${achievementCatalog.achievements.length} achievements`);
 }
 
+async function validateStoryLocales(index, achievementLocale, generated) {
+  if (!Array.isArray(index.storyLocales) || index.storyLocales.length === 0) {
+    throw new Error("Index must declare storyLocales");
+  }
+  if (!index.storyLocales.includes("en")) {
+    throw new Error("Index storyLocales must include en");
+  }
+
+  const baseStats = await readJson(path.join(CANONICAL_ROOT, "locales/en/stats.json"));
+  validateLocaleBundle(baseStats, "en stats");
+  const baseStatKeys = Object.keys(baseStats.messages).sort();
+  const chapterIds = new Set(index.chapters.map((chapter) => chapter.id));
+  const achievementKeys = Object.keys(achievementLocale.messages).sort();
+
+  for (const locale of index.storyLocales) {
+    const stats = await readJson(path.join(CANONICAL_ROOT, "locales", locale, "stats.json"));
+    validateLocaleBundle(stats, `${locale} stats`);
+    if (stats.locale !== locale) {
+      throw new Error(`${locale} stats bundle declares locale ${stats.locale}`);
+    }
+    assertSameMessageKeys(baseStatKeys, Object.keys(stats.messages).sort(), `${locale} stats`);
+    assertGeneratedPack(generated, `locales/${locale}/stats`);
+
+    if (locale === "en") continue;
+
+    const localeRoot = path.join(CANONICAL_ROOT, "locales", locale);
+    const files = (await fs.readdir(localeRoot))
+      .filter((file) => file.endsWith(".json"))
+      .sort();
+
+    for (const file of files) {
+      const bundleName = file.replace(/\.json$/, "");
+      if (bundleName === "ui" || bundleName === "stats") continue;
+
+      const bundle = await readJson(path.join(localeRoot, file));
+      validateLocaleBundle(bundle, `${locale}/${bundleName}`);
+      if (bundle.locale !== locale) {
+        throw new Error(`${locale}/${bundleName} declares locale ${bundle.locale}`);
+      }
+
+      if (bundleName === "achievements") {
+        assertSubsetMessageKeys(achievementKeys, Object.keys(bundle.messages).sort(), `${locale} achievements`);
+      } else {
+        if (!chapterIds.has(bundleName)) {
+          throw new Error(`${locale}/${file} is not a known chapter locale`);
+        }
+        if (bundle.chapterId !== bundleName) {
+          throw new Error(`${locale}/${file} declares chapterId ${bundle.chapterId}`);
+        }
+        const base = await readJson(path.join(CANONICAL_ROOT, "locales/en", file));
+        assertSameMessageKeys(Object.keys(base.messages).sort(), Object.keys(bundle.messages).sort(), `${locale}/${bundleName}`);
+      }
+      assertGeneratedPack(generated, `locales/${locale}/${bundleName}`);
+    }
+  }
+}
+
 async function validateUiLocales(index, generated) {
   if (!Array.isArray(index.uiLocales) || index.uiLocales.length === 0) {
     throw new Error("Index must declare uiLocales");
@@ -85,9 +143,7 @@ async function validateUiLocales(index, generated) {
       throw new Error(`${locale} UI bundle declares locale ${bundle.locale}`);
     }
     assertSameMessageKeys(baseKeys, Object.keys(bundle.messages).sort(), `${locale} UI`);
-    if (!generated.includes(JSON.stringify(`locales/${locale}/ui`))) {
-      throw new Error(`Missing generated UI locale pack for ${locale}`);
-    }
+    assertGeneratedPack(generated, `locales/${locale}/ui`);
   }
 }
 
@@ -107,6 +163,19 @@ function assertSameMessageKeys(expected, actual, context) {
   const extra = actual.filter((key) => !expected.includes(key));
   if (missing.length || extra.length) {
     throw new Error(`${context} keys mismatch: missing [${missing.join(", ")}], extra [${extra.join(", ")}]`);
+  }
+}
+
+function assertSubsetMessageKeys(expected, actual, context) {
+  const missingFromBase = actual.filter((key) => !expected.includes(key));
+  if (missingFromBase.length) {
+    throw new Error(`${context} contains unknown keys [${missingFromBase.join(", ")}]`);
+  }
+}
+
+function assertGeneratedPack(generated, key) {
+  if (!generated.includes(JSON.stringify(key))) {
+    throw new Error(`Missing generated content pack ${key}`);
   }
 }
 

@@ -20,7 +20,8 @@ Construire une PWA jouable de Magium a partir des textes originaux, avec :
 - Le runtime lit seulement des paquets generes sous `src/generated`.
 - Ces paquets sont compresses, encodes, decoupes par chapitre/langue, et verifies par SHA-256 avant decompression.
 - Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis generes en packs runtime `locales/<locale>/ui`.
-- `settings.uiLocale` pilote seulement la langue de l'interface ; `GameState.locale` reste la langue narrative du contenu charge.
+- Les traductions narratives source sont dans `content/story-locales/<locale>/*.json`, puis generees en packs runtime `locales/<locale>/<bundle>`.
+- Le choix de langue Settings pilote `settings.uiLocale`, `settings.locale` et `GameState.locale`. Un chapitre absent dans la locale choisie retombe sur `en`.
 - Les sauvegardes sont stockees dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
 - localStorage ne doit contenir que des preferences UI non critiques.
 
@@ -75,7 +76,7 @@ Pour changer ces fichiers, modifier les scripts sous `tools/content/`, puis lanc
 pnpm content:all
 ```
 
-Exception source : `content/ui-locales/*.json` est editable a la main, car c'est la source des traductions UI. Les copies sous `content/canonical/v1/locales/*/ui.json` et les packs sous `src/generated` restent generes.
+Exceptions source : `content/ui-locales/*.json` et `content/story-locales/**/*.json` sont editables a la main. Les copies sous `content/canonical/v1/locales/**` et les packs sous `src/generated` restent generes.
 
 ## Pipeline Contenu
 
@@ -93,9 +94,10 @@ Ordre attendu :
    - ecrit le graphe logique dans `content/canonical/v1/story`;
    - ecrit les messages anglais dans `content/canonical/v1/locales/en`;
    - copie les bundles UI depuis `content/ui-locales` vers `content/canonical/v1/locales/<locale>/ui.json` ;
+   - copie les traductions narratives depuis `content/story-locales` vers `content/canonical/v1/locales/<locale>/` ;
    - genere les paquets runtime TS sous `src/generated`.
 4. `content:validate`
-   - verifie messages, targets, achievements, scene map, couverture stricte des cles UI, packs UI generes, et absence de fuite brute dans les paquets generes.
+   - verifie messages, targets, achievements, scene map, couverture stricte des cles UI/story/stats, packs generes, et absence de fuite brute dans les paquets generes.
 
 ## Invariants Architecture
 
@@ -111,7 +113,7 @@ Ordre attendu :
 - Ajouter une langue signifie ajouter des messages pour les memes `messageId`.
 - Le fallback runtime est `en`.
 - Les chunks runtime doivent rester lazy-loades par chapitre/langue.
-- La locale UI est independante de la locale narrative. Ne pas traduire le roman, les choix narratifs, les stat labels ou les achievements en changeant seulement `settings.uiLocale`.
+- Les stats et achievements affiches doivent suivre `GameState.locale`, avec fallback anglais par bundle absent.
 
 ## Anti-Triche Et Sauvegardes
 
@@ -155,7 +157,7 @@ Apres changement UI, verifier au moins :
 - panneau Abilities avant/apres revelation ;
 - panneau achievements ;
 - panneau settings/about ;
-- bascule de langue UI FR/EN sans reset de partie.
+- bascule de langue FR/EN sans reset de partie, avec récit et stats traduits quand le pack existe.
 
 ## Pieges Connus
 

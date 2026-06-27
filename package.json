@@ -27,6 +27,7 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
+    "@fontsource-variable/literata": "^5.2.8",
     "@lucide/svelte": "^1.21.0"
   }
 }

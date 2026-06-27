@@ -19,9 +19,10 @@ Fichiers :
 - chapitre contenant la scene courante ;
 - locale du chapitre ;
 - achievements ;
-- locale achievements.
+- locale achievements ;
+- locale stats.
 
-Le chargement est lazy. Un nouveau chapitre n'est importe que lorsque le joueur atteint une scene qui y appartient.
+Le chargement est lazy. Un nouveau chapitre n'est importe que lorsque le joueur atteint une scene qui y appartient. Si la locale de récit demandée ne possède pas encore le chapitre, le chargeur retombe sur `en` pour ce chapitre.
 
 ## GameState
 
@@ -43,6 +44,8 @@ type GameState = {
   updatedAt: string
 }
 ```
+
+`locale` porte la langue de lecture active. Changer de langue ne modifie pas l'historique ni le `historyDigest`; il recharge seulement les packs de textes.
 
 `variables` porte les variables Magium (`v_current_scene`, stats, flags, achievements).
 
@@ -82,7 +85,7 @@ Dans `src/App.svelte`, le panneau `Abilities` revele :
 - les abilities de base apres `Ch2-Stats` ou `Ch2-Stats-spent` ;
 - `Bluff`, `Magical sense` et `Aura hardening` apres l'introduction aura de `B3-Ch04a`.
 
-Les entrees non introduites par le contenu actuel restent invisibles, meme si elles existent dans `STAT_LABELS`.
+Les libelles de stats viennent de `locales/<locale>/stats`, avec fallback `en`. Les entrees non introduites par le contenu actuel restent invisibles, meme si elles existent dans la liste des variables de stats.
 
 ## Application D'Un Choix
 

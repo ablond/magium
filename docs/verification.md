@@ -43,7 +43,8 @@ Doit confirmer :
 - 278 fichiers archives au commit actuel ;
 - 54 chapitres generes ;
 - 136 achievements ;
-- packs UI `locales/en/ui` et `locales/fr/ui` generes et cles UI synchronisees.
+- packs UI `locales/en/ui` et `locales/fr/ui` generes et cles UI synchronisees ;
+- packs story `locales/fr/ch1`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides.
 
 Les nombres peuvent evoluer si `raduprv/Magium@main` change. Dans ce cas, adapter la doc seulement apres verification consciente.
 
@@ -60,14 +61,14 @@ Verifier :
 1. la page charge directement le livre 1 chapitre 1 ;
 2. cliquer `Excited` affiche la scene suivante ;
 3. recharger la page reprend la progression ;
-4. si le navigateur prefere `fr`, l'interface demarre en francais ; sinon utiliser Settings pour basculer sur `Français` ;
-5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Aptitudes`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, puis les labels EN apres bascule ;
+4. si le navigateur prefere `fr`, l'interface et le chapitre 1 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
+5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Aptitudes`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, la zone de lecture utilise Literata sur une largeur confortable, et la premiere scene utilise le pack narratif `fr/ch1` ;
 6. mobile 390 x 844 : la navigation reste compacte et il n'y a pas de chevauchement UI/texte en FR et EN ;
 7. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
 8. le panneau Aptitudes est vide au debut, puis affiche les abilities de base apres `Ch2-Stats` et les abilities aura apres l'introduction de `B3-Ch04a` ;
-9. le panneau Paramètres contient la bascule FR/EN, thème, taille du texte, contraste et révélation de scène ;
+9. le panneau Paramètres contient la bascule globale FR/EN, thème, taille du texte, contraste et révélation de scène ;
 10. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
-11. changer FR/EN ne reset pas la scene courante et ne modifie pas `GameState.locale` ;
+11. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
 12. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
 13. export avec phrase de passe produit `.magium-save` ;
 14. import avec la meme phrase de passe restaure la progression.

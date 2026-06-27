@@ -43,7 +43,7 @@
   let state: GameState | null = null
   let rendered: RenderedScene | null = null
   let uiMessages: Record<string, string> = {}
-  let availableUiLocales = [...DEFAULT_UI_LOCALES]
+  let availableLanguages = [...DEFAULT_UI_LOCALES]
   let saveSummaries: SaveSummary[] = []
   let activePanel: Panel = 'none'
   let loading = true
@@ -61,17 +61,19 @@
     ? describeScene(state.currentSceneId, uiMessages)
     : t(uiMessages, 'reader.chapterTitle', { book: '1', chapter: 1 }, 'Book 1 - Chapter 1')
   $: visibleStatVariables = state ? revealedStatVariables(state) : []
-  $: stats = state ? readStats(state.variables, visibleStatVariables) : []
+  $: stats = state && context ? readStats(state.variables, context.statsLocale.messages, visibleStatVariables) : []
 
   onMount(async () => {
     try {
       settings = loadReaderSettings()
       applyReaderSettings(settings)
       const index = await loadIndex()
-      availableUiLocales = index.uiLocales.length ? index.uiLocales : [...DEFAULT_UI_LOCALES]
+      availableLanguages = resolveAvailableLanguages(index.uiLocales, index.storyLocales, index.defaultLocale)
+      const language = resolveUiLocale(settings.locale || settings.uiLocale, [], availableLanguages, index.defaultLocale)
       settings = {
         ...settings,
-        uiLocale: resolveUiLocale(settings.uiLocale, [], availableUiLocales, index.defaultLocale),
+        locale: language,
+        uiLocale: language,
       }
       persistReaderSettings(settings)
       uiMessages = (await loadUiLocale(settings.uiLocale)).messages
@@ -209,13 +211,23 @@
     applyReaderSettings(settings)
   }
 
-  async function updateUiLocale(uiLocale: string) {
+  async function updateLanguage(locale: string) {
     try {
-      const nextMessages = (await loadUiLocale(uiLocale)).messages
-      settings = { ...settings, uiLocale }
+      const nextMessages = (await loadUiLocale(locale)).messages
+      let nextState = state
+      if (state) {
+        context = await loadContextForScene(state.currentSceneId, locale, context ?? undefined)
+        nextState = { ...state, locale, updatedAt: new Date().toISOString() }
+      }
+      settings = { ...settings, locale, uiLocale: locale }
       persistReaderSettings(settings)
       applyReaderSettings(settings)
       uiMessages = nextMessages
+      state = nextState
+      if (state) {
+        await saveGameState(state)
+        await refresh()
+      }
       error = ''
     } catch (caught) {
       error = formatCaughtError(caught)
@@ -240,11 +252,12 @@
       return {
         ...defaultSettings,
         ...stored,
-        locale: defaultSettings.locale,
+        locale: resolveUiLocale(migratedUiLocale, browserLanguages()),
         uiLocale: resolveUiLocale(migratedUiLocale, browserLanguages()),
       }
     } catch {
-      return { ...defaultSettings, uiLocale: resolveUiLocale(null, browserLanguages()) }
+      const locale = resolveUiLocale(null, browserLanguages())
+      return { ...defaultSettings, locale, uiLocale: locale }
     }
   }
 
@@ -254,6 +267,12 @@
 
   function browserLanguages() {
     return navigator.languages?.length ? navigator.languages : [navigator.language]
+  }
+
+  function resolveAvailableLanguages(uiLocales: string[], storyLocales: string[], fallback: string) {
+    const storySet = new Set(storyLocales.length ? storyLocales : [fallback])
+    const candidates = (uiLocales.length ? uiLocales : [fallback]).filter((locale) => storySet.has(locale))
+    return candidates.length ? candidates : [fallback]
   }
 
   function describeScene(sceneId: string, messages: Record<string, string>) {
@@ -455,13 +474,13 @@
           <h2>{t(uiMessages, 'settings.title', {}, 'Settings')}</h2>
           <p class="panel-copy">{t(uiMessages, 'settings.copy', {}, 'These choices only affect reading comfort. The story and your progress stay the same.')}</p>
           <div class="setting-group">
-            <p class="field-label">{t(uiMessages, 'settings.language', {}, 'Interface language')}</p>
+            <p class="field-label">{t(uiMessages, 'settings.language', {}, 'Language')}</p>
             <div class="segmented">
-              {#if availableUiLocales.includes('fr')}
-                <button class:active={settings.uiLocale === 'fr'} on:click={() => updateUiLocale('fr')}>{t(uiMessages, 'settings.languageFrench', {}, 'French')}</button>
+              {#if availableLanguages.includes('fr')}
+                <button class:active={settings.locale === 'fr'} on:click={() => updateLanguage('fr')}>{t(uiMessages, 'settings.languageFrench', {}, 'French')}</button>
               {/if}
-              {#if availableUiLocales.includes('en')}
-                <button class:active={settings.uiLocale === 'en'} on:click={() => updateUiLocale('en')}>{t(uiMessages, 'settings.languageEnglish', {}, 'English')}</button>
+              {#if availableLanguages.includes('en')}
+                <button class:active={settings.locale === 'en'} on:click={() => updateLanguage('en')}>{t(uiMessages, 'settings.languageEnglish', {}, 'English')}</button>
               {/if}
             </div>
           </div>
