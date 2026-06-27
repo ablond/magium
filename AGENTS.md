@@ -43,6 +43,20 @@ pnpm build
 
 `dist:check` doit rester vert : aucun `.magium`, aucun JSON canonique brut, aucun extrait source brut evident dans `dist/`.
 
+Si une iteration touche Docker, Coolify ou le packaging de production, lancer aussi :
+
+```bash
+pnpm docker:build-prod
+```
+
+Si l'objectif demande une publication d'image, aller jusqu'a :
+
+```bash
+pnpm docker:push-prod
+```
+
+L'image attendue est `ghcr.io/ablond/magium`, avec un tag timestamp UTC `YYYYMMDD-HHMMSS` et `latest`.
+
 ## Documentation Obligatoire
 
 La documentation fait partie du produit. Elle doit etre maintenue, corrigee et synchronisee a chaque iteration.
@@ -60,6 +74,7 @@ Fichiers a considerer en priorite :
 - `docs/runtime-engine.md` pour le moteur ;
 - `docs/saves-and-anti-tamper.md` pour stockage, chiffrement et limites ;
 - `docs/i18n.md` pour le modele de traduction ;
+- `docs/deployment-coolify.md` pour Docker, GHCR et Coolify ;
 - `docs/verification.md` pour les checks attendus.
 
 ## Fichiers Generes Ou Immuables
@@ -77,6 +92,15 @@ pnpm content:all
 ```
 
 Exceptions source : `content/ui-locales/*.json` et `content/story-locales/**/*.json` sont editables a la main. Les copies sous `content/canonical/v1/locales/**` et les packs sous `src/generated` restent generes.
+
+## Packaging Docker Et Coolify
+
+- Le Dockerfile de production construit l'app avec pnpm, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged` exposee sur le port `8080`.
+- Le runtime Coolify consomme l'image preconstruite `ghcr.io/ablond/magium`; il ne build pas depuis le depot dans le flux de publication local.
+- Ne pas copier `content/archive`, `content/canonical`, `src/generated` source, `node_modules`, `.env*` ou des exports `.magium-save` dans l'image finale.
+- `.dockerignore` doit exclure les fichiers locaux sensibles ou volumineux, mais ne doit pas casser le build `pnpm build` dans le stage builder.
+- `tools/docker/build-prod-push.sh` valide le filesystem de l'image, demarre le conteneur, teste `/`, `/sw.js`, `/manifest.webmanifest` et le fallback SPA avant push.
+- Coolify doit exposer `8080`, sans volume et sans variable d'environnement runtime. Si le package GHCR est prive, le serveur Coolify doit etre authentifie avec `docker login ghcr.io`.
 
 ## Pipeline Contenu
 
