@@ -2,7 +2,7 @@
 
 Application PWA moderne pour jouer a Magium depuis les textes originaux du depot `raduprv/Magium`.
 
-Le récit V1 démarre en anglais original, avec le chapitre 1 jouable en français. Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
+Le récit V1 démarre en anglais original, avec les chapitres 1 et 2 jouables en français. Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
 
 ## Etat Actuel
 
@@ -13,7 +13,7 @@ Le récit V1 démarre en anglais original, avec le chapitre 1 jouable en frança
 - Paquets runtime compresses et verifies sous `src/generated/`.
 - Sauvegarde locale chiffrée dans IndexedDB, export/import `.magium-save`.
 - PWA installable avec service worker.
-- UI de lecture directe avec rail desktop libellé, panneau Abilities a revelation progressive, sauvegardes expliquees en langage joueur, settings de confort, attribution About et sélection globale FR/EN.
+- UI de lecture directe avec rail desktop libellé, panneau Stats a revelation progressive avec allocation de points, sauvegardes expliquees en langage joueur, settings de confort, attribution About et sélection globale FR/EN.
 
 ## Commandes
 
@@ -59,7 +59,7 @@ docs/                       Documentation technique detaillee.
 - [AGENTS.md](./AGENTS.md) : consignes prioritaires pour les futures iterations par agents IA.
 - [Architecture](./docs/architecture.md) : vue d'ensemble du systeme.
 - [Pipeline contenu](./docs/content-pipeline.md) : archive, parsing, JSON canonique, runtime packs.
-- [Moteur runtime](./docs/runtime-engine.md) : scenes, choix, conditions, achievements.
+- [Moteur runtime](./docs/runtime-engine.md) : scenes, choix, conditions, stats, achievements.
 - [Sauvegardes et anti-tamper](./docs/saves-and-anti-tamper.md) : IndexedDB, AES-GCM, export/import, limites.
 - [I18n](./docs/i18n.md) : modele de traduction UI et narrative.
 - [Traduction FR](./docs/translation-fr.md) : glossaire et critères de traduction.

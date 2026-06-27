@@ -92,15 +92,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intro-Overseer"
             },
             {
               "variable": "v_checkpoint_rich",
-              "value": "0) if (v_b3_ch8_overseer2 == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_overseer2 == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Intro:c2",
@@ -109,69 +125,94 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intro-King"
             },
             {
               "variable": "v_checkpoint_rich",
-              "value": "0) if (v_b3_ch8_overseer2 == 0"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_overseer2 == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch10a-Intro:s1",
           "variable": "v_b3_ch10_benefits",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s2",
           "variable": "v_b3_ch10_biscuit",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s3",
           "variable": "v_b3_ch10_check",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s4",
           "variable": "v_b3_ch10_inappropriate",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s5",
           "variable": "v_b3_ch10_majesty",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s6",
           "variable": "v_b3_ch10_puzzle",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s7",
           "variable": "v_b3_ch10_reason",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s8",
           "variable": "v_b3_ch10_wrong",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch10a-Intro:s9",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": null
         }
@@ -196,10 +237,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Overseer-Spin"
             },
             {
               "variable": "v_b3_ch10_spin",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -213,10 +256,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Overseer-Spin"
             },
             {
               "variable": "v_b3_ch10_spin",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -285,6 +330,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Trumpets"
             }
           ],
@@ -353,10 +399,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intimidation"
             },
             {
               "variable": "v_b3_ch10_majesty",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -370,10 +418,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intimidation"
             },
             {
               "variable": "v_b3_ch10_majesty",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -387,10 +437,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intimidation"
             },
             {
               "variable": "v_b3_ch10_majesty",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -519,6 +571,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Official"
             }
           ],
@@ -1139,6 +1192,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Towers"
             }
           ],
@@ -1217,6 +1271,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Feedback"
             }
           ],
@@ -1301,10 +1356,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Puzzle"
             },
             {
               "variable": "v_b3_ch10_puzzle",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1318,10 +1375,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Puzzle"
             },
             {
               "variable": "v_b3_ch10_puzzle",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1460,6 +1519,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Podium"
             }
           ],
@@ -1488,10 +1548,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-King-Spin"
             },
             {
               "variable": "v_b3_ch10_spin",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1505,10 +1567,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-King-Spin"
             },
             {
               "variable": "v_b3_ch10_spin",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1577,6 +1641,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Speech"
             }
           ],
@@ -1739,6 +1804,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Morning"
             }
           ],
@@ -1887,10 +1953,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Prisoners"
             },
             {
               "variable": "v_b3_ch10_wrong",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1904,10 +1972,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Prisoners"
             },
             {
               "variable": "v_b3_ch10_wrong",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1921,10 +1991,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Prisoners"
             },
             {
               "variable": "v_b3_ch10_wrong",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -2143,6 +2215,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Surface"
             }
           ],
@@ -2171,10 +2244,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Puzzle"
             },
             {
               "variable": "v_b3_ch10_puzzle",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2188,10 +2263,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Puzzle"
             },
             {
               "variable": "v_b3_ch10_puzzle",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2334,6 +2411,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Refreshingly"
             }
           ],
@@ -2362,6 +2440,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Awkward"
             }
           ],
@@ -2550,15 +2629,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Proposition"
             },
             {
               "variable": "v_b3_ch10_benefits",
-              "value": "1) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c2",
@@ -2567,15 +2662,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Proposition"
             },
             {
               "variable": "v_b3_ch10_benefits",
-              "value": "0) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c3",
@@ -2584,11 +2695,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Abyss) if (v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": "B3-Ch10a-Abyss"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c4",
@@ -2597,11 +2723,38 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Headache) if (v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": "B3-Ch10a-Headache"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c5",
@@ -2610,15 +2763,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Proposition"
             },
             {
               "variable": "v_b3_ch10_benefits",
-              "value": "1) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c6",
@@ -2627,15 +2796,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Proposition"
             },
             {
               "variable": "v_b3_ch10_benefits",
-              "value": "0) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Awkward:c7",
@@ -2644,11 +2829,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Abyss) if (v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": "B3-Ch10a-Abyss"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -2712,6 +2912,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Abyss"
             }
           ],
@@ -2725,6 +2926,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Headache"
             }
           ],
@@ -2736,6 +2938,7 @@
         {
           "id": "B3-Ch10a-Proposition:s1",
           "variable": "v_ac_b3_ch10_benefits",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch10_benefits == 1)",
@@ -2780,6 +2983,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -2793,6 +2997,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -2829,6 +3034,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Emergency"
             }
           ],
@@ -2857,6 +3063,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Open"
             }
           ],
@@ -2870,6 +3077,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Shadows"
             }
           ],
@@ -2898,6 +3106,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -2911,6 +3120,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -2947,6 +3157,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Lever"
             }
           ],
@@ -3155,11 +3366,56 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Interesting) if (v_b3_ch10_puzzle == 0 || v_b3_ch10_spin == 0 || v_perception >= 2 || v_reflexes >= 3"
+              "mode": "set",
+              "value": "B3-Ch10a-Interesting"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch10_puzzle == 0 || v_b3_ch10_spin == 0 || v_perception >= 2 || v_reflexes >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_puzzle",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_spin",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Lever:c2",
@@ -3168,11 +3424,44 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_puzzle",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_spin",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Lever:c3",
@@ -3181,25 +3470,91 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_puzzle",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_spin",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Lever:c4",
           "messageId": "b3ch10a.B3_Ch10a_Lever.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_puzzle",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch10_spin",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch10a-Lever:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b3_ch10_puzzle == 0 && v_b3_ch10_spin == 1 || v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception >= 2 || v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_reflexes >= 3 || v_b3_ch10_spin == 0)",
@@ -3280,6 +3635,7 @@
         {
           "id": "B3-Ch10a-Lever:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch10_puzzle == 1 && v_b3_ch10_spin == 1 && v_perception < 2 && v_reflexes < 3)",
@@ -3410,10 +3766,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Check"
             },
             {
               "variable": "v_b3_ch10_check",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3427,10 +3785,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Check"
             },
             {
               "variable": "v_b3_ch10_check",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -3442,6 +3802,7 @@
         {
           "id": "B3-Ch10a-Interesting:s1",
           "variable": "v_ac_b3_ch10_third",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch10_puzzle == 1)",
@@ -3520,11 +3881,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Caverns) if (v_b3_ch8_overseer2 == 0"
+              "mode": "set",
+              "value": "B3-Ch10a-Caverns"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_overseer2 == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Check:c2",
@@ -3533,11 +3909,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Safely) if (v_b3_ch8_overseer2 == 1"
+              "mode": "set",
+              "value": "B3-Ch10a-Safely"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_overseer2 == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_overseer2",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -3711,6 +4102,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Flow"
             }
           ],
@@ -3739,6 +4131,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Flow"
             }
           ],
@@ -3813,10 +4206,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Divided"
             },
             {
               "variable": "v_b3_ch10_biscuit",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3830,10 +4225,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Divided"
             },
             {
               "variable": "v_b3_ch10_biscuit",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -3902,11 +4299,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Appropriate) if (v_b3_ch8_heartfelt == 2"
+              "mode": "set",
+              "value": "B3-Ch10a-Appropriate"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_heartfelt == 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch10a-Divided:c2",
@@ -3915,11 +4327,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch10a-Letters) if (v_b3_ch8_heartfelt != 2"
+              "mode": "set",
+              "value": "B3-Ch10a-Letters"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_heartfelt != 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_heartfelt",
+                    "operator": "!=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -3989,10 +4416,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Apologize"
             },
             {
               "variable": "v_b3_ch10_inappropriate",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -4006,10 +4435,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Apologize"
             },
             {
               "variable": "v_b3_ch10_inappropriate",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -4023,10 +4454,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Apologize"
             },
             {
               "variable": "v_b3_ch10_inappropriate",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -4109,6 +4542,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Section-Ending"
             }
           ],
@@ -4183,6 +4617,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Section-Ending"
             }
           ],
@@ -4291,6 +4726,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10b-Preoccupied"
             }
           ],

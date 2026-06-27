@@ -151,14 +151,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Yes"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch7_tap",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -172,14 +175,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Borrow"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch7_tap",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -193,14 +199,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Tap"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch7_tap",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -229,6 +238,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Diane"
             }
           ],
@@ -257,6 +267,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Diane"
             }
           ],
@@ -285,6 +296,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Diane"
             }
           ],
@@ -347,11 +359,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Love) if (v_ch7_tap == 0"
+              "mode": "set",
+              "value": "Ch7-Love"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Diane:c2",
@@ -360,11 +387,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Helped) if (v_ch7_tap == 0"
+              "mode": "set",
+              "value": "Ch7-Helped"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Diane:c3",
@@ -373,11 +415,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Kill) if (v_ch7_tap == 1"
+              "mode": "set",
+              "value": "Ch7-Kill"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Diane:c4",
@@ -386,11 +443,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Calm) if (v_ch7_tap == 1"
+              "mode": "set",
+              "value": "Ch7-Calm"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -414,6 +486,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Sister"
             }
           ],
@@ -442,6 +515,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Sister"
             }
           ],
@@ -470,6 +544,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Apologize"
             }
           ],
@@ -483,6 +558,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Friends"
             }
           ],
@@ -511,6 +587,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Idiot"
             }
           ],
@@ -539,6 +616,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Idiot"
             }
           ],
@@ -567,6 +645,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Beacon"
             }
           ],
@@ -580,6 +659,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Lessathi"
             }
           ],
@@ -608,6 +688,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Daren-vs-Kate"
             }
           ],
@@ -636,6 +717,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Daren-vs-Kate"
             }
           ],
@@ -664,6 +746,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Promised"
             }
           ],
@@ -692,6 +775,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Knife"
             }
           ],
@@ -705,6 +789,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Damsel"
             }
           ],
@@ -718,6 +803,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Biscuits"
             }
           ],
@@ -746,6 +832,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Numb"
             }
           ],
@@ -774,6 +861,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Numb"
             }
           ],
@@ -802,6 +890,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Numb"
             }
           ],
@@ -830,6 +919,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Beacon"
             }
           ],
@@ -843,6 +933,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Lessathi"
             }
           ],
@@ -871,6 +962,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Sorry-beacon"
             }
           ],
@@ -884,6 +976,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Rejects-beacon"
             }
           ],
@@ -912,6 +1005,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Lessathi2"
             }
           ],
@@ -940,6 +1034,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Sorry-lessathi"
             }
           ],
@@ -953,6 +1048,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Rejects-lessathi"
             }
           ],
@@ -981,6 +1077,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Shelter"
             }
           ],
@@ -1009,6 +1106,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Shelter"
             }
           ],
@@ -1037,6 +1135,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Lessathi-secondary"
             }
           ],
@@ -1065,6 +1164,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Lessathi-secondary"
             }
           ],
@@ -1093,6 +1193,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Shelter"
             }
           ],
@@ -1155,11 +1256,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Trust-anything) if (v_ch7_tap == 0"
+              "mode": "set",
+              "value": "Ch7-Trust-anything"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Shelter:c2",
@@ -1168,11 +1284,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Trust-truth) if (v_ch7_tap == 0"
+              "mode": "set",
+              "value": "Ch7-Trust-truth"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Shelter:c3",
@@ -1181,11 +1312,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Tap-truth) if (v_ch7_tap == 1"
+              "mode": "set",
+              "value": "Ch7-Tap-truth"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Shelter:c4",
@@ -1194,11 +1340,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Tap-drop) if (v_ch7_tap == 1"
+              "mode": "set",
+              "value": "Ch7-Tap-drop"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_tap == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_tap",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1222,6 +1383,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Giant"
             }
           ],
@@ -1250,6 +1412,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Giant"
             }
           ],
@@ -1278,6 +1441,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Giant"
             }
           ],
@@ -1306,6 +1470,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Giant"
             }
           ],
@@ -1334,6 +1499,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Agree-Kate"
             }
           ],
@@ -1347,6 +1513,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Agree-Daren"
             }
           ],
@@ -1360,6 +1527,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Disagree"
             }
           ],
@@ -1388,6 +1556,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Trap"
             }
           ],
@@ -1416,6 +1585,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Trap"
             }
           ],
@@ -1444,6 +1614,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Trap"
             }
           ],
@@ -1472,10 +1643,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Wait"
             },
             {
               "variable": "v_ch7_call_rose",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1489,10 +1662,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Okay"
             },
             {
               "variable": "v_ch7_call_rose",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1521,6 +1696,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Wait2"
             }
           ],
@@ -1549,6 +1725,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Okay2"
             }
           ],
@@ -1577,15 +1754,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Watch-not-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "1) if (v_ch7_call_rose == 0"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Wait2:c2",
@@ -1594,15 +1787,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Watch-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "1) if (v_ch7_call_rose == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Wait2:c3",
@@ -1611,15 +1820,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Go-not-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "0) if (v_ch7_call_rose == 0"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Wait2:c4",
@@ -1628,15 +1853,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Go-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "0) if (v_ch7_call_rose == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1660,15 +1901,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Watch-not-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "1) if (v_ch7_call_rose == 0"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Okay2:c2",
@@ -1677,15 +1934,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Watch-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "1) if (v_ch7_call_rose == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Okay2:c3",
@@ -1694,15 +1967,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Go-not-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "0) if (v_ch7_call_rose == 0"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Okay2:c4",
@@ -1711,15 +2000,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Go-call"
             },
             {
               "variable": "v_ch7_watch_fight",
-              "value": "0) if (v_ch7_call_rose == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch7_call_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch7_call_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1743,6 +2048,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Convince"
             }
           ],
@@ -1756,6 +2062,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Not-convince"
             }
           ],
@@ -1784,6 +2091,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Watch-call2"
             }
           ],
@@ -1812,6 +2120,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Who-me"
             }
           ],
@@ -1825,6 +2134,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Other-time"
             }
           ],
@@ -1838,6 +2148,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Two-stillwaters"
             }
           ],
@@ -1866,6 +2177,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Convince"
             }
           ],
@@ -1879,6 +2191,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Not-convince"
             }
           ],
@@ -1941,10 +2254,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Help"
             },
             {
               "variable": "v_ch7_help_kate",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1958,10 +2273,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-No-help"
             },
             {
               "variable": "v_ch7_help_kate",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1990,6 +2307,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Dwarf-vs-fire"
             }
           ],
@@ -2018,6 +2336,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Dwarf-vs-fire"
             }
           ],
@@ -2046,6 +2365,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Azarius-why"
             }
           ],
@@ -2059,6 +2379,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Wrong-leave"
             }
           ],
@@ -2087,6 +2408,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vulnerable"
             }
           ],
@@ -2115,6 +2437,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vulnerable"
             }
           ],
@@ -2143,6 +2466,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vulnerable"
             }
           ],
@@ -2171,6 +2495,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vulnerable"
             }
           ],
@@ -2199,6 +2524,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vulnerable"
             }
           ],
@@ -2267,10 +2593,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Bet-your-life"
             },
             {
               "variable": "v_ch7_intimidate",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2284,10 +2612,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Intimidate"
             },
             {
               "variable": "v_ch7_intimidate",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2316,6 +2646,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Assist"
             }
           ],
@@ -2329,6 +2660,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Surprise"
             }
           ],
@@ -2357,6 +2689,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Fight"
             }
           ],
@@ -2370,6 +2703,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Avoid"
             }
           ],
@@ -2381,6 +2715,7 @@
         {
           "id": "Ch7-Intimidate:s1",
           "variable": "v_ac_ch7_answer",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -2477,11 +2812,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Fight) if (v_agility >= 3 || v_premonition >= 3"
+              "mode": "set",
+              "value": "Ch7-Fight"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility >= 3 || v_premonition >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_premonition",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Surprise:c2",
@@ -2490,11 +2850,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Avoid) if (v_agility >= 3 || v_premonition >= 3"
+              "mode": "set",
+              "value": "Ch7-Avoid"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility >= 3 || v_premonition >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_premonition",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Surprise:c3",
@@ -2503,11 +2888,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_agility < 3 && v_premonition < 3",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_premonition < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_premonition",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Surprise:c4",
@@ -2516,25 +2922,67 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_agility < 3 && v_premonition < 3",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_premonition < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_premonition",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Surprise:c5",
           "messageId": "ch7.Ch7_Surprise.c5",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_agility < 3 && v_premonition < 3",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_premonition < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_premonition",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch7-Surprise:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility >= 3 || v_premonition >= 3)",
@@ -2565,6 +3013,7 @@
         {
           "id": "Ch7-Surprise:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility < 3 && v_premonition < 3)",
@@ -2609,6 +3058,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Fight"
             }
           ],
@@ -2622,6 +3072,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Avoid"
             }
           ],
@@ -2830,11 +3281,86 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Summoner-vs-dwarf) if (v_toughness == 4 && v_strength >= 3 || v_agility >= 2 && v_strength < 3 || v_agility >= 2 && v_toughness < 4 || v_combat_technique >= 3 && v_strength >= 3 && v_toughness < 4"
+              "mode": "set",
+              "value": "Ch7-Summoner-vs-dwarf"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_toughness == 4 && v_strength >= 3 || v_agility >= 2 && v_strength < 3 || v_agility >= 2 && v_toughness < 4 || v_combat_technique >= 3 && v_strength >= 3 && v_toughness < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "==",
+                    "value": 4
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": ">=",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": ">=",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Fight:c2",
@@ -2843,11 +3369,54 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Summoner-vs-dwarf"
             }
           ],
-          "special": "restart) if (v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Fight:c3",
@@ -2856,25 +3425,111 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Fight:c4",
           "messageId": "ch7.Ch7_Fight.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch7-Fight:s1",
           "variable": "v_ac_ch7_crusher",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_toughness == 4 && v_strength >= 3 || v_combat_technique >= 3 && v_strength >= 3 && v_toughness < 4)",
@@ -2923,6 +3578,7 @@
         {
           "id": "Ch7-Fight:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_toughness == 4 && v_strength >= 3 || v_agility >= 2 && v_strength < 3 || v_agility >= 2 && v_toughness < 4 || v_combat_technique >= 3 && v_strength >= 3 && v_toughness < 4)",
@@ -3003,6 +3659,7 @@
         {
           "id": "Ch7-Fight:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility < 2 && v_strength < 3 || v_agility < 2 && v_combat_technique < 3 && v_toughness < 4)",
@@ -3141,11 +3798,42 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Summoner-vs-dwarf) if (v_agility == 0 && v_perception >= 2 || v_agility >= 1"
+              "mode": "set",
+              "value": "Ch7-Summoner-vs-dwarf"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility == 0 && v_perception >= 2 || v_agility >= 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Avoid:c2",
@@ -3154,11 +3842,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Summoner-vs-dwarf"
             }
           ],
-          "special": "restart) if (v_agility == 0 && v_perception < 2",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_agility == 0 && v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Avoid:c3",
@@ -3167,25 +3876,67 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_agility == 0 && v_perception < 2",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_agility == 0 && v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Avoid:c4",
           "messageId": "ch7.Ch7_Avoid.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_agility == 0 && v_perception < 2",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_agility == 0 && v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch7-Avoid:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility == 0 && v_perception >= 2 || v_agility >= 1)",
@@ -3222,6 +3973,7 @@
         {
           "id": "Ch7-Avoid:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility == 0 && v_perception < 2)",
@@ -3300,6 +4052,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Azarius-vs-summoner"
             }
           ],
@@ -3328,6 +4081,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Azarius-why"
             }
           ],
@@ -3341,6 +4095,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Wrong-stay"
             }
           ],
@@ -3369,6 +4124,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-God-of-death"
             }
           ],
@@ -3397,6 +4153,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-God-of-death"
             }
           ],
@@ -3459,6 +4216,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-God-of-death"
             }
           ],
@@ -3487,6 +4245,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Illusion"
             }
           ],
@@ -3515,6 +4274,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Smoke"
             }
           ],
@@ -3528,6 +4288,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Invisibility"
             }
           ],
@@ -3556,6 +4317,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Woman-mage"
             }
           ],
@@ -3584,6 +4346,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Woman-mage"
             }
           ],
@@ -3612,6 +4375,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Acquaintances"
             }
           ],
@@ -3625,6 +4389,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-See-friend"
             }
           ],
@@ -3638,6 +4403,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Relationship"
             }
           ],
@@ -3666,6 +4432,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-In-or-out"
             }
           ],
@@ -3694,6 +4461,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-In-or-out"
             }
           ],
@@ -3722,6 +4490,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-In-or-out"
             }
           ],
@@ -3750,6 +4519,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Accept"
             }
           ],
@@ -3763,6 +4533,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Refuse"
             }
           ],
@@ -3841,6 +4612,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Accept2"
             }
           ],
@@ -3973,11 +4745,52 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Rematch) if (v_combat_technique == 4 && v_strength < 2 || v_combat_technique < 4 || v_reflexes < 3"
+              "mode": "set",
+              "value": "Ch7-Rematch"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_combat_technique == 4 && v_strength < 2 || v_combat_technique < 4 || v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 4
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Accept2:c2",
@@ -3986,11 +4799,52 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Caught) if (v_combat_technique == 4 && v_strength < 2 || v_combat_technique < 4 || v_reflexes < 3"
+              "mode": "set",
+              "value": "Ch7-Caught"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_combat_technique == 4 && v_strength < 2 || v_combat_technique < 4 || v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 4
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Accept2:c3",
@@ -3999,11 +4853,38 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Welcome) if (v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2"
+              "mode": "set",
+              "value": "Ch7-Welcome"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 4
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch7-Accept2:c4",
@@ -4012,17 +4893,45 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch7-Opportunity) if (v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2"
+              "mode": "set",
+              "value": "Ch7-Opportunity"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 4
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch7-Accept2:s1",
           "variable": "v_ac_ch7_hadrik",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2)",
@@ -4055,6 +4964,7 @@
         {
           "id": "Ch7-Accept2:s2",
           "variable": "v_ch7_win_vs_hadrik",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_combat_technique == 4 && v_strength < 2 || v_combat_technique < 4 || v_reflexes < 3)",
@@ -4101,6 +5011,7 @@
         {
           "id": "Ch7-Accept2:s3",
           "variable": "v_ch7_win_vs_hadrik",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_combat_technique == 4 && v_reflexes >= 3 && v_strength >= 2)",
@@ -4157,6 +5068,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Kate-vs-Hadrik"
             }
           ],
@@ -4185,6 +5097,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Kate-vs-Hadrik"
             }
           ],
@@ -4213,6 +5126,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Kate-vs-Hadrik"
             }
           ],
@@ -4241,6 +5155,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Everything"
             }
           ],
@@ -4254,6 +5169,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vague"
             }
           ],
@@ -4282,6 +5198,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Everything"
             }
           ],
@@ -4295,6 +5212,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vague"
             }
           ],
@@ -4323,6 +5241,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Everything"
             }
           ],
@@ -4336,6 +5255,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Vague"
             }
           ],
@@ -4364,6 +5284,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ask-me-anything"
             }
           ],
@@ -4392,6 +5313,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ask-me-anything"
             }
           ],
@@ -4420,6 +5342,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Rush"
             }
           ],
@@ -4433,6 +5356,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Meet"
             }
           ],
@@ -4446,6 +5370,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ale"
             }
           ],
@@ -4474,6 +5399,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Home-address"
             }
           ],
@@ -4502,6 +5428,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Home-address"
             }
           ],
@@ -4530,6 +5457,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Home-address"
             }
           ],
@@ -4558,6 +5486,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Spirits"
             }
           ],
@@ -4571,6 +5500,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Sacred"
             }
           ],
@@ -4584,6 +5514,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Allowed"
             }
           ],
@@ -4612,6 +5543,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ending"
             }
           ],
@@ -4640,6 +5572,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ending"
             }
           ],
@@ -4668,6 +5601,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch7-Ending"
             }
           ],
@@ -4696,26 +5630,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch8-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_available_points",
+              "mode": "add",
               "value": 4
             },
             {
               "variable": "v_available_points_aux",
+              "mode": "add",
               "value": 4
             }
           ],

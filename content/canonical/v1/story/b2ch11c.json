@@ -101,10 +101,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Encourage"
             },
             {
               "variable": "v_b2_ch11_encourage",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -118,10 +120,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Encourage"
             },
             {
               "variable": "v_b2_ch11_encourage",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -135,10 +139,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Encourage"
             },
             {
               "variable": "v_b2_ch11_encourage",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -227,6 +233,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Practice"
             }
           ],
@@ -238,6 +245,7 @@
         {
           "id": "B2-Ch11c-Encourage:s1",
           "variable": "v_ac_b2_ch11_supportive",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch11_encourage == 1)",
@@ -282,6 +290,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Slowing"
             }
           ],
@@ -350,15 +359,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Jewelry"
             },
             {
               "variable": "v_b2_ch11_echoes",
-              "value": "0) if (v_ch4_spared_dave == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch4_spared_dave == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Slowing:c2",
@@ -367,15 +392,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Frenzy"
             },
             {
               "variable": "v_b2_ch11_echoes",
-              "value": "0) if (v_ch4_spared_dave == 0"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch4_spared_dave == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -399,10 +440,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Defend"
             },
             {
               "variable": "v_b2_ch11_defend",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -416,10 +459,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Defend"
             },
             {
               "variable": "v_b2_ch11_defend",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -488,6 +533,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Asleep"
             }
           ],
@@ -516,6 +562,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Paranoid"
             }
           ],
@@ -544,10 +591,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Channel"
             },
             {
               "variable": "v_b2_ch11_paranoid",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -561,10 +610,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Channel"
             },
             {
               "variable": "v_b2_ch11_paranoid",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -578,10 +629,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Channel"
             },
             {
               "variable": "v_b2_ch11_paranoid",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -804,11 +857,1284 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Maximum2) if (v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 || v_b2_ch10_activate == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 || v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 || v_b2_ch10_activate == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch9_channel == 0"
+              "mode": "set",
+              "value": "B2-Ch11c-Maximum2"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 || v_b2_ch10_activate == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 || v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 || v_b2_ch10_activate == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_hearing == 7 || v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 0 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 1 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch10_activate == 0 && v_b2_ch11_paranoid == 2 && v_b2_ch6_stat == 0 && v_b2_ch9_channel == 0 && v_hearing == 7 || v_b2_ch9_channel == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_paranoid",
+                    "operator": "==",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Channel:c2",
@@ -817,11 +2143,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Enough) if (v_hearing == 7"
+              "mode": "set",
+              "value": "B2-Ch11c-Enough"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_hearing == 7)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "==",
+                    "value": 7
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Channel:c3",
@@ -830,11 +2171,44 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Maximum) if (v_b2_ch10_activate == 1 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_hearing < 7"
+              "mode": "set",
+              "value": "B2-Ch11c-Maximum"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch10_activate == 1 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_hearing < 7)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch10_activate",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_stat",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch9_channel",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_hearing",
+                    "operator": "<",
+                    "value": 7
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -858,6 +2232,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Enough2"
             }
           ],
@@ -886,6 +2261,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Maximum2"
             }
           ],
@@ -914,10 +2290,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Apologized"
             },
             {
               "variable": "v_b2_ch11_echoes",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -946,10 +2324,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Apologized"
             },
             {
               "variable": "v_b2_ch11_echoes",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -978,10 +2358,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Explain"
             },
             {
               "variable": "v_b2_ch11_explain",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -995,10 +2377,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Explain"
             },
             {
               "variable": "v_b2_ch11_explain",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1067,6 +2451,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Anxiousness"
             }
           ],
@@ -1129,11 +2514,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Jewelry) if (v_ch4_spared_dave == 1"
+              "mode": "set",
+              "value": "B2-Ch11c-Jewelry"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch4_spared_dave == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Anxiousness:c2",
@@ -1142,11 +2542,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Frenzy) if (v_ch4_spared_dave == 0"
+              "mode": "set",
+              "value": "B2-Ch11c-Frenzy"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch4_spared_dave == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1170,10 +2585,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Items"
             },
             {
               "variable": "v_b2_ch11_items",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1187,10 +2604,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Items"
             },
             {
               "variable": "v_b2_ch11_items",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1299,6 +2718,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Unleashes"
             }
           ],
@@ -1310,6 +2730,7 @@
         {
           "id": "B2-Ch11c-Items:s1",
           "variable": "v_ac_b2_ch11_elephant",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_ch3_kate_badly_hurt == 1)",
@@ -1388,6 +2809,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Frenzy"
             }
           ],
@@ -1530,10 +2952,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-History"
             },
             {
               "variable": "v_b2_ch11_towers",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1547,10 +2971,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-History"
             },
             {
               "variable": "v_b2_ch11_towers",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1564,10 +2990,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-History"
             },
             {
               "variable": "v_b2_ch11_towers",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -1579,6 +3007,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s1",
           "variable": "v_b2_ch11_added_hearing",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_ancient_languages == 0 || v_ancient_languages == 1 || v_ancient_languages == 2 || v_ancient_languages == 3 || v_ancient_languages == 4)",
@@ -1639,6 +3068,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s2",
           "variable": "v_b2_ch11_added_hearing",
+          "mode": "set",
           "value": 2,
           "conditions": {
             "raw": "(v_b2_ch11_added_hearing == 1)",
@@ -1659,6 +3089,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s3",
           "variable": "v_b2_ch11_district",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_ancient_languages == 4)",
@@ -1679,6 +3110,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s4",
           "variable": "v_b2_ch11_district",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_ancient_languages == 0 || v_ancient_languages == 1 || v_ancient_languages == 2 || v_ancient_languages == 3 || v_b2_ch11_added_hearing == 0 || v_b2_ch11_added_hearing == 2)",
@@ -1749,6 +3181,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s5",
           "variable": "v_hearing",
+          "mode": "add",
           "value": -3,
           "conditions": {
             "raw": "(v_b2_ch11_added_hearing == 1)",
@@ -1769,6 +3202,7 @@
         {
           "id": "B2-Ch11c-Frenzy:s6",
           "variable": "v_hearing_aux",
+          "mode": "add",
           "value": -3,
           "conditions": {
             "raw": "(v_b2_ch11_added_hearing == 1)",
@@ -1923,6 +3357,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Mountain"
             }
           ],
@@ -1951,10 +3386,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Shelter"
             },
             {
               "variable": "v_b2_ch11_dagger",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1968,10 +3405,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Shelter"
             },
             {
               "variable": "v_b2_ch11_dagger",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2170,11 +3609,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Avalanche) if (v_b2_ch11_dagger == 0 || v_b2_ch11_echoes == 1"
+              "mode": "set",
+              "value": "B2-Ch11c-Avalanche"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch11_dagger == 0 || v_b2_ch11_echoes == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_dagger",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_echoes",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Shelter:c2",
@@ -2183,11 +3647,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_dagger",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_echoes",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Shelter:c3",
@@ -2196,25 +3681,67 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_dagger",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_echoes",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Shelter:c4",
           "messageId": "b2ch11c.B2_Ch11c_Shelter.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_dagger",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch11_echoes",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B2-Ch11c-Shelter:s1",
           "variable": "v_ac_b2_ch11_madman",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 1)",
@@ -2241,6 +3768,7 @@
         {
           "id": "B2-Ch11c-Shelter:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b2_ch11_dagger == 0 && v_b2_ch11_echoes == 0 || v_b2_ch11_echoes == 1)",
@@ -2277,6 +3805,7 @@
         {
           "id": "B2-Ch11c-Shelter:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch11_dagger == 1 && v_b2_ch11_echoes == 0)",
@@ -2327,6 +3856,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Ezzeloff"
             }
           ],
@@ -2355,6 +3885,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Against"
             }
           ],
@@ -2368,6 +3899,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Threat"
             }
           ],
@@ -2381,6 +3913,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Vacation"
             }
           ],
@@ -2409,11 +3942,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Dave) if (v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1"
+              "mode": "set",
+              "value": "B2-Ch11c-Dave"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Against:c2",
@@ -2422,11 +3976,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Forehead) if (v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0"
+              "mode": "set",
+              "value": "B2-Ch11c-Forehead"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -2450,11 +4029,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Dave) if (v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1"
+              "mode": "set",
+              "value": "B2-Ch11c-Dave"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Threat:c2",
@@ -2463,11 +4063,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Forehead) if (v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0"
+              "mode": "set",
+              "value": "B2-Ch11c-Forehead"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -2491,11 +4116,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Dave) if (v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1"
+              "mode": "set",
+              "value": "B2-Ch11c-Dave"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 0 && v_ch4_spared_dave == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11c-Vacation:c2",
@@ -2504,11 +4150,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11c-Forehead) if (v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0"
+              "mode": "set",
+              "value": "B2-Ch11c-Forehead"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 1 || v_ch4_spared_dave == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch4_spared_dave",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -2532,6 +4203,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Forehead"
             }
           ],
@@ -2543,6 +4215,7 @@
         {
           "id": "B2-Ch11c-Dave:s1",
           "variable": "v_ac_b2_ch11_cutthroat",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -2613,6 +4286,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Ending"
             }
           ],
@@ -2641,10 +4315,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11c-Credits"
             },
             {
               "variable": "v_second_book_purchased",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2656,6 +4332,7 @@
         {
           "id": "B2-Ch11c-Ending:s1",
           "variable": "v_ac_b2_ch11_average2",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_available_points == 25)",
@@ -2700,18 +4377,22 @@
           "setVariables": [
             {
               "variable": "v_b2_saved_stats",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch01a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2725,6 +4406,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -2738,6 +4420,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -2757,6 +4440,7 @@
         {
           "id": "B2-Ch11c-Credits:s1",
           "variable": "v_iap_check_resume",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_iap_checked != 0 && v_iap_checked != 2)",
@@ -2783,12 +4467,14 @@
         {
           "id": "B2-Ch11c-Credits:s2",
           "variable": "v_iap_check_resume",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B2-Ch11c-Credits:s3",
           "variable": "v_second_book_purchased",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }

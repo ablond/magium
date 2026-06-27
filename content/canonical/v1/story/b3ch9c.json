@@ -58,6 +58,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -71,6 +72,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -141,6 +143,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Invented"
             }
           ],
@@ -169,6 +172,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Linked"
             }
           ],
@@ -197,6 +201,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Shockwave"
             }
           ],
@@ -225,10 +230,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Cancel"
             },
             {
               "variable": "v_ac_b3_ch9_consolation",
+              "mode": "add",
               "value": 1
             }
           ],
@@ -242,10 +249,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Longer"
             },
             {
               "variable": "v_ac_b3_ch9_consolation",
+              "mode": "add",
               "value": 1
             }
           ],
@@ -259,6 +268,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Breaks"
             }
           ],
@@ -287,6 +297,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -300,6 +311,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -336,6 +348,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -349,6 +362,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -385,6 +399,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Researched"
             }
           ],
@@ -493,6 +508,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Feasible"
             }
           ],
@@ -521,6 +537,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Materialize"
             }
           ],
@@ -549,10 +566,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Frantically"
             },
             {
               "variable": "v_b3_ch9_hydra",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -566,10 +585,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Frantically"
             },
             {
               "variable": "v_b3_ch9_hydra",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -583,15 +604,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Chop"
             },
             {
               "variable": "v_ac_b3_ch9_consolation",
-              "value": "+1) if (v_b3_ch9_element != 0"
+              "mode": "add",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_element != 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_element",
+                    "operator": "!=",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Materialize:c4",
@@ -600,15 +637,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Frantically"
             },
             {
               "variable": "v_b3_ch9_hydra",
-              "value": "0) if (v_b3_ch9_element == 0"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_element == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_element",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -726,6 +779,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -739,6 +793,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -929,10 +984,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Conducted"
             },
             {
               "variable": "v_b3_ch3_stats_unavailable",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -961,6 +1018,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Ponders"
             }
           ],
@@ -989,6 +1047,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Ensure"
             }
           ],
@@ -1017,10 +1076,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Preoccupied"
             },
             {
               "variable": "v_b3_ch9_hadrik",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1034,10 +1095,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Preoccupied"
             },
             {
               "variable": "v_b3_ch9_hadrik",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1106,10 +1169,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Distracted"
             },
             {
               "variable": "v_ac_b3_ch9_consolation",
+              "mode": "add",
               "value": 1
             }
           ],
@@ -1123,6 +1188,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Upwards"
             }
           ],
@@ -1265,6 +1331,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -1278,6 +1345,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -1516,11 +1584,46 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Holographic) if (v_b3_ch9_currents == 0 || v_perception >= 3 || v_reflexes >= 3"
+              "mode": "set",
+              "value": "B3-Ch09c-Holographic"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 || v_perception >= 3 || v_reflexes >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Upwards:c2",
@@ -1529,11 +1632,72 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": ">",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Upwards:c3",
@@ -1542,25 +1706,147 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": ">",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Upwards:c4",
           "messageId": "b3ch9c.B3_Ch09c_Upwards.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_aura_hardening",
+                    "operator": ">",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch09c-Upwards:s1",
           "variable": "v_ac_b3_ch9_consolation",
+          "mode": "add",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 1 && v_is_dead == 0 && v_perception < 3 && v_reflexes < 3)",
@@ -1599,6 +1885,7 @@
         {
           "id": "B3-Ch09c-Upwards:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 1 && v_perception >= 3 || v_b3_ch9_currents == 1 && v_reflexes >= 3 || v_b3_ch9_currents == 0)",
@@ -1651,6 +1938,7 @@
         {
           "id": "B3-Ch09c-Upwards:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_aura_hardening == 0 && v_b3_ch9_currents == 1 && v_perception < 3 && v_reflexes < 3 || v_b3_ch9_currents == 1 && v_aura_hardening > 0 && v_perception < 3 && v_reflexes < 3)",
@@ -1735,6 +2023,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Environments"
             }
           ],
@@ -1763,6 +2052,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Pillars"
             }
           ],
@@ -1831,11 +2121,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Between) if (v_b3_ch9_hadrik == 1"
+              "mode": "set",
+              "value": "B3-Ch09c-Between"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_hadrik == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_hadrik",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Pillars:c2",
@@ -1844,11 +2149,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Finding) if (v_b3_ch9_hadrik == 1"
+              "mode": "set",
+              "value": "B3-Ch09c-Finding"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_hadrik == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_hadrik",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Pillars:c3",
@@ -1857,15 +2177,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Cover"
             },
             {
               "variable": "v_b3_ch9_cover",
-              "value": "1) if (v_b3_ch9_hadrik == 0"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_hadrik == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_hadrik",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Pillars:c4",
@@ -1874,11 +2210,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Fought) if (v_b3_ch9_hadrik == 0"
+              "mode": "set",
+              "value": "B3-Ch09c-Fought"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_hadrik == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_hadrik",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1902,6 +2253,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Maintenance"
             }
           ],
@@ -2018,11 +2370,48 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Fought:c2",
@@ -2031,19 +2420,92 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Fought:c3",
           "messageId": "b3ch9c.B3_Ch09c_Fought.c3",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Fought:c4",
@@ -2052,17 +2514,55 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Maintenance) if (v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4"
+              "mode": "set",
+              "value": "B3-Ch09c-Maintenance"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch09c-Fought:s1",
           "variable": "v_ac_b3_ch9_consolation",
+          "mode": "add",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_is_dead == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_is_dead == 0 && v_reflexes < 4)",
@@ -2117,6 +2617,7 @@
         {
           "id": "B3-Ch09c-Fought:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
@@ -2159,6 +2660,7 @@
         {
           "id": "B3-Ch09c-Fought:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4)",
@@ -2307,11 +2809,48 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Between:c2",
@@ -2320,19 +2859,92 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Between:c3",
           "messageId": "b3ch9c.B3_Ch09c_Between.c3",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Between:c4",
@@ -2341,17 +2953,55 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Maintenance) if (v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4"
+              "mode": "set",
+              "value": "B3-Ch09c-Maintenance"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch9_currents",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 4
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch09c-Between:s1",
           "variable": "v_ac_b3_ch9_consolation",
+          "mode": "add",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_is_dead == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_is_dead == 0 && v_reflexes < 4)",
@@ -2406,6 +3056,7 @@
         {
           "id": "B3-Ch09c-Between:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_reflexes < 2 || v_b3_ch9_currents == 1 && v_reflexes < 4)",
@@ -2448,6 +3099,7 @@
         {
           "id": "B3-Ch09c-Between:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b3_ch9_currents == 0 && v_reflexes >= 2 || v_b3_ch9_currents == 1 && v_reflexes >= 4)",
@@ -2542,11 +3194,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_perception < 2",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Finding:c2",
@@ -2555,19 +3222,48 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_perception < 2",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Finding:c3",
           "messageId": "b3ch9c.B3_Ch09c_Finding.c3",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_perception < 2",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_perception < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch09c-Finding:c4",
@@ -2576,17 +3272,33 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch09c-Maintenance) if (v_perception >= 2"
+              "mode": "set",
+              "value": "B3-Ch09c-Maintenance"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_perception >= 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B3-Ch09c-Finding:s1",
           "variable": "v_ac_b3_ch9_consolation",
+          "mode": "add",
           "value": 1,
           "conditions": {
             "raw": "(v_is_dead == 0 && v_perception < 2)",
@@ -2613,6 +3325,7 @@
         {
           "id": "B3-Ch09c-Finding:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_perception < 2)",
@@ -2633,6 +3346,7 @@
         {
           "id": "B3-Ch09c-Finding:s3",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_perception >= 2)",
@@ -2711,6 +3425,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Indebted"
             }
           ],
@@ -2722,6 +3437,7 @@
         {
           "id": "B3-Ch09c-Maintenance:s1",
           "variable": "v_ac_b3_ch9_trinkets",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b3_ch9_cover == 1 && v_b3_ch9_currents == 0)",
@@ -2772,6 +3488,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Pieces"
             }
           ],
@@ -2800,10 +3517,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Eyes"
             },
             {
               "variable": "v_ac_b3_ch9_consolation",
+              "mode": "add",
               "value": 1
             }
           ],
@@ -2817,6 +3536,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Phrase"
             }
           ],
@@ -2845,6 +3565,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -2858,6 +3579,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -2894,6 +3616,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Ingenuity"
             }
           ],
@@ -2968,6 +3691,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Stories"
             }
           ],
@@ -3036,6 +3760,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Ending"
             }
           ],
@@ -3064,6 +3789,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch09c-Credits"
             }
           ],
@@ -3126,14 +3852,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch10a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],

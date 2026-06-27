@@ -83,10 +83,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -115,10 +117,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Tickle"
             },
             {
               "variable": "v_b2_ch8_tickle",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -132,10 +136,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Situation"
             },
             {
               "variable": "v_b2_ch8_tickle",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -164,6 +170,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Tickle2"
             }
           ],
@@ -192,6 +199,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Precautions"
             }
           ],
@@ -220,6 +228,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Precautions"
             }
           ],
@@ -248,6 +257,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Obliterated"
             }
           ],
@@ -276,10 +286,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Whatever"
             },
             {
               "variable": "v_b2_ch8_tornado",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -293,10 +305,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Tornado"
             },
             {
               "variable": "v_b2_ch8_tornado",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -325,6 +339,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Tornado2"
             }
           ],
@@ -353,6 +368,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Trailing"
             }
           ],
@@ -381,6 +397,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Trailing"
             }
           ],
@@ -443,6 +460,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Imprisoned"
             }
           ],
@@ -456,6 +474,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Powers"
             }
           ],
@@ -467,6 +486,7 @@
         {
           "id": "B2-Ch08a-Trailing:s1",
           "variable": "v_ac_b2_ch8_trivia",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch8_tickle == 0)",
@@ -511,6 +531,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Trade"
             }
           ],
@@ -539,6 +560,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Trade"
             }
           ],
@@ -567,6 +589,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Stuck"
             }
           ],
@@ -580,6 +603,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Alright"
             }
           ],
@@ -593,6 +617,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Informant"
             }
           ],
@@ -621,6 +646,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Defenses"
             }
           ],
@@ -649,6 +675,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Defenses"
             }
           ],
@@ -677,6 +704,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Defenses"
             }
           ],
@@ -705,6 +733,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Flaming"
             }
           ],
@@ -733,6 +762,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Crossbow"
             }
           ],
@@ -909,15 +939,79 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Assess"
             },
             {
               "variable": "v_b2_ch8_goblins",
-              "value": "0) if (v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch8_tornado == 0 && v_combat_technique == 0 || v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch8_tornado == 0 && v_combat_technique == 0 || v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_crossbow",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_tornado",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Crossbow:c2",
@@ -926,15 +1020,79 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Assess"
             },
             {
               "variable": "v_b2_ch8_goblins",
-              "value": "1) if (v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch8_tornado == 0 && v_combat_technique == 0 || v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch8_tornado == 0 && v_combat_technique == 0 || v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_crossbow",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_tornado",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": ">=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Crossbow:c3",
@@ -943,11 +1101,44 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_crossbow",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_tornado",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Crossbow:c4",
@@ -956,25 +1147,91 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_crossbow",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_tornado",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Crossbow:c5",
           "messageId": "b2ch8.B2_Ch08a_Crossbow.c5",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch6_crossbow",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_tornado",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B2-Ch08a-Crossbow:s1",
           "variable": "v_ac_b2_ch8_savior",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 0 && v_combat_technique == 0 && v_reflexes < 2)",
@@ -1013,6 +1270,7 @@
         {
           "id": "B2-Ch08a-Crossbow:s2",
           "variable": "v_b2_ch8_saved",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 || v_b2_ch6_crossbow == 0 && v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1)",
@@ -1093,6 +1351,7 @@
         {
           "id": "B2-Ch08a-Crossbow:s3",
           "variable": "v_b2_ch8_saved",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 0 && v_combat_technique == 0 && v_reflexes < 2)",
@@ -1131,6 +1390,7 @@
         {
           "id": "B2-Ch08a-Crossbow:s4",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b2_ch6_crossbow == 1 && v_combat_technique == 0 || v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 0 && v_combat_technique == 0 || v_b2_ch6_crossbow == 0 && v_combat_technique == 0 && v_reflexes >= 2 || v_combat_technique >= 1)",
@@ -1211,6 +1471,7 @@
         {
           "id": "B2-Ch08a-Crossbow:s5",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch6_crossbow == 0 && v_b2_ch8_tornado == 1 && v_combat_technique == 0 && v_reflexes < 2)",
@@ -1273,11 +1534,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch08a-Goblins) if (v_b2_ch8_goblins == 1"
+              "mode": "set",
+              "value": "B2-Ch08a-Goblins"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Assess:c2",
@@ -1286,15 +1562,37 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Trees"
             },
             {
               "variable": "v_b2_ch8_goblins",
-              "value": "2) if (v_b2_ch8_goblins == 0 && v_strength >= 3"
+              "mode": "set",
+              "value": 2
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_goblins == 0 && v_strength >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_goblins",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Assess:c3",
@@ -1303,11 +1601,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch08a-Fight) if (v_b2_ch8_goblins == 0 && v_strength < 3"
+              "mode": "set",
+              "value": "B2-Ch08a-Fight"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_goblins == 0 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_goblins",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1365,6 +1684,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Goblins2"
             }
           ],
@@ -1376,6 +1696,7 @@
         {
           "id": "B2-Ch08a-Goblins:s1",
           "variable": "v_ac_b2_ch8_effects",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch7_dizziness == 0)",
@@ -1420,6 +1741,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Dispatches"
             }
           ],
@@ -1488,6 +1810,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Retreat"
             }
           ],
@@ -1652,11 +1975,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch08a-Fight2) if (v_agility >= 3 || v_reflexes >= 2"
+              "mode": "set",
+              "value": "B2-Ch08a-Fight2"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility >= 3 || v_reflexes >= 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight:c2",
@@ -1665,11 +2013,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_agility < 3 && v_reflexes < 2",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight:c3",
@@ -1678,25 +2047,67 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_agility < 3 && v_reflexes < 2",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight:c4",
           "messageId": "b2ch8.B2_Ch08a_Fight.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_agility < 3 && v_reflexes < 2",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B2-Ch08a-Fight:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility >= 3 || v_reflexes >= 2)",
@@ -1727,6 +2138,7 @@
         {
           "id": "B2-Ch08a-Fight:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility < 3 && v_reflexes < 2)",
@@ -1837,11 +2249,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch08a-Retreat) if (v_combat_technique >= 2 || v_toughness >= 3"
+              "mode": "set",
+              "value": "B2-Ch08a-Retreat"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_combat_technique >= 2 || v_toughness >= 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": ">=",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": ">=",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight2:c2",
@@ -1850,11 +2287,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
-          "special": "restart) if (v_combat_technique < 2 && v_toughness < 3",
-          "conditions": null
+          "special": "restart",
+          "conditions": {
+            "raw": "(v_combat_technique < 2 && v_toughness < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight2:c3",
@@ -1863,25 +2321,67 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
-          "special": "checkpoint_load) if (v_combat_technique < 2 && v_toughness < 3",
-          "conditions": null
+          "special": "checkpoint_load",
+          "conditions": {
+            "raw": "(v_combat_technique < 2 && v_toughness < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch08a-Fight2:c4",
           "messageId": "b2ch8.B2_Ch08a_Fight2.c4",
           "target": "",
           "setVariables": [],
-          "special": "saves) if (v_combat_technique < 2 && v_toughness < 3",
-          "conditions": null
+          "special": "saves",
+          "conditions": {
+            "raw": "(v_combat_technique < 2 && v_toughness < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_combat_technique",
+                    "operator": "<",
+                    "value": 2
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_toughness",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "B2-Ch08a-Fight2:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_combat_technique >= 2 || v_toughness >= 3)",
@@ -1912,6 +2412,7 @@
         {
           "id": "B2-Ch08a-Fight2:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_combat_technique < 2 && v_toughness < 3)",
@@ -1990,6 +2491,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Dispatches"
             }
           ],
@@ -2001,6 +2503,7 @@
         {
           "id": "B2-Ch08a-Retreat:s1",
           "variable": "v_ac_b2_ch8_tree",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch8_goblins == 2)",
@@ -2045,6 +2548,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Composition"
             }
           ],
@@ -2058,6 +2562,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Stronger"
             }
           ],
@@ -2086,6 +2591,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Inspiring"
             }
           ],
@@ -2114,6 +2620,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Inspiring"
             }
           ],
@@ -2142,6 +2649,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Uphold"
             }
           ],
@@ -2170,6 +2678,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Serve"
             }
           ],
@@ -2183,6 +2692,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Types"
             }
           ],
@@ -2211,6 +2721,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Capabilities"
             }
           ],
@@ -2239,6 +2750,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Capabilities"
             }
           ],
@@ -2267,6 +2779,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Bothered"
             }
           ],
@@ -2295,6 +2808,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Indeed"
             }
           ],
@@ -2308,6 +2822,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Common"
             }
           ],
@@ -2321,6 +2836,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Funny"
             }
           ],
@@ -2349,6 +2865,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Literally"
             }
           ],
@@ -2377,6 +2894,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Literally"
             }
           ],
@@ -2405,6 +2923,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Literally"
             }
           ],
@@ -2473,6 +2992,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Image"
             }
           ],
@@ -2541,6 +3061,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Unlikeable"
             }
           ],
@@ -2569,10 +3090,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Civilized"
             },
             {
               "variable": "v_b2_ch8_parents",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2586,10 +3109,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Civilized"
             },
             {
               "variable": "v_b2_ch8_parents",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2652,6 +3177,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Terrified"
             }
           ],
@@ -2680,6 +3206,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Hobby"
             }
           ],
@@ -2708,6 +3235,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Extract"
             }
           ],
@@ -2736,6 +3264,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Point"
             }
           ],
@@ -2749,6 +3278,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Away"
             }
           ],
@@ -2762,6 +3292,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Lessathi"
             }
           ],
@@ -2790,6 +3321,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Unnoticed"
             }
           ],
@@ -2818,6 +3350,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Unnoticed"
             }
           ],
@@ -2886,6 +3419,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Unnoticed"
             }
           ],
@@ -2914,6 +3448,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Insects"
             }
           ],
@@ -2942,6 +3477,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Fair"
             }
           ],
@@ -2970,10 +3506,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Energizer"
             },
             {
               "variable": "v_b2_ch8_energizer",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2987,6 +3525,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Uninterrupted"
             }
           ],
@@ -3015,10 +3554,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Sleepy"
             },
             {
               "variable": "v_b2_ch8_energizer",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -3032,10 +3573,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Regret"
             },
             {
               "variable": "v_b2_ch8_energizer",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -3049,10 +3592,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Gentleman"
             },
             {
               "variable": "v_b2_ch8_energizer",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -3081,18 +3626,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch09a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3104,6 +3653,7 @@
         {
           "id": "B2-Ch08a-Gentleman:s1",
           "variable": "v_ac_b2_ch8_gentleman",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -3134,6 +3684,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Energizer2"
             }
           ],
@@ -3162,6 +3713,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch08a-Energizer3"
             }
           ],
@@ -3190,18 +3742,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch09a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3230,18 +3786,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch09a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3270,18 +3830,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch09a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -3344,18 +3908,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch09a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],

@@ -1,4 +1,4 @@
-export const INITIAL_HISTORY_DIGEST = 'magium:v1:initial'
+export const INITIAL_HISTORY_DIGEST = 'magium:v2:initial'
 
 export async function sha256Hex(value: string): Promise<string> {
   const encoded = new TextEncoder().encode(value)

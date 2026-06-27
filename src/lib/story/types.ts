@@ -16,6 +16,7 @@ export type ConditionExpression = {
 
 export type VariableAssignment = {
   variable: string
+  mode: 'set' | 'add'
   value: PrimitiveValue
 }
 
@@ -89,6 +90,7 @@ export type ContentIndex = {
 }
 
 export type ChoiceHistoryEvent = {
+  type: 'choice'
   sceneId: string
   choiceId: string
   target: string
@@ -96,10 +98,25 @@ export type ChoiceHistoryEvent = {
   assignments: VariableAssignment[]
 }
 
+export type StatAllocationDelta = {
+  variable: string
+  amount: number
+}
+
+export type StatAllocationHistoryEvent = {
+  type: 'stats'
+  sceneId: string
+  deltas: StatAllocationDelta[]
+  assignments: VariableAssignment[]
+}
+
+export type GameHistoryEvent = ChoiceHistoryEvent | StatAllocationHistoryEvent
+
 export type CheckpointState = {
   currentSceneId: string
   variables: Record<string, PrimitiveValue>
   achievements: Record<string, true>
+  historyLength: number
   historyDigest: string
 }
 
@@ -112,16 +129,25 @@ export type GameState = {
   variables: Record<string, PrimitiveValue>
   achievements: Record<string, true>
   checkpoint: CheckpointState | null
-  history: ChoiceHistoryEvent[]
+  history: GameHistoryEvent[]
   historyDigest: string
   createdAt: string
   updatedAt: string
+}
+
+export type StatCheckResult = {
+  variable: string
+  label: string
+  outcome: 'success' | 'failure'
+  level: number
+  actual: number
 }
 
 export type RenderedScene = {
   scene: Scene
   paragraphs: Array<{ id: string; text: string }>
   choices: Array<Choice & { text: string }>
+  statChecks: StatCheckResult[]
   unlockedAchievements: AchievementDefinition[]
 }
 

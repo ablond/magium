@@ -35,10 +35,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro2"
             },
             {
               "variable": "v_ch1_intro_feeling",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -52,10 +54,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro2"
             },
             {
               "variable": "v_ch1_intro_feeling",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -69,10 +73,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro2"
             },
             {
               "variable": "v_ch1_intro_feeling",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -155,10 +161,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Cutthroat Dave"
             },
             {
               "variable": "v_ch1_show_yourself",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -172,14 +180,17 @@
           "setVariables": [
             {
               "variable": "v_ac_ch1_coward",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Cutthroat Dave"
             },
             {
               "variable": "v_ch1_show_yourself",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -193,10 +204,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Cutthroat Dave"
             },
             {
               "variable": "v_ch1_show_yourself",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -279,10 +292,12 @@
           "setVariables": [
             {
               "variable": "v_ac_ch1_die",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Retreat"
             }
           ],
@@ -296,6 +311,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Imply"
             }
           ],
@@ -384,6 +400,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -460,6 +477,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Imply2"
             }
           ],
@@ -542,10 +560,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Ordinary"
             },
             {
               "variable": "v_ch1_stillwater",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -559,10 +579,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Humor"
             },
             {
               "variable": "v_ch1_stillwater",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -625,14 +647,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch2-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -661,14 +686,17 @@
           "setVariables": [
             {
               "variable": "v_ac_ch1_honesty",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Truth"
             },
             {
               "variable": "v_ch2_human_reason",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -682,10 +710,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Forced"
             },
             {
               "variable": "v_ch2_human_reason",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -699,10 +729,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Sister"
             },
             {
               "variable": "v_ch2_human_reason",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -731,6 +763,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Weakness"
             }
           ],
@@ -765,6 +798,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Weakness"
             }
           ],
@@ -793,6 +827,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Weakness"
             }
           ],
@@ -855,14 +890,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch2-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],

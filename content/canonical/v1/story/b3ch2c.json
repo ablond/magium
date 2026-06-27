@@ -87,6 +87,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Transceiver"
             }
           ],
@@ -155,6 +156,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Transceiver"
             }
           ],
@@ -223,6 +225,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Transceiver"
             }
           ],
@@ -251,6 +254,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Homeland"
             }
           ],
@@ -279,6 +283,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Safe"
             }
           ],
@@ -292,6 +297,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Guarding"
             }
           ],
@@ -305,6 +311,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Risky"
             }
           ],
@@ -333,6 +340,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Seredium"
             }
           ],
@@ -361,6 +369,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Seredium"
             }
           ],
@@ -389,6 +398,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Seredium"
             }
           ],
@@ -417,6 +427,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Banshees"
             }
           ],
@@ -445,10 +456,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Artificial"
             },
             {
               "variable": "v_b3_ch2_madness",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -462,10 +475,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Artificial"
             },
             {
               "variable": "v_b3_ch2_madness",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -479,10 +494,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Artificial"
             },
             {
               "variable": "v_b3_ch2_madness",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -637,6 +654,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Alice"
             }
           ],
@@ -665,6 +683,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Alice2"
             }
           ],
@@ -693,10 +712,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Sundown"
             },
             {
               "variable": "v_b3_ch2_alice",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -710,10 +731,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Sundown"
             },
             {
               "variable": "v_b3_ch2_alice",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -848,6 +871,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Quarantine"
             }
           ],
@@ -876,6 +900,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Iknar"
             }
           ],
@@ -904,10 +929,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Lousy"
             },
             {
               "variable": "v_b3_ch2_kelrim",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -921,10 +948,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Cards"
             },
             {
               "variable": "v_b3_ch2_kelrim",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -953,6 +982,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Strangers"
             }
           ],
@@ -981,6 +1011,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Healing"
             }
           ],
@@ -992,6 +1023,7 @@
         {
           "id": "B3-Ch02c-Cards:s1",
           "variable": "v_ac_b3_ch2_reckless",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -1022,6 +1054,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Grim"
             }
           ],
@@ -1050,6 +1083,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Strangers"
             }
           ],
@@ -1078,10 +1112,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-River"
             },
             {
               "variable": "v_b3_ch2_question",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1095,10 +1131,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-River"
             },
             {
               "variable": "v_b3_ch2_question",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1112,10 +1150,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-River"
             },
             {
               "variable": "v_b3_ch2_question",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -1380,6 +1420,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch02c-Ending"
             }
           ],
@@ -1448,18 +1489,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1488,14 +1533,17 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],

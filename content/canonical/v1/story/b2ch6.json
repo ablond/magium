@@ -59,10 +59,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -91,6 +93,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Questions"
             }
           ],
@@ -104,6 +107,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Listening"
             }
           ],
@@ -132,6 +136,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Assassins"
             }
           ],
@@ -160,6 +165,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Assassins"
             }
           ],
@@ -188,6 +194,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Venture"
             }
           ],
@@ -216,10 +223,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Ollendor"
             },
             {
               "variable": "v_b2_ch6_person",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -233,10 +242,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Ollendor"
             },
             {
               "variable": "v_b2_ch6_person",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -305,6 +316,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Motives"
             }
           ],
@@ -333,6 +345,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Payback"
             }
           ],
@@ -361,10 +374,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Doubting"
             },
             {
               "variable": "v_b2_ch6_hurt",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -378,10 +393,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Doubting"
             },
             {
               "variable": "v_b2_ch6_hurt",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -444,6 +461,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Pajama"
             }
           ],
@@ -506,6 +524,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Mixture"
             }
           ],
@@ -534,10 +553,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Distinction"
             },
             {
               "variable": "v_b2_ch6_stat",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -551,10 +572,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Distinction"
             },
             {
               "variable": "v_b2_ch6_stat",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -649,6 +672,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Shopping"
             }
           ],
@@ -660,6 +684,7 @@
         {
           "id": "B2-Ch06a-Distinction:s1",
           "variable": "v_ac_b2_ch6_secret",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch6_stat == 1)",
@@ -704,6 +729,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Absorbed"
             }
           ],
@@ -772,10 +798,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Amass"
             },
             {
               "variable": "v_b2_ch6_banned",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -789,10 +817,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Amass"
             },
             {
               "variable": "v_b2_ch6_banned",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -855,10 +885,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Elf"
             },
             {
               "variable": "v_b2_ch6_fox",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -872,10 +904,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Elf"
             },
             {
               "variable": "v_b2_ch6_fox",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -944,6 +978,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Funnel"
             }
           ],
@@ -972,6 +1007,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Nest"
             }
           ],
@@ -1000,6 +1036,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Threaten"
             }
           ],
@@ -1013,6 +1050,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Wait"
             }
           ],
@@ -1041,6 +1079,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Talkative"
             }
           ],
@@ -1069,6 +1108,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Talkative"
             }
           ],
@@ -1097,6 +1137,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Message"
             }
           ],
@@ -1185,6 +1226,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Crossbow"
             }
           ],
@@ -1301,10 +1343,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Elixir"
             },
             {
               "variable": "v_b2_ch6_crossbow",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1318,15 +1362,51 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Elixir"
             },
             {
               "variable": "v_b2_ch6_crossbow",
-              "value": "1) if (v_b2_ch5_scimitar == 2 || v_ch10_gems == 1 || v_ch3_treasure != 0"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch5_scimitar == 2 || v_ch10_gems == 1 || v_ch3_treasure != 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch5_scimitar",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch10_gems",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_treasure",
+                    "operator": "!=",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch06a-Crossbow:c3",
@@ -1335,19 +1415,48 @@
           "setVariables": [
             {
               "variable": "v_ac_b2_ch6_edge",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Elixir"
             },
             {
               "variable": "v_b2_ch6_crossbow",
-              "value": "1) if (v_ch10_gems == 0 && v_ch3_treasure == 0 && v_b2_ch5_scimitar != 2"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch10_gems == 0 && v_ch3_treasure == 0 && v_b2_ch5_scimitar != 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch10_gems",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_treasure",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch5_scimitar",
+                    "operator": "!=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1411,6 +1520,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Complex"
             }
           ],
@@ -1445,6 +1555,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Old"
             }
           ],
@@ -1458,6 +1569,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Fair"
             }
           ],
@@ -1486,6 +1598,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Calamity"
             }
           ],
@@ -1514,6 +1627,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Calamity"
             }
           ],
@@ -1582,6 +1696,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Tantrum"
             }
           ],
@@ -1610,6 +1725,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Range"
             }
           ],
@@ -1623,6 +1739,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Avert"
             }
           ],
@@ -1691,6 +1808,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Loopholes"
             }
           ],
@@ -1759,6 +1877,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Loopholes"
             }
           ],
@@ -1787,6 +1906,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Formidable"
             }
           ],
@@ -1815,6 +1935,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch06a-Accomplish"
             }
           ],
@@ -1843,18 +1964,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch07a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1981,18 +2106,22 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch07a-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             }
           ],

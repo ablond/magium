@@ -45,10 +45,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -60,72 +62,84 @@
         {
           "id": "B3-Ch08a-Intro:s1",
           "variable": "v_b3_ch8_defeat",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s2",
           "variable": "v_b3_ch8_detected",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s3",
           "variable": "v_b3_ch8_heartfelt",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s4",
           "variable": "v_b3_ch8_king",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s5",
           "variable": "v_b3_ch8_next",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s6",
           "variable": "v_b3_ch8_overseer",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s7",
           "variable": "v_b3_ch8_overseer2",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s8",
           "variable": "v_b3_ch8_precisely",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s9",
           "variable": "v_b3_ch8_theory",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s10",
           "variable": "v_b3_ch8_three",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s11",
           "variable": "v_b3_ch8_voice",
+          "mode": "set",
           "value": 0,
           "conditions": null
         },
         {
           "id": "B3-Ch08a-Intro:s12",
           "variable": "v_b3_ch8_watching",
+          "mode": "set",
           "value": 0,
           "conditions": null
         }
@@ -150,6 +164,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Intro3"
             }
           ],
@@ -178,10 +193,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Theory"
             },
             {
               "variable": "v_b3_ch8_theory",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -195,10 +212,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Theory"
             },
             {
               "variable": "v_b3_ch8_theory",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -212,10 +231,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Theory"
             },
             {
               "variable": "v_b3_ch8_theory",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -229,10 +250,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Theory"
             },
             {
               "variable": "v_b3_ch8_theory",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -341,6 +364,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Boundaries"
             }
           ],
@@ -369,6 +393,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Potential"
             }
           ],
@@ -397,6 +422,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Logical"
             }
           ],
@@ -410,6 +436,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Puke"
             }
           ],
@@ -423,6 +450,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Endorsement"
             }
           ],
@@ -515,6 +543,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Observing"
             }
           ],
@@ -543,6 +572,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Observing"
             }
           ],
@@ -571,6 +601,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Observing"
             }
           ],
@@ -639,6 +670,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Manufactured"
             }
           ],
@@ -650,6 +682,7 @@
         {
           "id": "B3-Ch08a-Observing:s1",
           "variable": "v_b3_ch8_watching",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_premonition < 4)",
@@ -670,6 +703,7 @@
         {
           "id": "B3-Ch08a-Observing:s2",
           "variable": "v_b3_ch8_watching",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_premonition >= 4)",
@@ -708,10 +742,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Joining"
             },
             {
               "variable": "v_b3_ch8_overseer",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -725,10 +761,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Beginning"
             },
             {
               "variable": "v_b3_ch8_overseer",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -742,10 +780,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Rescue"
             },
             {
               "variable": "v_b3_ch8_overseer",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -759,10 +799,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Involved"
             },
             {
               "variable": "v_b3_ch8_overseer",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -917,6 +959,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Antagonizing"
             }
           ],
@@ -1071,6 +1114,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Antagonizing"
             }
           ],
@@ -1215,6 +1259,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Antagonizing"
             }
           ],
@@ -1369,6 +1414,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Antagonizing"
             }
           ],
@@ -1443,10 +1489,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Flaming"
             },
             {
               "variable": "v_b3_ch8_next",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1460,10 +1508,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Flaming"
             },
             {
               "variable": "v_b3_ch8_next",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1477,10 +1527,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Flaming"
             },
             {
               "variable": "v_b3_ch8_next",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -1569,11 +1621,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch08a-Weakling) if (v_b3_ch8_watching == 1"
+              "mode": "set",
+              "value": "B3-Ch08a-Weakling"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_watching == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch08a-Flaming:c2",
@@ -1582,11 +1649,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B3-Ch08a-Break) if (v_b3_ch8_watching == 0"
+              "mode": "set",
+              "value": "B3-Ch08a-Break"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch8_watching == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch8_watching",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1610,6 +1692,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Detected"
             }
           ],
@@ -1623,6 +1706,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Sensing"
             }
           ],
@@ -1691,6 +1775,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Collected"
             }
           ],
@@ -1702,6 +1787,7 @@
         {
           "id": "B3-Ch08a-Detected:s1",
           "variable": "v_ac_b3_ch8_bluffer",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_bluff >= 4)",
@@ -1722,6 +1808,7 @@
         {
           "id": "B3-Ch08a-Detected:s2",
           "variable": "v_b3_ch8_precisely",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_bluff < 4)",
@@ -1742,6 +1829,7 @@
         {
           "id": "B3-Ch08a-Detected:s3",
           "variable": "v_b3_ch8_precisely",
+          "mode": "set",
           "value": 2,
           "conditions": {
             "raw": "(v_bluff >= 4)",
@@ -1786,6 +1874,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Collected"
             }
           ],
@@ -1797,6 +1886,7 @@
         {
           "id": "B3-Ch08a-Sensing:s1",
           "variable": "v_b3_ch8_precisely",
+          "mode": "set",
           "value": 0,
           "conditions": null
         }
@@ -1821,6 +1911,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08a-Collected"
             }
           ],
@@ -1832,6 +1923,7 @@
         {
           "id": "B3-Ch08a-Break:s1",
           "variable": "v_b3_ch8_precisely",
+          "mode": "set",
           "value": 0,
           "conditions": null
         }
@@ -1856,6 +1948,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch08b-Pardon"
             }
           ],

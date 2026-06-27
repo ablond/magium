@@ -60,10 +60,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -75,6 +77,7 @@
         {
           "id": "B3-Ch03a-Intro:s1",
           "variable": "v_b3_ch3_stats_unavailable",
+          "mode": "set",
           "value": 0,
           "conditions": null
         }
@@ -99,10 +102,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Interest"
             },
             {
               "variable": "v_b3_ch3_interest",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -116,10 +121,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Interest"
             },
             {
               "variable": "v_b3_ch3_interest",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -188,6 +195,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Assistance"
             }
           ],
@@ -216,6 +224,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Scouts"
             }
           ],
@@ -244,6 +253,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Food"
             }
           ],
@@ -257,6 +267,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Roam"
             }
           ],
@@ -270,6 +281,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Guided"
             }
           ],
@@ -338,15 +350,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Hag"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins != 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Food:c2",
@@ -355,15 +383,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Food:c3",
@@ -372,15 +416,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "1) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Food:c4",
@@ -389,15 +449,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "2) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 2
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -461,15 +537,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Hag"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins != 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Roam:c2",
@@ -478,15 +570,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Roam:c3",
@@ -495,15 +603,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "1) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Roam:c4",
@@ -512,15 +636,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "2) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 2
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -584,15 +724,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Hag"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins != 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Guided:c2",
@@ -601,15 +757,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "0) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Guided:c3",
@@ -618,15 +790,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "1) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Guided:c4",
@@ -635,15 +823,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Goblins"
             },
             {
               "variable": "v_b3_ch3_monsters",
-              "value": "2) if (v_b3_ch2_goblins == 1"
+              "mode": "set",
+              "value": 2
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b3_ch2_goblins == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b3_ch2_goblins",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -767,6 +971,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Mundane"
             }
           ],
@@ -835,6 +1040,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Mundane"
             }
           ],
@@ -863,6 +1069,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Travelling"
             }
           ],
@@ -979,15 +1186,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "0) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 0
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c2",
@@ -996,15 +1219,31 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "1) if (v_b2_ch8_energizer == 1"
+              "mode": "set",
+              "value": 1
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_b2_ch8_energizer == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c3",
@@ -1013,15 +1252,43 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "2) if (v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": 2
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c4",
@@ -1030,15 +1297,43 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "3) if (v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": 3
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 1 && v_ch11_saved_rose == 1 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c5",
@@ -1047,15 +1342,53 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "4) if (v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": 4
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c6",
@@ -1064,15 +1397,53 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "5) if (v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": 5
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B3-Ch03a-Travelling:c7",
@@ -1081,15 +1452,53 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Plans"
             },
             {
               "variable": "v_b3_ch3_plans",
-              "value": "6) if (v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1"
+              "mode": "set",
+              "value": 6
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_romance_rose == 0 && v_b2_ch8_energizer != 1 || v_ch11_saved_rose == 0 && v_b2_ch8_energizer != 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_romance_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_b2_ch8_energizer",
+                    "operator": "!=",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -1309,10 +1718,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Brinhorn"
             },
             {
               "variable": "v_b3_ch3_stats_unavailable",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1324,6 +1735,7 @@
         {
           "id": "B3-Ch03a-Plans:s1",
           "variable": "v_ac_b3_ch3_ominous",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_premonition == 4 && v_b3_ch1_unlock != 2)",
@@ -1350,6 +1762,7 @@
         {
           "id": "B3-Ch03a-Plans:s2",
           "variable": "v_b3_ch3_chains",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_b3_ch1_unlock == 2 || v_premonition < 4)",
@@ -1380,6 +1793,7 @@
         {
           "id": "B3-Ch03a-Plans:s3",
           "variable": "v_b3_ch3_chains",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_premonition == 4 && v_b3_ch1_unlock != 2)",
@@ -1430,6 +1844,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Brinhorn2"
             }
           ],
@@ -1458,6 +1873,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Brinhorn3"
             }
           ],
@@ -1486,10 +1902,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Workbench"
             },
             {
               "variable": "v_b3_ch3_magical",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1503,10 +1921,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Workbench"
             },
             {
               "variable": "v_b3_ch3_magical",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1520,10 +1940,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Workbench"
             },
             {
               "variable": "v_b3_ch3_magical",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -1612,6 +2034,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Technique"
             }
           ],
@@ -1640,6 +2063,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Fluke"
             }
           ],
@@ -1668,6 +2092,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Permission"
             }
           ],
@@ -1681,6 +2106,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Moron"
             }
           ],
@@ -1694,6 +2120,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Purpose"
             }
           ],
@@ -1722,6 +2149,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Recording"
             }
           ],
@@ -1750,6 +2178,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Recording"
             }
           ],
@@ -1778,6 +2207,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Recording"
             }
           ],
@@ -1806,6 +2236,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Corner"
             }
           ],
@@ -1834,6 +2265,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Happening"
             }
           ],
@@ -1847,6 +2279,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Listening"
             }
           ],
@@ -1860,6 +2293,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Constantly"
             }
           ],
@@ -1888,6 +2322,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Opinion"
             }
           ],
@@ -1916,6 +2351,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Opinion"
             }
           ],
@@ -1944,6 +2380,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Opinion"
             }
           ],
@@ -1972,6 +2409,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Suspecting"
             }
           ],
@@ -1985,6 +2423,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Hidden"
             }
           ],
@@ -1998,6 +2437,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Evasive"
             }
           ],
@@ -2026,6 +2466,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Exploring"
             }
           ],
@@ -2054,6 +2495,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Exploring"
             }
           ],
@@ -2082,6 +2524,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Exploring"
             }
           ],
@@ -2110,6 +2553,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Dagger"
             }
           ],
@@ -2138,10 +2582,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Affiliation"
             },
             {
               "variable": "v_b3_ch3_assassin",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2155,10 +2601,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Affiliation"
             },
             {
               "variable": "v_b3_ch3_assassin",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -2172,10 +2620,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Affiliation"
             },
             {
               "variable": "v_b3_ch3_assassin",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -2264,6 +2714,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Familiar"
             }
           ],
@@ -2277,6 +2728,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Friend"
             }
           ],
@@ -2290,6 +2742,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03a-Whim"
             }
           ],
@@ -2318,6 +2771,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03b-Complicate"
             }
           ],
@@ -2346,6 +2800,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03b-Complicate"
             }
           ],
@@ -2374,6 +2829,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B3-Ch03b-Complicate"
             }
           ],

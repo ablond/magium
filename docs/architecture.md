@@ -68,6 +68,7 @@ content/story-locales/<locale>/*.json
 - Helper UI i18n : `src/lib/i18n/ui.ts`
 - Chargeur runtime : `src/lib/content/packedContent.ts`
 - Moteur : `src/lib/story/engine.ts`
+- Stats : `src/lib/story/stats.ts`
 - Conditions : `src/lib/story/conditions.ts`
 - Types : `src/lib/story/types.ts`
 - Sauvegardes : `src/lib/storage/saves.ts`
@@ -82,3 +83,5 @@ content/story-locales/<locale>/*.json
 - L'app peut afficher les textes originaux, evidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement telechargeable.
 - Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.
 - Les JSON story i18n canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/<bundle>`, pas les fichiers JSON bruts.
+- Le moteur stocke les choix et allocations de stats dans `history` sous forme d'evenements types, puis valide les imports par replay.
+- Les assignments canoniques déclarent `mode: "set"` ou `mode: "add"` ; le runtime ne doit pas réinterpréter les deltas depuis des chaînes brutes.
