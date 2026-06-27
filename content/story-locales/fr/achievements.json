@@ -1,0 +1,11 @@
+{
+  "locale": "fr",
+  "messages": {
+    "achievement.v_ac_ch1_coward.title": "Qui est-ce que tu traites de lâche ?",
+    "achievement.v_ac_ch1_coward.caption": "Un vrai guerrier ne recule jamais devant un défi.",
+    "achievement.v_ac_ch1_die.title": "Ça commence bien",
+    "achievement.v_ac_ch1_die.caption": "Mort avant d’atteindre le premier point de contrôle.",
+    "achievement.v_ac_ch1_honesty.title": "L’honnêteté paie toujours.",
+    "achievement.v_ac_ch1_honesty.caption": "Bouche propre et main honnête mènent un homme par tous les chemins."
+  }
+}
