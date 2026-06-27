@@ -7,6 +7,7 @@ import {
   GENERATED_ROOT,
   INITIAL_SCENE_ID,
   RUNTIME_FORMAT_VERSION,
+  STORY_LOCALES_ROOT,
   UI_LOCALES_ROOT,
 } from "./constants.mjs";
 import { chapterIdFromFileName, chapterKeyFromFileName, parseMagiumChapter } from "./parser.mjs";
@@ -47,6 +48,7 @@ async function main() {
     defaultLocale: DEFAULT_LOCALE,
     initialSceneId: INITIAL_SCENE_ID,
     uiLocales: [],
+    storyLocales: [DEFAULT_LOCALE],
     chapters: [],
     sceneToChapter: {},
   };
@@ -90,9 +92,10 @@ async function main() {
   });
 
   index.uiLocales = await writeCanonicalUiLocales();
+  const storyLocalePacks = await writeCanonicalStoryLocales(index);
 
   await writeJson(path.join(CANONICAL_ROOT, "index.json"), index);
-  await writeRuntimePacks({ index, chapterFiles, uiLocales: index.uiLocales });
+  await writeRuntimePacks({ index, chapterFiles, uiLocales: index.uiLocales, storyLocalePacks });
 
   console.log(`Canonical content generated for ${chapterFiles.length} chapters`);
 }
@@ -127,6 +130,60 @@ async function writeCanonicalUiLocales() {
   ];
 }
 
+async function writeCanonicalStoryLocales(index) {
+  const packs = [];
+  const entries = await fs.readdir(STORY_LOCALES_ROOT, { withFileTypes: true }).catch((error) => {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  });
+  const localeDirs = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort(naturalCompare);
+  const storyLocales = new Set([DEFAULT_LOCALE]);
+  const chapterIds = new Set(index.chapters.map((chapter) => chapter.id));
+
+  for (const locale of localeDirs) {
+    const localeRoot = path.join(STORY_LOCALES_ROOT, locale);
+    const files = (await fs.readdir(localeRoot))
+      .filter((file) => file.endsWith(".json"))
+      .sort(naturalCompare);
+    if (!files.length) continue;
+
+    await ensureDir(path.join(CANONICAL_ROOT, "locales", locale));
+
+    for (const file of files) {
+      const bundleName = file.replace(/\.json$/, "");
+      if (locale === DEFAULT_LOCALE && bundleName !== "stats") {
+        throw new Error(`Default story locale source may only override stats, got ${locale}/${file}`);
+      }
+      if (!["achievements", "stats"].includes(bundleName) && !chapterIds.has(bundleName)) {
+        throw new Error(`Unknown story locale bundle ${locale}/${file}`);
+      }
+      const bundle = await readJson(path.join(localeRoot, file));
+      if (bundle.locale !== locale) {
+        throw new Error(`Story locale ${locale}/${file} declares locale "${bundle.locale}"`);
+      }
+      if (bundleName !== "achievements" && bundleName !== "stats" && bundle.chapterId !== bundleName) {
+        throw new Error(`Story locale ${locale}/${file} declares chapterId "${bundle.chapterId}"`);
+      }
+      if (!bundle.messages || typeof bundle.messages !== "object" || Array.isArray(bundle.messages)) {
+        throw new Error(`Story locale ${locale}/${file} must contain a messages object`);
+      }
+
+      await writeJson(path.join(CANONICAL_ROOT, "locales", locale, file), bundle);
+      packs.push(`locales/${locale}/${bundleName}`);
+      storyLocales.add(locale);
+    }
+  }
+
+  index.storyLocales = [
+    DEFAULT_LOCALE,
+    ...[...storyLocales].filter((locale) => locale !== DEFAULT_LOCALE).sort(naturalCompare),
+  ];
+  return packs;
+}
+
 async function parseAchievements(archiveRoot) {
   const chaptersRoot = path.join(archiveRoot, "chapters");
   const files = ["achievements1.json", "achievements2.json", "achievements3.json"];
@@ -154,7 +211,7 @@ async function parseAchievements(archiveRoot) {
   return { achievements, achievementMessages };
 }
 
-async function writeRuntimePacks({ index, chapterFiles, uiLocales }) {
+async function writeRuntimePacks({ index, chapterFiles, uiLocales, storyLocalePacks }) {
   await fs.rm(GENERATED_ROOT, { recursive: true, force: true });
   await ensureDir(path.join(GENERATED_ROOT, "packs"));
   const entries = [];
@@ -172,6 +229,10 @@ async function writeRuntimePacks({ index, chapterFiles, uiLocales }) {
     path.join(CANONICAL_ROOT, "locales", DEFAULT_LOCALE, "achievements.json"),
   ));
   entries.push("locales/en/achievements");
+  for (const key of storyLocalePacks) {
+    await writePackModule(key, await packFile(path.join(CANONICAL_ROOT, `${key}.json`)));
+    entries.push(key);
+  }
 
   for (const fileName of chapterFiles) {
     const chapterId = chapterIdFromFileName(fileName);

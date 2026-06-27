@@ -11,9 +11,11 @@ function makeContext(): StoryContext {
       defaultLocale: 'en',
       initialSceneId: 'Ch1-Intro1',
       uiLocales: ['en', 'fr'],
+      storyLocales: ['en', 'fr'],
       chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 2 }],
       sceneToChapter: { 'Ch1-Intro1': 'ch1', 'Ch1-Intro2': 'ch1' },
     },
+    locale: 'en',
     chapters: {
       ch1: {
         formatVersion: 1,
@@ -63,6 +65,12 @@ function makeContext(): StoryContext {
       messages: {
         'achievement.v_ac_start.title': 'A beginning',
         'achievement.v_ac_start.caption': 'Moved forward.',
+      },
+    },
+    statsLocale: {
+      locale: 'en',
+      messages: {
+        'stat.v_strength': 'Strength',
       },
     },
   }

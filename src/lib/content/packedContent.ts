@@ -19,7 +19,21 @@ export async function loadAchievements(): Promise<AchievementCatalog> {
 }
 
 export async function loadAchievementLocale(locale: LocaleCode): Promise<LocaleBundle> {
-  return loadPackage(locale === 'en' ? 'locales/en/achievements' : 'locales/en/achievements')
+  const base = await loadPackage<LocaleBundle>('locales/en/achievements')
+  const localeKey = `locales/${locale}/achievements` as ContentPackageKey
+  if (locale !== 'en' && localeKey in CONTENT_PACKAGE_LOADERS) {
+    return mergeLocaleBundles(base, await loadPackage(localeKey), locale)
+  }
+  return base
+}
+
+export async function loadStatsLocale(locale: LocaleCode): Promise<LocaleBundle> {
+  const base = await loadPackage<LocaleBundle>('locales/en/stats' as ContentPackageKey)
+  const localeKey = `locales/${locale}/stats` as ContentPackageKey
+  if (locale !== 'en' && localeKey in CONTENT_PACKAGE_LOADERS) {
+    return mergeLocaleBundles(base, await loadPackage(localeKey), locale)
+  }
+  return base
 }
 
 export async function loadUiLocale(locale: LocaleCode): Promise<LocaleBundle> {
@@ -54,7 +68,8 @@ export async function loadContextForScene(
   }
 
   const chapters = { ...(previous?.chapters ?? {}) }
-  const locales = { ...(previous?.locales ?? {}) }
+  const canReuseLocaleBundles = previous?.locale === locale
+  const locales = canReuseLocaleBundles ? { ...(previous?.locales ?? {}) } : {}
   if (!chapters[chapterId]) {
     chapters[chapterId] = await loadStoryChapter(chapterId)
   }
@@ -63,11 +78,28 @@ export async function loadContextForScene(
   }
 
   return {
+    locale,
     index,
     chapters,
     locales,
     achievements: previous?.achievements ?? await loadAchievements(),
-    achievementLocale: previous?.achievementLocale ?? await loadAchievementLocale(locale),
+    achievementLocale: canReuseLocaleBundles && previous?.achievementLocale
+      ? previous.achievementLocale
+      : await loadAchievementLocale(locale),
+    statsLocale: canReuseLocaleBundles && previous?.statsLocale
+      ? previous.statsLocale
+      : await loadStatsLocale(locale),
+  }
+}
+
+export function mergeLocaleBundles(base: LocaleBundle, override: LocaleBundle, locale: LocaleCode): LocaleBundle {
+  return {
+    ...base,
+    locale,
+    messages: {
+      ...base.messages,
+      ...override.messages,
+    },
   }
 }
 

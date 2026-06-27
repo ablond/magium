@@ -83,6 +83,7 @@ export type ContentIndex = {
   defaultLocale: LocaleCode
   initialSceneId: string
   uiLocales: LocaleCode[]
+  storyLocales: LocaleCode[]
   chapters: Array<{ id: string; key: string; sourceFile: string; sceneCount: number }>
   sceneToChapter: Record<string, string>
 }
@@ -125,11 +126,13 @@ export type RenderedScene = {
 }
 
 export type StoryContext = {
+  locale: LocaleCode
   index: ContentIndex
   chapters: Record<string, StoryChapter>
   locales: Record<string, LocaleBundle>
   achievements: AchievementCatalog
   achievementLocale: LocaleBundle
+  statsLocale: LocaleBundle
 }
 
 export type Settings = {

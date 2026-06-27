@@ -41,6 +41,13 @@ content/ui-locales/*.json
   -> src/generated/packs/locales__<locale>__ui.ts
   -> src/lib/i18n/ui.ts
   -> src/App.svelte
+
+content/story-locales/<locale>/*.json
+  -> tools/content/build-canonical.mjs
+  -> content/canonical/v1/locales/<locale>/
+  -> src/generated/packs/locales__<locale>__*.ts
+  -> src/lib/content/packedContent.ts
+  -> src/App.svelte
 ```
 
 ## Choix Techniques
@@ -50,13 +57,14 @@ content/ui-locales/*.json
 - IndexedDB natif : stockage local plus adapte que localStorage pour des blobs chiffrés et clés CryptoKey.
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
-- Locale UI séparée : `settings.uiLocale` change le shell FR/EN sans modifier `GameState.locale` ni la langue du récit.
+- Langue globale : le setting FR/EN met a jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
 
 ## Reperes De Code
 
 - UI principale : `src/App.svelte`
 - Style global : `src/app.css`
 - Sources UI i18n : `content/ui-locales/*.json`
+- Sources story i18n : `content/story-locales/**/*.json`
 - Helper UI i18n : `src/lib/i18n/ui.ts`
 - Chargeur runtime : `src/lib/content/packedContent.ts`
 - Moteur : `src/lib/story/engine.ts`
@@ -73,3 +81,4 @@ content/ui-locales/*.json
 - Le build ne doit pas exposer de fichier `.magium`.
 - L'app peut afficher les textes originaux, evidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement telechargeable.
 - Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.
+- Les JSON story i18n canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/<bundle>`, pas les fichiers JSON bruts.

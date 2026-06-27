@@ -1,0 +1,19 @@
+{
+  "locale": "en",
+  "messages": {
+    "stat.v_strength": "Strength",
+    "stat.v_toughness": "Toughness",
+    "stat.v_agility": "Speed",
+    "stat.v_reflexes": "Reflexes",
+    "stat.v_hearing": "Hearing",
+    "stat.v_perception": "Observation",
+    "stat.v_ancient_languages": "Ancient languages",
+    "stat.v_combat_technique": "Combat technique",
+    "stat.v_premonition": "Premonition",
+    "stat.v_bluff": "Bluff",
+    "stat.v_magical_sense": "Magical sense",
+    "stat.v_aura_hardening": "Aura hardening",
+    "stat.v_magical_power": "Magical power",
+    "stat.v_magical_knowledge": "Magical knowledge"
+  }
+}

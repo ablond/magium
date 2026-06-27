@@ -9,6 +9,7 @@ Le pipeline produit :
 - une archive brute immuable ;
 - un JSON canonique lisible ;
 - des bundles UI canoniques depuis les sources traduisibles locales ;
+- des bundles story i18n canoniques depuis les sources traduisibles locales ;
 - des paquets runtime compresses et verifies ;
 - un index global du contenu.
 
@@ -82,7 +83,11 @@ achievements.json
 story/<chapterId>.json
 locales/en/<chapterId>.json
 locales/en/achievements.json
+locales/en/stats.json
 locales/en/ui.json
+locales/fr/ch1.json
+locales/fr/achievements.json
+locales/fr/stats.json
 locales/fr/ui.json
 ```
 
@@ -111,7 +116,18 @@ content/ui-locales/en.json
 content/ui-locales/fr.json
 ```
 
-`content:parse` les copie dans `content/canonical/v1/locales/<locale>/ui.json`, ajoute les locales disponibles dans `index.uiLocales`, puis génère les packs runtime `locales/<locale>/ui`. Ces bundles concernent seulement le shell UI ; ils ne traduisent ni paragraphes, ni choix narratifs, ni stat labels, ni achievements.
+`content:parse` les copie dans `content/canonical/v1/locales/<locale>/ui.json`, ajoute les locales disponibles dans `index.uiLocales`, puis génère les packs runtime `locales/<locale>/ui`.
+
+Les sources story i18n sont les fichiers éditables :
+
+```text
+content/story-locales/en/stats.json
+content/story-locales/fr/ch1.json
+content/story-locales/fr/achievements.json
+content/story-locales/fr/stats.json
+```
+
+`content:parse` les copie dans `content/canonical/v1/locales/<locale>/`, ajoute les locales disponibles dans `index.storyLocales`, puis génère les packs runtime `locales/<locale>/<bundle>`. Les fichiers de chapitre doivent avoir exactement les mêmes `messageId` que `en`. Les achievements traduits peuvent être partiels et sont fusionnés avec `en` au runtime. Les stats doivent être complètes pour chaque locale de récit.
 
 ## Conditions
 
@@ -174,6 +190,9 @@ Le runtime :
 - achievements connus ;
 - cles UI identiques entre `en` et les autres locales UI ;
 - presence des packs `locales/<locale>/ui` dans `src/generated/contentPacks.ts` ;
+- cles strictes des chapitres traduits par rapport a `en` ;
+- cles stats identiques entre `en` et les autres locales de récit ;
+- cles achievements traduites connues et packs story presents ;
 - pas d'indice de `.magium` brut dans `src/generated/contentPacks.ts`.
 
 `pnpm dist:check` verifie apres build :

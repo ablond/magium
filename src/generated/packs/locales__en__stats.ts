@@ -1,0 +1,2 @@
+import type { RuntimePackage } from '../contentPacks'
+export const PACKAGE = {"encoding":"base64+gzip","sha256":"f193a49f0b56afcb2cc1c484983e308466aa32d184cd7148a490f42ac560b9ec","bytes":250,"data":"H4sIAAAAAAACA2WRy07DMBBFfyWadcUHZAds2CAQsI8mzo1j4YyDHy2o6r+jxK0dqSvfx/HYss9knWILaglCB5oRAmsEas8UIseHY8faWBP/qKXPBRjoUApRBhI7y6JT3kSPOWtqVvHkuZvYDxAjemWT56YGBextGkdq6WlbS6zc3HPsItQk5ietV37eoqZGBZ7APp/yclWlmlkbxbb7FneyGPQ66DVnTc3u8MWd4Hdo9ndYgIT9xOwLtsArLNE4oZbe+gB/5M1VwmN2Yq7I+84VxGO0+N3e++MmSxmih+g4rf91k6WMLulJENatX0VfLv+n7lMOBwIAAA=="} as const satisfies RuntimePackage
