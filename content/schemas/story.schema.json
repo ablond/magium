@@ -5,7 +5,7 @@
   "type": "object",
   "required": ["formatVersion", "chapterId", "sourceFile", "sceneOrder", "scenes"],
   "properties": {
-    "formatVersion": { "type": "integer", "const": 1 },
+    "formatVersion": { "type": "integer", "const": 2 },
     "chapterId": { "type": "string" },
     "sourceFile": { "type": "string" },
     "sceneOrder": { "type": "array", "items": { "type": "string" } },
@@ -17,10 +17,53 @@
         "properties": {
           "id": { "type": "string" },
           "blocks": { "type": "array" },
-          "choices": { "type": "array" },
-          "setVariables": { "type": "array" },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "messageId", "target", "setVariables", "special", "conditions"],
+              "properties": {
+                "id": { "type": "string" },
+                "messageId": { "type": "string" },
+                "target": { "type": "string" },
+                "setVariables": {
+                  "type": "array",
+                  "items": { "$ref": "#/$defs/variableAssignment" }
+                },
+                "special": { "type": ["string", "null"] },
+                "conditions": { "type": ["object", "null"] }
+              }
+            }
+          },
+          "setVariables": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/variableAssignment" },
+                {
+                  "type": "object",
+                  "required": ["id", "conditions"],
+                  "properties": {
+                    "id": { "type": "string" },
+                    "conditions": { "type": ["object", "null"] }
+                  }
+                }
+              ]
+            }
+          },
           "achievements": { "type": "array" }
         }
+      }
+    }
+  },
+  "$defs": {
+    "variableAssignment": {
+      "type": "object",
+      "required": ["variable", "mode", "value"],
+      "properties": {
+        "variable": { "type": "string" },
+        "mode": { "enum": ["set", "add"] },
+        "value": { "type": ["string", "number", "boolean"] }
       }
     }
   }

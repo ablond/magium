@@ -86,6 +86,7 @@ locales/en/achievements.json
 locales/en/stats.json
 locales/en/ui.json
 locales/fr/ch1.json
+locales/fr/ch2.json
 locales/fr/achievements.json
 locales/fr/stats.json
 locales/fr/ui.json
@@ -96,10 +97,18 @@ Le graphe `story/<chapterId>.json` contient la logique :
 - scene order ;
 - scenes ;
 - paragraph blocks avec `messageId` ;
-- choices avec `messageId`, target, assignments, special ;
+- choices avec `messageId`, target, assignments explicites, special ;
 - conditions en AST ;
 - set variables ;
 - achievements par scene.
+
+Depuis le format runtime V2, chaque assignment a la forme :
+
+```json
+{ "variable": "v_available_points", "mode": "add", "value": 3 }
+```
+
+`mode: "set"` affecte une valeur absolue. `mode: "add"` ajoute un delta numerique. Les valeurs signees dans les sources (`+3`, `-3`) deviennent des deltas, ce qui est obligatoire pour les points de stats et les boosts narratifs. Une valeur non signee comme `v_max_stat = 4` reste une affectation absolue.
 
 La locale `locales/en/<chapterId>.json` contient les textes originaux :
 
@@ -123,6 +132,7 @@ Les sources story i18n sont les fichiers éditables :
 ```text
 content/story-locales/en/stats.json
 content/story-locales/fr/ch1.json
+content/story-locales/fr/ch2.json
 content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```
@@ -152,6 +162,8 @@ Les conditions `.magium` sont parsees vers :
 
 `True` devient `null`.
 `False` devient `{ "anyOf": [] }`.
+
+Les lignes `choice(...) if (...)` doivent garder quatre donnees separees : target, assignments, `special` et condition. Le parser coupe le `if` apres la parenthese finale du choix pour eviter que la condition soit avalee dans `target`, `special` ou `setVariables`.
 
 ## Paquets Runtime
 
@@ -186,6 +198,8 @@ Le runtime :
 - 54 fichiers `.magium` archives ;
 - scene order coherent ;
 - targets existantes ou special explicite ;
+- assignments explicites avec `mode: "set" | "add"` ;
+- absence de condition `if` accidentellement embarquee dans un assignment ou un `special` ;
 - messages presents pour tous les `messageId` ;
 - achievements connus ;
 - cles UI identiques entre `en` et les autres locales UI ;

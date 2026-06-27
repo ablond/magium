@@ -91,10 +91,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Keep"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -108,10 +110,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Grab"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -123,6 +127,7 @@
         {
           "id": "B2-Ch11a-Intro:s1",
           "variable": "v_b2_ch11_added_hearing",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_b2_ch10_activate == 1 && v_b2_ch11_added_hearing == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_ch11_saved_rose == 0)",
@@ -167,6 +172,7 @@
         {
           "id": "B2-Ch11a-Intro:s2",
           "variable": "v_hearing",
+          "mode": "add",
           "value": 3,
           "conditions": {
             "raw": "(v_b2_ch10_activate == 1 && v_b2_ch11_added_hearing == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_ch11_saved_rose == 0)",
@@ -211,6 +217,7 @@
         {
           "id": "B2-Ch11a-Intro:s3",
           "variable": "v_hearing_aux",
+          "mode": "add",
           "value": 3,
           "conditions": {
             "raw": "(v_b2_ch10_activate == 1 && v_b2_ch11_added_hearing == 0 && v_b2_ch6_stat == 1 && v_b2_ch9_channel == 1 && v_ch11_saved_rose == 0)",
@@ -307,6 +314,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Prophecy"
             }
           ],
@@ -369,6 +377,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Prophecy"
             }
           ],
@@ -477,6 +486,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Prophecy2"
             }
           ],
@@ -545,10 +555,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Kneel"
             },
             {
               "variable": "v_b2_ch11_kneel",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -562,10 +574,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Kneel"
             },
             {
               "variable": "v_b2_ch11_kneel",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -579,10 +593,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Kneel"
             },
             {
               "variable": "v_b2_ch11_kneel",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -701,6 +717,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Absorb"
             }
           ],
@@ -729,6 +746,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Misery"
             }
           ],
@@ -757,6 +775,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Attention"
             }
           ],
@@ -770,6 +789,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Eventually"
             }
           ],
@@ -798,11 +818,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11a-Sanity) if (v_ch11_saved_rose == 1"
+              "mode": "set",
+              "value": "B2-Ch11a-Sanity"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11a-Attention:c2",
@@ -811,11 +846,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11a-Invitation) if (v_ch11_saved_rose == 0"
+              "mode": "set",
+              "value": "B2-Ch11a-Invitation"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -839,11 +889,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11a-Sanity) if (v_ch11_saved_rose == 1"
+              "mode": "set",
+              "value": "B2-Ch11a-Sanity"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "B2-Ch11a-Eventually:c2",
@@ -852,11 +917,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "B2-Ch11a-Invitation) if (v_ch11_saved_rose == 0"
+              "mode": "set",
+              "value": "B2-Ch11a-Invitation"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch11_saved_rose == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch11_saved_rose",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -920,6 +1000,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Cabin"
             }
           ],
@@ -988,6 +1069,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Cabin"
             }
           ],
@@ -1016,6 +1098,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Attack"
             }
           ],
@@ -1029,6 +1112,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Wait"
             }
           ],
@@ -1057,6 +1141,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -1070,6 +1155,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -1106,6 +1192,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Changed"
             }
           ],
@@ -1134,10 +1221,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Daylight"
             },
             {
               "variable": "v_b2_ch11_save_parents",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1151,10 +1240,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Restrain"
             },
             {
               "variable": "v_b2_ch11_save_parents",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1183,6 +1274,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Daylight2"
             }
           ],
@@ -1194,6 +1286,7 @@
         {
           "id": "B2-Ch11a-Daylight:s1",
           "variable": "v_ac_b2_ch11_hidden",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -1224,6 +1317,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Pitchfork"
             }
           ],
@@ -1252,10 +1346,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Trying"
             },
             {
               "variable": "v_b2_ch11_save_parents",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -1269,6 +1365,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Spotted"
             }
           ],
@@ -1297,6 +1394,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Pitchfork"
             }
           ],
@@ -1325,6 +1423,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Pitchfork"
             }
           ],
@@ -1353,6 +1452,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Eliminated"
             }
           ],
@@ -1421,10 +1521,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Transparent"
             },
             {
               "variable": "v_b2_ch11_both",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1438,10 +1540,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Transparent"
             },
             {
               "variable": "v_b2_ch11_both",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1614,6 +1718,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Luggage"
             }
           ],
@@ -1722,6 +1827,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Tightly"
             }
           ],
@@ -1784,6 +1890,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Funny"
             }
           ],
@@ -1797,6 +1904,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Entertainment"
             }
           ],
@@ -1810,6 +1918,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Nerves"
             }
           ],
@@ -1838,6 +1947,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Destination"
             }
           ],
@@ -1866,6 +1976,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Destination"
             }
           ],
@@ -1894,6 +2005,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Destination"
             }
           ],
@@ -1962,6 +2074,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Underground"
             }
           ],
@@ -1990,6 +2103,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Bored"
             }
           ],
@@ -2003,6 +2117,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Understand"
             }
           ],
@@ -2031,6 +2146,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Materialized"
             }
           ],
@@ -2059,6 +2175,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11a-Materialized"
             }
           ],
@@ -2087,6 +2204,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "B2-Ch11b-Collars"
             }
           ],

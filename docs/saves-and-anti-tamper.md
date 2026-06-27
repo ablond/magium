@@ -62,7 +62,7 @@ Si un octet du ciphertext, de l'IV ou de l'additionalData change, le decrypt doi
 Autosave :
 
 - slot `autosave` ;
-- mis a jour apres chaque choix.
+- mis a jour apres chaque choix et apres chaque allocation de stats confirmee.
 
 Slots manuels :
 
@@ -122,6 +122,15 @@ L'import :
 
 Une sauvegarde decryptee mais incoherente doit etre rejetee.
 
+`history` contient deux types d'evenements :
+
+- `choice` : choix narratif visible au moment du replay ;
+- `stats` : allocation manuelle de points.
+
+Le replay des allocations verifie que la stat etait visible, qu'elle etait allouable, que `v_available_points` suffisait, et que la valeur finale ne depassait pas `v_max_stat`. Il reconstruit aussi les variables `_aux` et les compteurs de points. Une sauvegarde qui modifie directement une stat ou un compteur est donc rejetee si elle ne correspond pas au chemin rejoue.
+
+Le `historyDigest` part de `magium:v2:initial`. Ce changement, combine au `contentVersion` runtime V2, invalide les anciennes sauvegardes dont l'historique ne contient pas les evenements types.
+
 Les erreurs affichees cote UI doivent rester comprehensibles, par exemple `Unsupported save file` ou `This save file does not match a playable route`.
 
 ## Donnees Non Chiffrees Acceptables
@@ -158,4 +167,5 @@ Ce qui est garanti par l'implementation :
 - pas de manipulation triviale de localStorage ;
 - pas de variables de jeu en clair ;
 - detection des fichiers exportes modifies ;
-- detection d'un etat incompatible avec un chemin jouable.
+- detection d'un etat incompatible avec un chemin jouable ;
+- detection des stats et compteurs de points incompatibles avec le replay.

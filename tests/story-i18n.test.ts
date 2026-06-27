@@ -35,8 +35,8 @@ describe('story i18n', () => {
       },
       ['v_strength', 'v_agility'],
     )).toEqual([
-      { variable: 'v_strength', label: 'Force', value: 2 },
-      { variable: 'v_agility', label: 'Vitesse', value: 3 },
+      { variable: 'v_strength', label: 'Force', value: 2, baseValue: 2, pending: 0, max: 3, overMax: false },
+      { variable: 'v_agility', label: 'Vitesse', value: 3, baseValue: 3, pending: 0, max: 3, overMax: false },
     ])
   })
 })

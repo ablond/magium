@@ -119,14 +119,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch4_objectives",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -140,14 +143,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch4_objectives",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -161,14 +167,17 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Intro2"
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 0
             },
             {
               "variable": "v_ch4_objectives",
+              "mode": "set",
               "value": 3
             }
           ],
@@ -251,6 +260,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Beacon"
             }
           ],
@@ -264,6 +274,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Survivor"
             }
           ],
@@ -292,6 +303,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Accept"
             }
           ],
@@ -305,6 +317,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Propose"
             }
           ],
@@ -333,6 +346,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Accept"
             }
           ],
@@ -346,6 +360,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Propose"
             }
           ],
@@ -374,6 +389,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -387,6 +403,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -406,6 +423,7 @@
         {
           "id": "Ch4-Accept:s1",
           "variable": "v_ac_ch4_noble",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -436,11 +454,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Dave-vs-Eiden) if (v_ch1_show_yourself != 2"
+              "mode": "set",
+              "value": "Ch4-Dave-vs-Eiden"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch1_show_yourself != 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch1_show_yourself",
+                    "operator": "!=",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Propose:c2",
@@ -449,11 +482,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Face-shown) if (v_ch1_show_yourself == 2"
+              "mode": "set",
+              "value": "Ch4-Face-shown"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch1_show_yourself == 2)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch1_show_yourself",
+                    "operator": "==",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -477,6 +525,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Fewer-enemies"
             }
           ],
@@ -490,6 +539,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Gruesome-fate"
             }
           ],
@@ -518,6 +568,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Truth"
             }
           ],
@@ -531,6 +582,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Lie"
             }
           ],
@@ -559,6 +611,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch1-Intro1"
             }
           ],
@@ -572,6 +625,7 @@
           "setVariables": [
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -608,22 +662,27 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -635,6 +694,7 @@
         {
           "id": "Ch4-Truth:s1",
           "variable": "v_ac_ch4_kneed",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -665,6 +725,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Barry-vs-Dave"
             }
           ],
@@ -759,11 +820,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Persuade) if (v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0"
+              "mode": "set",
+              "value": "Ch4-Persuade"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Barry-vs-Dave:c2",
@@ -772,11 +854,32 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Agree) if (v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0"
+              "mode": "set",
+              "value": "Ch4-Agree"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch3_bloodied == 0 && v_ch3_kate_badly_hurt == 0)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 0
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Barry-vs-Dave:c3",
@@ -785,11 +888,36 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Strategy) if (v_ch3_bloodied == 1 || v_ch3_kate_badly_hurt == 1"
+              "mode": "set",
+              "value": "Ch4-Strategy"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_ch3_bloodied == 1 || v_ch3_kate_badly_hurt == 1)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_bloodied",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_ch3_kate_badly_hurt",
+                    "operator": "==",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [],
@@ -813,10 +941,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Kate-meets-Eiden"
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -845,10 +975,12 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Kate-meets-Eiden"
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -877,22 +1009,27 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 2
             }
           ],
@@ -921,6 +1058,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Doubted"
             }
           ],
@@ -934,6 +1072,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Hiding"
             }
           ],
@@ -947,6 +1086,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Relieved"
             }
           ],
@@ -975,6 +1115,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Barry-vs-Dave"
             }
           ],
@@ -1003,6 +1144,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Barry-vs-Dave"
             }
           ],
@@ -1031,6 +1173,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Barry-vs-Dave"
             }
           ],
@@ -1113,6 +1256,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Busy"
             }
           ],
@@ -1126,6 +1270,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Defeat"
             }
           ],
@@ -1188,6 +1333,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Busy2"
             }
           ],
@@ -1320,15 +1466,69 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Daren-kill) if (v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3"
+              "mode": "set",
+              "value": "Ch4-Daren-kill"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Busy2:c2",
@@ -1337,11 +1537,64 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Daren-spare) if (v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3"
+              "mode": "set",
+              "value": "Ch4-Daren-spare"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Busy2:c3",
@@ -1350,33 +1603,65 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 4
             }
           ],
-          "special": "checkpoint_save) if (v_agility < 3 && v_perception < 3 && v_reflexes < 3",
-          "conditions": null
+          "special": "checkpoint_save",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_perception < 3 && v_reflexes < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_perception",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch4-Busy2:s1",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility == 3 && v_reflexes < 3 || v_perception == 3 && v_agility < 3 && v_reflexes < 3 || v_reflexes == 3)",
@@ -1435,6 +1720,7 @@
         {
           "id": "Ch4-Busy2:s2",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility < 3 && v_perception < 3 && v_reflexes < 3)",
@@ -1485,6 +1771,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Bait-kill"
             }
           ],
@@ -1498,6 +1785,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Bait-spare"
             }
           ],
@@ -1526,26 +1814,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 3
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1574,26 +1868,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 3
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -1622,26 +1922,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 3
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 1
             }
           ],
@@ -1704,6 +2010,7 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch4-Defeat2"
             }
           ],
@@ -1836,11 +2143,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Defeat-kill) if (v_strength == 3"
+              "mode": "set",
+              "value": "Ch4-Defeat-kill"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_strength == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Defeat2:c2",
@@ -1849,11 +2171,26 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Defeat-spare) if (v_strength == 3"
+              "mode": "set",
+              "value": "Ch4-Defeat-spare"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_strength == 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "==",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Defeat2:c3",
@@ -1862,11 +2199,54 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Defeat-kill) if (v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3"
+              "mode": "set",
+              "value": "Ch4-Defeat-kill"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Defeat2:c4",
@@ -1875,11 +2255,54 @@
           "setVariables": [
             {
               "variable": "v_current_scene",
-              "value": "Ch4-Defeat-spare) if (v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3"
+              "mode": "set",
+              "value": "Ch4-Defeat-spare"
             }
           ],
           "special": null,
-          "conditions": null
+          "conditions": {
+            "raw": "(v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "==",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "Ch4-Defeat2:c5",
@@ -1888,33 +2311,65 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 6
             }
           ],
-          "special": "checkpoint_save) if (v_agility < 3 && v_reflexes < 3 && v_strength < 3",
-          "conditions": null
+          "special": "checkpoint_save",
+          "conditions": {
+            "raw": "(v_agility < 3 && v_reflexes < 3 && v_strength < 3)",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "comparison",
+                    "variable": "v_agility",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_reflexes",
+                    "operator": "<",
+                    "value": 3
+                  },
+                  {
+                    "type": "comparison",
+                    "variable": "v_strength",
+                    "operator": "<",
+                    "value": 3
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "setVariables": [
         {
           "id": "Ch4-Defeat2:s1",
           "variable": "v_ch4_dave_defeat",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_strength == 3)",
@@ -1935,6 +2390,7 @@
         {
           "id": "Ch4-Defeat2:s2",
           "variable": "v_ch4_dave_defeat",
+          "mode": "set",
           "value": 2,
           "conditions": {
             "raw": "(v_agility == 3 && v_strength < 3)",
@@ -1961,6 +2417,7 @@
         {
           "id": "Ch4-Defeat2:s3",
           "variable": "v_ch4_dave_defeat",
+          "mode": "set",
           "value": 3,
           "conditions": {
             "raw": "(v_reflexes == 3 && v_agility < 3 && v_strength < 3)",
@@ -1993,6 +2450,7 @@
         {
           "id": "Ch4-Defeat2:s4",
           "variable": "v_ch4_dave_defeat",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility < 3 && v_reflexes < 3 && v_strength < 3)",
@@ -2025,6 +2483,7 @@
         {
           "id": "Ch4-Defeat2:s5",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 0,
           "conditions": {
             "raw": "(v_agility == 3 && v_strength < 3 || v_reflexes == 3 && v_agility < 3 && v_strength < 3 || v_strength == 3)",
@@ -2083,6 +2542,7 @@
         {
           "id": "Ch4-Defeat2:s6",
           "variable": "v_is_dead",
+          "mode": "set",
           "value": 1,
           "conditions": {
             "raw": "(v_agility < 3 && v_reflexes < 3 && v_strength < 3)",
@@ -2187,26 +2647,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 0
             }
           ],
@@ -2218,6 +2684,7 @@
         {
           "id": "Ch4-Defeat-kill:s1",
           "variable": "v_ac_ch4_cutthroat",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }
@@ -2302,26 +2769,32 @@
           "setVariables": [
             {
               "variable": "v_next_chapter_crash",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_current_scene",
+              "mode": "set",
               "value": "Ch5-Intro"
             },
             {
               "variable": "v_chapter_save_counter",
+              "mode": "set",
               "value": 5
             },
             {
               "variable": "v_checkpoint_rich",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_spared_dave",
+              "mode": "set",
               "value": 1
             },
             {
               "variable": "v_ch4_ending",
+              "mode": "set",
               "value": 5
             }
           ],
@@ -2333,6 +2806,7 @@
         {
           "id": "Ch4-Defeat-spare:s1",
           "variable": "v_ac_ch4_cutthroat",
+          "mode": "set",
           "value": 1,
           "conditions": null
         }

@@ -1,13 +1,44 @@
 import { describe, expect, it } from "vitest";
-import { parseChoiceLine, parseConditionExpression, parseMagiumChapter } from "../tools/content/parser.mjs";
+import { parseChoiceLine, parseConditionExpression, parseMagiumChapter, parseSetLine } from "../tools/content/parser.mjs";
 
 describe("magium parser", () => {
   it("parses quoted choices, assignments, and specials", () => {
     const choice = parseChoiceLine('choice(""I see no reason."", Ch1-Cutthroat Dave, v_current_scene = Ch1-Cutthroat Dave, special:checkpoint_save)');
     expect(choice.text).toBe('"I see no reason."');
     expect(choice.target).toBe("Ch1-Cutthroat Dave");
-    expect(choice.setVariables).toEqual([{ variable: "v_current_scene", value: "Ch1-Cutthroat Dave" }]);
+    expect(choice.setVariables).toEqual([{ variable: "v_current_scene", mode: "set", value: "Ch1-Cutthroat Dave" }]);
     expect(choice.special).toBe("checkpoint_save");
+  });
+
+  it("keeps choice targets, assignments, specials, and conditions separated", () => {
+    const choice = parseChoiceLine('choice("Continue", B3-Ch10b-Ideal, v_current_scene = B3-Ch10b-Ideal, v_available_points = +3, special:stats) if (v_b3_ch1_unlock == 2)');
+
+    expect(choice.target).toBe("B3-Ch10b-Ideal");
+    expect(choice.special).toBe("stats");
+    expect(choice.setVariables).toEqual([
+      { variable: "v_current_scene", mode: "set", value: "B3-Ch10b-Ideal" },
+      { variable: "v_available_points", mode: "add", value: 3 },
+    ]);
+    expect(choice.conditions).toEqual({
+      raw: "(v_b3_ch1_unlock == 2)",
+      anyOf: [{ allOf: [{ type: "comparison", variable: "v_b3_ch1_unlock", operator: "==", value: 2 }] }],
+    });
+  });
+
+  it("does not treat quoted ') if' text as a choice condition", () => {
+    const choice = parseChoiceLine('choice("What happens ) if I ask?", Ch1-Intro2, v_current_scene = Ch1-Intro2)');
+
+    expect(choice.text).toBe("What happens ) if I ask?");
+    expect(choice.target).toBe("Ch1-Intro2");
+    expect(choice.conditions).toBeNull();
+  });
+
+  it("parses signed numeric assignments as deltas", () => {
+    expect(parseChoiceLine('choice("Continue", Ch2-Stats, v_available_points = +3, v_max_stat = 4)').setVariables).toEqual([
+      { variable: "v_available_points", mode: "add", value: 3 },
+      { variable: "v_max_stat", mode: "set", value: 4 },
+    ]);
+    expect(parseSetLine("set(v_hearing,-3)")).toMatchObject({ variable: "v_hearing", mode: "add", value: -3 });
   });
 
   it("parses boolean and grouped conditions", () => {

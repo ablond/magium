@@ -182,11 +182,11 @@ export function parseMagiumChapter(source, { chapterId, sourceFile }) {
 }
 
 export function parseChoiceLine(line, sourceFile = "inline", lineNumber = 1) {
-  const match = line.match(/^choice\((?<body>.*)\)(?: if (?<condition>.*))?$/);
-  if (!match) {
+  if (!line.startsWith("choice(")) {
     throw new Error(`${sourceFile}:${lineNumber}: invalid choice syntax`);
   }
-  const { text, rest } = parseLeadingQuotedText(match.groups.body, sourceFile, lineNumber);
+  const { body, condition } = splitChoiceLineBody(line, sourceFile, lineNumber);
+  const { text, rest } = parseLeadingQuotedText(body, sourceFile, lineNumber);
   const tokens = splitChoiceArgs(rest);
   const target = tokens.shift() || "";
   const setVariables = [];
@@ -212,7 +212,7 @@ export function parseChoiceLine(line, sourceFile = "inline", lineNumber = 1) {
     target: target.trim(),
     setVariables,
     special,
-    conditions: match.groups.condition ? parseConditionExpression(match.groups.condition) : null,
+    conditions: condition ? parseConditionExpression(condition) : null,
   };
 }
 
@@ -221,9 +221,11 @@ export function parseSetLine(line, sourceFile = "inline", lineNumber = 1) {
   if (!match) {
     throw new Error(`${sourceFile}:${lineNumber}: invalid set syntax`);
   }
+  const assignment = buildAssignment(match.groups.variable.trim(), match.groups.value.trim());
   return {
-    variable: match.groups.variable.trim(),
-    value: parseValue(match.groups.value.trim()),
+    variable: assignment.variable,
+    mode: assignment.mode,
+    value: assignment.value,
     conditions: match.groups.condition ? parseConditionExpression(match.groups.condition) : null,
   };
 }
@@ -310,14 +312,61 @@ function splitChoiceArgs(rest) {
   return rest.split(",").map((token) => token.trim());
 }
 
+function splitChoiceLineBody(line, sourceFile, lineNumber) {
+  const bodyWithClose = line.slice("choice(".length);
+  let inQuotedText = false;
+  let closingIndex = -1;
+  for (let i = 0; i < bodyWithClose.length; i += 1) {
+    const char = bodyWithClose[i];
+    if (char === '"') {
+      if (!inQuotedText) {
+        inQuotedText = true;
+        continue;
+      }
+      const next = bodyWithClose[i + 1];
+      if (next === "," || next === undefined) {
+        inQuotedText = false;
+      }
+      continue;
+    }
+    if (!inQuotedText && char === ")") {
+      closingIndex = i;
+      break;
+    }
+  }
+  if (closingIndex < 0) {
+    throw new Error(`${sourceFile}:${lineNumber}: invalid choice syntax`);
+  }
+  const trailing = bodyWithClose.slice(closingIndex + 1).trim();
+  if (!trailing) {
+    return {
+      body: bodyWithClose.slice(0, closingIndex),
+      condition: null,
+    };
+  }
+  if (!trailing.startsWith("if ")) {
+    throw new Error(`${sourceFile}:${lineNumber}: invalid choice syntax`);
+  }
+  return {
+    body: bodyWithClose.slice(0, closingIndex),
+    condition: trailing.slice("if ".length).trim(),
+  };
+}
+
 function parseAssignment(token) {
   const match = token.match(/^(?<variable>\w+)\s*=\s*(?<value>.+)$/);
   if (!match) {
     return null;
   }
+  return buildAssignment(match.groups.variable, match.groups.value.trim());
+}
+
+function buildAssignment(variable, rawValue) {
+  const value = parseValue(rawValue);
   return {
-    variable: match.groups.variable,
-    value: parseValue(match.groups.value.trim()),
+    variable,
+    mode: typeof value === "number" && /^[+\-]/.test(rawValue) ? "add" : "set",
+    value,
   };
 }
 

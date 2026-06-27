@@ -6,6 +6,14 @@
     "achievement.v_ac_ch1_die.title": "Ça commence bien",
     "achievement.v_ac_ch1_die.caption": "Mort avant d’atteindre le premier point de contrôle.",
     "achievement.v_ac_ch1_honesty.title": "L’honnêteté paie toujours.",
-    "achievement.v_ac_ch1_honesty.caption": "Bouche propre et main honnête mènent un homme par tous les chemins."
+    "achievement.v_ac_ch1_honesty.caption": "Bouche propre et main honnête mènent un homme par tous les chemins.",
+    "achievement.v_ac_ch2_talker.title": "Beau parleur",
+    "achievement.v_ac_ch2_talker.caption": "Choisir les bons mots au bon moment peut être une tâche redoutable pour beaucoup, mais tu rends ça si facile.",
+    "achievement.v_ac_ch2_nails.title": "Dur à cuire",
+    "achievement.v_ac_ch2_nails.caption": "Avoir reçu une dague dans le cou et être encore là pour le raconter.",
+    "achievement.v_ac_ch2_master.title": "Maître des arts martiaux",
+    "achievement.v_ac_ch2_master.caption": "Désarmer un adversaire avec succès en combattant à mains nues.",
+    "achievement.v_ac_ch2_unlikely.title": "Une alliée improbable",
+    "achievement.v_ac_ch2_unlikely.caption": "Parfois, les amis viennent des endroits les plus inattendus."
   }
 }

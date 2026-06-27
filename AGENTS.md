@@ -114,6 +114,9 @@ Ordre attendu :
 - Le fallback runtime est `en`.
 - Les chunks runtime doivent rester lazy-loades par chapitre/langue.
 - Les stats et achievements affiches doivent suivre `GameState.locale`, avec fallback anglais par bundle absent.
+- Les assignments canoniques sont explicites : `mode: "set"` remplace, `mode: "add"` additionne. Les valeurs source signees `+N` / `-N` sont des deltas.
+- `v_max_stat` pilote le plafond manuel des stats (`3` par defaut, `4` quand le contenu original le definit). Les boosts narratifs peuvent depasser ce plafond, mais pas l'allocation UI.
+- `history` contient des evenements types `choice` et `stats`; le replay doit verifier les allocations de stats, les points disponibles et les plafonds.
 
 ## Anti-Triche Et Sauvegardes
 
@@ -126,6 +129,7 @@ Contraintes :
 - authentifier les donnees via AES-GCM additionalData ;
 - maintenir un `historyDigest` chaine ;
 - verifier un import par replay du parcours ;
+- rejouer aussi les allocations de stats ;
 - rejeter une sauvegarde decryptee si son etat ne correspond pas a un chemin jouable.
 
 Ne pas :
@@ -153,8 +157,9 @@ Apres changement UI, verifier au moins :
 - mobile environ 390 x 844 ;
 - scene avec paragraphe long ;
 - scene qui commence par `...` ;
+- resultat de stat check apres un choix narratif, localise FR/EN ;
 - panneau sauvegardes ;
-- panneau Abilities avant/apres revelation ;
+- panneau Stats avant/apres revelation, allocation, max 3 puis 4, stats aura ;
 - panneau achievements ;
 - panneau settings/about ;
 - bascule de langue FR/EN sans reset de partie, avec récit et stats traduits quand le pack existe.
@@ -169,7 +174,7 @@ Apres changement UI, verifier au moins :
 ## Prochaines Iterations Logiques
 
 - UI de selection de chapitre/livre.
-- Amelioration de la gestion des stats et stat checks.
+- Tests navigateur automatises pour les resultats de stat checks post-choix.
 - Workflow i18n narratif : export XLIFF/JSON de traduction, import, coverage report.
 - Tests navigateur automatises pour export/import et offline.
 - Gestion plus fine des saves incompatibles lors d'un changement de `contentVersion`.
