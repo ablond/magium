@@ -40,13 +40,18 @@ async function main() {
       }
       for (const choice of scene.choices) {
         assertMessage(locale.messages, choice.messageId, `${chapter.id}/${sceneId} choice`);
+        assertAssignments(choice.setVariables, `${chapter.id}/${sceneId} choice ${choice.id}`);
         if (!choice.target && !choice.special) {
           throw new Error(`${chapter.id}/${sceneId}: choice ${choice.id} has no target or special`);
         }
         if (choice.target && !index.sceneToChapter[choice.target]) {
           throw new Error(`${chapter.id}/${sceneId}: choice ${choice.id} targets missing scene ${choice.target}`);
         }
+        if (typeof choice.special === "string" && choice.special.includes(") if ")) {
+          throw new Error(`${chapter.id}/${sceneId}: choice ${choice.id} has a condition embedded in special`);
+        }
       }
+      assertAssignments(scene.setVariables, `${chapter.id}/${sceneId} scene assignments`);
       for (const achievement of scene.achievements) {
         assertMessage(locale.messages, achievement.messageId, `${chapter.id}/${sceneId} scene achievement`);
         if (!achievementIds.has(achievement.variable)) {
@@ -176,6 +181,29 @@ function assertSubsetMessageKeys(expected, actual, context) {
 function assertGeneratedPack(generated, key) {
   if (!generated.includes(JSON.stringify(key))) {
     throw new Error(`Missing generated content pack ${key}`);
+  }
+}
+
+function assertAssignments(assignments, context) {
+  if (!Array.isArray(assignments)) {
+    throw new Error(`${context} assignments must be an array`);
+  }
+  for (const assignment of assignments) {
+    if (!assignment || typeof assignment !== "object" || Array.isArray(assignment)) {
+      throw new Error(`${context} contains invalid assignment`);
+    }
+    if (typeof assignment.variable !== "string" || !assignment.variable) {
+      throw new Error(`${context} contains assignment without a variable`);
+    }
+    if (assignment.mode !== "set" && assignment.mode !== "add") {
+      throw new Error(`${context} assignment for ${assignment.variable} must declare mode set/add`);
+    }
+    if (assignment.mode === "add" && typeof assignment.value !== "number") {
+      throw new Error(`${context} assignment for ${assignment.variable} adds a non-numeric value`);
+    }
+    if (typeof assignment.value === "string" && assignment.value.includes(") if ")) {
+      throw new Error(`${context} assignment for ${assignment.variable} has a condition embedded in its value`);
+    }
   }
 }
 

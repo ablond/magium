@@ -25,10 +25,76 @@
     "currentSceneId": { "type": "string" },
     "variables": { "type": "object" },
     "achievements": { "type": "object" },
-    "checkpoint": { "type": ["object", "null"] },
-    "history": { "type": "array" },
+    "checkpoint": {
+      "type": ["object", "null"],
+      "properties": {
+        "currentSceneId": { "type": "string" },
+        "variables": { "type": "object" },
+        "achievements": { "type": "object" },
+        "historyLength": { "type": "integer" },
+        "historyDigest": { "type": "string" }
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/choiceHistoryEvent" },
+          { "$ref": "#/$defs/statAllocationHistoryEvent" }
+        ]
+      }
+    },
     "historyDigest": { "type": "string" },
     "createdAt": { "type": "string" },
     "updatedAt": { "type": "string" }
+  },
+  "$defs": {
+    "variableAssignment": {
+      "type": "object",
+      "required": ["variable", "mode", "value"],
+      "properties": {
+        "variable": { "type": "string" },
+        "mode": { "enum": ["set", "add"] },
+        "value": { "type": ["string", "number", "boolean"] }
+      }
+    },
+    "choiceHistoryEvent": {
+      "type": "object",
+      "required": ["type", "sceneId", "choiceId", "target", "special", "assignments"],
+      "properties": {
+        "type": { "const": "choice" },
+        "sceneId": { "type": "string" },
+        "choiceId": { "type": "string" },
+        "target": { "type": "string" },
+        "special": { "type": ["string", "null"] },
+        "assignments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/variableAssignment" }
+        }
+      }
+    },
+    "statAllocationHistoryEvent": {
+      "type": "object",
+      "required": ["type", "sceneId", "deltas", "assignments"],
+      "properties": {
+        "type": { "const": "stats" },
+        "sceneId": { "type": "string" },
+        "deltas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["variable", "amount"],
+            "properties": {
+              "variable": { "type": "string" },
+              "amount": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "assignments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/variableAssignment" }
+        }
+      }
+    }
   }
 }

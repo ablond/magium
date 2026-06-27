@@ -23,13 +23,13 @@ Principes retenus :
 
 | Original | Français | Note |
 | --- | --- | --- |
-| stillwater | sans-aura | Choix provisoire, non validé. Le terme est problématique : les `stillwaters` ne sont pas réellement sans aura, ils ont une aura indiscernable de celle d'un humain ordinaire. Candidats à réévaluer avant `ch2` : `Dormant`, `Eau dormante`, `sans-remous`, `Calme-Eau`. |
+| stillwater | sans-aura | Choix stabilisé à partir de `ch2`. Le terme reste techniquement imparfait, car les `stillwaters` ont une aura indiscernable de celle d'un humain ordinaire plutôt qu'une absence totale d'aura, mais il est court, lisible, déjà établi dans `ch1`, et fonctionne comme nom de caste. |
 | mage | mage | Terme fantasy standard. |
 | shield spell | sort de bouclier | Terme transparent, à réutiliser. |
 | white magic | magie blanche | Terme fantasy standard. |
 | throwing knives / daggers | couteaux de lancer / dagues | Choix selon le contexte de la phrase source. |
 | checkpoint | point de contrôle | Terme UI et récit cohérent. |
-| abilities | aptitudes | Déjà retenu dans l'UI FR. |
+| abilities | Stats | Libellé UI FR retenu pour le panneau des stats. Les identifiants techniques `abilities.*` restent en anglais. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
 | Speed | Vitesse | Stat. |
@@ -68,7 +68,7 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 
 ## Adaptations Notables
 
-- `stillwater` est provisoirement rendu par `sans-aura` dans `ch1`, mais ce choix reste ouvert. Il ne doit pas être propagé aux chapitres suivants sans révision.
+- `stillwater` est rendu par `sans-aura` : le terme est volontairement conservé malgré son imperfection technique pour préserver la continuité avec `ch1` et garder un nom de caste immédiatement lisible.
 - `codswallop` devient `baratin` : effet oral et méprisant conservé sans anglicisme.
 - `out of your hair` devient `te débarrasser le plancher` : expression idiomatique française naturelle dans la bouche de Cutthroat Dave.
 - `A clean mouth and an honest hand...` devient `Bouche propre et main honnête...` : tournure proverbiale conservée, sans chercher un proverbe français préexistant inexact.
@@ -77,5 +77,4 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 ## Points Ouverts
 
 - `Eastern Continent` est conservé comme nom propre conformément aux règles du projet, même quand la source varie entre majuscule et minuscule.
-- `stillwater` doit être retravaillé avant `ch2`. `sans-aura` est clair mais techniquement fragile ; `Dormant` sonne mieux mais perd l'image de l'eau ; `Eau dormante`, `sans-remous` et `Calme-Eau` restent en attente.
 - Les titres d'achievements futurs devront arbitrer au cas par cas entre fidélité littérale et effet humoristique équivalent.

@@ -1,8 +1,12 @@
 <script lang="ts">
   import {
     BookOpen,
+    CircleCheck,
+    CircleX,
     Download,
     Library,
+    Minus,
+    Plus,
     RotateCcw,
     Save,
     ScrollText,
@@ -16,9 +20,9 @@
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
   import { loadContextForScene, loadIndex, loadUiLocale } from './lib/content/packedContent'
   import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
-  import { applyChoice, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
-  import { AURA_STAT_VARIABLES, BASE_STAT_VARIABLES, readStats } from './lib/story/stats'
-  import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StoryContext } from './lib/story/types'
+  import { applyChoice, applyStatAllocation, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
+  import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
+  import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
   import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, type SaveSummary } from './lib/storage/saves'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about'
@@ -34,8 +38,12 @@
 
   const errorMessageKeys: Record<string, string> = {
     'Choice is not available from the current state': 'errors.choiceUnavailable',
+    'No stat points selected': 'errors.noStatPointsSelected',
+    'Not enough stat points available': 'errors.notEnoughStatPoints',
     'This browser does not support runtime content decompression': 'errors.decompressionUnsupported',
     'This save file does not match a playable route': 'errors.saveTamper',
+    'Stat is not available for allocation': 'errors.statUnavailable',
+    'Stat maximum reached': 'errors.statMaximumReached',
     'Unsupported save file': 'errors.unsupportedSave',
   }
 
@@ -54,6 +62,7 @@
   let importPassphrase = ''
   let manualSlotId = 'manual-1'
   let settings: ReaderSettings = { ...defaultSettings }
+  let statDraft: Record<string, number> = {}
   let importInput: HTMLInputElement
 
   $: achievementCount = rendered?.unlockedAchievements.length ?? 0
@@ -61,7 +70,10 @@
     ? describeScene(state.currentSceneId, uiMessages)
     : t(uiMessages, 'reader.chapterTitle', { book: '1', chapter: 1 }, 'Book 1 - Chapter 1')
   $: visibleStatVariables = state ? revealedStatVariables(state) : []
-  $: stats = state && context ? readStats(state.variables, context.statsLocale.messages, visibleStatVariables) : []
+  $: stats = state && context ? readStats(state.variables, context.statsLocale.messages, visibleStatVariables, statDraft) : []
+  $: availableStatPoints = state ? readAvailableStatPoints(state.variables) : 0
+  $: draftedStatPoints = Object.values(statDraft).reduce((sum, amount) => sum + amount, 0)
+  $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
 
   onMount(async () => {
     try {
@@ -107,6 +119,7 @@
     try {
       busy = true
       error = ''
+      clearStatus()
       if (choice.special === 'saves' && !choice.target) {
         activePanel = 'saves'
         return
@@ -115,6 +128,7 @@
         context = await loadContextForScene(choice.target, state.locale, context)
       }
       state = await applyChoice(context, state, choice)
+      resetStatDraft()
       if (choice.special === 'stats') activePanel = 'abilities'
       await saveGameState(state)
       await refresh()
@@ -128,17 +142,21 @@
 
   async function startNewGame() {
     if (!context || !state) return
+    clearStatus()
     state = enterCurrentScene(context, createInitialState(state.contentVersion, settings.locale))
+    resetStatDraft()
     await saveGameState(state)
     await refresh()
     activePanel = 'none'
   }
 
   async function loadSlot(slotId: string) {
+    clearStatus()
     const loaded = await loadGameState(slotId)
     if (!loaded) return
     context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context ?? undefined)
     state = loaded
+    resetStatDraft()
     await refresh()
     activePanel = 'none'
   }
@@ -162,8 +180,10 @@
 
   async function restoreLastCheckpoint() {
     if (!state || !context || !state.checkpoint) return
+    clearStatus()
     context = await loadContextForScene(state.checkpoint.currentSceneId, state.locale, context)
     state = restoreCheckpoint(context, state)
+    resetStatDraft()
     await saveGameState(state)
     await refresh()
     activePanel = 'none'
@@ -195,6 +215,8 @@
       })
       context = await loadContextForScene(imported.currentSceneId, imported.locale, context ?? undefined)
       state = imported
+      resetStatDraft()
+      clearStatus()
       await refresh()
       status = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
       activePanel = 'none'
@@ -224,6 +246,7 @@
       applyReaderSettings(settings)
       uiMessages = nextMessages
       state = nextState
+      resetStatDraft()
       if (state) {
         await saveGameState(state)
         await refresh()
@@ -291,23 +314,54 @@
     activePanel = activePanel === panel ? 'none' : panel
   }
 
-  function revealedStatVariables(next: GameState) {
-    const revealed = new Set<string>()
-    const hasBaseStats = hasReachedScene(next, ['Ch2-Stats', 'Ch2-Stats-spent'])
-    const hasAuraStats = hasReachedScene(next, ['B3-Ch04a-Introduction', 'B3-Ch04a-Introduction2', 'B3-Ch04a-Stats-spent'])
-    if (hasBaseStats || hasAuraStats) {
-      BASE_STAT_VARIABLES.forEach((variable) => revealed.add(variable))
-    }
-    if (hasAuraStats) {
-      AURA_STAT_VARIABLES.forEach((variable) => revealed.add(variable))
-    }
-    return [...revealed]
+  function increaseStat(variable: string) {
+    if (busy || remainingStatPoints <= 0) return
+    const stat = stats.find((candidate) => candidate.variable === variable)
+    if (!stat || stat.value >= stat.max) return
+    statDraft = { ...statDraft, [variable]: (statDraft[variable] ?? 0) + 1 }
   }
 
-  function hasReachedScene(next: GameState, sceneIds: string[]) {
-    const targets = new Set(sceneIds)
-    return targets.has(next.currentSceneId) ||
-      next.history.some((event) => targets.has(event.sceneId) || targets.has(event.target))
+  function decreaseStat(variable: string) {
+    if (busy) return
+    const current = statDraft[variable] ?? 0
+    if (current <= 0) return
+    const next = { ...statDraft }
+    if (current === 1) {
+      delete next[variable]
+    } else {
+      next[variable] = current - 1
+    }
+    statDraft = next
+  }
+
+  async function confirmStatAllocation() {
+    if (!state || busy || draftedStatPoints <= 0) return
+    const deltas: StatAllocationDelta[] = Object.entries(statDraft)
+      .filter(([, amount]) => amount > 0)
+      .map(([variable, amount]) => ({ variable, amount }))
+    if (!deltas.length) return
+
+    try {
+      busy = true
+      error = ''
+      state = await applyStatAllocation(state, deltas)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      status = t(uiMessages, 'status.statsAllocated', {}, 'Stats updated')
+    } catch (caught) {
+      error = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  function resetStatDraft() {
+    statDraft = {}
+  }
+
+  function clearStatus() {
+    status = ''
   }
 
   function canUseDropCap(text: string) {
@@ -389,6 +443,22 @@
           {/each}
         </article>
 
+        {#if rendered.statChecks.length}
+          <div class="stat-checks" aria-label={t(uiMessages, 'statChecks.aria', {}, 'Stat check results')}>
+            {#each rendered.statChecks as statCheck}
+              <div class:success={statCheck.outcome === 'success'} class:failure={statCheck.outcome === 'failure'} class="stat-check">
+                {#if statCheck.outcome === 'success'}
+                  <CircleCheck size={16} />
+                  <span>{t(uiMessages, 'statChecks.success', { stat: statCheck.label, level: statCheck.level }, `${statCheck.label}: success - level ${statCheck.level}`)}</span>
+                {:else}
+                  <CircleX size={16} />
+                  <span>{t(uiMessages, 'statChecks.failure', { stat: statCheck.label, level: statCheck.level }, `${statCheck.label}: failure - level ${statCheck.level}`)}</span>
+                {/if}
+              </div>
+            {/each}
+          </div>
+        {/if}
+
         <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
             <button disabled={busy} on:click={() => choose(choice)}>
@@ -449,14 +519,53 @@
         {:else if activePanel === 'abilities'}
           <h2>{t(uiMessages, 'abilities.title', {}, 'Abilities')}</h2>
           {#if stats.length}
+            <div class="stat-summary">
+              <span>{t(uiMessages, 'abilities.points', {}, 'Points available')}</span>
+              <strong>{remainingStatPoints}/{availableStatPoints}</strong>
+            </div>
             <div class="stat-list">
               {#each stats as stat}
-                <div class="stat-row">
-                  <span>{stat.label}</span>
-                  <strong>{stat.value}</strong>
+                <div class:overmax={stat.overMax} class="stat-row">
+                  <span class="stat-label">{stat.label}</span>
+                  <span class="stat-meter">
+                    <strong>{stat.value}</strong>
+                    <span>/{stat.max}</span>
+                    {#if stat.pending > 0}
+                      <em>+{stat.pending}</em>
+                    {/if}
+                  </span>
+                  <div class="stat-controls">
+                    <button
+                      class="icon-stepper"
+                      disabled={busy || stat.pending <= 0}
+                      title={t(uiMessages, 'abilities.decrease', { stat: stat.label }, `Decrease ${stat.label}`)}
+                      aria-label={t(uiMessages, 'abilities.decrease', { stat: stat.label }, `Decrease ${stat.label}`)}
+                      on:click={() => decreaseStat(stat.variable)}
+                    >
+                      <Minus size={15} />
+                    </button>
+                    <button
+                      class="icon-stepper"
+                      disabled={busy || remainingStatPoints <= 0 || stat.value >= stat.max}
+                      title={t(uiMessages, 'abilities.increase', { stat: stat.label }, `Increase ${stat.label}`)}
+                      aria-label={t(uiMessages, 'abilities.increase', { stat: stat.label }, `Increase ${stat.label}`)}
+                      on:click={() => increaseStat(stat.variable)}
+                    >
+                      <Plus size={15} />
+                    </button>
+                  </div>
                 </div>
               {/each}
             </div>
+            <div class="stat-actions">
+              <button disabled={busy || draftedStatPoints <= 0} on:click={confirmStatAllocation}>
+                {t(uiMessages, 'abilities.confirm', {}, 'Confirm')}
+              </button>
+              <button disabled={busy || draftedStatPoints <= 0} on:click={resetStatDraft}>
+                {t(uiMessages, 'abilities.clear', {}, 'Clear')}
+              </button>
+            </div>
+            <p class="panel-copy stat-help">{t(uiMessages, 'abilities.help', {}, 'Use + to prepare a point allocation. Use - to cancel a prepared point. Once confirmed, points are spent and cannot be removed from this panel.')}</p>
           {:else}
             <p class="empty-state">{t(uiMessages, 'abilities.empty', {}, 'Your abilities will appear here after Barry checks the stat device.')}</p>
           {/if}
