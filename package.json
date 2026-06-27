@@ -2,6 +2,7 @@
   "name": "magium",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@11.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +15,9 @@
     "content:parse": "node tools/content/build-canonical.mjs",
     "content:validate": "node tools/content/validate-content.mjs",
     "content:all": "pnpm content:import && pnpm content:archive:check && pnpm content:parse && pnpm content:validate",
-    "dist:check": "node tools/content/check-dist.mjs"
+    "dist:check": "node tools/content/check-dist.mjs",
+    "docker:build-prod": "tools/docker/build-prod-push.sh",
+    "docker:push-prod": "tools/docker/build-prod-push.sh --push"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",

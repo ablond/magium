@@ -24,6 +24,8 @@ pnpm check
 pnpm test
 pnpm build
 pnpm dev --host 127.0.0.1
+pnpm docker:build-prod
+pnpm docker:push-prod
 ```
 
 Commandes de contenu :
@@ -36,9 +38,19 @@ pnpm content:validate        # verifie graphe, messages, targets et absence de f
 pnpm dist:check              # verifie dist apres build
 ```
 
+Commandes Docker de production :
+
+```bash
+pnpm docker:build-prod       # build l'image finale et valide son contenu/runtime localement
+pnpm docker:push-prod        # build, valide, pousse ghcr.io/ablond/magium:<timestamp> et :latest
+```
+
+L'image de production expose le port `8080`, ne demande aucune variable d'environnement runtime et doit etre consommee dans Coolify comme image preconstruite `ghcr.io/ablond/magium`.
+
 ## Structure
 
 ```text
+docker/                     Configuration nginx de l'image runtime.
 content/archive/original/   Sources originales archivees, immuables.
 content/canonical/v1/       JSON canonique lisible, genere.
 content/ui-locales/         Sources traduisibles du shell UI.
@@ -50,6 +62,7 @@ src/lib/i18n/               Resolution de locale UI et interpolation.
 src/lib/story/              Types, moteur de jeu, conditions, stats, digest.
 src/lib/storage/            IndexedDB, chiffrement, export/import.
 tools/content/              Pipeline import, parse, pack, validate.
+tools/docker/               Build, validation et publication de l'image GHCR.
 tests/                      Tests parser et moteur.
 docs/                       Documentation technique detaillee.
 ```
@@ -63,6 +76,7 @@ docs/                       Documentation technique detaillee.
 - [Sauvegardes et anti-tamper](./docs/saves-and-anti-tamper.md) : IndexedDB, AES-GCM, export/import, limites.
 - [I18n](./docs/i18n.md) : modele de traduction UI et narrative.
 - [Traduction FR](./docs/translation-fr.md) : glossaire et critères de traduction.
+- [Déploiement Coolify](./docs/deployment-coolify.md) : image Docker de production et configuration Coolify.
 - [Verification](./docs/verification.md) : commandes, checks, tests navigateur.
 
 ## Regles Importantes
@@ -74,5 +88,6 @@ docs/                       Documentation technique detaillee.
 - L'app runtime ne doit pas lire les `.magium` directement.
 - La documentation doit etre maintenue et corrigee a chaque changement qui modifie commandes, architecture, pipeline, UI, sauvegardes, i18n ou limites de securite.
 - Toute modification du parser, du moteur, du stockage ou du pipeline doit etre suivie de `pnpm check`, `pnpm test` et `pnpm build`.
+- Toute modification du packaging Docker ou du déploiement doit aussi etre suivie de `pnpm docker:build-prod`; une publication demandee doit aller jusqu'a `pnpm docker:push-prod`.
 - L'anti-triche est une resistance client-side, pas une garantie absolue sans backend.
 - L'UI joueur ne doit pas exposer de vocabulaire d'implementation inutile ; garder les details techniques dans la documentation.
