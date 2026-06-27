@@ -45,7 +45,7 @@ pnpm docker:build-prod       # build l'image finale et valide son contenu/runtim
 pnpm docker:push-prod        # build, valide, pousse ghcr.io/ablond/magium:<timestamp> et :latest
 ```
 
-L'image de production expose le port `8080`, ne demande aucune variable d'environnement runtime et doit etre consommee dans Coolify comme image preconstruite `ghcr.io/ablond/magium`.
+Le `Dockerfile` est a la racine du depot pour que Coolify puisse builder directement depuis la GitHub App avec le build pack Dockerfile. L'image de production expose le port `8080`, ne demande aucune variable d'environnement runtime et n'utilise aucun volume. Le push manuel vers `ghcr.io/ablond/magium` reste disponible si un deploiement par image preconstruite est souhaite.
 
 ## Structure
 
@@ -76,7 +76,7 @@ docs/                       Documentation technique detaillee.
 - [Sauvegardes et anti-tamper](./docs/saves-and-anti-tamper.md) : IndexedDB, AES-GCM, export/import, limites.
 - [I18n](./docs/i18n.md) : modele de traduction UI et narrative.
 - [Traduction FR](./docs/translation-fr.md) : glossaire et critères de traduction.
-- [Déploiement Coolify](./docs/deployment-coolify.md) : image Docker de production et configuration Coolify.
+- [Déploiement Coolify](./docs/deployment-coolify.md) : build Dockerfile via GitHub App, image GHCR optionnelle et configuration Coolify.
 - [Verification](./docs/verification.md) : commandes, checks, tests navigateur.
 
 ## Regles Importantes

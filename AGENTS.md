@@ -55,7 +55,7 @@ Si l'objectif demande une publication d'image, aller jusqu'a :
 pnpm docker:push-prod
 ```
 
-L'image attendue est `ghcr.io/ablond/magium`, avec un tag timestamp UTC `YYYYMMDD-HHMMSS` et `latest`.
+L'image publiee manuellement est `ghcr.io/ablond/magium`, avec un tag timestamp UTC `YYYYMMDD-HHMMSS` et `latest`. Le deploiement Coolify principal peut aussi builder directement le `Dockerfile` a la racine via GitHub App.
 
 ## Documentation Obligatoire
 
@@ -95,12 +95,12 @@ Exceptions source : `content/ui-locales/*.json` et `content/story-locales/**/*.j
 
 ## Packaging Docker Et Coolify
 
-- Le Dockerfile de production construit l'app avec pnpm, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged` exposee sur le port `8080`.
-- Le runtime Coolify consomme l'image preconstruite `ghcr.io/ablond/magium`; il ne build pas depuis le depot dans le flux de publication local.
+- Le Dockerfile de production est a la racine pour le build pack Dockerfile de Coolify via GitHub App. Il construit l'app avec pnpm, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged` exposee sur le port `8080`.
+- Le runtime Coolify peut builder depuis le depot. Le flux `pnpm docker:push-prod` reste un chemin optionnel pour publier une image preconstruite `ghcr.io/ablond/magium`.
 - Ne pas copier `content/archive`, `content/canonical`, `src/generated` source, `node_modules`, `.env*` ou des exports `.magium-save` dans l'image finale.
 - `.dockerignore` doit exclure les fichiers locaux sensibles ou volumineux, mais ne doit pas casser le build `pnpm build` dans le stage builder.
 - `tools/docker/build-prod-push.sh` valide le filesystem de l'image, demarre le conteneur, teste `/`, `/sw.js`, `/manifest.webmanifest` et le fallback SPA avant push.
-- Coolify doit exposer `8080`, sans volume et sans variable d'environnement runtime. Si le package GHCR est prive, le serveur Coolify doit etre authentifie avec `docker login ghcr.io`.
+- Coolify doit utiliser le build pack Dockerfile, chemin `Dockerfile`, port expose `8080`, sans volume et sans variable d'environnement runtime. Si le deploiement utilise le package GHCR prive au lieu du build GitHub App, le serveur Coolify doit etre authentifie avec `docker login ghcr.io`.
 
 ## Pipeline Contenu
 

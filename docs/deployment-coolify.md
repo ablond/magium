@@ -1,8 +1,29 @@
 # Déploiement Coolify
 
-## Image De Production
+## Build Depuis GitHub App
 
-Le déploiement production utilise une image Docker statique publiée sur GitHub Container Registry :
+Le chemin principal de déploiement Coolify est un build Dockerfile depuis le dépôt connecté par GitHub App.
+
+Configuration Coolify :
+
+- source : repository GitHub `ablond/magium` via GitHub App ;
+- build pack : `Dockerfile` ;
+- Dockerfile : `Dockerfile` à la racine ;
+- base directory : racine du dépôt ;
+- port exposé : `8080` ;
+- variables d'environnement : aucune ;
+- volumes persistants : aucun.
+
+Le Dockerfile construit l'app avec Node 22 et pnpm, exécute `pnpm build`, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged:stable-alpine`.
+
+Pré-requis côté builder Coolify :
+
+- accès réseau à `raduprv/Magium` pendant `pnpm build`, car `content:import` vérifie `main` ;
+- accès réseau au registre npm et aux images Docker de base.
+
+## Image GHCR Optionnelle
+
+Le dépôt garde aussi un flux de publication manuelle vers GitHub Container Registry :
 
 ```text
 ghcr.io/ablond/magium
@@ -13,7 +34,7 @@ Tags produits par défaut :
 - `YYYYMMDD-HHMMSS` en UTC pour une version immutable ;
 - `latest` pour le déploiement courant.
 
-Le conteneur expose `8080`, ne lit aucune variable d'environnement runtime et n'utilise aucun volume. Les sauvegardes restent côté navigateur, dans IndexedDB.
+Ce flux sert si l'on veut déployer une image préconstruite plutôt que laisser Coolify builder depuis GitHub. Le conteneur expose toujours `8080`, ne lit aucune variable d'environnement runtime et n'utilise aucun volume. Les sauvegardes restent côté navigateur, dans IndexedDB.
 
 ## Build Et Publication
 
@@ -55,9 +76,9 @@ MAGIUM_PLATFORM=linux/amd64
 `MAGIUM_PLATFORM` vaut `linux/amd64` par défaut. La validation runtime locale nécessite une plateforme exécutable sur la machine courante.
 En mode sans push, la plateforme doit donc correspondre à la machine locale. En mode push, le script valide d'abord une image locale, puis build et publie la plateforme demandée si elle est différente.
 
-## Configuration Coolify
+## Configuration Coolify Par Image Preconstruite
 
-Créer une application de type Docker Image / image préconstruite :
+Alternative au build GitHub App : créer une application de type Docker Image / image préconstruite :
 
 - image : `ghcr.io/ablond/magium` ;
 - tag : `latest` ou un tag timestamp ;
@@ -81,6 +102,7 @@ Références :
 
 ## Limites
 
-- Il n'y a pas de webhook Coolify automatique dans ce flux.
+- Le flux GitHub App laisse Coolify builder l'image depuis le `Dockerfile` racine.
+- Il n'y a pas de webhook Coolify automatique dans le flux GHCR manuel.
 - L'image finale sert les bundles Vite générés ; elle ne contient pas les sources d'archive ni les JSON canoniques.
-- Une publication doit etre faite après un commit poussé, afin que le tag GHCR corresponde à l'état Git livré.
+- Une publication GHCR doit etre faite après un commit poussé, afin que le tag GHCR corresponde à l'état Git livré.
