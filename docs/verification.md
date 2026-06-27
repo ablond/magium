@@ -10,6 +10,18 @@ pnpm build
 
 Ces commandes doivent passer avant de terminer une iteration.
 
+Si Docker, Coolify ou le packaging de production changent, ajouter :
+
+```bash
+pnpm docker:build-prod
+```
+
+Si une publication est demandee, finir avec :
+
+```bash
+pnpm docker:push-prod
+```
+
 ## Ce Que Verifie Chaque Commande
 
 `pnpm check` :
@@ -29,6 +41,19 @@ Ces commandes doivent passer avant de terminer une iteration.
 - regenere et valide le contenu ;
 - build Vite ;
 - lance `dist:check`.
+
+`pnpm docker:build-prod` :
+
+- build l'image `ghcr.io/ablond/magium:<timestamp>` localement ;
+- verifie le filesystem runtime ;
+- demarre le conteneur nginx unprivileged sur un port local temporaire ;
+- verifie `/`, `/sw.js`, `/manifest.webmanifest` et le fallback SPA.
+
+`pnpm docker:push-prod` :
+
+- execute les memes controles ;
+- pousse `ghcr.io/ablond/magium:<timestamp>` et `ghcr.io/ablond/magium:latest` ;
+- inspecte les tags publies avec `docker buildx imagetools inspect`.
 
 ## Checks Contenu
 
@@ -117,6 +142,18 @@ Attendu :
 - texte brut source evident dans des assets publics.
 
 Ce check est volontairement conservateur. Si un faux positif apparait, corriger le check avec prudence plutot que le supprimer.
+
+## Controle Image Docker
+
+Le script Docker doit rejeter :
+
+- `.magium` dans le filesystem runtime ;
+- JSON canonique brut dans le filesystem runtime ;
+- `node_modules` ;
+- `.env*` ;
+- extrait source brut evident comme `ID: Ch1-Intro1` ou `chapters/ch1.magium`.
+
+L'image finale attendue sert uniquement le contenu de `dist/` via nginx sur le port `8080`.
 
 ## Artefacts Locaux
 
