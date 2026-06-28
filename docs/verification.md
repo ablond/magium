@@ -69,7 +69,7 @@ Doit confirmer :
 - 54 chapitres generes ;
 - 136 achievements ;
 - packs UI `locales/en/ui` et `locales/fr/ui` generes et cles UI synchronisees ;
-- packs story `locales/fr/ch1`, `locales/fr/ch2`, `locales/fr/ch3`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts jusqu'au chapitre 3 ;
+- packs story `locales/fr/ch1`, `locales/fr/ch2`, `locales/fr/ch3`, `locales/fr/ch4`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts jusqu'au chapitre 4 ;
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
 
@@ -88,9 +88,9 @@ Verifier :
 1. la page charge directement le livre 1 chapitre 1 ;
 2. cliquer `Excited` affiche la scene suivante ;
 3. recharger la page reprend la progression ;
-4. si le navigateur prefere `fr`, l'interface et les chapitres 1 à 3 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
-5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, la zone de lecture utilise Literata sur une largeur confortable, et les scenes des chapitres 1 à 3 utilisent les packs narratifs `fr/ch1`, `fr/ch2` et `fr/ch3` ;
-6. mobile 390 x 844 : la navigation reste compacte et il n'y a pas de chevauchement UI/texte en FR et EN ;
+4. si le navigateur prefere `fr`, l'interface et les chapitres 1 à 4 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
+5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, le header lecteur ne montre plus de badge de succès ni de sauvegarde auto, la zone de lecture utilise Literata sur une largeur confortable et plus dense, les scenes des chapitres 1 à 4 utilisent les packs narratifs `fr/ch1`, `fr/ch2`, `fr/ch3` et `fr/ch4`, et le rail gauche ainsi que le panneau droit ouvert restent visibles pendant un scroll long ;
+6. mobile 390 x 844 : la navigation reste compacte, il n'y a pas de chevauchement UI/texte en FR et EN, et les panneaux s'ouvrent en overlay au-dessus du récit avec fermeture par bouton, fond cliquable et touche `Escape`, sans repousser le contenu vers le bas ;
 7. la lettrine du premier paragraphe alphabetique monte legerement au-dessus de la ligne et ne semble pas tomber dans le paragraphe ;
 8. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
 9. le panneau Stats est vide au debut, puis affiche les stats de base apres `Ch2-Stats` avec compteur de points, valeur/max, boutons `+/-`, confirmation, effacement et aide courte sous les boutons ;
@@ -99,7 +99,7 @@ Verifier :
 12. le choix narratif `special:stats` avance vers la scene cible puis ouvre le panneau, et le bouton Stats permet aussi d'investir plus tard ;
 13. apres le passage original qui affecte `v_max_stat = 4`, le panneau affiche le max `4` ;
 14. les stats d'aura apparaissent apres l'introduction de `B3-Ch04a`, tandis que `Magical Power` et `Magical Knowledge` restent invisibles ;
-15. apres un choix menant a un test de stat, le resultat apparait apres le texte de scene, avant les prochains choix, avec succes/echec et niveau localises ;
+15. apres un choix menant a un test de stat, le resultat apparait avant le texte de scene, puis viennent le contenu et les prochains choix, avec succes/echec et niveau localises ;
 16. le panneau Paramètres contient la bascule globale FR/EN, thème, taille du texte, contraste et révélation de scène ;
 17. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
 18. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;

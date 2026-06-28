@@ -15,6 +15,7 @@
     SlidersHorizontal,
     Trophy,
     Upload,
+    X,
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
@@ -64,8 +65,12 @@
   let settings: ReaderSettings = { ...defaultSettings }
   let statDraft: Record<string, number> = {}
   let importInput: HTMLInputElement
+  let panelElement: HTMLElement | null = null
+  let panelCloseButton: HTMLButtonElement | null = null
+  let lastPanelTrigger: HTMLElement | null = null
+  let isMobilePanel = false
+  let focusedPanel: Panel = 'none'
 
-  $: achievementCount = rendered?.unlockedAchievements.length ?? 0
   $: chapterTitle = state
     ? describeScene(state.currentSceneId, uiMessages)
     : t(uiMessages, 'reader.chapterTitle', { book: '1', chapter: 1 }, 'Book 1 - Chapter 1')
@@ -74,6 +79,17 @@
   $: availableStatPoints = state ? readAvailableStatPoints(state.variables) : 0
   $: draftedStatPoints = Object.values(statDraft).reduce((sum, amount) => sum + amount, 0)
   $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
+  $: panelLabel = getPanelLabel(activePanel)
+  $: if (typeof document !== 'undefined') {
+    document.body.classList.toggle('panel-modal-open', activePanel !== 'none' && isMobilePanel)
+  }
+  $: if (activePanel !== 'none' && isMobilePanel && focusedPanel !== activePanel) {
+    focusedPanel = activePanel
+    queueMicrotask(() => panelCloseButton?.focus({ preventScroll: true }))
+  }
+  $: if (activePanel === 'none') {
+    focusedPanel = 'none'
+  }
 
   onMount(async () => {
     try {
@@ -107,6 +123,21 @@
     }
   })
 
+  onMount(() => {
+    const query = window.matchMedia('(max-width: 980px)')
+    const updateMobilePanel = () => {
+      isMobilePanel = query.matches
+    }
+
+    updateMobilePanel()
+    query.addEventListener('change', updateMobilePanel)
+
+    return () => {
+      query.removeEventListener('change', updateMobilePanel)
+      document.body.classList.remove('panel-modal-open')
+    }
+  })
+
   async function refresh() {
     if (!state) return
     context = await loadContextForScene(state.currentSceneId, state.locale, context ?? undefined)
@@ -121,7 +152,7 @@
       error = ''
       clearStatus()
       if (choice.special === 'saves' && !choice.target) {
-        activePanel = 'saves'
+        openPanel('saves')
         return
       }
       if (choice.target) {
@@ -129,7 +160,7 @@
       }
       state = await applyChoice(context, state, choice)
       resetStatDraft()
-      if (choice.special === 'stats') activePanel = 'abilities'
+      if (choice.special === 'stats') openPanel('abilities')
       await saveGameState(state)
       await refresh()
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -147,7 +178,7 @@
     resetStatDraft()
     await saveGameState(state)
     await refresh()
-    activePanel = 'none'
+    closePanel({ restoreFocus: false })
   }
 
   async function loadSlot(slotId: string) {
@@ -158,7 +189,7 @@
     state = loaded
     resetStatDraft()
     await refresh()
-    activePanel = 'none'
+    closePanel({ restoreFocus: false })
   }
 
   async function saveManualSlot() {
@@ -186,7 +217,7 @@
     resetStatDraft()
     await saveGameState(state)
     await refresh()
-    activePanel = 'none'
+    closePanel({ restoreFocus: false })
   }
 
   async function downloadSave() {
@@ -219,7 +250,7 @@
       clearStatus()
       await refresh()
       status = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
-      activePanel = 'none'
+      closePanel({ restoreFocus: false })
     } catch (caught) {
       error = formatCaughtError(caught)
     } finally {
@@ -310,8 +341,71 @@
     return context?.achievementLocale.messages[messageId] ?? messageId
   }
 
-  function togglePanel(panel: Exclude<Panel, 'none'>) {
-    activePanel = activePanel === panel ? 'none' : panel
+  function getPanelLabel(panel: Panel) {
+    switch (panel) {
+      case 'saves':
+        return t(uiMessages, 'saves.title', {}, 'Saves')
+      case 'abilities':
+        return t(uiMessages, 'abilities.title', {}, 'Abilities')
+      case 'achievements':
+        return t(uiMessages, 'achievements.title', {}, 'Achievements')
+      case 'settings':
+        return t(uiMessages, 'settings.title', {}, 'Settings')
+      case 'about':
+        return t(uiMessages, 'about.title', {}, 'About')
+      default:
+        return t(uiMessages, 'reader.eyebrow', {}, 'Magium')
+    }
+  }
+
+  function openPanel(panel: Exclude<Panel, 'none'>, trigger?: HTMLElement | null) {
+    lastPanelTrigger = trigger ?? lastPanelTrigger
+    activePanel = panel
+  }
+
+  function closePanel(options: { restoreFocus?: boolean } = {}) {
+    const restoreFocus = options.restoreFocus ?? true
+    const trigger = lastPanelTrigger
+    activePanel = 'none'
+    if (restoreFocus && trigger) {
+      requestAnimationFrame(() => trigger.focus({ preventScroll: true }))
+    }
+  }
+
+  function togglePanel(panel: Exclude<Panel, 'none'>, event?: MouseEvent) {
+    const trigger = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null
+    if (activePanel === panel) {
+      lastPanelTrigger = trigger ?? lastPanelTrigger
+      closePanel()
+      return
+    }
+    openPanel(panel, trigger)
+  }
+
+  function handleWindowKeydown(event: KeyboardEvent) {
+    if (event.key !== 'Escape' || activePanel === 'none') return
+    event.preventDefault()
+    closePanel()
+  }
+
+  function handlePanelKeydown(event: KeyboardEvent) {
+    if (!isMobilePanel || event.key !== 'Tab' || !panelElement) return
+    const focusable = Array.from(
+      panelElement.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => element.offsetParent !== null)
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (!first || !last) return
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
   }
 
   function increaseStat(variable: string) {
@@ -375,6 +469,8 @@
   }
 </script>
 
+<svelte:window on:keydown={handleWindowKeydown} />
+
 <svelte:head>
   <title>Magium</title>
   <meta name="theme-color" content="#120f14" />
@@ -395,54 +491,41 @@
   <main class="shell" class:panel-open={activePanel !== 'none'}>
     <aside class="brand-rail" aria-label="Magium">
       <div class="brand-mark"><ArcaneSigil /></div>
-      <button class:active={activePanel === 'none'} title={t(uiMessages, 'nav.read', {}, 'Read')} aria-label={t(uiMessages, 'nav.read', {}, 'Read')} on:click={() => activePanel = 'none'}>
+      <button class:active={activePanel === 'none'} title={t(uiMessages, 'nav.read', {}, 'Read')} aria-label={t(uiMessages, 'nav.read', {}, 'Read')} on:click={() => closePanel({ restoreFocus: false })}>
         <BookOpen size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.read', {}, 'Read')}</span>
       </button>
-      <button class:active={activePanel === 'abilities'} title={t(uiMessages, 'nav.abilities', {}, 'Abilities')} aria-label={t(uiMessages, 'nav.abilities', {}, 'Abilities')} on:click={() => togglePanel('abilities')}>
+      <button class:active={activePanel === 'abilities'} title={t(uiMessages, 'nav.abilities', {}, 'Abilities')} aria-label={t(uiMessages, 'nav.abilities', {}, 'Abilities')} on:click={(event) => togglePanel('abilities', event)}>
         <SlidersHorizontal size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.abilities', {}, 'Abilities')}</span>
       </button>
-      <button class:active={activePanel === 'saves'} title={t(uiMessages, 'nav.saves', {}, 'Saves')} aria-label={t(uiMessages, 'nav.saves', {}, 'Saves')} on:click={() => togglePanel('saves')}>
+      <button class:active={activePanel === 'saves'} title={t(uiMessages, 'nav.saves', {}, 'Saves')} aria-label={t(uiMessages, 'nav.saves', {}, 'Saves')} on:click={(event) => togglePanel('saves', event)}>
         <Save size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.saves', {}, 'Saves')}</span>
       </button>
-      <button class:active={activePanel === 'achievements'} title={t(uiMessages, 'nav.achievements', {}, 'Achievements')} aria-label={t(uiMessages, 'nav.achievements', {}, 'Achievements')} on:click={() => togglePanel('achievements')}>
+      <button class:active={activePanel === 'achievements'} title={t(uiMessages, 'nav.achievements', {}, 'Achievements')} aria-label={t(uiMessages, 'nav.achievements', {}, 'Achievements')} on:click={(event) => togglePanel('achievements', event)}>
         <Trophy size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.achievements', {}, 'Achievements')}</span>
       </button>
-      <button class:active={activePanel === 'settings'} title={t(uiMessages, 'nav.settings', {}, 'Settings')} aria-label={t(uiMessages, 'nav.settings', {}, 'Settings')} on:click={() => togglePanel('settings')}>
+      <button class:active={activePanel === 'settings'} title={t(uiMessages, 'nav.settings', {}, 'Settings')} aria-label={t(uiMessages, 'nav.settings', {}, 'Settings')} on:click={(event) => togglePanel('settings', event)}>
         <Settings size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.settings', {}, 'Settings')}</span>
       </button>
-      <button class:active={activePanel === 'about'} title={t(uiMessages, 'nav.about', {}, 'About')} aria-label={t(uiMessages, 'nav.about', {}, 'About')} on:click={() => togglePanel('about')}>
+      <button class:active={activePanel === 'about'} title={t(uiMessages, 'nav.about', {}, 'About')} aria-label={t(uiMessages, 'nav.about', {}, 'About')} on:click={(event) => togglePanel('about', event)}>
         <ShieldCheck size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.about', {}, 'About')}</span>
       </button>
     </aside>
 
-    <section class="reader" aria-live="polite">
+    <section class="reader">
       <header class="reader-header">
         <div>
           <p class="eyebrow">{t(uiMessages, 'reader.eyebrow', {}, 'Magium')}</p>
           <h1>{chapterTitle}</h1>
         </div>
-        <div class="reader-status">
-          <span><Trophy size={15} /> {achievementCount}</span>
-          <span><Save size={15} /> {t(uiMessages, 'reader.autosave', {}, 'Autosave')}</span>
-        </div>
       </header>
 
       {#if rendered && state}
-        <article class="scene">
-          {#each rendered.paragraphs as paragraph, index}
-            <p
-              class:typewriter={settings.typewriter && index === rendered.paragraphs.length - 1}
-              class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
-            >{paragraph.text}</p>
-          {/each}
-        </article>
-
         {#if rendered.statChecks.length}
           <div class="stat-checks" aria-label={t(uiMessages, 'statChecks.aria', {}, 'Stat check results')}>
             {#each rendered.statChecks as statCheck}
@@ -459,6 +542,15 @@
           </div>
         {/if}
 
+        <article class="scene">
+          {#each rendered.paragraphs as paragraph, index}
+            <p
+              class:typewriter={settings.typewriter && index === rendered.paragraphs.length - 1}
+              class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
+            >{paragraph.text}</p>
+          {/each}
+        </article>
+
         <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
             <button disabled={busy} on:click={() => choose(choice)}>
@@ -470,14 +562,32 @@
       {/if}
 
       {#if error}
-        <p class="notice error">{error}</p>
+        <p class="notice error" role="alert">{error}</p>
       {:else if status}
-        <p class="notice">{status}</p>
+        <p class="notice" role="status" aria-live="polite">{status}</p>
       {/if}
     </section>
 
     {#if activePanel !== 'none'}
-      <aside class="panel">
+      <button type="button" class="panel-scrim" aria-label={t(uiMessages, 'panel.close', {}, 'Close panel')} on:click={() => closePanel()}></button>
+      <aside
+        bind:this={panelElement}
+        class="panel"
+        role={isMobilePanel ? 'dialog' : 'complementary'}
+        aria-modal={isMobilePanel ? 'true' : undefined}
+        aria-label={panelLabel}
+        on:keydown={handlePanelKeydown}
+      >
+        <button
+          bind:this={panelCloseButton}
+          type="button"
+          class="panel-close"
+          title={t(uiMessages, 'panel.close', {}, 'Close panel')}
+          aria-label={t(uiMessages, 'panel.close', {}, 'Close panel')}
+          on:click={() => closePanel()}
+        >
+          <X size={18} />
+        </button>
         {#if activePanel === 'saves' && state}
           <h2>{t(uiMessages, 'saves.title', {}, 'Saves')}</h2>
           <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves after every choice. Named saves let you keep several routes. Export creates a backup file; add a password if you want to restore it in another browser. Import resumes a compatible backup.')}</p>
