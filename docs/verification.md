@@ -69,7 +69,7 @@ Doit confirmer :
 - 54 chapitres generes ;
 - 136 achievements ;
 - packs UI `locales/en/ui` et `locales/fr/ui` generes et cles UI synchronisees ;
-- packs story `locales/fr/ch1`, `locales/fr/ch2`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides ;
+- packs story `locales/fr/ch1`, `locales/fr/ch2`, `locales/fr/ch3`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts jusqu'au chapitre 3 ;
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
 
@@ -88,8 +88,8 @@ Verifier :
 1. la page charge directement le livre 1 chapitre 1 ;
 2. cliquer `Excited` affiche la scene suivante ;
 3. recharger la page reprend la progression ;
-4. si le navigateur prefere `fr`, l'interface et les chapitres 1 et 2 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
-5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, la zone de lecture utilise Literata sur une largeur confortable, et les scenes des chapitres 1 et 2 utilisent les packs narratifs `fr/ch1` et `fr/ch2` ;
+4. si le navigateur prefere `fr`, l'interface et les chapitres 1 à 3 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
+5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, la zone de lecture utilise Literata sur une largeur confortable, et les scenes des chapitres 1 à 3 utilisent les packs narratifs `fr/ch1`, `fr/ch2` et `fr/ch3` ;
 6. mobile 390 x 844 : la navigation reste compacte et il n'y a pas de chevauchement UI/texte en FR et EN ;
 7. la lettrine du premier paragraphe alphabetique monte legerement au-dessus de la ligne et ne semble pas tomber dans le paragraphe ;
 8. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
