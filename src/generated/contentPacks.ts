@@ -13,6 +13,7 @@ export const CONTENT_PACKAGE_LOADERS = {
   "locales/fr/ch1": () => import('./packs/locales__fr__ch1').then((module) => module.PACKAGE),
   "locales/fr/ch2": () => import('./packs/locales__fr__ch2').then((module) => module.PACKAGE),
   "locales/fr/ch3": () => import('./packs/locales__fr__ch3').then((module) => module.PACKAGE),
+  "locales/fr/ch4": () => import('./packs/locales__fr__ch4').then((module) => module.PACKAGE),
   "locales/fr/stats": () => import('./packs/locales__fr__stats').then((module) => module.PACKAGE),
   "story/b2ch1": () => import('./packs/story__b2ch1').then((module) => module.PACKAGE),
   "locales/en/b2ch1": () => import('./packs/locales__en__b2ch1').then((module) => module.PACKAGE),
