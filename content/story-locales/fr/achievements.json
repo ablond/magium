@@ -14,6 +14,12 @@
     "achievement.v_ac_ch2_master.title": "Maître des arts martiaux",
     "achievement.v_ac_ch2_master.caption": "Désarmer un adversaire avec succès en combattant à mains nues.",
     "achievement.v_ac_ch2_unlikely.title": "Une alliée improbable",
-    "achievement.v_ac_ch2_unlikely.caption": "Parfois, les amis viennent des endroits les plus inattendus."
+    "achievement.v_ac_ch2_unlikely.caption": "Parfois, les amis viennent des endroits les plus inattendus.",
+    "achievement.v_ac_ch3_message.title": "Un message dans le ciel",
+    "achievement.v_ac_ch3_message.caption": "C’est une belle nuit pour observer les étoiles, tu ne trouves pas ?",
+    "achievement.v_ac_ch3_army.title": "Une armée à lui seul",
+    "achievement.v_ac_ch3_army.caption": "Vaincre à soi seul une petite armée de cent hommes armés, ainsi que leur chef.",
+    "achievement.v_ac_ch3_close.title": "C’était juste !",
+    "achievement.v_ac_ch3_close.caption": "Sauver un ami in extremis d’une fléchette qui fonçait vers lui."
   }
 }

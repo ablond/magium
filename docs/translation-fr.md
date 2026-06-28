@@ -9,7 +9,7 @@ Principes retenus :
 - préserver les phrases longues quand elles portent l'élan ou la panique ;
 - garder les répétitions utiles, notamment dans les moments de tension ;
 - traduire les répliques dans un français naturel, avec des contractions de ton quand le personnage est familier ou agressif ;
-- conserver les noms propres anglais : Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent.
+- conserver les noms propres anglais : Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent.
 
 ## Figures De Style Caractéristiques
 
@@ -29,7 +29,11 @@ Principes retenus :
 | white magic | magie blanche | Terme fantasy standard. |
 | throwing knives / daggers | couteaux de lancer / dagues | Choix selon le contexte de la phrase source. |
 | checkpoint | point de contrôle | Terme UI et récit cohérent. |
+| stat device / stat booster | appareil de stats | Forme stabilisée dans `ch3` pour éviter `amplificateur` ou `dispositif`, trop techniques et moins cohérents avec `ch1`/`ch2`. |
 | abilities | Stats | Libellé UI FR retenu pour le panneau des stats. Les identifiants techniques `abilities.*` restent en anglais. |
+| common language | langue commune | Langue des humains, à distinguer des langues anciennes. |
+| golden fox | renard doré / grande renarde | `renard doré` quand Barry/Daren en parlent comme figure encore vague ; `grande renarde` dans la bouche d'Elaria quand elle parle de sa protectrice. |
+| Northern Continent / Western Continent | Northern Continent / Western Continent | Noms propres conservés en anglais, comme `Eastern Continent`. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
 | Speed | Vitesse | Stat. |
@@ -74,7 +78,28 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 - `A clean mouth and an honest hand...` devient `Bouche propre et main honnête...` : tournure proverbiale conservée, sans chercher un proverbe français préexistant inexact.
 - `a few hundred feet from my location` devient `à une centaine de mètres de ma position` : conversion métrique arrondie, naturelle en français.
 
+## Méthode De Traduction Ch3
+
+Le chapitre 3 a été traduit avec Codex en mode GPT-5.5, effort moyen, sans fast mode. La source anglaise canonique `content/canonical/v1/locales/en/ch3.json` a été découpée en 18 lots de traduction d'environ 12 000 caractères maximum, puis chaque lot a été demandé comme JSON strict avec les mêmes `messageId`.
+
+Chaque lot a été validé avant fusion :
+
+- JSON parseable ;
+- `locale: "fr"` et `chapterId: "ch3"` ;
+- aucune clé manquante ou supplémentaire par rapport au lot anglais ;
+- noms propres et glossaire projet préservés.
+
+Une passe de QA éditoriale fait partie intégrante de la traduction `ch3` et doit être faite avant de considérer le chapitre terminé. Elle couvre :
+
+- scan mécanique des guillemets, incises de dialogue, guillemets déséquilibrés, restes anglais, unités impériales, termes interdits ou instables (`stillwater`, `amplificateur de stats`, `maximiser`) ;
+- comparaison stricte des clés entre `content/canonical/v1/locales/en/ch3.json` et `content/story-locales/fr/ch3.json` ;
+- relecture ciblée du début de chapitre, de la scène de choix des stats, des scènes Elaria/Molan/renard doré, de la scène Kate/Daren nocturne, du combat contre les arbalétriers et des retours de branche ;
+- corrections de ton pour garder Barry direct, oral et légèrement ironique sans rendre la narration trop soutenue ;
+- normalisation des noms propres de continents et des termes récurrents stabilisés dans le glossaire.
+
+Le fichier final éditable est `content/story-locales/fr/ch3.json`. Les sorties générées sous `content/canonical/v1/locales/fr/ch3.json` et `src/generated/packs/locales__fr__ch3.ts` viennent uniquement de `pnpm content:all`.
+
 ## Points Ouverts
 
-- `Eastern Continent` est conservé comme nom propre conformément aux règles du projet, même quand la source varie entre majuscule et minuscule.
+- Les noms propres de continents (`Eastern Continent`, `Northern Continent`, `Western Continent`) sont conservés en anglais conformément aux règles du projet, même quand la source varie entre majuscule et minuscule.
 - Les titres d'achievements futurs devront arbitrer au cas par cas entre fidélité littérale et effet humoristique équivalent.
