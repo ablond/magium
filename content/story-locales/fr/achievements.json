@@ -20,6 +20,12 @@
     "achievement.v_ac_ch3_army.title": "Une armée à lui seul",
     "achievement.v_ac_ch3_army.caption": "Vaincre à soi seul une petite armée de cent hommes armés, ainsi que leur chef.",
     "achievement.v_ac_ch3_close.title": "C’était juste !",
-    "achievement.v_ac_ch3_close.caption": "Sauver un ami in extremis d’une fléchette qui fonçait vers lui."
+    "achievement.v_ac_ch3_close.caption": "Sauver un ami in extremis d’une fléchette qui fonçait vers lui.",
+    "achievement.v_ac_ch4_noble.title": "Un noble sacrifice",
+    "achievement.v_ac_ch4_noble.caption": "Donner ta propre vie pour sauver celle d’un ami.",
+    "achievement.v_ac_ch4_cutthroat.title": "Cutthroat Dave vaincu",
+    "achievement.v_ac_ch4_cutthroat.caption": "Remporter un duel contre Cutthroat Dave.",
+    "achievement.v_ac_ch4_kneed.title": "Mes genoux demandent une pause !",
+    "achievement.v_ac_ch4_kneed.caption": "Te briser les deux genoux dans une chute."
   }
 }

@@ -88,6 +88,7 @@ locales/en/ui.json
 locales/fr/ch1.json
 locales/fr/ch2.json
 locales/fr/ch3.json
+locales/fr/ch4.json
 locales/fr/achievements.json
 locales/fr/stats.json
 locales/fr/ui.json
@@ -135,6 +136,7 @@ content/story-locales/en/stats.json
 content/story-locales/fr/ch1.json
 content/story-locales/fr/ch2.json
 content/story-locales/fr/ch3.json
+content/story-locales/fr/ch4.json
 content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```

@@ -14,7 +14,7 @@ describe("generated content i18n", () => {
     const generated = await fs.readFile(path.join(root, "src/generated/contentPacks.ts"), "utf8");
 
     expect(index.storyLocales).toContain("fr");
-    for (const chapterId of ["ch1", "ch2", "ch3"]) {
+    for (const chapterId of ["ch1", "ch2", "ch3", "ch4"]) {
       const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
       const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
 
@@ -54,6 +54,12 @@ describe("generated content i18n", () => {
       "achievement.v_ac_ch3_close.title",
       "achievement.v_ac_ch3_message.caption",
       "achievement.v_ac_ch3_message.title",
+      "achievement.v_ac_ch4_cutthroat.caption",
+      "achievement.v_ac_ch4_cutthroat.title",
+      "achievement.v_ac_ch4_kneed.caption",
+      "achievement.v_ac_ch4_kneed.title",
+      "achievement.v_ac_ch4_noble.caption",
+      "achievement.v_ac_ch4_noble.title",
     ]);
     expect(generated).toContain('"locales/fr/achievements"');
     expect(generated).toContain('"locales/fr/stats"');

@@ -33,6 +33,7 @@ Principes retenus :
 | abilities | Stats | Libellé UI FR retenu pour le panneau des stats. Les identifiants techniques `abilities.*` restent en anglais. |
 | common language | langue commune | Langue des humains, à distinguer des langues anciennes. |
 | golden fox | renard doré / grande renarde | `renard doré` quand Barry/Daren en parlent comme figure encore vague ; `grande renarde` dans la bouche d'Elaria quand elle parle de sa protectrice. |
+| still winter | Hiver immobile | Nom d'événement et formule codée introduite par Eiden dans `ch4`. Capitaliser quand l'expression désigne l'événement. |
 | Northern Continent / Western Continent | Northern Continent / Western Continent | Noms propres conservés en anglais, comme `Eastern Continent`. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
@@ -77,27 +78,70 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 - `out of your hair` devient `te débarrasser le plancher` : expression idiomatique française naturelle dans la bouche de Cutthroat Dave.
 - `A clean mouth and an honest hand...` devient `Bouche propre et main honnête...` : tournure proverbiale conservée, sans chercher un proverbe français préexistant inexact.
 - `a few hundred feet from my location` devient `à une centaine de mètres de ma position` : conversion métrique arrondie, naturelle en français.
+- `Remember the still winter` devient `Souvenez-vous de l’Hiver immobile` : formule volontairement solennelle, à garder stable lors des prochains chapitres.
 
-## Méthode De Traduction Ch3
+## Workflow Générique De Traduction D'un Chapitre
 
-Le chapitre 3 a été traduit avec Codex en mode GPT-5.5, effort moyen, sans fast mode. La source anglaise canonique `content/canonical/v1/locales/en/ch3.json` a été découpée en 18 lots de traduction d'environ 12 000 caractères maximum, puis chaque lot a été demandé comme JSON strict avec les mêmes `messageId`.
+Ce workflow est obligatoire pour tout chapitre traduit en français. Remplacer `<chapterId>` par l'identifiant réel du chapitre, par exemple `ch4`, `ch11a` ou `b2ch1`.
 
-Chaque lot a été validé avant fusion :
+Outil de traduction autorisé :
 
-- JSON parseable ;
-- `locale: "fr"` et `chapterId: "ch3"` ;
-- aucune clé manquante ou supplémentaire par rapport au lot anglais ;
-- noms propres et glossaire projet préservés.
+- effectuer la traduction narrative, les achievements et la QA éditoriale dans Codex ;
+- ne pas envoyer les textes Magium vers DeepL, Google Translate, une API OpenAI directe, un autre LLM externe, un service SaaS de traduction ou tout outil nécessitant une clé API externe ;
+- ne pas utiliser une clé API pour contourner les limites d'un service de traduction ;
+- conserver les lots de traduction dans le workspace Codex, avec les sources locales du dépôt comme référence ;
+- les recherches documentaires locales restent autorisées, mais elles ne doivent pas transmettre le texte source complet à un fournisseur externe.
 
-Une passe de QA éditoriale fait partie intégrante de la traduction `ch3` et doit être faite avant de considérer le chapitre terminé. Elle couvre :
+Préparation :
 
-- scan mécanique des guillemets, incises de dialogue, guillemets déséquilibrés, restes anglais, unités impériales, termes interdits ou instables (`stillwater`, `amplificateur de stats`, `maximiser`) ;
-- comparaison stricte des clés entre `content/canonical/v1/locales/en/ch3.json` et `content/story-locales/fr/ch3.json` ;
-- relecture ciblée du début de chapitre, de la scène de choix des stats, des scènes Elaria/Molan/renard doré, de la scène Kate/Daren nocturne, du combat contre les arbalétriers et des retours de branche ;
-- corrections de ton pour garder Barry direct, oral et légèrement ironique sans rendre la narration trop soutenue ;
-- normalisation des noms propres de continents et des termes récurrents stabilisés dans le glossaire.
+- lire la source anglaise canonique `content/canonical/v1/locales/en/<chapterId>.json` ;
+- relever le nombre exact de clés `messages` et conserver la liste des `messageId` comme référence de couverture ;
+- lire `content/canonical/v1/story/<chapterId>.json` pour repérer les achievements, les personnages importants, les choix, les checks de stats et les scènes longues ;
+- ne jamais modifier à la main `content/archive/original/**`, `content/canonical/v1/**` ni `src/generated/**`.
 
-Le fichier final éditable est `content/story-locales/fr/ch3.json`. Les sorties générées sous `content/canonical/v1/locales/fr/ch3.json` et `src/generated/packs/locales__fr__ch3.ts` viennent uniquement de `pnpm content:all`.
+Traduction narrative :
+
+- créer ou mettre à jour `content/story-locales/fr/<chapterId>.json` avec `locale: "fr"`, `chapterId: "<chapterId>"` et exactement les mêmes clés `messages` que la locale anglaise ;
+- traduire par lots Codex-only contrôlés, assez petits pour pouvoir relire le résultat avant fusion ;
+- conserver tous les `messageId` intacts, sans ajouter, supprimer ou renommer de clé ;
+- traduire uniquement le texte affiché au joueur : ne pas changer les scene IDs, choice targets, variables, conditions, assignments, specials, checks de stats ou logique de chapitre ;
+- appliquer systématiquement le registre, le glossaire, les unités naturalisées et les règles de tutoiement/vouvoiement de ce document.
+
+Achievements du chapitre :
+
+- rechercher dans `content/canonical/v1/story/<chapterId>.json` toutes les variables d'achievements référencées par le chapitre, généralement sous la forme `v_ac_<chapterId>_*` ;
+- pour chaque variable trouvée, traduire les clés `achievement.<variable>.title` et `achievement.<variable>.caption` depuis `content/canonical/v1/locales/en/achievements.json` ;
+- ajouter ces traductions dans `content/story-locales/fr/achievements.json`, sans supprimer les achievements déjà traduits ;
+- garder un titre court et naturel, et une caption fidèle à l'effet ou au trait humoristique de l'anglais.
+
+QA structurelle obligatoire :
+
+- vérifier que le JSON source FR est parseable ;
+- vérifier `locale`, `chapterId`, le nombre de clés et l'égalité stricte des clés avec `en/<chapterId>.json` ;
+- vérifier qu'il n'y a aucune clé en trop, aucune clé manquante et aucun `messageId` modifié ;
+- vérifier que les achievements du chapitre présents dans le story graph ont bien leurs clés FR `title` et `caption` ;
+- vérifier que le chapitre apparaît dans les tests i18n et les docs d'état si la couverture FR publique change.
+
+QA éditoriale obligatoire :
+
+- scanner les restes anglais évidents, les guillemets droits, les guillemets français déséquilibrés, les incises mal ponctuées, les doubles espaces et les espaces parasites ;
+- scanner les termes interdits ou instables : `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, unités impériales non naturalisées ;
+- vérifier les noms propres anglais conservés, notamment les continents, personnages, lieux, races et titres déjà stabilisés ;
+- relire au minimum le début du chapitre, une scène longue, une scène à choix, une scène avec personnages clés, une scène de tension ou de combat, et la fin ou les branches alternatives ;
+- corriger les passages trop littéraux, trop soutenus ou trop neutres pour garder Barry direct, oral, introspectif et légèrement ironique ;
+- ajouter au glossaire tout nouveau terme récurrent stabilisé pendant la traduction.
+
+Génération et validations :
+
+- lancer `pnpm content:all` après toute modification de source traduisible ;
+- confirmer que `content/canonical/v1/locales/fr/<chapterId>.json` et `src/generated/packs/locales__fr__<chapterId>.ts` sont générés par le pipeline ;
+- lancer obligatoirement `pnpm check`, `pnpm test` et `pnpm build` ;
+- considérer la traduction terminée seulement si `pnpm build` conserve aussi `dist:check` vert.
+
+## Journal Des Chapitres Traduits
+
+- `ch3` : traduit avec Codex en mode GPT-5.5, effort moyen, sans fast mode ; source découpée en 18 lots contrôlés ; QA structurelle et éditoriale effectuée ; termes stabilisés pendant ce chapitre : `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, conservation de `Northern Continent` et `Western Continent`.
+- `ch4` : traduit avec Codex en local, sans service de traduction externe ; 108 messages couverts ; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat` et `v_ac_ch4_kneed` traduits ; terme stabilisé : `still winter` -> `Hiver immobile`.
 
 ## Points Ouverts
 

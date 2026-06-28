@@ -2,7 +2,7 @@
 
 Application PWA moderne pour jouer a Magium depuis les textes originaux du depot `raduprv/Magium`.
 
-Le récit V1 démarre en anglais original, avec les chapitres 1 à 3 jouables en français. Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
+Le récit V1 démarre en anglais original, avec les chapitres 1 à 4 jouables en français. Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
 
 ## Etat Actuel
 
@@ -75,7 +75,7 @@ docs/                       Documentation technique detaillee.
 - [Moteur runtime](./docs/runtime-engine.md) : scenes, choix, conditions, stats, achievements.
 - [Sauvegardes et anti-tamper](./docs/saves-and-anti-tamper.md) : IndexedDB, AES-GCM, export/import, limites.
 - [I18n](./docs/i18n.md) : modele de traduction UI et narrative.
-- [Traduction FR](./docs/translation-fr.md) : glossaire et critères de traduction.
+- [Traduction FR](./docs/translation-fr.md) : glossaire, critères et workflow agent IA Codex-only pour traduire un chapitre.
 - [Déploiement Coolify](./docs/deployment-coolify.md) : build Dockerfile via GitHub App, image GHCR optionnelle et configuration Coolify.
 - [Verification](./docs/verification.md) : commandes, checks, tests navigateur.
 

@@ -34,7 +34,7 @@
     "nav.read": "Lire",
     "nav.saves": "Sauvegardes",
     "nav.settings": "Paramètres",
-    "reader.autosave": "Sauvegarde auto",
+    "panel.close": "Fermer le panneau",
     "reader.chapterTitle": "Livre {book} - Chapitre {chapter}",
     "reader.eyebrow": "Magium",
     "saves.backupPassword": "Mot de passe d'export",
