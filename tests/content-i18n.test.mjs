@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const root = process.cwd();
+const book1FrenchChapters = ["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8", "ch9", "ch10", "ch11a", "ch11b"];
 
 async function readJson(relativePath) {
   return JSON.parse(await fs.readFile(path.join(root, relativePath), "utf8"));
@@ -14,7 +15,7 @@ describe("generated content i18n", () => {
     const generated = await fs.readFile(path.join(root, "src/generated/contentPacks.ts"), "utf8");
 
     expect(index.storyLocales).toContain("fr");
-    for (const chapterId of ["ch1", "ch2", "ch3", "ch4"]) {
+    for (const chapterId of book1FrenchChapters) {
       const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
       const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
 
@@ -25,7 +26,7 @@ describe("generated content i18n", () => {
     }
   });
 
-  it("generates complete stat locales and partial French achievement overrides", async () => {
+  it("generates complete stat locales and Book 1 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");
     const frAchievements = await readJson("content/canonical/v1/locales/fr/achievements.json");
@@ -33,34 +34,16 @@ describe("generated content i18n", () => {
 
     expect(Object.keys(frStats.messages).sort()).toEqual(Object.keys(enStats.messages).sort());
     expect(frStats.messages["stat.v_strength"]).toBe("Force");
-    expect(Object.keys(frAchievements.messages).sort()).toEqual([
-      "achievement.v_ac_ch1_coward.caption",
-      "achievement.v_ac_ch1_coward.title",
-      "achievement.v_ac_ch1_die.caption",
-      "achievement.v_ac_ch1_die.title",
-      "achievement.v_ac_ch1_honesty.caption",
-      "achievement.v_ac_ch1_honesty.title",
-      "achievement.v_ac_ch2_master.caption",
-      "achievement.v_ac_ch2_master.title",
-      "achievement.v_ac_ch2_nails.caption",
-      "achievement.v_ac_ch2_nails.title",
-      "achievement.v_ac_ch2_talker.caption",
-      "achievement.v_ac_ch2_talker.title",
-      "achievement.v_ac_ch2_unlikely.caption",
-      "achievement.v_ac_ch2_unlikely.title",
-      "achievement.v_ac_ch3_army.caption",
-      "achievement.v_ac_ch3_army.title",
-      "achievement.v_ac_ch3_close.caption",
-      "achievement.v_ac_ch3_close.title",
-      "achievement.v_ac_ch3_message.caption",
-      "achievement.v_ac_ch3_message.title",
-      "achievement.v_ac_ch4_cutthroat.caption",
-      "achievement.v_ac_ch4_cutthroat.title",
-      "achievement.v_ac_ch4_kneed.caption",
-      "achievement.v_ac_ch4_kneed.title",
-      "achievement.v_ac_ch4_noble.caption",
-      "achievement.v_ac_ch4_noble.title",
-    ]);
+    const expectedAchievementKeys = new Set();
+    for (const chapterId of book1FrenchChapters) {
+      const story = await readJson(`content/canonical/v1/story/${chapterId}.json`);
+      for (const variable of JSON.stringify(story).match(/v_ac_[a-z0-9_]+/g) ?? []) {
+        expectedAchievementKeys.add(`achievement.${variable}.caption`);
+        expectedAchievementKeys.add(`achievement.${variable}.title`);
+      }
+    }
+
+    expect(Object.keys(frAchievements.messages).sort()).toEqual([...expectedAchievementKeys].sort());
     expect(generated).toContain('"locales/fr/achievements"');
     expect(generated).toContain('"locales/fr/stats"');
   });

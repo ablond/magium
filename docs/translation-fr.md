@@ -34,6 +34,10 @@ Principes retenus :
 | common language | langue commune | Langue des humains, à distinguer des langues anciennes. |
 | golden fox | renard doré / grande renarde | `renard doré` quand Barry/Daren en parlent comme figure encore vague ; `grande renarde` dans la bouche d'Elaria quand elle parle de sa protectrice. |
 | still winter | Hiver immobile | Nom d'événement et formule codée introduite par Eiden dans `ch4`. Capitaliser quand l'expression désigne l'événement. |
+| oildrip | suintenoire | Terme stabilisé dans `ch11a` pour la crise sanitaire du quartier du Moineau. |
+| time weaver | tisseur / tisseuse du temps | Utiliser le féminin `tisseuse du temps` pour Rose. |
+| dragon hunter | chasseur de dragons | Terme de caste/fonction, à accorder naturellement au pluriel. |
+| ethereal | éthéré | Adjectif magique, notamment pour les êtres ou effets intangibles. |
 | Northern Continent / Western Continent | Northern Continent / Western Continent | Noms propres conservés en anglais, comme `Eastern Continent`. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
@@ -142,8 +146,9 @@ Génération et validations :
 
 - `ch3` : traduit avec Codex en mode GPT-5.5, effort moyen, sans fast mode ; source découpée en 18 lots contrôlés ; QA structurelle et éditoriale effectuée ; termes stabilisés pendant ce chapitre : `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, conservation de `Northern Continent` et `Western Continent`.
 - `ch4` : traduit avec Codex en local, sans service de traduction externe ; 108 messages couverts ; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat` et `v_ac_ch4_kneed` traduits ; terme stabilisé : `still winter` -> `Hiver immobile`.
+- `ch5` à `ch11b` : traduits avec Codex en local, sans service de traduction externe ; 1429 messages couverts ; achievements `v_ac_ch5_*` à `v_ac_ch11_*` traduits ; le livre 1 est maintenant couvert en français avec fallback anglais uniquement pour les chapitres non traduits hors livre 1.
 
 ## Points Ouverts
 
 - Les noms propres de continents (`Eastern Continent`, `Northern Continent`, `Western Continent`) sont conservés en anglais conformément aux règles du projet, même quand la source varie entre majuscule et minuscule.
-- Les titres d'achievements futurs devront arbitrer au cas par cas entre fidélité littérale et effet humoristique équivalent.
+- Les titres d'achievements des livres futurs devront arbitrer au cas par cas entre fidélité littérale et effet humoristique équivalent.

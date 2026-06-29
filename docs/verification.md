@@ -69,7 +69,7 @@ Doit confirmer :
 - 54 chapitres generes ;
 - 136 achievements ;
 - packs UI `locales/en/ui` et `locales/fr/ui` generes et cles UI synchronisees ;
-- packs story `locales/fr/ch1`, `locales/fr/ch2`, `locales/fr/ch3`, `locales/fr/ch4`, `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts jusqu'au chapitre 4 ;
+- packs story FR du livre 1 (`locales/fr/ch1` à `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts pour le livre 1 ;
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
 
@@ -88,8 +88,8 @@ Verifier :
 1. la page charge directement le livre 1 chapitre 1 ;
 2. cliquer `Excited` affiche la scene suivante ;
 3. recharger la page reprend la progression ;
-4. si le navigateur prefere `fr`, l'interface et les chapitres 1 à 4 demarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
-5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, le header lecteur ne montre plus de badge de succès ni de sauvegarde auto, la zone de lecture utilise Literata sur une largeur confortable et plus dense, les scenes des chapitres 1 à 4 utilisent les packs narratifs `fr/ch1`, `fr/ch2`, `fr/ch3` et `fr/ch4`, et le rail gauche ainsi que le panneau droit ouvert restent visibles pendant un scroll long ;
+4. si le navigateur prefere `fr`, l'interface et le livre 1 démarrent en francais ; sinon utiliser Settings pour basculer sur `Français` ;
+5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, le header lecteur ne montre plus de badge de succès ni de sauvegarde auto, la zone de lecture utilise Literata sur une largeur confortable et plus dense, les scenes du livre 1 utilisent les packs narratifs `fr/ch1` à `fr/ch11b`, et le rail gauche ainsi que le panneau droit ouvert restent visibles pendant un scroll long ;
 6. mobile 390 x 844 : la navigation reste compacte, il n'y a pas de chevauchement UI/texte en FR et EN, et les panneaux s'ouvrent en overlay au-dessus du récit avec fermeture par bouton, fond cliquable et touche `Escape`, sans repousser le contenu vers le bas ;
 7. la lettrine du premier paragraphe alphabetique monte legerement au-dessus de la ligne et ne semble pas tomber dans le paragraphe ;
 8. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
