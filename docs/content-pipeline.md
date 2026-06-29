@@ -89,6 +89,9 @@ locales/fr/ch1.json
 locales/fr/ch2.json
 locales/fr/ch3.json
 locales/fr/ch4.json
+locales/fr/ch5.json
+...
+locales/fr/ch11b.json
 locales/fr/achievements.json
 locales/fr/stats.json
 locales/fr/ui.json
@@ -137,11 +140,14 @@ content/story-locales/fr/ch1.json
 content/story-locales/fr/ch2.json
 content/story-locales/fr/ch3.json
 content/story-locales/fr/ch4.json
+content/story-locales/fr/ch5.json
+...
+content/story-locales/fr/ch11b.json
 content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```
 
-`content:parse` les copie dans `content/canonical/v1/locales/<locale>/`, ajoute les locales disponibles dans `index.storyLocales`, puis génère les packs runtime `locales/<locale>/<bundle>`. Les fichiers de chapitre doivent avoir exactement les mêmes `messageId` que `en`. Les achievements traduits peuvent être partiels et sont fusionnés avec `en` au runtime. Les stats doivent être complètes pour chaque locale de récit.
+`content:parse` les copie dans `content/canonical/v1/locales/<locale>/`, ajoute les locales disponibles dans `index.storyLocales`, puis génère les packs runtime `locales/<locale>/<bundle>`. Les fichiers de chapitre doivent avoir exactement les mêmes `messageId` que `en`. Les achievements traduits peuvent être partiels par rapport au catalogue complet, mais doivent couvrir strictement les chapitres traduits par la locale. Les stats doivent être complètes pour chaque locale de récit.
 
 ## Conditions
 
@@ -210,7 +216,7 @@ Le runtime :
 - presence des packs `locales/<locale>/ui` dans `src/generated/contentPacks.ts` ;
 - cles strictes des chapitres traduits par rapport a `en` ;
 - cles stats identiques entre `en` et les autres locales de récit ;
-- cles achievements traduites connues et packs story presents ;
+- cles achievements traduites pour les chapitres couverts et packs story presents ;
 - pas d'indice de `.magium` brut dans `src/generated/contentPacks.ts`.
 
 `pnpm dist:check` verifie apres build :
