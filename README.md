@@ -2,7 +2,7 @@
 
 Application PWA moderne pour jouer a Magium depuis les textes originaux du depot `raduprv/Magium`.
 
-Le récit V1 démarre en anglais original, avec les chapitres 1 à 4 jouables en français. Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
+Le récit V1 démarre en anglais original, avec le livre 1 complet jouable en français (`ch1` à `ch11b`). Le choix de langue FR/EN dans les settings pilote l'interface, le récit disponible et les libellés de stats, avec fallback anglais pour les chapitres non encore traduits.
 
 ## Etat Actuel
 
