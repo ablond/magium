@@ -76,9 +76,9 @@ Le panneau explique le comportement sans vocabulaire technique :
 
 - la progression est sauvegardee apres chaque choix ;
 - les saves nommees servent a conserver plusieurs routes ;
-- l'export cree un fichier de secours ;
-- un mot de passe rend ce fichier restaurable dans un autre navigateur ;
-- l'import reprend seulement un backup compatible avec l'aventure.
+- l'export sans mot de passe cree un fichier restaurable seulement dans ce navigateur ;
+- un mot de passe rend ce fichier portable vers un autre navigateur ou la production ;
+- l'import reprend seulement un backup compatible avec la version de contenu courante.
 
 Les statuts visibles restent orientes joueur, par exemple `Portable backup exported` ou `Save imported and ready`.
 
@@ -102,7 +102,7 @@ Avec phrase de passe :
 - derive une clé PBKDF2 SHA-256 ;
 - 250 000 iterations ;
 - salt 16 octets ;
-- export portable entre navigateurs.
+- export portable entre navigateurs, entre local et prod, si le `contentVersion` est identique.
 
 Sans phrase de passe :
 
@@ -116,9 +116,10 @@ L'import :
 1. parse le conteneur ;
 2. derive ou recupere la clé ;
 3. decrypte ;
-4. rejoue `history` depuis le debut ;
-5. compare l'etat obtenu a l'etat decrypte ;
-6. sauvegarde seulement si la validation passe.
+4. verifie que le `contentVersion` de la sauvegarde correspond au runtime courant ;
+5. rejoue `history` depuis le debut ;
+6. compare l'etat obtenu a l'etat decrypte ;
+7. sauvegarde seulement si la validation passe.
 
 Une sauvegarde decryptee mais incoherente doit etre rejetee.
 
@@ -129,9 +130,9 @@ Une sauvegarde decryptee mais incoherente doit etre rejetee.
 
 Le replay des allocations verifie que la stat etait visible, qu'elle etait allouable, que `v_available_points` suffisait, et que la valeur finale ne depassait pas `v_max_stat`. Il reconstruit aussi les variables `_aux` et les compteurs de points. Une sauvegarde qui modifie directement une stat ou un compteur est donc rejetee si elle ne correspond pas au chemin rejoue.
 
-Le `historyDigest` part de `magium:v2:initial`. Ce changement, combine au `contentVersion` runtime V2, invalide les anciennes sauvegardes dont l'historique ne contient pas les evenements types.
+Le `historyDigest` part de `magium:v2:initial`. Ce changement, combine au `contentVersion` runtime V2, invalide les anciennes sauvegardes dont l'historique ne contient pas les evenements types. Une sauvegarde exportee depuis local vers prod doit donc etre chiffree avec phrase de passe et viser le meme `contentVersion`.
 
-Les erreurs affichees cote UI doivent rester comprehensibles, par exemple `Unsupported save file` ou `This save file does not match a playable route`.
+Les erreurs affichees cote UI doivent rester comprehensibles et visibles dans le panneau Saves, par exemple `Unsupported save file`, `This backup only restores in the browser that exported it`, `Wrong password or damaged save file`, `This save was made for a different content version` ou `This save file does not match a playable route`.
 
 ## Donnees Non Chiffrees Acceptables
 

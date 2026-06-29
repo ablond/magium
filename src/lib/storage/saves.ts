@@ -5,6 +5,27 @@ import { idbAll, idbDelete, idbPut } from './idb'
 
 const SAVE_ASSOCIATED_DATA = 'magium-save-v1'
 
+export const SAVE_IMPORT_ERROR_MESSAGES = {
+  unsupported: 'Unsupported save file',
+  localOnly: 'This backup only restores in the browser that exported it',
+  passwordRequired: 'This backup needs the password used when it was exported',
+  passwordOrCorrupt: 'Wrong password or damaged save file',
+  contentVersion: 'This save was made for a different content version',
+  tamper: 'This save file does not match a playable route',
+} as const
+
+export type SaveImportErrorCode = keyof typeof SAVE_IMPORT_ERROR_MESSAGES
+
+export class SaveImportError extends Error {
+  code: SaveImportErrorCode
+
+  constructor(code: SaveImportErrorCode) {
+    super(SAVE_IMPORT_ERROR_MESSAGES[code])
+    this.name = 'SaveImportError'
+    this.code = code
+  }
+}
+
 export type StoredSaveRecord = {
   slotId: string
   updatedAt: string
@@ -79,20 +100,100 @@ export async function exportSave(state: GameState, passphrase: string): Promise<
 export async function importSave(
   raw: string,
   passphrase: string,
+  expectedContentVersion: string,
   contextForScene: (sceneId: string) => Promise<StoryContext>,
 ): Promise<GameState> {
-  const container = JSON.parse(raw) as SaveContainer
-  if (container.kind !== 'magium-save' || container.version !== 1) {
-    throw new Error('Unsupported save file')
+  const container = parseSaveContainer(raw)
+  const state = await decryptSaveContainer(container, passphrase)
+  if (!isGameStateShape(state)) {
+    throw new SaveImportError('unsupported')
   }
-  const key = container.encryption === 'pbkdf2'
-    ? await derivePassphraseKey(passphrase, base64ToBytes(container.salt ?? ''))
-    : await getLocalSaveKey()
-  const state = await decryptJson<GameState>(container.encrypted, key, container.associatedData)
-  const valid = await replayAndValidate(contextForScene, state)
+  if (state.contentVersion !== expectedContentVersion) {
+    throw new SaveImportError('contentVersion')
+  }
+  const valid = await validateReplay(contextForScene, state)
   if (!valid) {
-    throw new Error('This save file does not match a playable route')
+    throw new SaveImportError('tamper')
   }
   await saveGameState(state)
   return state
+}
+
+function parseSaveContainer(raw: string): SaveContainer {
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(raw)
+  } catch {
+    throw new SaveImportError('unsupported')
+  }
+
+  if (!isSaveContainer(parsed)) {
+    throw new SaveImportError('unsupported')
+  }
+
+  return parsed
+}
+
+async function decryptSaveContainer(container: SaveContainer, passphrase: string): Promise<unknown> {
+  const trimmedPassphrase = passphrase.trim()
+  if (container.encryption === 'pbkdf2' && !trimmedPassphrase) {
+    throw new SaveImportError('passwordRequired')
+  }
+
+  try {
+    const key = container.encryption === 'pbkdf2'
+      ? await derivePassphraseKey(trimmedPassphrase, base64ToBytes(container.salt ?? ''))
+      : await getLocalSaveKey()
+    return await decryptJson<unknown>(container.encrypted, key, container.associatedData)
+  } catch {
+    throw new SaveImportError(container.encryption === 'local-key' ? 'localOnly' : 'passwordOrCorrupt')
+  }
+}
+
+async function validateReplay(
+  contextForScene: (sceneId: string) => Promise<StoryContext>,
+  state: GameState,
+): Promise<boolean> {
+  try {
+    return await replayAndValidate(contextForScene, state)
+  } catch {
+    return false
+  }
+}
+
+function isSaveContainer(value: unknown): value is SaveContainer {
+  return isRecord(value) &&
+    value.kind === 'magium-save' &&
+    value.version === 1 &&
+    (value.encryption === 'local-key' || value.encryption === 'pbkdf2') &&
+    value.associatedData === SAVE_ASSOCIATED_DATA &&
+    isEncryptedBox(value.encrypted) &&
+    (value.encryption === 'local-key' || typeof value.salt === 'string')
+}
+
+function isEncryptedBox(value: unknown): value is EncryptedBox {
+  return isRecord(value) &&
+    value.version === 1 &&
+    value.algorithm === 'AES-GCM' &&
+    typeof value.iv === 'string' &&
+    typeof value.ciphertext === 'string'
+}
+
+function isGameStateShape(value: unknown): value is GameState {
+  return isRecord(value) &&
+    value.schemaVersion === 1 &&
+    typeof value.contentVersion === 'string' &&
+    typeof value.slotId === 'string' &&
+    typeof value.locale === 'string' &&
+    typeof value.currentSceneId === 'string' &&
+    isRecord(value.variables) &&
+    isRecord(value.achievements) &&
+    Array.isArray(value.history) &&
+    typeof value.historyDigest === 'string' &&
+    typeof value.createdAt === 'string' &&
+    typeof value.updatedAt === 'string'
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
 }
