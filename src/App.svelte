@@ -21,6 +21,7 @@
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
   import { loadContextForScene, loadIndex, loadUiLocale } from './lib/content/packedContent'
   import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
+  import { splitDisplayParagraphs } from './lib/reader/displayParagraphs'
   import { applyChoice, applyStatAllocation, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
   import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
   import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
@@ -55,6 +56,7 @@
   let context: StoryContext | null = null
   let state: GameState | null = null
   let rendered: RenderedScene | null = null
+  $: displayParagraphs = rendered ? splitDisplayParagraphs(rendered.paragraphs) : []
   let uiMessages: Record<string, string> = {}
   let availableLanguages = [...DEFAULT_UI_LOCALES]
   let saveSummaries: SaveSummary[] = []
@@ -569,9 +571,9 @@
         {/if}
 
         <article class="scene">
-          {#each rendered.paragraphs as paragraph, index}
+          {#each displayParagraphs as paragraph, index (paragraph.id)}
             <p
-              class:typewriter={settings.typewriter && index === rendered.paragraphs.length - 1}
+              class:typewriter={settings.typewriter && index === displayParagraphs.length - 1}
               class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
             >{paragraph.text}</p>
           {/each}

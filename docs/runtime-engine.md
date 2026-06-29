@@ -96,6 +96,8 @@ Attention : appeler cette fonction apres creation d'un nouvel etat ou apres appl
 - deduit les resultats de stat checks visibles apres l'arrivee dans la scene ;
 - renvoie les achievements debloques.
 
+Les blocs narratifs canoniques peuvent contenir plusieurs alineas separes par des lignes vides. Le lecteur les decoupe au rendu en vrais paragraphes DOM, sans modifier le graphe logique ni les packs de contenu.
+
 Le rendu ne modifie pas l'etat.
 
 ## Stat Checks Post-Choix
