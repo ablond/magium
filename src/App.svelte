@@ -24,7 +24,7 @@
   import { applyChoice, applyStatAllocation, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
   import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
   import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
-  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, type SaveSummary } from './lib/storage/saves'
+  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about'
 
@@ -42,10 +42,14 @@
     'No stat points selected': 'errors.noStatPointsSelected',
     'Not enough stat points available': 'errors.notEnoughStatPoints',
     'This browser does not support runtime content decompression': 'errors.decompressionUnsupported',
-    'This save file does not match a playable route': 'errors.saveTamper',
+    [SAVE_IMPORT_ERROR_MESSAGES.contentVersion]: 'errors.saveContentVersion',
+    [SAVE_IMPORT_ERROR_MESSAGES.localOnly]: 'errors.saveLocalOnly',
+    [SAVE_IMPORT_ERROR_MESSAGES.passwordOrCorrupt]: 'errors.savePasswordOrCorrupt',
+    [SAVE_IMPORT_ERROR_MESSAGES.passwordRequired]: 'errors.savePasswordRequired',
+    [SAVE_IMPORT_ERROR_MESSAGES.tamper]: 'errors.saveTamper',
     'Stat is not available for allocation': 'errors.statUnavailable',
     'Stat maximum reached': 'errors.statMaximumReached',
-    'Unsupported save file': 'errors.unsupportedSave',
+    [SAVE_IMPORT_ERROR_MESSAGES.unsupported]: 'errors.unsupportedSave',
   }
 
   let context: StoryContext | null = null
@@ -57,10 +61,14 @@
   let activePanel: Panel = 'none'
   let loading = true
   let busy = false
+  let saveBusy: 'none' | 'export' | 'import' = 'none'
   let error = ''
   let status = ''
+  let panelError = ''
+  let panelStatus = ''
   let passphrase = ''
   let importPassphrase = ''
+  let runtimeContentVersion = ''
   let manualSlotId = 'manual-1'
   let settings: ReaderSettings = { ...defaultSettings }
   let statDraft: Record<string, number> = {}
@@ -96,6 +104,7 @@
       settings = loadReaderSettings()
       applyReaderSettings(settings)
       const index = await loadIndex()
+      runtimeContentVersion = index.contentVersion
       availableLanguages = resolveAvailableLanguages(index.uiLocales, index.storyLocales, index.defaultLocale)
       const language = resolveUiLocale(settings.locale || settings.uiLocale, [], availableLanguages, index.defaultLocale)
       settings = {
@@ -194,13 +203,14 @@
 
   async function saveManualSlot() {
     if (!state) return
+    clearSaveFeedback()
     const slotId = manualSlotId.trim() || 'manual-1'
     state = { ...state, slotId, updatedAt: new Date().toISOString() }
     await saveGameState(state)
     state = { ...state, slotId: 'autosave', updatedAt: new Date().toISOString() }
     await saveGameState(state)
     await refresh()
-    status = t(uiMessages, 'status.saved', { slotId }, `Saved ${slotId}`)
+    panelStatus = t(uiMessages, 'status.saved', { slotId }, `Saved ${slotId}`)
   }
 
   async function removeSlot(slotId: string) {
@@ -221,39 +231,48 @@
   }
 
   async function downloadSave() {
-    if (!state) return
-    const exported = await exportSave(state, passphrase)
-    const blob = new Blob([exported], { type: 'application/vnd.magium.save+json' })
-    const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = `${state.slotId}-${new Date().toISOString().slice(0, 10)}.magium-save`
-    anchor.click()
-    URL.revokeObjectURL(url)
-    status = passphrase.trim()
-      ? t(uiMessages, 'status.exportPortable', {}, 'Portable backup exported')
-      : t(uiMessages, 'status.exportLocal', {}, 'Backup exported for this browser')
+    if (!state || saveBusy !== 'none') return
+    try {
+      saveBusy = 'export'
+      clearSaveFeedback()
+      const exported = await exportSave(state, passphrase)
+      const blob = new Blob([exported], { type: 'application/vnd.magium.save+json' })
+      const url = URL.createObjectURL(blob)
+      const anchor = document.createElement('a')
+      anchor.href = url
+      anchor.download = `${state.slotId}-${new Date().toISOString().slice(0, 10)}.magium-save`
+      anchor.click()
+      URL.revokeObjectURL(url)
+      panelStatus = passphrase.trim()
+        ? t(uiMessages, 'status.exportPortable', {}, 'Portable backup exported')
+        : t(uiMessages, 'status.exportLocal', {}, 'Backup exported for this browser')
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      saveBusy = 'none'
+    }
   }
 
   async function importSelectedSave(event: Event) {
     const file = (event.currentTarget as HTMLInputElement).files?.[0]
-    if (!file) return
+    if (!file || !state || saveBusy !== 'none') return
     try {
+      saveBusy = 'import'
+      clearSaveFeedback()
       const raw = await file.text()
-      const imported = await importSave(raw, importPassphrase, async (sceneId) => {
+      const imported = await importSave(raw, importPassphrase, runtimeContentVersion || state.contentVersion, async (sceneId) => {
         context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
         return context
       })
       context = await loadContextForScene(imported.currentSceneId, imported.locale, context ?? undefined)
       state = imported
       resetStatDraft()
-      clearStatus()
       await refresh()
-      status = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
-      closePanel({ restoreFocus: false })
+      panelStatus = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
     } catch (caught) {
-      error = formatCaughtError(caught)
+      panelError = formatCaughtError(caught)
     } finally {
+      saveBusy = 'none'
       if (importInput) importInput.value = ''
     }
   }
@@ -458,6 +477,13 @@
     status = ''
   }
 
+  function clearSaveFeedback() {
+    panelError = ''
+    panelStatus = ''
+    error = ''
+    status = ''
+  }
+
   function canUseDropCap(text: string) {
     return /^[A-Za-z]/.test(text.trim())
   }
@@ -590,25 +616,25 @@
         </button>
         {#if activePanel === 'saves' && state}
           <h2>{t(uiMessages, 'saves.title', {}, 'Saves')}</h2>
-          <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves after every choice. Named saves let you keep several routes. Export creates a backup file; add a password if you want to restore it in another browser. Import resumes a compatible backup.')}</p>
+          <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves after every choice. Named saves let you keep several routes. Export without a password only restores in this browser; add a password for a portable backup you can import in prod or another browser. Import resumes a compatible backup.')}</p>
           <div class="panel-actions">
-            <button on:click={startNewGame}><RotateCcw size={17} /> {t(uiMessages, 'saves.newGame', {}, 'New game')}</button>
-            <button disabled={!state.checkpoint} on:click={restoreLastCheckpoint}><Library size={17} /> {t(uiMessages, 'saves.checkpoint', {}, 'Checkpoint')}</button>
+            <button disabled={saveBusy !== 'none'} on:click={startNewGame}><RotateCcw size={17} /> {t(uiMessages, 'saves.newGame', {}, 'New game')}</button>
+            <button disabled={!state.checkpoint || saveBusy !== 'none'} on:click={restoreLastCheckpoint}><Library size={17} /> {t(uiMessages, 'saves.checkpoint', {}, 'Checkpoint')}</button>
           </div>
           <label>
             {t(uiMessages, 'saves.saveName', {}, 'Save name')}
-            <input bind:value={manualSlotId} />
+            <input bind:value={manualSlotId} disabled={saveBusy !== 'none'} />
           </label>
-          <button class="wide" on:click={saveManualSlot}><Save size={17} /> {t(uiMessages, 'saves.saveNamedRoute', {}, 'Save named route')}</button>
+          <button class="wide" disabled={saveBusy !== 'none'} on:click={saveManualSlot}><Save size={17} /> {t(uiMessages, 'saves.saveNamedRoute', {}, 'Save named route')}</button>
           <div class="save-list">
             {#each saveSummaries as save}
               <div class="save-row">
-                <button on:click={() => loadSlot(save.slotId)}>
+                <button disabled={saveBusy !== 'none'} on:click={() => loadSlot(save.slotId)}>
                   <strong>{save.slotId}</strong>
                   <span>{new Date(save.updatedAt).toLocaleString(settings.uiLocale)}</span>
                 </button>
                 {#if save.slotId !== 'autosave'}
-                  <button class="icon-danger" title={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} aria-label={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} on:click={() => removeSlot(save.slotId)}>×</button>
+                  <button class="icon-danger" disabled={saveBusy !== 'none'} title={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} aria-label={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} on:click={() => removeSlot(save.slotId)}>×</button>
                 {/if}
               </div>
             {/each}
@@ -616,16 +642,27 @@
           <label>
             {t(uiMessages, 'saves.backupPassword', {}, 'Backup password')}
             <span class="help">{t(uiMessages, 'saves.backupPasswordHelp', {}, 'Leave it empty for a backup that only restores in this browser.')}</span>
-            <input type="password" bind:value={passphrase} autocomplete="new-password" />
+            <input type="password" bind:value={passphrase} autocomplete="new-password" disabled={saveBusy !== 'none'} />
           </label>
-          <button class="wide" on:click={downloadSave}><Download size={17} /> {t(uiMessages, 'saves.exportBackup', {}, 'Export backup')}</button>
+          <button class="wide" disabled={saveBusy !== 'none'} on:click={downloadSave}>
+            <Download size={17} />
+            {saveBusy === 'export' ? t(uiMessages, 'saves.exporting', {}, 'Exporting...') : t(uiMessages, 'saves.exportBackup', {}, 'Export backup')}
+          </button>
           <label>
             {t(uiMessages, 'saves.restorePassword', {}, 'Restore password')}
             <span class="help">{t(uiMessages, 'saves.restorePasswordHelp', {}, 'Use the same password you chose when exporting the backup.')}</span>
-            <input type="password" bind:value={importPassphrase} autocomplete="current-password" />
+            <input type="password" bind:value={importPassphrase} autocomplete="current-password" disabled={saveBusy !== 'none'} />
           </label>
-          <input class="file-input" bind:this={importInput} type="file" accept=".magium-save,application/json" on:change={importSelectedSave} />
-          <button class="wide" on:click={() => importInput?.click()}><Upload size={17} /> {t(uiMessages, 'saves.importBackup', {}, 'Import backup')}</button>
+          <input class="file-input" bind:this={importInput} type="file" accept=".magium-save,application/json" disabled={saveBusy !== 'none'} on:change={importSelectedSave} />
+          <button class="wide" disabled={saveBusy !== 'none'} on:click={() => importInput?.click()}>
+            <Upload size={17} />
+            {saveBusy === 'import' ? t(uiMessages, 'saves.importing', {}, 'Importing...') : t(uiMessages, 'saves.importBackup', {}, 'Import backup')}
+          </button>
+          {#if panelError}
+            <p class="notice panel-notice error" role="alert">{panelError}</p>
+          {:else if panelStatus}
+            <p class="notice panel-notice" role="status" aria-live="polite">{panelStatus}</p>
+          {/if}
         {:else if activePanel === 'abilities'}
           <h2>{t(uiMessages, 'abilities.title', {}, 'Abilities')}</h2>
           {#if stats.length}

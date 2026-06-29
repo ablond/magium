@@ -92,7 +92,7 @@ Verifier :
 5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR, le header lecteur ne montre plus de badge de succès ni de sauvegarde auto, la zone de lecture utilise Literata sur une largeur confortable et plus dense, les scenes du livre 1 utilisent les packs narratifs `fr/ch1` à `fr/ch11b`, et le rail gauche ainsi que le panneau droit ouvert restent visibles pendant un scroll long ;
 6. mobile 390 x 844 : la navigation reste compacte, il n'y a pas de chevauchement UI/texte en FR et EN, et les panneaux s'ouvrent en overlay au-dessus du récit avec fermeture par bouton, fond cliquable et touche `Escape`, sans repousser le contenu vers le bas ;
 7. la lettrine du premier paragraphe alphabetique monte legerement au-dessus de la ligne et ne semble pas tomber dans le paragraphe ;
-8. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export, mot de passe et import sans jargon technique ;
+8. le panneau Sauvegardes affiche `autosave` et explique autosave, routes nommees, export local-only sans mot de passe, export portable avec mot de passe, import et erreurs inline sans jargon technique ;
 9. le panneau Stats est vide au debut, puis affiche les stats de base apres `Ch2-Stats` avec compteur de points, valeur/max, boutons `+/-`, confirmation, effacement et aide courte sous les boutons ;
 10. a `Ch2-Stats`, le max manuel est `3`, le bouton `+` se desactive quand une stat atteint le max ou quand il ne reste plus de points, et `-` ne retire que le brouillon non confirme ;
 11. confirmer une allocation decremente `v_available_points`, sauvegarde, puis garde les points confirmes non retirables par le panneau ;
@@ -104,9 +104,10 @@ Verifier :
 17. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
 18. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
 19. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
-20. export avec phrase de passe produit `.magium-save` ;
-21. import avec la meme phrase de passe restaure la progression ;
-22. un import dont une stat ou `v_available_points` ne correspond pas au replay est rejete.
+20. export sans phrase de passe produit un `.magium-save` local-only qui est refuse proprement dans un autre stockage navigateur ;
+21. export avec phrase de passe produit un `.magium-save` portable ;
+22. import avec la meme phrase de passe restaure la progression si le `contentVersion` courant correspond ;
+23. mauvais mot de passe, fichier incompatible, `contentVersion` different, ou stat / `v_available_points` incoherent affichent une erreur claire dans le panneau et ne modifient pas la sauvegarde locale.
 
 ## Exemple De Verification IndexedDB
 
