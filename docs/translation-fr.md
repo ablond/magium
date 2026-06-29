@@ -9,7 +9,8 @@ Principes retenus :
 - préserver les phrases longues quand elles portent l'élan ou la panique ;
 - garder les répétitions utiles, notamment dans les moments de tension ;
 - traduire les répliques dans un français naturel, avec des contractions de ton quand le personnage est familier ou agressif ;
-- conserver les noms propres anglais : Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent.
+- conserver les noms propres anglais : Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent ;
+- conserver `Cutthroat` et `Cutthroat Dave` comme noms propres quand ils désignent le personnage : ne pas traduire en `coupe-gorge`.
 
 ## Figures De Style Caractéristiques
 
