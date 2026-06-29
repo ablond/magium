@@ -85,6 +85,26 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 - `a few hundred feet from my location` devient `à une centaine de mètres de ma position` : conversion métrique arrondie, naturelle en français.
 - `Remember the still winter` devient `Souvenez-vous de l’Hiver immobile` : formule volontairement solennelle, à garder stable lors des prochains chapitres.
 
+## Corrections Éditoriales Stabilisées
+
+Ces corrections viennent de la QA du livre 1. Elles servent de garde-fous pour les prochaines traductions et les futures passes de relecture.
+
+Incises françaises :
+
+- éviter les calques `», je dis`, `», je lui dis`, `», je dis à Kate` quand il s'agit d'une incise de dialogue ;
+- utiliser les formes françaises naturelles : `», dis-je`, `», lui dis-je`, `», dis-je à Kate`, en gardant l'accord et le destinataire ;
+- pour les autres verbes d'incise, vérifier au cas par cas : employer l'inversion si elle reste naturelle, ou reformuler si elle sonne trop littéraire ou artificielle ;
+- pour une réplique coupée par l'incise, préférer `« Kate », dis-je, « tu as une minute ? »` plutôt que `« Kate », je dis. « Tu as une minute ? »` ;
+- ne pas corriger mécaniquement les usages narratifs internes comme `je dis seulement`, `je me dis`, `je dis ça` ou une phrase où Barry décrit vraiment l'action de parler hors incise.
+
+Formulations déjà corrigées :
+
+- `I hear he has...` dans un contexte de rumeur rapportée se rend par `il paraît qu'il a...`, pas par `j'entends dire...` ni par `j'imagine...`.
+- `I dare you` dans une provocation orale ne doit pas devenir `Je te défie`, trop raide en français courant ; utiliser une formule naturelle du type `Répète un peu ça, pour voir.`
+- Quand Daren demande spontanément un `slide`, `toboggan` peut rester dans sa réplique, mais la narration physique doit employer `rampe de glace`, pas `glissade de glace`.
+- `custom-made slide` dans cette même scène devient `la rampe faite sur mesure`, pas `le toboggan fabriqué sur mesure`.
+- `I think I'm starting to root for you!` se rend ici par `Je crois que je commence à être de votre côté !`, pas par `Je crois que je commence à vous soutenir !`.
+
 ## Workflow Générique De Traduction D'un Chapitre
 
 Ce workflow est obligatoire pour tout chapitre traduit en français. Remplacer `<chapterId>` par l'identifiant réel du chapitre, par exemple `ch4`, `ch11a` ou `b2ch1`.
@@ -130,7 +150,9 @@ QA structurelle obligatoire :
 QA éditoriale obligatoire :
 
 - scanner les restes anglais évidents, les guillemets droits, les guillemets français déséquilibrés, les incises mal ponctuées, les doubles espaces et les espaces parasites ;
+- scanner les incises de dialogue calquées, notamment `», je dis`, `», je lui dis`, `», je dis à`, puis corriger seulement les vrais cas d'incise ;
 - scanner les termes interdits ou instables : `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, unités impériales non naturalisées ;
+- scanner les formulations corrigées du livre 1 quand le contexte est le même : `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir` ;
 - vérifier les noms propres anglais conservés, notamment les continents, personnages, lieux, races et titres déjà stabilisés ;
 - relire au minimum le début du chapitre, une scène longue, une scène à choix, une scène avec personnages clés, une scène de tension ou de combat, et la fin ou les branches alternatives ;
 - corriger les passages trop littéraux, trop soutenus ou trop neutres pour garder Barry direct, oral, introspectif et légèrement ironique ;
