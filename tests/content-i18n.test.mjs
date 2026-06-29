@@ -63,4 +63,15 @@ describe("generated content i18n", () => {
     expect(frUi.messages["statChecks.success"]).toContain("réussite");
     expect(frUi.messages["statChecks.failure"]).toContain("échec");
   });
+
+  it("preserves Cutthroat Dave as a proper name in French story locales", async () => {
+    const ch4 = await readJson("content/canonical/v1/locales/fr/ch4.json");
+    const ch5 = await readJson("content/canonical/v1/locales/fr/ch5.json");
+    const combined = JSON.stringify({ ch4: ch4.messages, ch5: ch5.messages });
+
+    expect(combined).not.toMatch(/coupe-gorge/i);
+    expect(ch4.messages["ch4.Ch4_Barry_vs_Dave.p1"]).toContain("Cutthroat");
+    expect(ch4.messages["ch4.Ch4_Persuade.p1"]).toContain("Cutthroat Dave finir sa phrase");
+    expect(ch5.messages["ch5.Ch5_Intro.p3"]).toContain("Où est Cutthroat Dave ?");
+  });
 });

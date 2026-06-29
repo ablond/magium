@@ -221,16 +221,20 @@ h2 {
 .scene {
   max-width: var(--reader-measure);
   margin: 0 auto;
-  padding: clamp(26px, 5vw, 56px) 0 28px;
+  padding: clamp(18px, 4vw, 42px) 0 22px;
   font-family: var(--serif);
   font-size: calc(1.18rem * var(--reader-scale));
-  line-height: 1.6;
+  line-height: 1.48;
 }
 
 .scene p {
   white-space: pre-wrap;
-  margin: 0 0 0.95em;
+  margin: 0 0 0.35em;
   text-wrap: pretty;
+}
+
+.scene p:last-child {
+  margin-bottom: 0;
 }
 
 .scene p.dropcap::first-letter {
@@ -766,7 +770,7 @@ a:focus-visible {
 
   .scene {
     font-size: calc(1.05rem * var(--reader-scale));
-    line-height: 1.62;
+    line-height: 1.52;
   }
 
   .panel-actions,
