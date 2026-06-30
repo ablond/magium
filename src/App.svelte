@@ -22,21 +22,14 @@
   import { loadContextForScene, loadIndex, loadUiLocale } from './lib/content/packedContent'
   import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
   import { splitDisplayParagraphs } from './lib/reader/displayParagraphs'
+  import { defaultReaderSettings, migrateReaderSettings } from './lib/settings/readerSettings'
   import { applyChoice, applyStatAllocation, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
   import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
   import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
   import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
+  import { getBook1ChapterVisual } from './lib/visuals/book1'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about'
-
-  const defaultSettings: ReaderSettings = {
-    theme: 'dark',
-    textScale: 1,
-    highContrast: false,
-    typewriter: false,
-    locale: 'en',
-    uiLocale: 'en',
-  }
 
   const errorMessageKeys: Record<string, string> = {
     'Choice is not available from the current state': 'errors.choiceUnavailable',
@@ -72,12 +65,13 @@
   let importPassphrase = ''
   let runtimeContentVersion = ''
   let manualSlotId = 'manual-1'
-  let settings: ReaderSettings = { ...defaultSettings }
+  let settings: ReaderSettings = { ...defaultReaderSettings }
   let statDraft: Record<string, number> = {}
   let importInput: HTMLInputElement
   let panelElement: HTMLElement | null = null
   let panelCloseButton: HTMLButtonElement | null = null
   let lastPanelTrigger: HTMLElement | null = null
+  let hiddenChapterVisuals: Record<string, true> = {}
   let isMobilePanel = false
   let focusedPanel: Panel = 'none'
 
@@ -89,6 +83,9 @@
   $: availableStatPoints = state ? readAvailableStatPoints(state.variables) : 0
   $: draftedStatPoints = Object.values(statDraft).reduce((sum, amount) => sum + amount, 0)
   $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
+  $: currentChapterId = state && context ? context.index.sceneToChapter[state.currentSceneId] ?? null : null
+  $: chapterVisual = settings.illustrations ? getBook1ChapterVisual(currentChapterId) : null
+  $: visibleChapterVisual = chapterVisual && !hiddenChapterVisuals[chapterVisual.src] ? chapterVisual : null
   $: panelLabel = getPanelLabel(activePanel)
   $: if (typeof document !== 'undefined') {
     document.body.classList.toggle('panel-modal-open', activePanel !== 'none' && isMobilePanel)
@@ -285,6 +282,10 @@
     applyReaderSettings(settings)
   }
 
+  function hideChapterVisual(src: string) {
+    hiddenChapterVisuals = { ...hiddenChapterVisuals, [src]: true }
+  }
+
   async function updateLanguage(locale: string) {
     try {
       const nextMessages = (await loadUiLocale(locale)).messages
@@ -319,20 +320,10 @@
   function loadReaderSettings(): ReaderSettings {
     try {
       const stored = JSON.parse(localStorage.getItem('magium.readerSettings') ?? '{}') as Partial<ReaderSettings>
-      const migratedUiLocale = typeof stored.uiLocale === 'string'
-        ? stored.uiLocale
-        : typeof stored.locale === 'string'
-          ? stored.locale
-          : undefined
-      return {
-        ...defaultSettings,
-        ...stored,
-        locale: resolveUiLocale(migratedUiLocale, browserLanguages()),
-        uiLocale: resolveUiLocale(migratedUiLocale, browserLanguages()),
-      }
+      return migrateReaderSettings(stored, browserLanguages())
     } catch {
       const locale = resolveUiLocale(null, browserLanguages())
-      return { ...defaultSettings, locale, uiLocale: locale }
+      return { ...defaultReaderSettings, locale, uiLocale: locale }
     }
   }
 
@@ -570,6 +561,18 @@
           </div>
         {/if}
 
+        {#if visibleChapterVisual}
+          <figure class="chapter-visual">
+            <img
+              src={visibleChapterVisual.src}
+              alt={t(uiMessages, 'visual.chapterAlt', { chapter: visibleChapterVisual.chapterLabel }, `Illustration for Book 1, Chapter ${visibleChapterVisual.chapterLabel}`)}
+              loading="lazy"
+              decoding="async"
+              on:error={() => hideChapterVisual(visibleChapterVisual.src)}
+            />
+          </figure>
+        {/if}
+
         <article class="scene">
           {#each displayParagraphs as paragraph, index (paragraph.id)}
             <p
@@ -763,6 +766,13 @@
             <span>
               {t(uiMessages, 'settings.sceneReveal', {}, 'Scene reveal')}
               <span class="help">{t(uiMessages, 'settings.sceneRevealHelp', {}, 'Fade in the newest paragraph when a scene opens.')}</span>
+            </span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" checked={settings.illustrations} on:change={(event) => updateSettings({ illustrations: event.currentTarget.checked })} />
+            <span>
+              {t(uiMessages, 'settings.illustrations', {}, 'Illustrations')}
+              <span class="help">{t(uiMessages, 'settings.illustrationsHelp', {}, 'Show chapter illustrations when they are available.')}</span>
             </span>
           </label>
         {:else if activePanel === 'about'}

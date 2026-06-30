@@ -100,6 +100,14 @@ Les blocs narratifs canoniques peuvent contenir plusieurs alineas separes par de
 
 Le rendu ne modifie pas l'etat.
 
+## Illustrations De Chapitre
+
+Les illustrations Book 1 ne font pas partie du moteur de scene. `src/App.svelte` lit le chapitre courant via `context.index.sceneToChapter[state.currentSceneId]`, puis resout une image statique avec `src/lib/visuals/book1.ts`.
+
+Le setting `settings.illustrations` est une preference UI locale, activee par defaut a la migration. Quand elle est activee, l'image `/visuals/book1/chapters/<chapterId>/illustration.webp` s'affiche entre les resultats de stat check et le texte de scene. Si le WebP manque ou echoue au chargement, l'UI le masque et la lecture continue.
+
+Ces images ne modifient pas `GameState`, `history`, `historyDigest`, le replay anti-tamper ou le chargement des packs narratifs.
+
 ## Stat Checks Post-Choix
 
 Les tests de stats ne sont jamais affiches sur un choix avant que le joueur clique. Le moteur les deduit seulement depuis la scene courante, apres application du choix et entree dans la scene cible.

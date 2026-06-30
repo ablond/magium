@@ -59,6 +59,8 @@
     "settings.copy": "These choices only affect reading comfort. The story and your progress stay the same.",
     "settings.highContrast": "High contrast",
     "settings.highContrastHelp": "Make text and controls stand out more strongly.",
+    "settings.illustrations": "Illustrations",
+    "settings.illustrationsHelp": "Show chapter illustrations when they are available.",
     "settings.language": "Language",
     "settings.languageEnglish": "English",
     "settings.languageFrench": "French",
@@ -76,6 +78,7 @@
     "status.exportPortable": "Portable backup exported",
     "status.imported": "Save imported and ready",
     "status.saved": "Saved {slotId}",
-    "status.statsAllocated": "Stats updated"
+    "status.statsAllocated": "Stats updated",
+    "visual.chapterAlt": "Illustration for Book 1, Chapter {chapter}"
   }
 }
