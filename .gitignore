@@ -12,6 +12,8 @@ dist/
 dist-ssr
 .playwright-cli/
 output/playwright/
+output/visual/api-inputs/
+output/visual/api-runs/
 output/visual/originals/
 output/visual/staging/
 coverage/

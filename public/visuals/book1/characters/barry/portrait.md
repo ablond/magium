@@ -10,13 +10,13 @@ Public manual prompt for ChatGPT Images. Keep this file short and paraphrased be
 
 - Canon: twenty-eight-year-old ordinary human man from the Western Continent, not visually heroic by default.
 - Canon: practical traveler with a stat booster/stat device kept in his pocket; it has a small screen that can show stats, time, beeps and emergency prompts.
-- Canon: carries a practical backpack that starts as ordinary, then becomes enchanted; it can hide contents and later display a magical inventory screen.
+- Canon: carries a practical backpack that starts as ordinary, then Daren enchants it in chapter 6; after that it can hide contents and later display a magical inventory screen.
 - Canon: straps a crossbow to the back of his backpack and carries a dagger for emergencies.
 - Canon attitude: cautious, observant, self-deprecating and fallible, but determined enough to keep moving among much stronger mages.
 - Design choice: average height and build, plain approachable face, short slightly messy dark brown hair, light stubble, tired but alert eyes.
 - Design choice: practical worn travel clothing: simple off-white linen shirt, dark brown sleeveless leather vest or jerkin, sturdy dark trousers, leather belt and weathered travel boots.
 - Design choice: show the stat booster as a palm-sized magical handheld device, similar in silhouette to a small virtual-pet toy or compact old digital organizer, with a small glowing screen showing abstract numeric rows and icons, no readable text.
-- Design choice: show the backpack as weathered and outwardly ordinary, but subtly enchanted with faint magical seams or a small soft glow.
+- Design choice: show the backpack as weathered and outwardly ordinary by default; only moment prompts may request visible enchantment glow or a magical inventory screen.
 - Avoid: heroic armor, mage robes, noble clothing, sinister sorcerer styling, modern phone design or superhero confidence.
 
 ## Verified Anchors
@@ -27,6 +27,8 @@ Public manual prompt for ChatGPT Images. Keep this file short and paraphrased be
 - ch6.Ch6_Packing.p1: strapped my crossbow to the back of my backpack
 - ch3.Ch3_Saved_Dagger.c1: my dagger
 - ch10.Ch10_Intro.p1: my stat booster's screen
+- ch6.Ch6_Packing.p1: backpack starts to glow
+- ch9.Ch9_Inventory.p2: since Daren enchanted it
 
 ## Prompt ChatGPT
 
@@ -37,13 +39,13 @@ Role: Narrator and tournament participant.
 Canon and design constraints:
 - Canon: twenty-eight-year-old ordinary human man from the Western Continent, not visually heroic by default.
 - Canon: practical traveler with a stat booster/stat device kept in his pocket; it has a small screen that can show stats, time, beeps and emergency prompts.
-- Canon: carries a practical backpack that starts as ordinary, then becomes enchanted; it can hide contents and later display a magical inventory screen.
+- Canon: carries a practical backpack that starts as ordinary, then Daren enchants it in chapter 6; after that it can hide contents and later display a magical inventory screen.
 - Canon: straps a crossbow to the back of his backpack and carries a dagger for emergencies.
 - Canon attitude: cautious, observant, self-deprecating and fallible, but determined enough to keep moving among much stronger mages.
 - Design choice: average height and build, plain approachable face, short slightly messy dark brown hair, light stubble, tired but alert eyes.
 - Design choice: practical worn travel clothing: simple off-white linen shirt, dark brown sleeveless leather vest or jerkin, sturdy dark trousers, leather belt and weathered travel boots.
 - Design choice: show the stat booster as a palm-sized magical handheld device, similar in silhouette to a small virtual-pet toy or compact old digital organizer, with a small glowing screen showing abstract numeric rows and icons, no readable text.
-- Design choice: show the backpack as weathered and outwardly ordinary, but subtly enchanted with faint magical seams or a small soft glow.
+- Design choice: show the backpack as weathered and outwardly ordinary by default; only moment prompts may request visible enchantment glow or a magical inventory screen.
 - Avoid: heroic armor, mage robes, noble clothing, sinister sorcerer styling, modern phone design or superhero confidence.
 
 Visual direction:

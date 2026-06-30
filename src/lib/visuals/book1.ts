@@ -7,14 +7,14 @@ export type MomentVisual = {
 
 export const BOOK1_SCENE_VISUALS: Record<string, MomentVisual> = {
   'Ch1-Intro2': momentVisual('Ch1-Intro2', 'ch1-forest-arrival', 'Barry arrives in Varathia'),
-  'Ch1-Cutthroat Dave': momentVisual('Ch1-Cutthroat Dave', 'ch1-cutthroat-dave', 'Cutthroat Dave pins Barry to the tree'),
+  'Ch1-Cutthroat Dave': momentVisual('Ch1-Cutthroat Dave', 'ch1-cutthroat-dave', 'Dave confronts Barry while defeated Daren stands nearby'),
   'Ch2-Intro': momentVisual('Ch2-Intro', 'ch2-kate-appears', 'Kate appears behind Barry and Daren'),
   'Ch2-Battle-begins': momentVisual('Ch2-Battle-begins', 'ch2-mage-ambush', 'Kate shows real magic'),
   'Ch2-Deer': momentVisual('Ch2-Deer', 'ch2-elaria-molan', 'Elaria and Molan at the forest edge'),
   'Ch3-Plate': momentVisual('Ch3-Plate', 'ch3-cave-meal', "Meal inside Elaria's cave"),
   'Ch3-Dart': momentVisual('Ch3-Dart', 'ch3-crossbow-ambush', 'The hidden crossbowmen strike'),
   'Ch3-Ice-hand': momentVisual('Ch3-Ice-hand', 'ch3-kate-ice-defense', "Kate's ice defense"),
-  'Ch3-Lift': momentVisual('Ch3-Lift', 'ch3-barry-tree-lift', 'Barry lifts the tree'),
+  'Ch3-Lift': momentVisual('Ch3-Lift', 'ch3-barry-tree-lift', 'Barry faces the fallen tree tactic'),
   'Ch4-Intro2': momentVisual('Ch4-Intro2', 'ch4-eiden-arrival', 'Eiden arrives with eyes closed'),
   'Ch4-Dave-vs-Eiden': momentVisual('Ch4-Dave-vs-Eiden', 'ch4-dave-vs-eiden', 'Dave threatens Eiden'),
   'Ch4-Barry-vs-Dave': momentVisual('Ch4-Barry-vs-Dave', 'ch4-barry-vs-dave', 'Barry faces Cutthroat Dave'),

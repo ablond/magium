@@ -26,6 +26,9 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: Background tournament mages, restrained and wary, no unique named designs.
 - Composition: 16:9 crowd-control scene, Azarius authoritative, Hadrik broad and impatient.
 - Timeline overrides: Barry can have crossbow on backpack if visible.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Avoid: No red fire robes on Azarius, no young wizard styling.
 
 ## Prompt ChatGPT
@@ -42,6 +45,10 @@ Use the attached references for stable identity, species, body shape, clothing a
 
 Scene-specific overrides:
 - Barry can have crossbow on backpack if visible.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 
 Scene design:
 - Setting: Crowded tournament clearing with mages at a careful distance, dust, trampled grass and public tension.

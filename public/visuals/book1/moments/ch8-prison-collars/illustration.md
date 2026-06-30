@@ -22,12 +22,15 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 
 ## Scene Facts
 
-- Setting: Ancient ruin prison or holding area, old stone, animal-kingdom control symbols, collars and restrained movement.
+- Setting: Ancient ruin prison or holding area, old stone, a cell-like space, green collars with strange markings and restrained movement.
 - Action: The party wakes or stands captured with magical collars, confused and unable to act freely.
 - Materials and architecture: Collars should look magical but ancient, not modern shock collars; ruins should feel old and functional.
-- Unnamed figures: Animal guards may be hinted in shadow, natural animals not humanoids.
+- Unnamed figures: A tiger and a bear guard may be hinted only if useful, as natural animals rather than humanoids.
 - Composition: 16:9 restrained group scene, collars readable, ruins architecture important.
 - Timeline overrides: Barry can have crossbow on backpack but the collar and captivity are the main visual facts.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Avoid: No dungeon torture imagery, no humanoid animal guards, no modern prison bars.
 
 ## Prompt ChatGPT
@@ -47,11 +50,15 @@ Use the attached references for stable identity, species, body shape, clothing a
 Scene-specific overrides:
 - Barry can have crossbow on backpack but the collar and captivity are the main visual facts.
 
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
+
 Scene design:
-- Setting: Ancient ruin prison or holding area, old stone, animal-kingdom control symbols, collars and restrained movement.
+- Setting: Ancient ruin prison or holding area, old stone, a cell-like space, green collars with strange markings and restrained movement.
 - Action: The party wakes or stands captured with magical collars, confused and unable to act freely.
 - Materials/architecture: Collars should look magical but ancient, not modern shock collars; ruins should feel old and functional.
-- Unnamed/background figures: Animal guards may be hinted in shadow, natural animals not humanoids.
+- Unnamed/background figures: A tiger and a bear guard may be hinted only if useful, as natural animals rather than humanoids.
 - Composition: 16:9 restrained group scene, collars readable, ruins architecture important.
 
 Visual direction:

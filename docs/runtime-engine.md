@@ -181,6 +181,25 @@ Les libelles de stats viennent de `locales/<locale>/stats`, avec fallback `en`. 
 
 Le panneau UI ne peut retirer que les points du brouillon non confirme. Les points deja confirmes ne sont modifiables que par un retour checkpoint ou une nouvelle partie.
 
+## Mode Debug Local
+
+Le mode debug est un outil local de developpement expose uniquement par `src/App.svelte` quand `import.meta.env.DEV` vaut `true`, donc sous `pnpm dev`. Il ne doit pas apparaitre dans un build de production.
+
+Le panneau Debug permet :
+
+- de sauter vers une scene depuis `ContentIndex.chapters` et le `sceneOrder` du chapitre charge ;
+- d'appliquer les choix de la scene courante, y compris ceux masques par leurs conditions ;
+- de modifier les stats, compteurs et variables primitives ;
+- d'annuler ou retablir les changements de la session courante via une pile en memoire.
+
+Les helpers debug restent separes du moteur normal :
+
+- `debugJumpToScene(context, state, sceneId)` met `currentSceneId` et `v_current_scene`, puis entre dans la scene cible ;
+- `debugApplyChoice(context, state, choice)` applique les assignments et la cible du choix sans verifier sa visibilite ;
+- `debugSetVariable(state, variable, value)` et `debugDeleteVariable(state, variable)` modifient directement `variables`.
+
+Ces operations ne creent aucun evenement `history` et ne recalculent pas `historyDigest`. Elles marquent l'etat avec `GameState.debug = { dirty: true, lastAction, updatedAt }`. Un etat debug peut rester dans IndexedDB et dans les saves nommees locales, mais ne doit pas etre exporte en `.magium-save`.
+
 ## Specials Supportes Actuellement
 
 - `restart`

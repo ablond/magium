@@ -120,6 +120,12 @@ export type CheckpointState = {
   historyDigest: string
 }
 
+export type DebugStateMetadata = {
+  dirty: true
+  lastAction: string
+  updatedAt: string
+}
+
 export type GameState = {
   schemaVersion: 1
   contentVersion: string
@@ -131,6 +137,7 @@ export type GameState = {
   checkpoint: CheckpointState | null
   history: GameHistoryEvent[]
   historyDigest: string
+  debug?: DebugStateMetadata
   createdAt: string
   updatedAt: string
 }
