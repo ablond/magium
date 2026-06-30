@@ -60,7 +60,7 @@
     "settings.highContrast": "Contraste élevé",
     "settings.highContrastHelp": "Rend le texte et les contrôles plus visibles.",
     "settings.illustrations": "Illustrations",
-    "settings.illustrationsHelp": "Affiche les illustrations de chapitre quand elles sont disponibles.",
+    "settings.illustrationsHelp": "Affiche les illustrations de moments après la scène correspondante quand elles sont disponibles.",
     "settings.language": "Langue",
     "settings.languageEnglish": "Anglais",
     "settings.languageFrench": "Français",
@@ -79,6 +79,6 @@
     "status.imported": "Sauvegarde importée et prête",
     "status.saved": "{slotId} sauvegardé",
     "status.statsAllocated": "Stats mises à jour",
-    "visual.chapterAlt": "Illustration du livre 1, chapitre {chapter}"
+    "visual.momentAlt": "Illustration pour {title}"
   }
 }

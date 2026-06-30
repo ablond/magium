@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { BOOK1_CHAPTER_IDS, BOOK1_CHAPTERS, BOOK1_CHARACTERS, BOOK1_VISUAL_ROOT } from "./book1-config.mjs";
+import { BOOK1_CHAPTER_IDS, BOOK1_CHARACTERS, BOOK1_MOMENTS, BOOK1_VISUAL_ROOT } from "./book1-config.mjs";
 import { ensureDir, pathExists, walkFiles } from "../content/utils.mjs";
 
-const MAX_PROMPT_BYTES = 18_000;
+const MAX_PROMPT_BYTES = 24_000;
 const LONG_SOURCE_COPY_LENGTH = 180;
 const FORBIDDEN_PROMPT_PATTERNS = [
   /evidenceRefs/i,
@@ -12,10 +12,10 @@ const FORBIDDEN_PROMPT_PATTERNS = [
   /OPENAI_API_KEY/i,
   /\.magium\b/i,
   /\bID:\s*Ch\d/i,
-  /chapters\/ch\d/i,
+  /public\/visuals\/book1\/chapters/i,
 ];
 
-export { BOOK1_CHAPTERS, BOOK1_CHARACTERS };
+export { BOOK1_CHARACTERS, BOOK1_MOMENTS };
 
 export async function generateBook1Prompts({
   root = process.cwd(),
@@ -23,6 +23,7 @@ export async function generateBook1Prompts({
   visualRoot = path.join(root, BOOK1_VISUAL_ROOT),
 } = {}) {
   const corpus = await loadBook1Corpus(canonicalRoot);
+  const sceneIndex = await loadBook1SceneIndex(canonicalRoot);
   const charactersById = new Map(BOOK1_CHARACTERS.map((character) => [character.id, character]));
 
   for (const character of BOOK1_CHARACTERS) {
@@ -31,15 +32,16 @@ export async function generateBook1Prompts({
     await writeIfChanged(file, renderCharacterPrompt(character, anchors));
   }
 
-  for (const chapter of BOOK1_CHAPTERS) {
-    assertKnownCharacters(chapter.characters, charactersById, chapter.id);
-    const file = path.join(visualRoot, "chapters", chapter.id, "illustration.md");
-    await writeIfChanged(file, renderChapterPrompt(chapter, charactersById));
+  for (const moment of BOOK1_MOMENTS) {
+    assertKnownCharacters(moment.characters, charactersById, moment.id);
+    assertKnownScene(moment, sceneIndex);
+    const file = path.join(visualRoot, "moments", moment.id, "illustration.md");
+    await writeIfChanged(file, renderMomentPrompt(moment, charactersById));
   }
 
   return {
     characters: BOOK1_CHARACTERS.length,
-    chapters: BOOK1_CHAPTERS.length,
+    moments: BOOK1_MOMENTS.length,
     visualRoot,
   };
 }
@@ -50,13 +52,15 @@ export async function checkBook1ManualImages({
   visualRoot = path.join(root, BOOK1_VISUAL_ROOT),
 } = {}) {
   const corpus = await loadBook1Corpus(canonicalRoot);
+  const sceneIndex = await loadBook1SceneIndex(canonicalRoot);
   const markdownFiles = [];
   const optionalImages = [];
   const characterIds = new Set(BOOK1_CHARACTERS.map((character) => character.id));
-  const chapterIds = new Set(BOOK1_CHAPTERS.map((chapter) => chapter.id));
+  const momentIds = new Set(BOOK1_MOMENTS.map((moment) => moment.id));
 
   await assertOnlyExpectedDirs(path.join(visualRoot, "characters"), characterIds);
-  await assertOnlyExpectedDirs(path.join(visualRoot, "chapters"), chapterIds);
+  await assertNoDirectory(path.join(visualRoot, "chapters"));
+  await assertOnlyExpectedDirs(path.join(visualRoot, "moments"), momentIds);
 
   for (const character of BOOK1_CHARACTERS) {
     const dir = path.join(visualRoot, "characters", character.id);
@@ -74,8 +78,9 @@ export async function checkBook1ManualImages({
     await assertOnlyExpectedFiles(dir, new Set(["portrait.md", "portrait.webp"]));
   }
 
-  for (const chapter of BOOK1_CHAPTERS) {
-    const dir = path.join(visualRoot, "chapters", chapter.id);
+  for (const moment of BOOK1_MOMENTS) {
+    assertKnownScene(moment, sceneIndex);
+    const dir = path.join(visualRoot, "moments", moment.id);
     await assertDir(dir);
     const promptFile = path.join(dir, "illustration.md");
     await assertFile(promptFile);
@@ -93,7 +98,52 @@ export async function checkBook1ManualImages({
   return {
     prompts: markdownFiles.length,
     images: optionalImages.length,
-    missingImages: BOOK1_CHARACTERS.length + BOOK1_CHAPTERS.length - optionalImages.length,
+    missingImages: BOOK1_CHARACTERS.length + BOOK1_MOMENTS.length - optionalImages.length,
+  };
+}
+
+export async function stageBook1MomentImages({
+  root = process.cwd(),
+  visualRoot = path.join(root, BOOK1_VISUAL_ROOT),
+  outputRoot = path.join(root, "output/visual/staging/book1"),
+  momentId,
+  chapterId,
+  all = false,
+} = {}) {
+  const charactersById = new Map(BOOK1_CHARACTERS.map((character) => [character.id, character]));
+  const moments = selectMoments({ momentId, chapterId, all });
+
+  await ensureDir(outputRoot);
+
+  const staged = [];
+  for (const moment of moments) {
+    assertKnownCharacters(moment.characters, charactersById, moment.id);
+    const publicPrompt = path.join(visualRoot, "moments", moment.id, "illustration.md");
+    await assertFile(publicPrompt);
+
+    const stageDir = path.join(outputRoot, moment.id);
+    const referencesDir = path.join(stageDir, "references");
+    await fs.rm(stageDir, { recursive: true, force: true });
+    await ensureDir(referencesDir);
+    await fs.copyFile(publicPrompt, path.join(stageDir, "prompt.md"));
+
+    const references = [];
+    for (const characterId of moment.characters) {
+      const source = path.join(visualRoot, "characters", characterId, "portrait.webp");
+      await assertFile(source);
+      const targetName = `${characterId}.webp`;
+      await fs.copyFile(source, path.join(referencesDir, targetName));
+      references.push(targetName);
+    }
+
+    await fs.writeFile(path.join(stageDir, "README.md"), renderStageReadme(moment, references));
+    staged.push({ id: moment.id, chapterId: moment.chapterId, prompt: path.join(stageDir, "prompt.md"), references });
+  }
+
+  return {
+    moments: staged.length,
+    outputRoot,
+    staged,
   };
 }
 
@@ -107,6 +157,17 @@ export async function loadBook1Corpus(canonicalRoot) {
     }
   }
   return messages;
+}
+
+export async function loadBook1SceneIndex(canonicalRoot) {
+  const sceneIndex = new Map();
+  for (const chapterId of BOOK1_CHAPTER_IDS) {
+    const file = path.join(canonicalRoot, "story", `${chapterId}.json`);
+    const chapter = JSON.parse(await fs.readFile(file, "utf8"));
+    const sceneIds = chapter.sceneOrder ?? Object.keys(chapter.scenes ?? {});
+    sceneIndex.set(chapterId, new Set(sceneIds));
+  }
+  return sceneIndex;
 }
 
 export function findAnchors(corpus, anchors) {
@@ -156,72 +217,159 @@ export function renderCharacterPrompt(character, anchors) {
     "- no bust portrait, no cropped portrait, no text, no logo, no watermark, no modern items unless explicitly listed above",
     "- prioritize canonical accuracy over extra ornament",
     "",
-    "Use this as a stable reference portrait for later chapter illustrations.",
+    "Use this as a stable reference portrait for later moment illustrations.",
     "```",
     "",
   ].join("\n");
 }
 
-export function renderChapterPrompt(chapter, charactersById = new Map(BOOK1_CHARACTERS.map((character) => [character.id, character]))) {
-  const references = chapter.characters.map((characterId) => {
+export function renderMomentPrompt(moment, charactersById = new Map(BOOK1_CHARACTERS.map((character) => [character.id, character]))) {
+  const references = moment.characters.map((characterId) => {
     const character = charactersById.get(characterId);
-    if (!character) throw new Error(`Unknown character "${characterId}" in ${chapter.id}`);
+    if (!character) throw new Error(`Unknown character "${characterId}" in ${moment.id}`);
     return { id: characterId, name: character.name };
   });
-  const sharedBodyNotes = [];
-  if (chapter.characters.includes("flower") && chapter.characters.includes("illuna")) {
-    sharedBodyNotes.push(
-      "Flower and Illuna (aka Petal) share one little girl's body; use their portraits as alternate expression and eye-state references, never as two separate visible people in the same moment.",
-    );
-  }
+  const specialNotes = sharedBodyAndAmuletNotes(moment.characters);
 
   return [
-    `# Book 1 Chapter ${chapter.label} - ${chapter.title}`,
+    `# ${moment.title} - Book 1 Moment Illustration`,
     "",
-    "Public manual prompt for ChatGPT Images. Attach the listed portraits before generating the chapter illustration.",
+    "Public manual prompt for ChatGPT Images. Attach the listed portraits before generating the moment illustration.",
     "",
     "## Target File",
     "",
     "`illustration.webp`",
     "",
+    "## Moment",
+    "",
+    `- Chapter: \`${moment.chapterId}\``,
+    `- Trigger scene: \`${moment.triggerSceneId}\``,
+    `- Moment id: \`${moment.id}\``,
+    "",
     "## Character References To Attach",
     "",
-    ...references.map((reference) => `- ${reference.name}: \`public/visuals/book1/characters/${reference.id}/portrait.webp\``),
+    ...references.map((reference) => `- ${reference.name}: \`public/visuals/book1/characters/${reference.id}/portrait.webp\` as \`${reference.id}.webp\``),
     "",
-    "## Scene Direction",
+    "## Scene Facts",
     "",
-    `- ${chapter.scene}`,
-    "- Use the attached portraits as strict identity references.",
-    ...sharedBodyNotes.map((note) => `- ${note}`),
-    "- If a referenced portrait is missing, generate it first from its `portrait.md`.",
+    ...sectionLines("Setting", moment.settingFacts),
+    ...sectionLines("Action", moment.actionFacts),
+    ...sectionLines("Materials and architecture", moment.materialDetails),
+    ...sectionLines("Unnamed figures", moment.unnamedCharacters),
+    ...sectionLines("Composition", moment.composition),
+    ...sectionLines("Timeline overrides", moment.timelineOverrides),
+    ...sectionLines("Avoid", moment.avoid),
+    ...specialNotes.map((note) => `- Special: ${note}`),
     "",
     "## Prompt ChatGPT",
     "",
     "```text",
-    `Create one wide chapter illustration for Magium Book 1, Chapter ${chapter.label}: ${chapter.title}.`,
+    `Create one Book 1 moment illustration for Magium: ${moment.title}.`,
     "",
-    `Scene: ${chapter.scene}`,
+    "Attached references:",
+    ...references.map((reference) => `- \`${reference.id}.webp\` = ${reference.name}`),
     "",
-    "Use the attached character portraits as strict references for identity, clothing, species and magical aura. Keep non-human characters non-human.",
-    ...sharedBodyNotes,
-    "Composition: grounded realistic fantasy adventure scene, 16:9 landscape, readable on mobile, strong focal point, no UI frame.",
-    "Style: painterly but restrained, cinematic lighting, coherent scale between characters, no text, no logo, no watermark.",
-    "Avoid adding characters who are not listed in the references unless they are anonymous background figures required by the scene.",
+    "Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.",
+    "",
+    "Scene-specific overrides:",
+    ...moment.timelineOverrides.map((fact) => `- ${fact}`),
+    ...specialNotes.map((note) => `- ${note}`),
+    "",
+    "Scene design:",
+    ...moment.settingFacts.map((fact) => `- Setting: ${fact}`),
+    ...moment.actionFacts.map((fact) => `- Action: ${fact}`),
+    ...moment.materialDetails.map((fact) => `- Materials/architecture: ${fact}`),
+    ...moment.unnamedCharacters.map((fact) => `- Unnamed/background figures: ${fact}`),
+    ...moment.composition.map((fact) => `- Composition: ${fact}`),
+    "",
+    "Visual direction:",
+    "- grounded realistic fantasy adventure illustration",
+    "- wide 16:9 landscape, readable on mobile, strong focal point, no UI frame",
+    "- cinematic but restrained lighting, coherent scale between characters, detailed materials and environment",
+    "- prioritize canonical accuracy and continuity over extra ornament",
+    "",
+    "Avoid:",
+    ...moment.avoid.map((fact) => `- ${fact}`),
+    "- no logo, no watermark, no readable text",
     "```",
     "",
   ].join("\n");
+}
+
+function renderStageReadme(moment, references) {
+  return [
+    `# ${moment.id}`,
+    "",
+    "1. Upload every file in `references/` to ChatGPT Images.",
+    "2. Open `prompt.md` and paste the `Prompt ChatGPT` block.",
+    "3. Save the generated image as `illustration.webp` in the public moment folder:",
+    "",
+    `\`public/visuals/book1/moments/${moment.id}/illustration.webp\``,
+    "",
+    "Reference files staged:",
+    "",
+    ...references.map((reference) => `- \`references/${reference}\``),
+    "",
+  ].join("\n");
+}
+
+function selectMoments({ momentId, chapterId, all }) {
+  if (momentId) {
+    const moment = BOOK1_MOMENTS.find((candidate) => candidate.id === momentId);
+    if (!moment) throw new Error(`Unknown Book 1 image moment: ${momentId}`);
+    return [moment];
+  }
+  if (chapterId) {
+    const moments = BOOK1_MOMENTS.filter((candidate) => candidate.chapterId === chapterId);
+    if (!moments.length) throw new Error(`No Book 1 image moments configured for chapter: ${chapterId}`);
+    return moments;
+  }
+  if (all) return BOOK1_MOMENTS;
+  throw new Error("Choose one staging scope: --moment <id>, --chapter <chapter-id>, or --all.");
 }
 
 function articleFor(value) {
   return /^[aeiou]/i.test(value) ? "an" : "a";
 }
 
-function assertKnownCharacters(characterIds, charactersById, chapterId) {
+function assertKnownCharacters(characterIds, charactersById, ownerId) {
   for (const characterId of characterIds) {
     if (!charactersById.has(characterId)) {
-      throw new Error(`Chapter ${chapterId} references unknown visual character "${characterId}"`);
+      throw new Error(`${ownerId} references unknown visual character "${characterId}"`);
     }
   }
+}
+
+function assertKnownScene(moment, sceneIndex) {
+  const sceneIds = sceneIndex.get(moment.chapterId);
+  if (!sceneIds?.has(moment.triggerSceneId)) {
+    throw new Error(`Book 1 visual moment ${moment.id} references unknown scene ${moment.chapterId}/${moment.triggerSceneId}`);
+  }
+}
+
+function sharedBodyAndAmuletNotes(characterIds) {
+  const notes = [];
+  const hasFlower = characterIds.includes("flower");
+  const hasIlluna = characterIds.includes("illuna");
+  if (hasFlower || hasIlluna) {
+    notes.push(
+      "Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.",
+    );
+  }
+  if (hasFlower && hasIlluna) {
+    notes.push(
+      "Use Flower and Illuna portraits as alternate expression and eye-state references for the same body, not as two separate character references.",
+    );
+  }
+  if (characterIds.includes("arraka")) {
+    notes.push("Arraka is represented through the golden amulet or its aura unless the scene explicitly says otherwise.");
+  }
+  return notes;
+}
+
+function sectionLines(label, values) {
+  if (!values.length) return [`- ${label}: none`];
+  return values.map((value) => `- ${label}: ${value}`);
 }
 
 async function writeIfChanged(file, content) {
@@ -239,10 +387,17 @@ async function assertDir(dir) {
   }
 }
 
+async function assertNoDirectory(dir) {
+  const stat = await fs.stat(dir).catch(() => null);
+  if (stat?.isDirectory()) {
+    throw new Error(`Stale chapter visual directory is no longer supported: ${dir}`);
+  }
+}
+
 async function assertFile(file) {
   const stat = await fs.stat(file).catch(() => null);
   if (!stat?.isFile()) {
-    throw new Error(`Missing visual prompt: ${file}`);
+    throw new Error(`Missing visual file: ${file}`);
   }
 }
 

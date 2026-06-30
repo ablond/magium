@@ -95,8 +95,10 @@ Incises françaises :
 - utiliser les formes françaises naturelles : `», dis-je`, `», lui dis-je`, `», dis-je à Kate`, en gardant l'accord et le destinataire ;
 - pour `I ask`, privilégier une reformulation naturelle comme `Je lui demande : « ... »` ou `Je demande à Daren : « ... »` si l'inversion sonne trop raide ;
 - pour `I continue`, privilégier `Je poursuis : « ... »` quand l'incise française sonne calquée ;
+- éviter les formes inversées au passé composé comme `demandé-je`, `lui demandé-je`, `crié-je`, `commencé-je` ; préférer une phrase avant la réplique ou, ponctuellement, une inversion littéraire correcte comme `demandai-je` si le registre le justifie ;
 - pour les autres verbes d'incise, vérifier au cas par cas : employer l'inversion si elle reste naturelle, ou reformuler si elle sonne trop littéraire ou artificielle ;
 - pour une réplique coupée par l'incise, préférer `« Kate », dis-je, « tu as une minute ? »` plutôt que `« Kate », je dis. « Tu as une minute ? »` ;
+- normaliser la typographie de dialogue : pas de guillemets droits anglais dans les sources FR, et pas de virgule anglaise avant le guillemet fermant du type `« Oui, » dit-elle` ;
 - ne pas corriger mécaniquement les usages narratifs internes comme `je dis seulement`, `je me dis`, `je dis ça` ou une phrase où Barry décrit vraiment l'action de parler hors incise.
 
 Formulations déjà corrigées :
@@ -120,6 +122,12 @@ Formulations déjà corrigées :
 - `shake off` ne doit pas devenir mécaniquement `secouer` pour un effet, une peur, un sort ou une sensation ; préférer selon le contexte `se libérer de`, `se débarrasser de`, `surmonter`, `reprendre le dessus` ou une reformulation équivalente.
 - `wishful thinking` ne doit pas devenir mécaniquement `ressembler à du vœu pieux` ; préférer selon le contexte `relever du vœu pieux`, `prendre ses désirs pour des réalités` ou une reformulation équivalente.
 - `X upon X` ne doit pas devenir mécaniquement `X et encore X` ; préférer une intensification naturelle comme `de véritables montagnes de`, `une quantité impressionnante de`, `à perte de vue` ou une reformulation équivalente selon le contexte.
+- `right back` dans le sens d'un retour ne doit pas devenir `directement en arrière` ; préférer `directement chez nous`, `aussitôt dehors`, `immédiatement de retour` ou une reformulation selon le contexte.
+- `none of our business` ne doit pas devenir mécaniquement `nos affaires` ; préférer `ça ne nous regarde pas`, surtout quand la réplique est reprise avec indignation.
+- `premises` ne doit pas devenir automatiquement `locaux` dans un contexte fantasy ; préférer `enceinte`, `abords`, `forteresse`, `bâtiment` ou une description concrète du lieu.
+- `mass murder` ne doit pas devenir `massacre de masse` ; préférer `massacre`, `meurtre de masse` ou une formule plus orale selon la voix du personnage.
+- `realistically` ne doit pas devenir automatiquement `Réalistement` ; préférer `en réalité`, `dans les faits`, `si on est réalistes` ou une phrase moins adverbiale.
+- `it appears that...` ne doit pas devenir mécaniquement `il apparaît que...` quand Barry constate quelque chose de visible ; préférer `on dirait que`, `il semble que` ou une phrase directe.
 
 ## Workflow Générique De Traduction D'un Chapitre
 

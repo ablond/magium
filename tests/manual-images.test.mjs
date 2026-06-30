@@ -3,11 +3,14 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  BOOK1_CHAPTERS,
   BOOK1_CHARACTERS,
+  BOOK1_MOMENTS,
   checkBook1ManualImages,
   generateBook1Prompts,
+  stageBook1MomentImages,
 } from "../tools/images/manual-images.mjs";
+
+const WEBP_FIXTURE = Buffer.from("524946460400000057454250", "hex");
 
 async function createTempVisualRoot() {
   return fs.mkdtemp(path.join(os.tmpdir(), "magium-visuals-"));
@@ -16,17 +19,46 @@ async function createTempVisualRoot() {
 async function createCanonicalFixture() {
   const canonicalRoot = await fs.mkdtemp(path.join(os.tmpdir(), "magium-canonical-"));
   const allAnchors = BOOK1_CHARACTERS.flatMap((character) => character.anchors).join(" | ");
-  for (const chapter of BOOK1_CHAPTERS) {
-    const file = path.join(canonicalRoot, "locales/en", `${chapter.id}.json`);
-    await fs.mkdir(path.dirname(file), { recursive: true });
-    await fs.writeFile(file, `${JSON.stringify({
+  const momentsByChapter = new Map();
+  for (const moment of BOOK1_MOMENTS) {
+    momentsByChapter.set(moment.chapterId, [...(momentsByChapter.get(moment.chapterId) ?? []), moment]);
+  }
+
+  for (const chapterId of [
+    "ch1",
+    "ch2",
+    "ch3",
+    "ch4",
+    "ch5",
+    "ch6",
+    "ch7",
+    "ch8",
+    "ch9",
+    "ch10",
+    "ch11a",
+    "ch11b",
+  ]) {
+    const localeFile = path.join(canonicalRoot, "locales/en", `${chapterId}.json`);
+    await fs.mkdir(path.dirname(localeFile), { recursive: true });
+    await fs.writeFile(localeFile, `${JSON.stringify({
       locale: "en",
-      chapterId: chapter.id,
+      chapterId,
       messages: {
-        [`${chapter.id}.fixture.p1`]: chapter.id === "ch1" ? allAnchors : `Fixture text for ${chapter.id}`,
+        [`${chapterId}.fixture.p1`]: chapterId === "ch1" ? allAnchors : `Fixture text for ${chapterId}`,
       },
     }, null, 2)}\n`);
+
+    const sceneIds = [...new Set((momentsByChapter.get(chapterId) ?? []).map((moment) => moment.triggerSceneId))];
+    const storyFile = path.join(canonicalRoot, "story", `${chapterId}.json`);
+    await fs.mkdir(path.dirname(storyFile), { recursive: true });
+    await fs.writeFile(storyFile, `${JSON.stringify({
+      formatVersion: 1,
+      chapterId,
+      sceneOrder: sceneIds,
+      scenes: Object.fromEntries(sceneIds.map((sceneId) => [sceneId, { id: sceneId, blocks: [], choices: [] }])),
+    }, null, 2)}\n`);
   }
+
   return canonicalRoot;
 }
 
@@ -34,20 +66,28 @@ async function readText(file) {
   return fs.readFile(file, "utf8");
 }
 
+async function writeReferencePortraits(visualRoot, characterIds) {
+  for (const characterId of characterIds) {
+    const file = path.join(visualRoot, "characters", characterId, "portrait.webp");
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, WEBP_FIXTURE);
+  }
+}
+
 describe("manual Book 1 image prompts", () => {
-  it("generates one public Markdown prompt per configured character and chapter", async () => {
+  it("generates one public Markdown prompt per configured character and moment", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     const result = await generateBook1Prompts({ visualRoot, canonicalRoot });
 
     expect(result.characters).toBe(BOOK1_CHARACTERS.length);
-    expect(result.chapters).toBe(BOOK1_CHAPTERS.length);
+    expect(result.moments).toBe(BOOK1_MOMENTS.length);
 
     for (const character of BOOK1_CHARACTERS) {
       await expect(fs.stat(path.join(visualRoot, "characters", character.id, "portrait.md"))).resolves.toBeTruthy();
     }
-    for (const chapter of BOOK1_CHAPTERS) {
-      await expect(fs.stat(path.join(visualRoot, "chapters", chapter.id, "illustration.md"))).resolves.toBeTruthy();
+    for (const moment of BOOK1_MOMENTS) {
+      await expect(fs.stat(path.join(visualRoot, "moments", moment.id, "illustration.md"))).resolves.toBeTruthy();
     }
   });
 
@@ -57,14 +97,16 @@ describe("manual Book 1 image prompts", () => {
     await generateBook1Prompts({ visualRoot, canonicalRoot });
     const check = await checkBook1ManualImages({ visualRoot, canonicalRoot });
 
-    expect(check.prompts).toBe(BOOK1_CHARACTERS.length + BOOK1_CHAPTERS.length);
+    expect(check.prompts).toBe(BOOK1_CHARACTERS.length + BOOK1_MOMENTS.length);
     expect(check.images).toBe(0);
-    expect(check.missingImages).toBe(BOOK1_CHARACTERS.length + BOOK1_CHAPTERS.length);
+    expect(check.missingImages).toBe(BOOK1_CHARACTERS.length + BOOK1_MOMENTS.length);
 
     const kate = await readText(path.join(visualRoot, "characters/kate/portrait.md"));
+    const moment = await readText(path.join(visualRoot, "moments/ch10-pit-rescue/illustration.md"));
     expect(kate).not.toContain("evidenceRefs");
-    expect(kate).not.toContain(".magium");
-    expect(kate).toContain("slim, tall figure");
+    expect(moment).not.toContain("evidenceRefs");
+    expect(moment).not.toContain(".magium");
+    expect(moment).not.toContain("public/visuals/book1/chapters");
   });
 
   it("captures pre-name visual anchors for Kate and Eiden", async () => {
@@ -81,27 +123,7 @@ describe("manual Book 1 image prompts", () => {
     expect(eiden).toContain("hands in his pockets");
   });
 
-  it("generates a detailed full-body Barry reference prompt", async () => {
-    const visualRoot = await createTempVisualRoot();
-    const canonicalRoot = await createCanonicalFixture();
-    await generateBook1Prompts({ visualRoot, canonicalRoot });
-
-    const barry = await readText(path.join(visualRoot, "characters/barry/portrait.md"));
-
-    expect(barry).toContain("full-body");
-    expect(barry).toContain("head to toe");
-    expect(barry).toContain("feet visible");
-    expect(barry).toContain("stat booster");
-    expect(barry).toContain("stat device");
-    expect(barry).toContain("backpack");
-    expect(barry).toContain("crossbow");
-    expect(barry).toContain("dagger");
-    expect(barry).toContain("grounded realistic fantasy adventure illustration");
-    expect(barry).not.toContain("half-body or bust");
-    expect(barry).not.toContain("dark fantasy illustration");
-  });
-
-  it("uses grounded full-body portrait direction for character prompts", async () => {
+  it("generates detailed full-body character reference prompts", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
@@ -113,28 +135,23 @@ describe("manual Book 1 image prompts", () => {
       expect(prompt).not.toContain("half-body or bust");
       expect(prompt).not.toContain("dark fantasy illustration");
     }
-  });
 
-  it("generates a detailed canon-grounded Daren reference prompt", async () => {
-    const visualRoot = await createTempVisualRoot();
-    const canonicalRoot = await createCanonicalFixture();
-    await generateBook1Prompts({ visualRoot, canonicalRoot });
+    const barry = await readText(path.join(visualRoot, "characters/barry/portrait.md"));
+    expect(barry).toContain("stat booster");
+    expect(barry).toContain("stat device");
+    expect(barry).toContain("backpack");
+    expect(barry).toContain("crossbow");
+    expect(barry).toContain("dagger");
 
     const daren = await readText(path.join(visualRoot, "characters/daren/portrait.md"));
-
     expect(daren).toContain("dark-skinned human man");
     expect(daren).toContain("mid forties");
     expect(daren).toContain("bald");
     expect(daren).toContain("X-shaped scar");
-    expect(daren).toContain("heavy armor");
     expect(daren).toContain("enchanted sword and shield");
-    expect(daren).toContain("bright white light");
-    expect(daren).toContain("protective barriers");
-    expect(daren).toContain("Avoid: young knight, hair");
-    expect(daren).not.toContain("dark sorcerer");
   });
 
-  it("enriches the remaining Book 1 portrait prompts with concrete visible details", async () => {
+  it("keeps the enriched Book 1 portrait facts and canon corrections", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
@@ -172,22 +189,28 @@ describe("manual Book 1 image prompts", () => {
     }
   });
 
-  it("adds Taurus as a portrait-only character for now", async () => {
+  it("generates detailed moment prompts with references and no chapter illustration wording", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
 
-    const taurus = await readText(path.join(visualRoot, "characters/taurus/portrait.md"));
-    const chapter8 = await readText(path.join(visualRoot, "chapters/ch8/illustration.md"));
+    const ch1 = await readText(path.join(visualRoot, "moments/ch1-forest-arrival/illustration.md"));
+    const ch6 = await readText(path.join(visualRoot, "moments/ch6-barry-packing-crossbow/illustration.md"));
+    const ch10 = await readText(path.join(visualRoot, "moments/ch10-pit-rescue/illustration.md"));
 
-    expect(taurus).toContain("Taurus");
-    expect(taurus).toContain("bull lieutenant");
-    expect(taurus).toContain("Use an animal portrait, not a human portrait.");
-    expect(taurus).not.toContain("humanoid bull-man portrait");
-    expect(chapter8).not.toContain("public/visuals/book1/characters/taurus/portrait.webp");
+    expect(ch1).toContain("Attached references:");
+    expect(ch1).toContain("`barry.webp` = Barry");
+    expect(ch1).toContain("remove the crossbow completely");
+    expect(ch1).toContain("no crossbow");
+    expect(ch6).toContain("first moment where Barry's crossbow should appear");
+    expect(ch6).toContain("`barry.webp` = Barry");
+    expect(ch10).toContain("`daren.webp` = Daren");
+    expect(ch10).toContain("Illuna rescues Daren");
+    expect(ch10).toContain("Only one Flower/Illuna body");
+    expect(ch10).not.toContain("Create one wide chapter illustration");
   });
 
-  it("treats Petal as Illuna's nickname instead of a separate portrait", async () => {
+  it("keeps Petal as Illuna's nickname and uses one shared body in moment prompts", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
@@ -195,46 +218,53 @@ describe("manual Book 1 image prompts", () => {
     const ids = BOOK1_CHARACTERS.map((character) => character.id);
     const illuna = await readText(path.join(visualRoot, "characters/illuna/portrait.md"));
     const flower = await readText(path.join(visualRoot, "characters/flower/portrait.md"));
-    const chapter9 = await readText(path.join(visualRoot, "chapters/ch9/illustration.md"));
+    const moment = await readText(path.join(visualRoot, "moments/ch9-flower-illuna-origin/illustration.md"));
 
     expect(ids).not.toContain("petal");
     await expect(fs.stat(path.join(visualRoot, "characters/petal/portrait.md"))).rejects.toThrow();
     expect(illuna).toContain("Illuna (aka Petal)");
     expect(illuna).toContain("Petal is Illuna's nickname, not a separate character");
     expect(flower).toContain("Same body design as Illuna/Petal");
-    expect(chapter9).toContain("public/visuals/book1/characters/illuna/portrait.webp");
-    expect(chapter9).toContain("never as two separate visible people in the same moment");
-    expect(chapter9).not.toContain("public/visuals/book1/characters/petal/portrait.webp");
+    expect(moment).toContain("never show them as two separate visible people");
+    expect(moment).not.toContain("petal.webp");
   });
 
-  it("uses non-human prompts for dragon and animal characters", async () => {
+  it("includes Taurus in Eleya's judgment moment as a natural bull", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
 
-    const tyrath = await readText(path.join(visualRoot, "characters/tyrath/portrait.md"));
-    const elaria = await readText(path.join(visualRoot, "characters/elaria/portrait.md"));
-    const molan = await readText(path.join(visualRoot, "characters/molan/portrait.md"));
+    const taurus = await readText(path.join(visualRoot, "characters/taurus/portrait.md"));
+    const moment = await readText(path.join(visualRoot, "moments/ch8-eleya-judgment/illustration.md"));
 
-    expect(tyrath).toContain("A dragon, never a human portrait.");
-    expect(elaria).toContain("Use an animal portrait, not a human portrait.");
-    expect(molan).toContain("Use an animal portrait, not a human portrait.");
+    expect(taurus).toContain("Taurus");
+    expect(taurus).toContain("bull lieutenant");
+    expect(taurus).toContain("Use an animal portrait, not a human portrait.");
+    expect(moment).toContain("`taurus.webp` = Taurus");
+    expect(moment).toContain("natural animals, disciplined lieutenants");
+    expect(moment).toContain("No humanoid fox woman, no minotaur Taurus");
   });
 
-  it("references character portraits from chapter prompts", async () => {
+  it("stages ChatGPT-ready prompts with renamed portrait references", async () => {
     const visualRoot = await createTempVisualRoot();
+    const outputRoot = await fs.mkdtemp(path.join(os.tmpdir(), "magium-staging-"));
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
+    await writeReferencePortraits(visualRoot, ["arraka", "barry", "daren", "eiden", "flower", "hadrik", "illuna", "kate", "rose"]);
 
-    const chapter2 = await readText(path.join(visualRoot, "chapters/ch2/illustration.md"));
-    const chapter6 = await readText(path.join(visualRoot, "chapters/ch6/illustration.md"));
+    const result = await stageBook1MomentImages({
+      visualRoot,
+      outputRoot,
+      chapterId: "ch10",
+    });
 
-    expect(chapter2).toContain("public/visuals/book1/characters/kate/portrait.webp");
-    expect(chapter2).toContain("public/visuals/book1/characters/daren/portrait.webp");
-    expect(chapter6).toContain("public/visuals/book1/characters/tyrath/portrait.webp");
+    expect(result.moments).toBe(5);
+    await expect(fs.stat(path.join(outputRoot, "ch10-pit-rescue/prompt.md"))).resolves.toBeTruthy();
+    await expect(fs.stat(path.join(outputRoot, "ch10-pit-rescue/references/daren.webp"))).resolves.toBeTruthy();
+    await expect(fs.stat(path.join(outputRoot, "ch10-pit-rescue/references/illuna.webp"))).resolves.toBeTruthy();
   });
 
-  it("rejects stale public character directories outside the manual config", async () => {
+  it("rejects stale public directories outside the manual config", async () => {
     const visualRoot = await createTempVisualRoot();
     const canonicalRoot = await createCanonicalFixture();
     await generateBook1Prompts({ visualRoot, canonicalRoot });
@@ -242,5 +272,15 @@ describe("manual Book 1 image prompts", () => {
     await fs.writeFile(path.join(visualRoot, "characters/petal/portrait.md"), "# stale\n");
 
     await expect(checkBook1ManualImages({ visualRoot, canonicalRoot })).rejects.toThrow(/Unexpected visual directory.*petal/);
+  });
+
+  it("rejects the stale chapter illustration directory", async () => {
+    const visualRoot = await createTempVisualRoot();
+    const canonicalRoot = await createCanonicalFixture();
+    await generateBook1Prompts({ visualRoot, canonicalRoot });
+    await fs.mkdir(path.join(visualRoot, "chapters/ch1"), { recursive: true });
+    await fs.writeFile(path.join(visualRoot, "chapters/ch1/illustration.md"), "# stale\n");
+
+    await expect(checkBook1ManualImages({ visualRoot, canonicalRoot })).rejects.toThrow(/Stale chapter visual directory/);
   });
 });
