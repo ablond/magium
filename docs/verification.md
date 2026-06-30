@@ -49,6 +49,12 @@ pnpm docker:push-prod
 - refuse les marqueurs RAG, embeddings, `evidenceRefs`, `.magium` et copies longues du texte canonique ;
 - accepte les WebP manquants pendant la generation manuelle des images.
 
+`pnpm images:stage -- --book 1 --moment <id>` :
+
+- prepare un dossier local ignore par Git sous `output/visual/staging/book1/<moment-id>/` ;
+- copie `prompt.md` et les portraits de reference renommes sous `references/<character-id>.webp` ;
+- permet de joindre les bonnes images dans ChatGPT sans manipulation manuelle des noms `portrait.webp`.
+
 `pnpm docker:build-prod` :
 
 - build l'image `ghcr.io/ablond/magium:<timestamp>` localement ;
@@ -79,7 +85,7 @@ Doit confirmer :
 - packs story FR du livre 1 (`locales/fr/ch1` à `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts pour le livre 1 ;
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
-- prompts images Book 1 publics courts sous `public/visuals/book1`, sans RAG, embeddings, `evidenceRefs`, `.magium` ou copie longue du texte canonique.
+- prompts images Book 1 publics courts sous `public/visuals/book1`, sans RAG, embeddings, `evidenceRefs`, `.magium`, anciens chemins `chapters` ou copie longue du texte canonique.
 
 Les nombres peuvent evoluer si `raduprv/Magium@main` change. Dans ce cas, adapter la doc seulement apres verification consciente.
 
@@ -109,8 +115,8 @@ Verifier :
 14. les stats d'aura apparaissent apres l'introduction de `B3-Ch04a`, tandis que `Magical Power` et `Magical Knowledge` restent invisibles ;
 15. apres un choix menant a un test de stat, le resultat apparait avant le texte de scene, puis viennent le contenu et les prochains choix, avec succes/echec et niveau localises ;
 16. le panneau Paramètres contient la bascule globale FR/EN, thème, taille du texte, contraste, révélation de scène et toggle Illustrations ;
-17. le toggle Illustrations masque/affiche l'image de chapitre sans changer la partie ;
-18. une image de chapitre absente ou non chargeable ne bloque pas la lecture ;
+17. le toggle Illustrations masque/affiche l'image de moment apres la scene correspondante sans changer la partie ;
+18. une image de moment absente ou non chargeable ne bloque pas la lecture ;
 19. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
 20. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
 21. IndexedDB contient un objet `encrypted`, pas les variables en clair ;

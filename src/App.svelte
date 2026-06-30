@@ -27,7 +27,7 @@
   import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
   import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
   import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
-  import { getBook1ChapterVisual } from './lib/visuals/book1'
+  import { getBook1SceneVisual } from './lib/visuals/book1'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about'
 
@@ -71,7 +71,7 @@
   let panelElement: HTMLElement | null = null
   let panelCloseButton: HTMLButtonElement | null = null
   let lastPanelTrigger: HTMLElement | null = null
-  let hiddenChapterVisuals: Record<string, true> = {}
+  let hiddenMomentVisuals: Record<string, true> = {}
   let isMobilePanel = false
   let focusedPanel: Panel = 'none'
 
@@ -83,9 +83,8 @@
   $: availableStatPoints = state ? readAvailableStatPoints(state.variables) : 0
   $: draftedStatPoints = Object.values(statDraft).reduce((sum, amount) => sum + amount, 0)
   $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
-  $: currentChapterId = state && context ? context.index.sceneToChapter[state.currentSceneId] ?? null : null
-  $: chapterVisual = settings.illustrations ? getBook1ChapterVisual(currentChapterId) : null
-  $: visibleChapterVisual = chapterVisual && !hiddenChapterVisuals[chapterVisual.src] ? chapterVisual : null
+  $: momentVisual = settings.illustrations && state ? getBook1SceneVisual(state.currentSceneId) : null
+  $: visibleMomentVisual = momentVisual && !hiddenMomentVisuals[momentVisual.src] ? momentVisual : null
   $: panelLabel = getPanelLabel(activePanel)
   $: if (typeof document !== 'undefined') {
     document.body.classList.toggle('panel-modal-open', activePanel !== 'none' && isMobilePanel)
@@ -282,8 +281,8 @@
     applyReaderSettings(settings)
   }
 
-  function hideChapterVisual(src: string) {
-    hiddenChapterVisuals = { ...hiddenChapterVisuals, [src]: true }
+  function hideMomentVisual(src: string) {
+    hiddenMomentVisuals = { ...hiddenMomentVisuals, [src]: true }
   }
 
   async function updateLanguage(locale: string) {
@@ -561,18 +560,6 @@
           </div>
         {/if}
 
-        {#if visibleChapterVisual}
-          <figure class="chapter-visual">
-            <img
-              src={visibleChapterVisual.src}
-              alt={t(uiMessages, 'visual.chapterAlt', { chapter: visibleChapterVisual.chapterLabel }, `Illustration for Book 1, Chapter ${visibleChapterVisual.chapterLabel}`)}
-              loading="lazy"
-              decoding="async"
-              on:error={() => hideChapterVisual(visibleChapterVisual.src)}
-            />
-          </figure>
-        {/if}
-
         <article class="scene">
           {#each displayParagraphs as paragraph, index (paragraph.id)}
             <p
@@ -581,6 +568,18 @@
             >{paragraph.text}</p>
           {/each}
         </article>
+
+        {#if visibleMomentVisual}
+          <figure class="moment-visual">
+            <img
+              src={visibleMomentVisual.src}
+              alt={t(uiMessages, 'visual.momentAlt', { title: visibleMomentVisual.title }, `Illustration for ${visibleMomentVisual.title}`)}
+              loading="lazy"
+              decoding="async"
+              on:error={() => hideMomentVisual(visibleMomentVisual.src)}
+            />
+          </figure>
+        {/if}
 
         <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
@@ -772,7 +771,7 @@
             <input type="checkbox" checked={settings.illustrations} on:change={(event) => updateSettings({ illustrations: event.currentTarget.checked })} />
             <span>
               {t(uiMessages, 'settings.illustrations', {}, 'Illustrations')}
-              <span class="help">{t(uiMessages, 'settings.illustrationsHelp', {}, 'Show chapter illustrations when they are available.')}</span>
+              <span class="help">{t(uiMessages, 'settings.illustrationsHelp', {}, 'Show moment illustrations after the matching scene when they are available.')}</span>
             </span>
           </label>
         {:else if activePanel === 'about'}
