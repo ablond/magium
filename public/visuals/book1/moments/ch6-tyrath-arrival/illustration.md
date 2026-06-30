@@ -22,12 +22,15 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 
 ## Scene Facts
 
-- Setting: Open wilderness or cave-adjacent battlefield with sky exposure, scorched ground and sudden scale shift from dragon arrival.
-- Action: Tyrath dominates the scene as a massive dragon while the party realizes the danger.
+- Setting: Open forest clearing or cave-adjacent wilderness with sky exposure, violent wind, bending trees and sudden scale shift from dragon arrival.
+- Action: Tyrath appears high above as a massive red dragon while the party realizes the danger and braces against the wind.
 - Materials and architecture: Tyrath needs wings, armored scales, claws and internal fire glow; keep him fully dragon.
 - Unnamed figures: none
 - Composition: 16:9 scale scene: dragon huge, party small but identifiable; Barry may now have crossbow on backpack.
 - Timeline overrides: Barry can now have the crossbow strapped to his backpack.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device is explicitly in his hand for this scene; show it as a small old virtual-pet-like magical organizer with an abstract glowing screen and no readable text.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Avoid: No humanoid dragonborn, no saddle, no city kaiju shot.
 
 ## Prompt ChatGPT
@@ -47,9 +50,13 @@ Use the attached references for stable identity, species, body shape, clothing a
 Scene-specific overrides:
 - Barry can now have the crossbow strapped to his backpack.
 
+Barry equipment continuity:
+- Barry's stat device is explicitly in his hand for this scene; show it as a small old virtual-pet-like magical organizer with an abstract glowing screen and no readable text.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
+
 Scene design:
-- Setting: Open wilderness or cave-adjacent battlefield with sky exposure, scorched ground and sudden scale shift from dragon arrival.
-- Action: Tyrath dominates the scene as a massive dragon while the party realizes the danger.
+- Setting: Open forest clearing or cave-adjacent wilderness with sky exposure, violent wind, bending trees and sudden scale shift from dragon arrival.
+- Action: Tyrath appears high above as a massive red dragon while the party realizes the danger and braces against the wind.
 - Materials/architecture: Tyrath needs wings, armored scales, claws and internal fire glow; keep him fully dragon.
 - Composition: 16:9 scale scene: dragon huge, party small but identifiable; Barry may now have crossbow on backpack.
 

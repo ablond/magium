@@ -29,6 +29,9 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: Crude ogre construction materials, dust and collapsing planks.
 - Composition: 16:9 vertical action, Daren low or hanging, Illuna moving across danger, party reacting.
 - Timeline overrides: Only one Flower/Illuna body; use Illuna state with cold focus.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Avoid: No duplicate girl, no gore, no modern teleport VFX.
 - Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
@@ -49,6 +52,10 @@ Use the attached references for stable identity, species, body shape, clothing a
 
 Scene-specific overrides:
 - Only one Flower/Illuna body; use Illuna state with cold focus.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 Scene design:

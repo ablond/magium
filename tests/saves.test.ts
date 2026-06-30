@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createInitialState, enterCurrentScene } from '../src/lib/story/engine'
 import type { StoryContext } from '../src/lib/story/types'
+import { encryptJson, getLocalSaveKey } from '../src/lib/storage/crypto'
 import { exportSave, importSave, SAVE_IMPORT_ERROR_MESSAGES } from '../src/lib/storage/saves'
 
 const stores = vi.hoisted(() => ({
@@ -160,6 +161,40 @@ describe('save export/import', () => {
 
     await expect(importSave(raw, 'portable-secret', CONTENT_VERSION, contextForScene))
       .rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.tamper)
+    expect(stores.saves.size).toBe(0)
+  })
+
+  it('rejects export for debug-dirty local states', async () => {
+    await expect(exportSave({
+      ...makeState(),
+      debug: {
+        dirty: true,
+        lastAction: 'Set v_strength',
+        updatedAt: new Date().toISOString(),
+      },
+    }, 'portable-secret')).rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.debug)
+  })
+
+  it('rejects imported debug-dirty payloads before storing them', async () => {
+    const key = await getLocalSaveKey()
+    const state = {
+      ...makeState(),
+      debug: {
+        dirty: true as const,
+        lastAction: 'Jumped to Ch2-DebugSet',
+        updatedAt: new Date().toISOString(),
+      },
+    }
+    const raw = JSON.stringify({
+      kind: 'magium-save',
+      version: 1,
+      encryption: 'local-key',
+      associatedData: 'magium-save-v1',
+      encrypted: await encryptJson(state, key, 'magium-save-v1'),
+    })
+
+    await expect(importSave(raw, '', CONTENT_VERSION, contextForScene))
+      .rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.debug)
     expect(stores.saves.size).toBe(0)
   })
 

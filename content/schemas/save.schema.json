@@ -45,6 +45,15 @@
       }
     },
     "historyDigest": { "type": "string" },
+    "debug": {
+      "type": "object",
+      "required": ["dirty", "lastAction", "updatedAt"],
+      "properties": {
+        "dirty": { "const": true },
+        "lastAction": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
     "createdAt": { "type": "string" },
     "updatedAt": { "type": "string" }
   },

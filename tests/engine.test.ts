@@ -3,6 +3,10 @@ import {
   applyChoice,
   applyStatAllocation,
   createInitialState,
+  debugApplyChoice,
+  debugDeleteVariable,
+  debugJumpToScene,
+  debugSetVariable,
   enterCurrentScene,
   renderCurrentScene,
   replayAndValidate,
@@ -33,12 +37,13 @@ function makeContext(): StoryContext {
       initialSceneId: 'Ch1-Intro1',
       uiLocales: ['en', 'fr'],
       storyLocales: ['en', 'fr'],
-      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 4 }],
+      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 5 }],
       sceneToChapter: {
         'Ch1-Intro1': 'ch1',
         'Ch2-Stats': 'ch1',
         'Ch2-Avoid2': 'ch1',
         'Ch2-ChoiceOnly': 'ch1',
+        'Ch2-DebugSet': 'ch1',
       },
     },
     locale: 'en',
@@ -47,7 +52,7 @@ function makeContext(): StoryContext {
         formatVersion: 1,
         chapterId: 'ch1',
         sourceFile: 'chapters/ch1.magium',
-        sceneOrder: ['Ch1-Intro1', 'Ch2-Stats', 'Ch2-Avoid2', 'Ch2-ChoiceOnly'],
+        sceneOrder: ['Ch1-Intro1', 'Ch2-Stats', 'Ch2-Avoid2', 'Ch2-ChoiceOnly', 'Ch2-DebugSet'],
         scenes: {
           'Ch1-Intro1': {
             id: 'Ch1-Intro1',
@@ -100,6 +105,19 @@ function makeContext(): StoryContext {
             setVariables: [],
             achievements: [],
           },
+          'Ch2-DebugSet': {
+            id: 'Ch2-DebugSet',
+            blocks: [{ id: 'p8', type: 'paragraph', messageId: 'p8', conditions: null }],
+            choices: [],
+            setVariables: [{
+              id: 'set-debug',
+              variable: 'v_debug_scene_entered',
+              mode: 'set',
+              value: 1,
+              conditions: null,
+            }],
+            achievements: [],
+          },
         },
       },
     },
@@ -116,6 +134,7 @@ function makeContext(): StoryContext {
           p5: 'You endure.',
           p6: 'You still endure.',
           p7: 'Choose your next move.',
+          p8: 'Debug landing.',
           c2: 'Continue',
           a1: 'A beginning',
         },
@@ -275,5 +294,59 @@ describe('story engine', () => {
       ...state,
       variables: { ...state.variables, v_available_points: 3 },
     })).toBe(false)
+  })
+
+  it('jumps directly to a scene in debug and applies scene entry variables without adding history', () => {
+    const context = makeContext()
+    const state = enterCurrentScene(context, createInitialState('test', 'en'))
+
+    const jumped = debugJumpToScene(context, state, 'Ch2-DebugSet')
+
+    expect(jumped.currentSceneId).toBe('Ch2-DebugSet')
+    expect(jumped.variables.v_current_scene).toBe('Ch2-DebugSet')
+    expect(jumped.variables.v_debug_scene_entered).toBe(1)
+    expect(jumped.history).toHaveLength(0)
+    expect(jumped.historyDigest).toBe(state.historyDigest)
+    expect(jumped.debug).toMatchObject({ dirty: true, lastAction: 'Jumped to Ch2-DebugSet' })
+  })
+
+  it('applies hidden choices in debug without changing replay history', () => {
+    const context = makeContext()
+    const state = {
+      ...enterCurrentScene(context, createInitialState('test', 'en')),
+      currentSceneId: 'Ch2-ChoiceOnly',
+      variables: { v_current_scene: 'Ch2-ChoiceOnly', v_strength: 0 },
+    }
+    const hiddenChoice = context.chapters.ch1.scenes['Ch2-ChoiceOnly'].choices[0]
+
+    expect(renderCurrentScene(context, state).choices).toHaveLength(0)
+    const next = debugApplyChoice(context, state, hiddenChoice)
+
+    expect(next.currentSceneId).toBe('Ch2-Stats')
+    expect(next.history).toHaveLength(0)
+    expect(next.historyDigest).toBe(state.historyDigest)
+    expect(next.debug).toMatchObject({ dirty: true, lastAction: 'Applied choice c2' })
+  })
+
+  it('edits stats, counters, and arbitrary variables in debug without replay events', () => {
+    const context = makeContext()
+    let state = enterCurrentScene(context, createInitialState('test', 'en'))
+
+    state = debugSetVariable(state, 'v_strength', 4)
+    state = debugSetVariable(state, 'v_strength_aux', 4)
+    state = debugSetVariable(state, 'v_available_points', 9)
+    state = debugSetVariable(state, 'v_available_points_aux', 9)
+    state = debugSetVariable(state, 'v_max_stat', 4)
+    state = debugSetVariable(state, 'v_debug_flag', true)
+    state = debugDeleteVariable(state, 'v_debug_flag')
+
+    expect(state.variables.v_strength).toBe(4)
+    expect(state.variables.v_strength_aux).toBe(4)
+    expect(state.variables.v_available_points).toBe(9)
+    expect(state.variables.v_available_points_aux).toBe(9)
+    expect(state.variables.v_max_stat).toBe(4)
+    expect(state.variables.v_debug_flag).toBeUndefined()
+    expect(state.history).toHaveLength(0)
+    expect(state.debug).toMatchObject({ dirty: true, lastAction: 'Deleted v_debug_flag' })
   })
 })

@@ -70,6 +70,28 @@ Slots manuels :
 - stockes dans le meme object store ;
 - chaque record reste chiffre.
 
+## Saves Debug Locales
+
+Le mode Debug local peut modifier directement la scene, les choix, les stats, les compteurs et les variables. Des qu'une operation debug touche l'etat, le payload chiffre contient :
+
+```ts
+debug?: {
+  dirty: true
+  lastAction: string
+  updatedAt: string
+}
+```
+
+Ces etats restent autorises dans IndexedDB et dans les saves nommees locales, car ils servent a explorer rapidement le graphe depuis `pnpm dev`. Ils ne sont pas rejouables par `history`, puisque les helpers debug ne creent pas d'evenements `choice` ou `stats` et ne recalculent pas `historyDigest`.
+
+Contraintes :
+
+- `exportSave()` refuse tout etat `debug.dirty` ;
+- l'UI affiche que la route debug reste locale au navigateur ;
+- `importSave()` rejette aussi un payload fabrique avec `debug.dirty`.
+
+Ne pas transformer ce mode en contournement portable du replay anti-tamper. Si une exploration debug doit devenir une route jouable, il faut la rejouer avec les choix et allocations normales.
+
 ## UX Du Panneau Saves
 
 Le panneau explique le comportement sans vocabulaire technique :

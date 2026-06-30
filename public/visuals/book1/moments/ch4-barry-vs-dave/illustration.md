@@ -26,6 +26,9 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: none
 - Composition: 16:9 confrontation, Barry visibly scared but determined, Dave threatening, Kate as cold controlled pressure.
 - Timeline overrides: Barry still has no crossbow; keep him under-equipped and fallible.
+- Path compatibility: Barry and Kate's exact injury state depends on previous choices, so keep wounds subtle and non-specific.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 - Avoid: No heroic armor for Barry, no later crossbow, no excessive gore.
 
 ## Prompt ChatGPT
@@ -42,6 +45,13 @@ Use the attached references for stable identity, species, body shape, clothing a
 
 Scene-specific overrides:
 - Barry still has no crossbow; keep him under-equipped and fallible.
+
+Path compatibility:
+- Barry and Kate's exact injury state depends on previous choices, so keep wounds subtle and non-specific.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 
 Scene design:
 - Setting: Forest fight space with trees close enough for cover, dirty ground and the aftermath of earlier knife violence.

@@ -13,7 +13,7 @@ Le pipeline produit :
 - des paquets runtime compresses et verifies ;
 - un index global du contenu.
 
-Les images Book 1 ne font pas partie de ce pipeline de contenu. Elles utilisent le workflow manuel documente dans `docs/manual-images.md` et les scripts `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1 --moment <id>` et `pnpm images:check -- --book 1`.
+Les images Book 1 ne font pas partie de ce pipeline de contenu. Elles utilisent le workflow manuel documente dans `docs/manual-images.md` et les scripts `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`, `pnpm images:normalize -- --book 1` et `pnpm images:check -- --book 1`. `images:stage` prepare tous les moments par defaut ; `--moment <id>` et `--chapter <id>` limitent le scope. Le chemin OpenAI optionnel utilise `pnpm images:refsheets -- --book 1 --missing` et `pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`; ses fichiers restent sous `output/visual/` et n'entrent pas dans le contenu canonique.
 
 ## Archive Brute
 

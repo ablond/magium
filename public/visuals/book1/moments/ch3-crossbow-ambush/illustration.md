@@ -20,7 +20,7 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 
 ## Scene Facts
 
-- Setting: Forest ambush zone with concealed high ground, trees used for cover and sudden projectiles cutting through the air.
+- Setting: Forest ambush zone with distant trees used for cover, hidden attackers and sudden projectiles cutting through the air.
 - Action: Anonymous crossbowmen attack from hiding while the party reacts under pressure.
 - Action: Barry is still before owning his own crossbow; any crossbows belong to the attackers.
 - Materials and architecture: Attackers use practical crossbows, leather straps, simple dark travel clothes and cover positions.
@@ -28,6 +28,9 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: Several hidden human crossbowmen, practical and dirty, not uniform soldiers.
 - Composition: 16:9 action scene with visible projectile lines, forest cover and the party caught between angles.
 - Timeline overrides: Do not show Barry carrying or using his own crossbow yet.
+- Path compatibility: The player's perception/hearing/premonition can change how early the ambush is noticed, so show the ambush and party reaction without implying a specific stat-check outcome.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 - Avoid: No later Barry crossbow, no gunpowder weapons, no city walls, no gore focus.
 
 ## Prompt ChatGPT
@@ -45,8 +48,15 @@ Use the attached references for stable identity, species, body shape, clothing a
 Scene-specific overrides:
 - Do not show Barry carrying or using his own crossbow yet.
 
+Path compatibility:
+- The player's perception/hearing/premonition can change how early the ambush is noticed, so show the ambush and party reaction without implying a specific stat-check outcome.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
+
 Scene design:
-- Setting: Forest ambush zone with concealed high ground, trees used for cover and sudden projectiles cutting through the air.
+- Setting: Forest ambush zone with distant trees used for cover, hidden attackers and sudden projectiles cutting through the air.
 - Action: Anonymous crossbowmen attack from hiding while the party reacts under pressure.
 - Action: Barry is still before owning his own crossbow; any crossbows belong to the attackers.
 - Materials/architecture: Attackers use practical crossbows, leather straps, simple dark travel clothes and cover positions.

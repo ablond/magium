@@ -49,11 +49,31 @@ pnpm docker:push-prod
 - refuse les marqueurs RAG, embeddings, `evidenceRefs`, `.magium` et copies longues du texte canonique ;
 - accepte les WebP manquants pendant la generation manuelle des images.
 
-`pnpm images:stage -- --book 1 --moment <id>` :
+`pnpm images:stage -- --book 1` :
 
-- prepare un dossier local ignore par Git sous `output/visual/staging/book1/<moment-id>/` ;
+- prepare par defaut tous les dossiers locaux ignores par Git sous `output/visual/staging/book1/<moment-id>/` ;
 - copie `prompt.md` et les portraits de reference renommes sous `references/<character-id>.webp` ;
 - permet de joindre les bonnes images dans ChatGPT sans manipulation manuelle des noms `portrait.webp`.
+- accepte aussi `--moment <id>` ou `--chapter <id>` pour limiter le staging.
+
+`pnpm images:normalize -- --book 1` :
+
+- convertit les PNG/JPG de moments en `illustration.webp` avec `ffmpeg` ;
+- deplace les originaux sous `output/visual/originals/book1/moments/` ;
+- laisse `public/visuals/book1/moments/` avec seulement `illustration.md` et `illustration.webp`.
+
+`pnpm images:refsheets -- --book 1 --missing` :
+
+- prepare des planches de reference locales sous `output/visual/api-inputs/book1/<moment-id>/` ;
+- regroupe jusqu'a quatre portraits par planche pour reduire les couts API ;
+- refuse implicitement les erreurs canoniques verrouillees par la config : pas de `arraka.webp`, pas de couple `flower.webp` + `illuna.webp` sur un meme moment.
+
+`pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets` :
+
+- chemin avance optionnel qui exige `OPENAI_API_KEY` dans l'environnement ;
+- prepare et soumet un batch OpenAI `/v1/images/edits` avec `gpt-image-2`, WebP et `quality=high` ;
+- affiche la commande `--retrieve` a relancer quand le batch est termine ;
+- garde les manifests et outputs temporaires sous `output/visual/api-runs/`, ignores par Git.
 
 `pnpm docker:build-prod` :
 
@@ -86,6 +106,7 @@ Doit confirmer :
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
 - prompts images Book 1 publics courts sous `public/visuals/book1`, sans RAG, embeddings, `evidenceRefs`, `.magium`, anciens chemins `chapters` ou copie longue du texte canonique.
+- aucun prompt de moment n'attache `arraka.webp`, ni `flower.webp` et `illuna.webp` ensemble.
 
 Les nombres peuvent evoluer si `raduprv/Magium@main` change. Dans ce cas, adapter la doc seulement apres verification consciente.
 
@@ -124,6 +145,13 @@ Verifier :
 23. export avec phrase de passe produit un `.magium-save` portable ;
 24. import avec la meme phrase de passe restaure la progression si le `contentVersion` courant correspond ;
 25. mauvais mot de passe, fichier incompatible, `contentVersion` different, ou stat / `v_available_points` incoherent affichent une erreur claire dans le panneau et ne modifient pas la sauvegarde locale.
+26. sous `pnpm dev`, le rail affiche un panneau `Debug` ;
+27. le panneau Debug permet de sauter vers une scene d'un autre chapitre et applique les `setVariables` d'entree de scene ;
+28. un choix masque par ses conditions peut etre applique depuis Debug sans ajouter d'evenement `history` ;
+29. les boutons undo/redo Debug fonctionnent apres un choix normal, un jump debug et une edition de stats ;
+30. l'edition debug de `v_available_points`, `v_available_points_aux`, `v_max_stat`, d'une stat et de sa variable `_aux` est sauvegardee localement puis rechargeable via un slot nomme ;
+31. apres une modification debug, le panneau Sauvegardes bloque l'export `.magium-save` avec une erreur claire et laisse la save locale utilisable ;
+32. apres `pnpm build` puis `pnpm preview`, le bouton Debug n'apparait pas.
 
 ## Exemple De Verification IndexedDB
 
@@ -180,6 +208,10 @@ Ne pas committer :
 - `node_modules/`
 - `.playwright-cli/`
 - `output/playwright/`
+- `output/visual/api-inputs/`
+- `output/visual/api-runs/`
+- `output/visual/originals/`
+- `output/visual/staging/`
 - exports `.magium-save` de test.
 
 Ces chemins sont ignores par `.gitignore`.

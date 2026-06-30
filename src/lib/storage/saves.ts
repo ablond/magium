@@ -12,6 +12,7 @@ export const SAVE_IMPORT_ERROR_MESSAGES = {
   passwordOrCorrupt: 'Wrong password or damaged save file',
   contentVersion: 'This save was made for a different content version',
   tamper: 'This save file does not match a playable route',
+  debug: 'Debug saves stay local to this browser',
 } as const
 
 export type SaveImportErrorCode = keyof typeof SAVE_IMPORT_ERROR_MESSAGES
@@ -81,6 +82,10 @@ export async function deleteSave(slotId: string): Promise<void> {
 }
 
 export async function exportSave(state: GameState, passphrase: string): Promise<string> {
+  if (isDebugDirtyState(state)) {
+    throw new SaveImportError('debug')
+  }
+
   const trimmed = passphrase.trim()
   const salt = crypto.getRandomValues(new Uint8Array(16))
   const key = trimmed
@@ -110,6 +115,9 @@ export async function importSave(
   }
   if (state.contentVersion !== expectedContentVersion) {
     throw new SaveImportError('contentVersion')
+  }
+  if (isDebugDirtyState(state)) {
+    throw new SaveImportError('debug')
   }
   const valid = await validateReplay(contextForScene, state)
   if (!valid) {
@@ -191,6 +199,18 @@ function isGameStateShape(value: unknown): value is GameState {
     Array.isArray(value.history) &&
     typeof value.historyDigest === 'string' &&
     typeof value.createdAt === 'string' &&
+    typeof value.updatedAt === 'string' &&
+    (value.debug === undefined || isDebugMetadata(value.debug))
+}
+
+function isDebugDirtyState(state: GameState): boolean {
+  return state.debug?.dirty === true
+}
+
+function isDebugMetadata(value: unknown): value is GameState['debug'] {
+  return isRecord(value) &&
+    value.dirty === true &&
+    typeof value.lastAction === 'string' &&
     typeof value.updatedAt === 'string'
 }
 

@@ -17,18 +17,21 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Barry: `public/visuals/book1/characters/barry/portrait.webp` as `barry.webp`
 - Rose: `public/visuals/book1/characters/rose/portrait.webp` as `rose.webp`
 - Suzie: `public/visuals/book1/characters/suzie/portrait.webp` as `suzie.webp`
-- Flower: `public/visuals/book1/characters/flower/portrait.webp` as `flower.webp`
+- Daren: `public/visuals/book1/characters/daren/portrait.webp` as `daren.webp`
+- Hadrik: `public/visuals/book1/characters/hadrik/portrait.webp` as `hadrik.webp`
 
 ## Scene Facts
 
-- Setting: Modest Thilias home interior, warm domestic light, simple furniture, muffins and civilian family details.
-- Action: Suzie proudly shows or discusses her virtual pet toy while Rose brings warmth into the scene.
+- Setting: Rose's Thilias mansion or large home, with a main hall, yard or picnic tables nearby, comfortable domestic details and no palace luxury.
+- Action: Suzie guards or trades her small virtual-pet-like toy while Barry compares it to his stat device and the group settles into Rose's home.
 - Materials and architecture: The toy should resemble a small virtual-pet device, not a modern smartphone; muffins and home clutter matter.
 - Unnamed figures: none
-- Composition: 16:9 intimate interior, Rose and Suzie central, Barry/Flower as guests if present.
-- Timeline overrides: Flower/Illuna body should be Flower's warm state if visible.
-- Avoid: No luxury mansion, no modern phone, no combat pose.
-- Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
+- Composition: 16:9 domestic scene near the main hall, yard or picnic tables, Rose and Suzie central, Barry with the device trade if that route is represented.
+- Timeline overrides: Barry still has his backpack at Rose's home, but the toy/stat-device comparison is the main prop.
+- Path compatibility: Suzie's toy interaction can vary depending on earlier city choices, so keep the image to the warm home setting, muffins and the small virtual-pet toy without fixing a specific exchange.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
+- Avoid: No poor shack, no royal palace, no modern phone, no combat pose.
 
 ## Prompt ChatGPT
 
@@ -39,19 +42,26 @@ Attached references:
 - `barry.webp` = Barry
 - `rose.webp` = Rose
 - `suzie.webp` = Suzie
-- `flower.webp` = Flower
+- `daren.webp` = Daren
+- `hadrik.webp` = Hadrik
 
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Flower/Illuna body should be Flower's warm state if visible.
-- Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
+- Barry still has his backpack at Rose's home, but the toy/stat-device comparison is the main prop.
+
+Path compatibility:
+- Suzie's toy interaction can vary depending on earlier city choices, so keep the image to the warm home setting, muffins and the small virtual-pet toy without fixing a specific exchange.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 
 Scene design:
-- Setting: Modest Thilias home interior, warm domestic light, simple furniture, muffins and civilian family details.
-- Action: Suzie proudly shows or discusses her virtual pet toy while Rose brings warmth into the scene.
+- Setting: Rose's Thilias mansion or large home, with a main hall, yard or picnic tables nearby, comfortable domestic details and no palace luxury.
+- Action: Suzie guards or trades her small virtual-pet-like toy while Barry compares it to his stat device and the group settles into Rose's home.
 - Materials/architecture: The toy should resemble a small virtual-pet device, not a modern smartphone; muffins and home clutter matter.
-- Composition: 16:9 intimate interior, Rose and Suzie central, Barry/Flower as guests if present.
+- Composition: 16:9 domestic scene near the main hall, yard or picnic tables, Rose and Suzie central, Barry with the device trade if that route is represented.
 
 Visual direction:
 - grounded realistic fantasy adventure illustration
@@ -60,6 +70,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No luxury mansion, no modern phone, no combat pose.
+- No poor shack, no royal palace, no modern phone, no combat pose.
 - no logo, no watermark, no readable text
 ```

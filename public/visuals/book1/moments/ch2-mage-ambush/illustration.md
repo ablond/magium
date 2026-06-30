@@ -28,6 +28,9 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: Battleaxe mage, sword thrower and a few hostile mages; they should be human tournament participants, not monsters.
 - Composition: Cinematic 16:9 action scene, Kate centered with ice magic, Daren shield-side, Barry smaller and vulnerable.
 - Timeline overrides: Barry still has no crossbow; do not use the later backpack-crossbow silhouette.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 - Avoid: No fire aura for Kate, no superhero ice costume, no gore, no crossbow on Barry.
 
 ## Prompt ChatGPT
@@ -44,6 +47,10 @@ Use the attached references for stable identity, species, body shape, clothing a
 
 Scene-specific overrides:
 - Barry still has no crossbow; do not use the later backpack-crossbow silhouette.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 
 Scene design:
 - Setting: Forest battlefield with fallen trees, churned dirt, freezing air and scattered hostile tournament mages.

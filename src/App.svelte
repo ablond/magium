@@ -1,6 +1,8 @@
 <script lang="ts">
   import {
     BookOpen,
+    Bug,
+    ChevronsRight,
     CircleCheck,
     CircleX,
     Download,
@@ -19,17 +21,62 @@
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
-  import { loadContextForScene, loadIndex, loadUiLocale } from './lib/content/packedContent'
+  import { loadContextForScene, loadIndex, loadStoryChapter, loadUiLocale } from './lib/content/packedContent'
   import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
   import { splitDisplayParagraphs } from './lib/reader/displayParagraphs'
   import { defaultReaderSettings, migrateReaderSettings } from './lib/settings/readerSettings'
-  import { applyChoice, applyStatAllocation, createInitialState, enterCurrentScene, renderCurrentScene, restoreCheckpoint } from './lib/story/engine'
-  import { readAvailableStatPoints, readStats, revealedStatVariables } from './lib/story/stats'
-  import type { Choice, GameState, RenderedScene, Settings as ReaderSettings, StatAllocationDelta, StoryContext } from './lib/story/types'
+  import {
+    applyChoice,
+    applyStatAllocation,
+    createInitialState,
+    debugApplyChoice,
+    debugDeleteVariable,
+    debugJumpToScene,
+    debugSetVariable,
+    enterCurrentScene,
+    renderCurrentScene,
+    restoreCheckpoint,
+  } from './lib/story/engine'
+  import {
+    AVAILABLE_POINTS_AUX_VARIABLE,
+    AVAILABLE_POINTS_VARIABLE,
+    MAX_STAT_VARIABLE,
+    readAvailableStatPoints,
+    readNumericVariable,
+    readStats,
+    revealedStatVariables,
+    STAT_VARIABLES,
+    statAuxVariable,
+  } from './lib/story/stats'
+  import type {
+    Choice,
+    ContentIndex,
+    GameState,
+    PrimitiveValue,
+    RenderedScene,
+    Settings as ReaderSettings,
+    StatAllocationDelta,
+    StoryChapter,
+    StoryContext,
+  } from './lib/story/types'
   import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
   import { getBook1SceneVisual } from './lib/visuals/book1'
 
-  type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about'
+  type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about' | 'debug'
+  type DebugValueKind = 'number' | 'string' | 'boolean'
+  type DebugSnapshot = {
+    label: string
+    state: GameState
+  }
+
+  const isDebugBuild = import.meta.env.DEV
+  const maxDebugSnapshots = 80
+  const debugNumericVariables = [
+    ...STAT_VARIABLES,
+    AVAILABLE_POINTS_VARIABLE,
+    AVAILABLE_POINTS_AUX_VARIABLE,
+    MAX_STAT_VARIABLE,
+  ] as const
 
   const errorMessageKeys: Record<string, string> = {
     'Choice is not available from the current state': 'errors.choiceUnavailable',
@@ -41,8 +88,11 @@
     [SAVE_IMPORT_ERROR_MESSAGES.passwordOrCorrupt]: 'errors.savePasswordOrCorrupt',
     [SAVE_IMPORT_ERROR_MESSAGES.passwordRequired]: 'errors.savePasswordRequired',
     [SAVE_IMPORT_ERROR_MESSAGES.tamper]: 'errors.saveTamper',
+    [SAVE_IMPORT_ERROR_MESSAGES.debug]: 'errors.saveDebug',
     'Stat is not available for allocation': 'errors.statUnavailable',
     'Stat maximum reached': 'errors.statMaximumReached',
+    'Debug boolean values must be true or false': 'errors.debugBoolean',
+    'Debug numeric values must be finite numbers': 'errors.debugNumber',
     [SAVE_IMPORT_ERROR_MESSAGES.unsupported]: 'errors.unsupportedSave',
   }
 
@@ -74,6 +124,14 @@
   let hiddenMomentVisuals: Record<string, true> = {}
   let isMobilePanel = false
   let focusedPanel: Panel = 'none'
+  let debugChapterCache: Record<string, StoryChapter> = {}
+  let debugChapterId = ''
+  let debugSceneId = ''
+  let debugVariableName = ''
+  let debugVariableKind: DebugValueKind = 'number'
+  let debugVariableValue = '0'
+  let debugUndoStack: DebugSnapshot[] = []
+  let debugRedoStack: DebugSnapshot[] = []
 
   $: chapterTitle = state
     ? describeScene(state.currentSceneId, uiMessages)
@@ -85,7 +143,23 @@
   $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
   $: momentVisual = settings.illustrations && state ? getBook1SceneVisual(state.currentSceneId) : null
   $: visibleMomentVisual = momentVisual && !hiddenMomentVisuals[momentVisual.src] ? momentVisual : null
+  $: debugChapters = context?.index.chapters ?? []
+  $: debugChapter = debugChapterId
+    ? debugChapterCache[debugChapterId] ?? context?.chapters[debugChapterId] ?? null
+    : null
+  $: debugSceneIds = debugChapter?.sceneOrder ?? []
+  $: debugAllChoices = rendered?.scene.choices ?? []
+  $: debugVisibleChoiceIds = new Set((rendered?.choices ?? []).map((choice) => choice.id))
+  $: debugStatRows = state && context
+    ? readStats(state.variables, context.statsLocale.messages, debugNumericVariables)
+    : []
+  $: debugVariables = state
+    ? Object.entries(state.variables).sort(([left], [right]) => left.localeCompare(right))
+    : []
   $: panelLabel = getPanelLabel(activePanel)
+  $: if (!isDebugBuild && activePanel === 'debug') {
+    activePanel = 'none'
+  }
   $: if (typeof document !== 'undefined') {
     document.body.classList.toggle('panel-modal-open', activePanel !== 'none' && isMobilePanel)
   }
@@ -149,6 +223,8 @@
     if (!state) return
     context = await loadContextForScene(state.currentSceneId, state.locale, context ?? undefined)
     rendered = renderCurrentScene(context, state)
+    rememberLoadedDebugChapters()
+    syncDebugSelection()
     saveSummaries = await listSaveSummaries()
   }
 
@@ -165,7 +241,9 @@
       if (choice.target) {
         context = await loadContextForScene(choice.target, state.locale, context)
       }
+      const debugSnapshot = captureDebugSnapshot(`Choice ${choice.id}`)
       state = await applyChoice(context, state, choice)
+      pushDebugUndo(debugSnapshot)
       resetStatDraft()
       if (choice.special === 'stats') openPanel('abilities')
       await saveGameState(state)
@@ -364,6 +442,8 @@
         return t(uiMessages, 'settings.title', {}, 'Settings')
       case 'about':
         return t(uiMessages, 'about.title', {}, 'About')
+      case 'debug':
+        return t(uiMessages, 'debug.title', {}, 'Debug')
       default:
         return t(uiMessages, 'reader.eyebrow', {}, 'Magium')
     }
@@ -449,7 +529,9 @@
     try {
       busy = true
       error = ''
+      const debugSnapshot = captureDebugSnapshot('Stats allocation')
       state = await applyStatAllocation(state, deltas)
+      pushDebugUndo(debugSnapshot)
       resetStatDraft()
       await saveGameState(state)
       await refresh()
@@ -459,6 +541,259 @@
     } finally {
       busy = false
     }
+  }
+
+  async function selectDebugChapter(chapterId: string) {
+    debugChapterId = chapterId
+    const chapter = await ensureDebugChapter(chapterId)
+    debugSceneId = chapter.sceneOrder[0] ?? ''
+  }
+
+  async function jumpToDebugScene() {
+    if (!state || !debugSceneId || busy) return
+    try {
+      busy = true
+      clearSaveFeedback()
+      const debugSnapshot = captureDebugSnapshot(`Jump to ${debugSceneId}`)
+      context = await loadContextForScene(debugSceneId, state.locale, context ?? undefined)
+      state = debugJumpToScene(context, state, debugSceneId)
+      pushDebugUndo(debugSnapshot)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      panelStatus = t(uiMessages, 'debug.statusJumped', { sceneId: debugSceneId }, `Jumped to ${debugSceneId}`)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  async function applyDebugChoice(choice: Choice) {
+    if (!state || busy) return
+    try {
+      busy = true
+      clearSaveFeedback()
+      const targetSceneId = choice.special === 'restart'
+        ? context?.index.initialSceneId
+        : choice.target || state.currentSceneId
+      if (!targetSceneId) return
+      const debugSnapshot = captureDebugSnapshot(`Debug choice ${choice.id}`)
+      context = await loadContextForScene(targetSceneId, state.locale, context ?? undefined)
+      state = debugApplyChoice(context, state, choice)
+      pushDebugUndo(debugSnapshot)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      panelStatus = t(uiMessages, 'debug.statusChoice', { choiceId: choice.id }, `Applied ${choice.id}`)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  async function setDebugNumericVariable(variable: string, value: number, syncAux = false) {
+    if (!state || busy || !Number.isFinite(value)) return
+    try {
+      busy = true
+      clearSaveFeedback()
+      const normalized = Math.trunc(value)
+      const debugSnapshot = captureDebugSnapshot(`Set ${variable}`)
+      let next = debugSetVariable(state, variable, normalized, `Set ${variable} to ${normalized}`)
+      if (syncAux && isPrimaryStatVariable(variable)) {
+        next.variables[statAuxVariable(variable)] = normalized
+      }
+      state = next
+      pushDebugUndo(debugSnapshot)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      panelStatus = t(uiMessages, 'debug.statusVariable', { variable }, `${variable} updated`)
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  async function adjustDebugNumericVariable(variable: string, amount: number, syncAux = false) {
+    if (!state) return
+    await setDebugNumericVariable(variable, readNumericVariable(state.variables, variable) + amount, syncAux)
+  }
+
+  async function setDebugVariableFromForm() {
+    if (!state || busy) return
+    const variable = debugVariableName.trim()
+    if (!variable) {
+      panelError = t(uiMessages, 'debug.errorVariableName', {}, 'Enter a variable name')
+      return
+    }
+
+    try {
+      busy = true
+      clearSaveFeedback()
+      const value = parseDebugValue(debugVariableValue, debugVariableKind)
+      const debugSnapshot = captureDebugSnapshot(`Set ${variable}`)
+      state = debugSetVariable(state, variable, value, `Set ${variable}`)
+      pushDebugUndo(debugSnapshot)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      panelStatus = t(uiMessages, 'debug.statusVariable', { variable }, `${variable} updated`)
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  async function deleteDebugVariableFromForm() {
+    if (!state || busy) return
+    const variable = debugVariableName.trim()
+    if (!variable) {
+      panelError = t(uiMessages, 'debug.errorVariableName', {}, 'Enter a variable name')
+      return
+    }
+
+    try {
+      busy = true
+      clearSaveFeedback()
+      const debugSnapshot = captureDebugSnapshot(`Delete ${variable}`)
+      state = debugDeleteVariable(state, variable)
+      pushDebugUndo(debugSnapshot)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      panelStatus = t(uiMessages, 'debug.statusVariableDeleted', { variable }, `${variable} deleted`)
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  async function undoDebugChange() {
+    if (!state || !debugUndoStack.length || busy) return
+    const snapshot = debugUndoStack[debugUndoStack.length - 1]
+    debugUndoStack = debugUndoStack.slice(0, -1)
+    debugRedoStack = pushDebugSnapshot(debugRedoStack, {
+      label: snapshot.label,
+      state: cloneGameState(state),
+    })
+    await restoreDebugSnapshot(snapshot)
+    panelStatus = t(uiMessages, 'debug.statusUndo', { label: snapshot.label }, `Undid ${snapshot.label}`)
+  }
+
+  async function redoDebugChange() {
+    if (!state || !debugRedoStack.length || busy) return
+    const snapshot = debugRedoStack[debugRedoStack.length - 1]
+    debugRedoStack = debugRedoStack.slice(0, -1)
+    debugUndoStack = pushDebugSnapshot(debugUndoStack, {
+      label: snapshot.label,
+      state: cloneGameState(state),
+    })
+    await restoreDebugSnapshot(snapshot)
+    panelStatus = t(uiMessages, 'debug.statusRedo', { label: snapshot.label }, `Redid ${snapshot.label}`)
+  }
+
+  async function restoreDebugSnapshot(snapshot: DebugSnapshot) {
+    try {
+      busy = true
+      clearSaveFeedback()
+      context = await loadContextForScene(snapshot.state.currentSceneId, snapshot.state.locale, context ?? undefined)
+      state = cloneGameState(snapshot.state)
+      resetStatDraft()
+      await saveGameState(state)
+      await refresh()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    } finally {
+      busy = false
+    }
+  }
+
+  function captureDebugSnapshot(label: string): DebugSnapshot | null {
+    if (!isDebugBuild || !state) return null
+    return {
+      label,
+      state: cloneGameState(state),
+    }
+  }
+
+  function pushDebugUndo(snapshot: DebugSnapshot | null) {
+    if (!snapshot) return
+    debugUndoStack = pushDebugSnapshot(debugUndoStack, snapshot)
+    debugRedoStack = []
+  }
+
+  function pushDebugSnapshot(stack: DebugSnapshot[], snapshot: DebugSnapshot) {
+    return [...stack, snapshot].slice(-maxDebugSnapshots)
+  }
+
+  function cloneGameState(next: GameState): GameState {
+    return JSON.parse(JSON.stringify(next)) as GameState
+  }
+
+  function rememberLoadedDebugChapters() {
+    if (!context) return
+    debugChapterCache = { ...debugChapterCache, ...context.chapters }
+  }
+
+  function syncDebugSelection() {
+    if (!state || !context) return
+    const chapterId = context.index.sceneToChapter[state.currentSceneId]
+    if (!chapterId) return
+    debugChapterId = chapterId
+    debugSceneId = state.currentSceneId
+  }
+
+  async function ensureDebugChapter(chapterId: string) {
+    const existing = debugChapterCache[chapterId] ?? context?.chapters[chapterId]
+    if (existing) return existing
+    const chapter = await loadStoryChapter(chapterId)
+    debugChapterCache = { ...debugChapterCache, [chapterId]: chapter }
+    return chapter
+  }
+
+  function parseDebugValue(raw: string, kind: DebugValueKind): PrimitiveValue {
+    const trimmed = raw.trim()
+    if (kind === 'string') {
+      return raw
+    }
+    if (kind === 'boolean') {
+      if (['true', '1', 'yes', 'oui'].includes(trimmed.toLowerCase())) return true
+      if (['false', '0', 'no', 'non'].includes(trimmed.toLowerCase())) return false
+      throw new Error('Debug boolean values must be true or false')
+    }
+    const value = Number(trimmed)
+    if (!Number.isFinite(value)) {
+      throw new Error('Debug numeric values must be finite numbers')
+    }
+    return Math.trunc(value)
+  }
+
+  function isPrimaryStatVariable(variable: string) {
+    return (STAT_VARIABLES as readonly string[]).includes(variable)
+  }
+
+  function debugChapterLabel(chapter: ContentIndex['chapters'][number]) {
+    return `${chapter.key} (${chapter.id})`
+  }
+
+  function debugChoiceText(choice: Choice) {
+    if (!state || !context) return choice.messageId
+    const chapterId = context.index.sceneToChapter[state.currentSceneId]
+    return chapterId
+      ? context.locales[chapterId]?.messages[choice.messageId] ?? `[${choice.messageId}]`
+      : `[${choice.messageId}]`
+  }
+
+  function formatDebugVariableValue(value: PrimitiveValue) {
+    return typeof value === 'string' ? `"${value}"` : String(value)
   }
 
   function resetStatDraft() {
@@ -533,6 +868,12 @@
         <ShieldCheck size={19} />
         <span class="nav-label">{t(uiMessages, 'nav.about', {}, 'About')}</span>
       </button>
+      {#if isDebugBuild}
+        <button class:active={activePanel === 'debug'} title={t(uiMessages, 'nav.debug', {}, 'Debug')} aria-label={t(uiMessages, 'nav.debug', {}, 'Debug')} on:click={(event) => togglePanel('debug', event)}>
+          <Bug size={19} />
+          <span class="nav-label">{t(uiMessages, 'nav.debug', {}, 'Debug')}</span>
+        </button>
+      {/if}
     </aside>
 
     <section class="reader">
@@ -643,6 +984,9 @@
               </div>
             {/each}
           </div>
+          {#if state.debug?.dirty}
+            <p class="notice panel-notice error" role="status">{t(uiMessages, 'saves.debugLocalOnly', {}, 'This route was changed with Debug and can only stay in local browser saves.')}</p>
+          {/if}
           <label>
             {t(uiMessages, 'saves.backupPassword', {}, 'Backup password')}
             <span class="help">{t(uiMessages, 'saves.backupPasswordHelp', {}, 'Leave it empty for a backup that only restores in this browser.')}</span>
@@ -774,6 +1118,153 @@
               <span class="help">{t(uiMessages, 'settings.illustrationsHelp', {}, 'Show moment illustrations after the matching scene when they are available.')}</span>
             </span>
           </label>
+        {:else if activePanel === 'debug' && isDebugBuild && state}
+          <h2>{t(uiMessages, 'debug.title', {}, 'Debug')}</h2>
+          <div class:dirty={state.debug?.dirty} class="debug-state">
+            <strong>{state.debug?.dirty ? t(uiMessages, 'debug.dirty', {}, 'Debug save') : t(uiMessages, 'debug.clean', {}, 'Clean route')}</strong>
+            <span>{state.debug?.dirty ? state.debug.lastAction : state.currentSceneId}</span>
+          </div>
+          <div class="debug-toolbar">
+            <button disabled={busy || !debugUndoStack.length} on:click={undoDebugChange}>
+              <RotateCcw size={16} />
+              {t(uiMessages, 'debug.undo', {}, 'Undo')}
+            </button>
+            <button disabled={busy || !debugRedoStack.length} on:click={redoDebugChange}>
+              <ChevronsRight size={16} />
+              {t(uiMessages, 'debug.redo', {}, 'Redo')}
+            </button>
+          </div>
+
+          <section class="debug-section">
+            <h3>{t(uiMessages, 'debug.navigation', {}, 'Navigation')}</h3>
+            <label>
+              {t(uiMessages, 'debug.chapter', {}, 'Chapter')}
+              <select bind:value={debugChapterId} disabled={busy} on:change={(event) => selectDebugChapter(event.currentTarget.value)}>
+                {#each debugChapters as chapter}
+                  <option value={chapter.id}>{debugChapterLabel(chapter)}</option>
+                {/each}
+              </select>
+            </label>
+            <label>
+              {t(uiMessages, 'debug.scene', {}, 'Scene')}
+              <select bind:value={debugSceneId} disabled={busy || !debugSceneIds.length}>
+                {#each debugSceneIds as sceneId}
+                  <option value={sceneId}>{sceneId}</option>
+                {/each}
+              </select>
+            </label>
+            <button class="wide" disabled={busy || !debugSceneId} on:click={jumpToDebugScene}>
+              <ChevronsRight size={17} />
+              {t(uiMessages, 'debug.jump', {}, 'Jump')}
+            </button>
+          </section>
+
+          <section class="debug-section">
+            <h3>{t(uiMessages, 'debug.choices', {}, 'Choices')}</h3>
+            <div class="debug-choice-list">
+              {#each debugAllChoices as choice}
+                <div class:hidden-choice={!debugVisibleChoiceIds.has(choice.id)} class="debug-choice-row">
+                  <button disabled={busy} on:click={() => applyDebugChoice(choice)}>
+                    <ScrollText size={16} />
+                    <span>{debugChoiceText(choice)}</span>
+                  </button>
+                  <dl>
+                    <div><dt>{t(uiMessages, 'debug.choiceId', {}, 'ID')}</dt><dd>{choice.id}</dd></div>
+                    <div><dt>{t(uiMessages, 'debug.choiceTarget', {}, 'Target')}</dt><dd>{choice.target || '-'}</dd></div>
+                    <div><dt>{t(uiMessages, 'debug.choiceSpecial', {}, 'Special')}</dt><dd>{choice.special || '-'}</dd></div>
+                  </dl>
+                  <code>{choice.conditions?.raw ?? t(uiMessages, 'debug.always', {}, 'always')}</code>
+                </div>
+              {:else}
+                <p class="empty-state">{t(uiMessages, 'debug.noChoices', {}, 'No choices on this scene.')}</p>
+              {/each}
+            </div>
+          </section>
+
+          <section class="debug-section">
+            <h3>{t(uiMessages, 'debug.stats', {}, 'Stats and counters')}</h3>
+            <div class="debug-stat-list">
+              {#each debugStatRows as stat}
+                <div class="debug-stat-row">
+                  <span>{stat.label}</span>
+                  <div class="debug-number-controls">
+                    <button
+                      class="icon-stepper"
+                      disabled={busy}
+                      title={t(uiMessages, 'debug.decreaseVariable', { variable: stat.variable }, `Decrease ${stat.variable}`)}
+                      aria-label={t(uiMessages, 'debug.decreaseVariable', { variable: stat.variable }, `Decrease ${stat.variable}`)}
+                      on:click={() => adjustDebugNumericVariable(stat.variable, -1, isPrimaryStatVariable(stat.variable))}
+                    >
+                      <Minus size={15} />
+                    </button>
+                    <input
+                      type="number"
+                      value={stat.baseValue}
+                      disabled={busy}
+                      aria-label={stat.variable}
+                      on:change={(event) => setDebugNumericVariable(stat.variable, Number(event.currentTarget.value), isPrimaryStatVariable(stat.variable))}
+                    />
+                    <button
+                      class="icon-stepper"
+                      disabled={busy}
+                      title={t(uiMessages, 'debug.increaseVariable', { variable: stat.variable }, `Increase ${stat.variable}`)}
+                      aria-label={t(uiMessages, 'debug.increaseVariable', { variable: stat.variable }, `Increase ${stat.variable}`)}
+                      on:click={() => adjustDebugNumericVariable(stat.variable, 1, isPrimaryStatVariable(stat.variable))}
+                    >
+                      <Plus size={15} />
+                    </button>
+                  </div>
+                  <code>{stat.variable}</code>
+                </div>
+              {/each}
+            </div>
+          </section>
+
+          <section class="debug-section">
+            <h3>{t(uiMessages, 'debug.variables', {}, 'Variables')}</h3>
+            <label>
+              {t(uiMessages, 'debug.variableName', {}, 'Variable')}
+              <input list="debug-variable-names" bind:value={debugVariableName} disabled={busy} />
+              <datalist id="debug-variable-names">
+                {#each debugVariables as [name]}
+                  <option value={name}></option>
+                {/each}
+              </datalist>
+            </label>
+            <div class="debug-variable-edit">
+              <select bind:value={debugVariableKind} disabled={busy} aria-label={t(uiMessages, 'debug.variableType', {}, 'Type')}>
+                <option value="number">{t(uiMessages, 'debug.typeNumber', {}, 'Number')}</option>
+                <option value="string">{t(uiMessages, 'debug.typeString', {}, 'String')}</option>
+                <option value="boolean">{t(uiMessages, 'debug.typeBoolean', {}, 'Boolean')}</option>
+              </select>
+              <input bind:value={debugVariableValue} disabled={busy} aria-label={t(uiMessages, 'debug.variableValue', {}, 'Value')} />
+            </div>
+            <div class="debug-toolbar">
+              <button disabled={busy} on:click={setDebugVariableFromForm}>{t(uiMessages, 'debug.setVariable', {}, 'Set')}</button>
+              <button class="danger-action" disabled={busy} on:click={deleteDebugVariableFromForm}>{t(uiMessages, 'debug.deleteVariable', {}, 'Delete')}</button>
+            </div>
+            <div class="debug-variable-list">
+              {#each debugVariables as [name, value]}
+                <button
+                  disabled={busy}
+                  on:click={() => {
+                    debugVariableName = name
+                    debugVariableKind = typeof value === 'number' ? 'number' : typeof value === 'boolean' ? 'boolean' : 'string'
+                    debugVariableValue = String(value)
+                  }}
+                >
+                  <span>{name}</span>
+                  <code>{formatDebugVariableValue(value)}</code>
+                </button>
+              {/each}
+            </div>
+          </section>
+
+          {#if panelError}
+            <p class="notice panel-notice error" role="alert">{panelError}</p>
+          {:else if panelStatus}
+            <p class="notice panel-notice" role="status" aria-live="polite">{panelStatus}</p>
+          {/if}
         {:else if activePanel === 'about'}
           <h2>{t(uiMessages, 'about.title', {}, 'About')}</h2>
           <div class="about-list">

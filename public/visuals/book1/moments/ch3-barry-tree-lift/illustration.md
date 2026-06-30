@@ -1,4 +1,4 @@
-# Barry lifts the tree - Book 1 Moment Illustration
+# Barry faces the fallen tree tactic - Book 1 Moment Illustration
 
 Public manual prompt for ChatGPT Images. Attach the listed portraits before generating the moment illustration.
 
@@ -19,17 +19,20 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 ## Scene Facts
 
 - Setting: Damaged forest battle site with a large fallen tree, broken branches, torn ground and scattered leaves.
-- Action: Barry uses a stat-boosted burst of strength to lift or move a tree, visibly surprised by his own ability.
-- Materials and architecture: His stat device should be visible or implied as the source of the temporary boost; backpack remains ordinary and without crossbow.
+- Action: Barry stands beside the fallen tree during a tactical crisis, considering or attempting a desperate stat-boosted move without the image proving whether he succeeds.
+- Materials and architecture: Do not put Barry's stat device in his hand here; communicate the desperate stat-boost attempt through posture, strain and the fallen tree, while the backpack remains ordinary and without crossbow.
 - Unnamed figures: Optional blurred hostile figures at the edge, but the focus is Barry and the tree.
-- Composition: Wide low-angle 16:9, full-body Barry straining under the tree's scale, readable without making him look naturally superhuman.
-- Timeline overrides: Barry has no crossbow here; the feat should feel temporary and device-driven, not his normal heroic strength.
-- Avoid: No permanent muscle transformation, no superhero pose, no crossbow on Barry.
+- Composition: Wide low-angle 16:9, full-body Barry dwarfed by the tree's scale, readable without making him look naturally superhuman.
+- Timeline overrides: Barry has no crossbow here; any strength attempt should feel temporary and device-driven, not his normal heroic strength.
+- Path compatibility: This scene includes success, failure and not-trying variants, so do not show the tree already lifted high or the outcome resolved.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
+- Avoid: No permanent muscle transformation, no superhero pose, no crossbow on Barry, no guaranteed successful tree lift.
 
 ## Prompt ChatGPT
 
 ```text
-Create one Book 1 moment illustration for Magium: Barry lifts the tree.
+Create one Book 1 moment illustration for Magium: Barry faces the fallen tree tactic.
 
 Attached references:
 - `barry.webp` = Barry
@@ -37,14 +40,21 @@ Attached references:
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Barry has no crossbow here; the feat should feel temporary and device-driven, not his normal heroic strength.
+- Barry has no crossbow here; any strength attempt should feel temporary and device-driven, not his normal heroic strength.
+
+Path compatibility:
+- This scene includes success, failure and not-trying variants, so do not show the tree already lifted high or the outcome resolved.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 
 Scene design:
 - Setting: Damaged forest battle site with a large fallen tree, broken branches, torn ground and scattered leaves.
-- Action: Barry uses a stat-boosted burst of strength to lift or move a tree, visibly surprised by his own ability.
-- Materials/architecture: His stat device should be visible or implied as the source of the temporary boost; backpack remains ordinary and without crossbow.
+- Action: Barry stands beside the fallen tree during a tactical crisis, considering or attempting a desperate stat-boosted move without the image proving whether he succeeds.
+- Materials/architecture: Do not put Barry's stat device in his hand here; communicate the desperate stat-boost attempt through posture, strain and the fallen tree, while the backpack remains ordinary and without crossbow.
 - Unnamed/background figures: Optional blurred hostile figures at the edge, but the focus is Barry and the tree.
-- Composition: Wide low-angle 16:9, full-body Barry straining under the tree's scale, readable without making him look naturally superhuman.
+- Composition: Wide low-angle 16:9, full-body Barry dwarfed by the tree's scale, readable without making him look naturally superhuman.
 
 Visual direction:
 - grounded realistic fantasy adventure illustration
@@ -53,6 +63,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No permanent muscle transformation, no superhero pose, no crossbow on Barry.
+- No permanent muscle transformation, no superhero pose, no crossbow on Barry, no guaranteed successful tree lift.
 - no logo, no watermark, no readable text
 ```
