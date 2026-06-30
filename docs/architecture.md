@@ -20,7 +20,8 @@ Le systeme est decoupe en quatre couches :
    - moteur de scene ;
    - i18n ;
    - stockage chiffre ;
-   - UI PWA.
+   - UI PWA ;
+   - affichage optionnel des illustrations de chapitre Book 1.
 5. Image de production
    - build Vite sous Node/pnpm ;
    - copie de `dist/` seulement dans nginx unprivileged ;
@@ -52,6 +53,14 @@ content/story-locales/<locale>/*.json
   -> src/generated/packs/locales__<locale>__*.ts
   -> src/lib/content/packedContent.ts
   -> src/App.svelte
+
+content/canonical/v1/locales/en/ch*.json
+  -> tools/images/generate-prompts.mjs
+  -> public/visuals/book1/**/{portrait,illustration}.md
+  -> generation manuelle ChatGPT Images
+  -> public/visuals/book1/**/*.webp
+  -> src/lib/visuals/book1.ts
+  -> src/App.svelte
 ```
 
 ## Choix Techniques
@@ -62,6 +71,7 @@ content/story-locales/<locale>/*.json
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
 - Langue globale : le setting FR/EN met a jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
+- Images Book 1 : workflow manuel ChatGPT, sans RAG, sans embeddings et sans API OpenAI. Les prompts publics restent courts et paraphrases, les WebP finaux vivent sous `public/visuals/book1`.
 - Docker de production : le `Dockerfile` racine est compatible avec le build pack Dockerfile de Coolify via GitHub App. Le stage builder execute `pnpm build`, puis le stage runtime `nginxinc/nginx-unprivileged` ne contient que les assets publics de `dist/` et expose le port `8080`.
 
 ## Reperes De Code
@@ -79,12 +89,14 @@ content/story-locales/<locale>/*.json
 - Sauvegardes : `src/lib/storage/saves.ts`
 - Chiffrement : `src/lib/storage/crypto.ts`
 - Pipeline : `tools/content/*.mjs`
+- Pipeline images manuel : `tools/images/*.mjs`, `public/visuals/book1`
 - Docker production : `Dockerfile`, `docker/nginx.conf`, `tools/docker/build-prod-push.sh`
 
 ## Contrats Importants
 
 - `content/archive` et `content/canonical` ne sont pas des assets runtime.
 - `public/` ne doit contenir que des assets publics non sensibles.
+- Les prompts Markdown sous `public/visuals` sont publics : pas de longs extraits narratifs, pas de donnees sensibles, pas de cle API.
 - Le build ne doit pas exposer de fichier `.magium`.
 - L'app peut afficher les textes originaux, evidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement telechargeable.
 - Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.
