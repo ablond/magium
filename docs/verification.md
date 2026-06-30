@@ -3,6 +3,7 @@
 ## Suite Obligatoire
 
 ```bash
+pnpm images:check -- --book 1
 pnpm check
 pnpm test
 pnpm build
@@ -42,6 +43,12 @@ pnpm docker:push-prod
 - build Vite ;
 - lance `dist:check`.
 
+`pnpm images:check -- --book 1` :
+
+- verifie les prompts publics et les assets WebP Book 1 ;
+- refuse les marqueurs RAG, embeddings, `evidenceRefs`, `.magium` et copies longues du texte canonique ;
+- accepte les WebP manquants pendant la generation manuelle des images.
+
 `pnpm docker:build-prod` :
 
 - build l'image `ghcr.io/ablond/magium:<timestamp>` localement ;
@@ -72,6 +79,7 @@ Doit confirmer :
 - packs story FR du livre 1 (`locales/fr/ch1` à `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` generes et valides, avec achievements FR couverts pour le livre 1 ;
 - assignments canoniques en `mode: "set" | "add"` ;
 - aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
+- prompts images Book 1 publics courts sous `public/visuals/book1`, sans RAG, embeddings, `evidenceRefs`, `.magium` ou copie longue du texte canonique.
 
 Les nombres peuvent evoluer si `raduprv/Magium@main` change. Dans ce cas, adapter la doc seulement apres verification consciente.
 
@@ -100,14 +108,16 @@ Verifier :
 13. apres le passage original qui affecte `v_max_stat = 4`, le panneau affiche le max `4` ;
 14. les stats d'aura apparaissent apres l'introduction de `B3-Ch04a`, tandis que `Magical Power` et `Magical Knowledge` restent invisibles ;
 15. apres un choix menant a un test de stat, le resultat apparait avant le texte de scene, puis viennent le contenu et les prochains choix, avec succes/echec et niveau localises ;
-16. le panneau Paramètres contient la bascule globale FR/EN, thème, taille du texte, contraste et révélation de scène ;
-17. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
-18. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
-19. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
-20. export sans phrase de passe produit un `.magium-save` local-only qui est refuse proprement dans un autre stockage navigateur ;
-21. export avec phrase de passe produit un `.magium-save` portable ;
-22. import avec la meme phrase de passe restaure la progression si le `contentVersion` courant correspond ;
-23. mauvais mot de passe, fichier incompatible, `contentVersion` different, ou stat / `v_available_points` incoherent affichent une erreur claire dans le panneau et ne modifient pas la sauvegarde locale.
+16. le panneau Paramètres contient la bascule globale FR/EN, thème, taille du texte, contraste, révélation de scène et toggle Illustrations ;
+17. le toggle Illustrations masque/affiche l'image de chapitre sans changer la partie ;
+18. une image de chapitre absente ou non chargeable ne bloque pas la lecture ;
+19. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
+20. changer FR/EN ne reset pas la scene courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
+21. IndexedDB contient un objet `encrypted`, pas les variables en clair ;
+22. export sans phrase de passe produit un `.magium-save` local-only qui est refuse proprement dans un autre stockage navigateur ;
+23. export avec phrase de passe produit un `.magium-save` portable ;
+24. import avec la meme phrase de passe restaure la progression si le `contentVersion` courant correspond ;
+25. mauvais mot de passe, fichier incompatible, `contentVersion` different, ou stat / `v_available_points` incoherent affichent une erreur claire dans le panneau et ne modifient pas la sauvegarde locale.
 
 ## Exemple De Verification IndexedDB
 

@@ -109,6 +109,17 @@ Formulations déjà corrigées :
 - `before long` ne doit pas être traduit mécaniquement par `avant longtemps` ; préférer selon le contexte `bientôt`, `peu après` ou une reformulation qui garde le mouvement naturel de la phrase.
 - `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux` ou `Oh mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
 - `shut the world out` / `shut the whole world out` ne doivent pas devenir `fermer le monde` ; choisir selon le contexte `se couper du monde`, `se fermer aux autres` ou une reformulation équivalente.
+- `That's gonna happen` peut être sarcastique selon le contexte ; ne pas le traduire automatiquement par `Ça va sûrement arriver`, et préférer une réplique comme `Même pas en rêve` quand le personnage refuse clairement.
+- `take a deep breath and think...` ne doit pas devenir mécaniquement `prendre une inspiration avant de réfléchir` ; préférer `souffler/respirer un grand coup et réfléchir...` quand il s'agit de calmer une tension.
+- `I'm saying` / `I mean` ne doivent pas devenir mécaniquement `je dis que` quand ils servent seulement à préciser ou renforcer une idée ; reformuler l'insistance en français naturel.
+- `couldn't live with myself` / `could never live with myself` ne doivent pas devenir `vivre avec moi-même` ; préférer selon le ton `je ne me le pardonnerais jamais`, `je m'en voudrais toute ma vie` ou une reformulation équivalente.
+- `it turns out that...` ne doit pas devenir mécaniquement `il se révèle que...` ; préférer selon le contexte `on comprend alors que...`, `il devient clair que...`, `nous découvrons que...` ou une reformulation équivalente.
+- `all of your lives` ne doit pas devenir mécaniquement `toutes vos vies` quand il s'agit d'un groupe ; préférer selon le ton `vos vies à tous`, `que vous y laissiez tous la vie` ou une reformulation équivalente.
+- `remember correctly` ne doit pas devenir mécaniquement `se souvenir correctement` en dialogue ; préférer selon le contexte `c'est exact`, `tu as bonne mémoire`, `si je me souviens bien` ou une reformulation équivalente.
+- `actually` ne doit pas devenir mécaniquement `vraiment` quand il sert seulement à renforcer une surprise ou une incrédulité ; souvent, la structure française suffit, sinon préférer selon le registre `carrément`, `bel et bien`, `en fait` ou une reformulation équivalente.
+- `shake off` ne doit pas devenir mécaniquement `secouer` pour un effet, une peur, un sort ou une sensation ; préférer selon le contexte `se libérer de`, `se débarrasser de`, `surmonter`, `reprendre le dessus` ou une reformulation équivalente.
+- `wishful thinking` ne doit pas devenir mécaniquement `ressembler à du vœu pieux` ; préférer selon le contexte `relever du vœu pieux`, `prendre ses désirs pour des réalités` ou une reformulation équivalente.
+- `X upon X` ne doit pas devenir mécaniquement `X et encore X` ; préférer une intensification naturelle comme `de véritables montagnes de`, `une quantité impressionnante de`, `à perte de vue` ou une reformulation équivalente selon le contexte.
 
 ## Workflow Générique De Traduction D'un Chapitre
 

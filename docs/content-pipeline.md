@@ -13,6 +13,8 @@ Le pipeline produit :
 - des paquets runtime compresses et verifies ;
 - un index global du contenu.
 
+Les images Book 1 ne font pas partie de ce pipeline de contenu. Elles utilisent le workflow manuel documente dans `docs/manual-images.md` et les scripts `pnpm images:prompts -- --book 1` / `pnpm images:check -- --book 1`.
+
 ## Archive Brute
 
 Chemin :
