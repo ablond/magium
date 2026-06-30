@@ -13,6 +13,7 @@ dist-ssr
 .playwright-cli/
 output/playwright/
 output/visual/originals/
+output/visual/staging/
 coverage/
 *.magium-save
 *.local

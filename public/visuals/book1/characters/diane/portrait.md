@@ -48,5 +48,5 @@ Visual direction:
 - no bust portrait, no cropped portrait, no text, no logo, no watermark, no modern items unless explicitly listed above
 - prioritize canonical accuracy over extra ornament
 
-Use this as a stable reference portrait for later chapter illustrations.
+Use this as a stable reference portrait for later moment illustrations.
 ```

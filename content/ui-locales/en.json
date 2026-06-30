@@ -60,7 +60,7 @@
     "settings.highContrast": "High contrast",
     "settings.highContrastHelp": "Make text and controls stand out more strongly.",
     "settings.illustrations": "Illustrations",
-    "settings.illustrationsHelp": "Show chapter illustrations when they are available.",
+    "settings.illustrationsHelp": "Show moment illustrations after the matching scene when they are available.",
     "settings.language": "Language",
     "settings.languageEnglish": "English",
     "settings.languageFrench": "French",
@@ -79,6 +79,6 @@
     "status.imported": "Save imported and ready",
     "status.saved": "Saved {slotId}",
     "status.statsAllocated": "Stats updated",
-    "visual.chapterAlt": "Illustration for Book 1, Chapter {chapter}"
+    "visual.momentAlt": "Illustration for {title}"
   }
 }

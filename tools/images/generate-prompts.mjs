@@ -8,7 +8,7 @@ if (book !== "1") {
 } else {
   generateBook1Prompts()
     .then((result) => {
-      console.log(`Generated ${result.characters} character prompts and ${result.chapters} chapter prompts under ${result.visualRoot}`);
+      console.log(`Generated ${result.characters} character prompts and ${result.moments} moment prompts under ${result.visualRoot}`);
     })
     .catch((error) => {
       console.error(error);

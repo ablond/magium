@@ -22,8 +22,8 @@ Construire une PWA jouable de Magium a partir des textes originaux, avec :
 - Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis generes en packs runtime `locales/<locale>/ui`.
 - Les traductions narratives source sont dans `content/story-locales/<locale>/*.json`, puis generees en packs runtime `locales/<locale>/<bundle>`.
 - Le choix de langue Settings pilote `settings.uiLocale`, `settings.locale` et `GameState.locale`. Un chapitre absent dans la locale choisie retombe sur `en`.
-- Les images Book 1 sont un workflow manuel ChatGPT : prompts et WebP sous `public/visuals/book1`, sans RAG, sans embeddings et sans API OpenAI.
-- Le toggle Settings `settings.illustrations` affiche les illustrations de chapitre quand elles existent.
+- Les images Book 1 sont un workflow manuel ChatGPT : portraits, prompts de moments et WebP sous `public/visuals/book1`, sans RAG, sans embeddings et sans API OpenAI.
+- Le toggle Settings `settings.illustrations` affiche les illustrations de moments apres la scene declencheuse quand elles existent.
 - Les sauvegardes sont stockees dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
 - localStorage ne doit contenir que des preferences UI non critiques.
 
@@ -144,21 +144,22 @@ Ordre attendu :
    - ecrit des prompts Markdown courts sous `public/visuals/book1`.
 2. Relire/corriger les prompts publics.
 3. Generer les portraits dans ChatGPT Images, puis sauvegarder `portrait.webp`.
-4. Generer les illustrations de chapitre dans ChatGPT Images avec les portraits en references, puis sauvegarder `illustration.webp`.
-5. `pnpm images:check -- --book 1`
+4. Pour une illustration de moment, lancer `pnpm images:stage -- --book 1 --moment <moment-id>` ou `--chapter <chapter-id>`.
+5. Joindre dans ChatGPT les portraits renommes du dossier `output/visual/staging/book1/<moment-id>/references/`, coller `prompt.md`, puis sauvegarder `illustration.webp` sous `public/visuals/book1/moments/<moment-id>/`.
+6. `pnpm images:check -- --book 1`
    - verifie la structure publique ;
-   - refuse `evidenceRefs`, RAG, embeddings, marqueurs `.magium` et copies longues du texte canonique ;
+   - refuse `evidenceRefs`, RAG, embeddings, marqueurs `.magium`, anciens dossiers `chapters` et copies longues du texte canonique ;
    - accepte les WebP manquants pendant la production.
 
 Ne pas ajouter de cle API, generation image API, RAG, embeddings ou manifest genere pour ce workflow sans demande explicite.
 
-Pour enrichir les portraits, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps, Arraka est representee par l'amulette, Eleya est la renarde canonique, Taurus reste portrait-only tant qu'il n'est pas explicitement ajoute aux illustrations de chapitre.
+Pour enrichir les portraits ou moments, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Les moments doivent decrire lieu, architecture, materiaux, personnages anonymes, composition et continuite d'equipement. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps, Arraka est representee par l'amulette, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalete avant `Ch6-Packing`.
 
 ## Invariants Architecture
 
 - Le graphe logique ne doit pas dependre d'une langue.
 - Les images ne modifient pas le graphe logique, les sauvegardes ou le replay anti-triche.
-- Les illustrations de chapitre sont resolues par une map statique runtime et masquees si le WebP manque.
+- Les illustrations de moments sont resolues par une map statique `sceneId -> moment` et masquees si le WebP manque.
 - Les traductions futures ne doivent jamais modifier :
   - scene IDs ;
   - choice targets ;
@@ -219,7 +220,7 @@ Apres changement UI, verifier au moins :
 - panneau Stats avant/apres revelation, allocation, max 3 puis 4, stats aura ;
 - panneau achievements ;
 - panneau settings/about ;
-- toggle Illustrations et image de chapitre presente/absente ;
+- toggle Illustrations et image de moment presente/absente ;
 - bascule de langue FR/EN sans reset de partie, avec récit et stats traduits quand le pack existe.
 
 ## Pieges Connus

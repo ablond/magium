@@ -21,7 +21,7 @@ Le systeme est decoupe en quatre couches :
    - i18n ;
    - stockage chiffre ;
    - UI PWA ;
-   - affichage optionnel des illustrations de chapitre Book 1.
+   - affichage optionnel des illustrations de moments Book 1.
 5. Image de production
    - build Vite sous Node/pnpm ;
    - copie de `dist/` seulement dans nginx unprivileged ;
@@ -54,9 +54,11 @@ content/story-locales/<locale>/*.json
   -> src/lib/content/packedContent.ts
   -> src/App.svelte
 
-content/canonical/v1/locales/en/ch*.json
+content/canonical/v1/{locales/en,story}/ch*.json
   -> tools/images/generate-prompts.mjs
   -> public/visuals/book1/**/{portrait,illustration}.md
+  -> tools/images/stage-chatgpt.mjs
+  -> output/visual/staging/book1/<moment-id>/
   -> generation manuelle ChatGPT Images
   -> public/visuals/book1/**/*.webp
   -> src/lib/visuals/book1.ts
@@ -71,7 +73,7 @@ content/canonical/v1/locales/en/ch*.json
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
 - Langue globale : le setting FR/EN met a jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
-- Images Book 1 : workflow manuel ChatGPT, sans RAG, sans embeddings et sans API OpenAI. Les prompts publics restent courts et paraphrases, les WebP finaux vivent sous `public/visuals/book1`.
+- Images Book 1 : workflow manuel ChatGPT, sans RAG, sans embeddings et sans API OpenAI. Les prompts publics restent courts et paraphrases, les portraits vivent sous `public/visuals/book1/characters` et les illustrations affichables sous `public/visuals/book1/moments`.
 - Docker de production : le `Dockerfile` racine est compatible avec le build pack Dockerfile de Coolify via GitHub App. Le stage builder execute `pnpm build`, puis le stage runtime `nginxinc/nginx-unprivileged` ne contient que les assets publics de `dist/` et expose le port `8080`.
 
 ## Reperes De Code
