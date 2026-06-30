@@ -107,6 +107,8 @@ Formulations déjà corrigées :
 - `custom-made slide` dans cette même scène devient `la rampe faite sur mesure`, pas `le toboggan fabriqué sur mesure`.
 - `I think I'm starting to root for you!` se rend ici par `Je crois que je commence à être de votre côté !`, pas par `Je crois que je commence à vous soutenir !`.
 - `before long` ne doit pas être traduit mécaniquement par `avant longtemps` ; préférer selon le contexte `bientôt`, `peu après` ou une reformulation qui garde le mouvement naturel de la phrase.
+- `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux` ou `Oh mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
+- `shut the world out` / `shut the whole world out` ne doivent pas devenir `fermer le monde` ; choisir selon le contexte `se couper du monde`, `se fermer aux autres` ou une reformulation équivalente.
 
 ## Workflow Générique De Traduction D'un Chapitre
 
@@ -155,7 +157,7 @@ QA éditoriale obligatoire :
 - scanner les restes anglais évidents, les guillemets droits, les guillemets français déséquilibrés, les incises mal ponctuées, les doubles espaces et les espaces parasites ;
 - scanner les incises de dialogue calquées, notamment `», je dis`, `», je lui dis`, `», je dis à`, `», je demande`, `», je lui demande`, `», je demande à`, `», je continue`, puis corriger seulement les vrais cas d'incise ;
 - scanner les termes interdits ou instables : `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, unités impériales non naturalisées ;
-- scanner les formulations corrigées du livre 1 quand le contexte est le même : `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir` ;
+- scanner les formulations corrigées du livre 1 quand le contexte est le même : `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux` ;
 - vérifier les noms propres anglais conservés, notamment les continents, personnages, lieux, races et titres déjà stabilisés ;
 - relire au minimum le début du chapitre, une scène longue, une scène à choix, une scène avec personnages clés, une scène de tension ou de combat, et la fin ou les branches alternatives ;
 - corriger les passages trop littéraux, trop soutenus ou trop neutres pour garder Barry direct, oral, introspectif et légèrement ironique ;
