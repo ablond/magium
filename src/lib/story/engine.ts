@@ -175,6 +175,58 @@ export async function applyStatAllocation(state: GameState, deltas: StatAllocati
   return next
 }
 
+export function debugJumpToScene(context: StoryContext, state: GameState, sceneId: string): GameState {
+  const next = markDebugState(state, `Jumped to ${sceneId}`)
+  next.currentSceneId = sceneId
+  next.variables.v_current_scene = sceneId
+  return enterCurrentScene(context, next)
+}
+
+export function debugApplyChoice(context: StoryContext, state: GameState, choice: Choice): GameState {
+  if (choice.special === 'restart') {
+    return enterCurrentScene(
+      context,
+      markDebugState(
+        createInitialState(state.contentVersion, state.locale, state.slotId),
+        `Applied restart choice ${choice.id}`,
+      ),
+    )
+  }
+
+  const next = markDebugState(state, `Applied choice ${choice.id}`)
+  for (const assignment of choice.setVariables) {
+    applyVariableAssignment(next.variables, assignment)
+  }
+
+  if (choice.target) {
+    next.currentSceneId = choice.target
+    next.variables.v_current_scene = choice.target
+  }
+
+  if (choice.special === 'checkpoint_save') {
+    next.checkpoint = snapshotCheckpoint(next)
+  }
+
+  return choice.target ? enterCurrentScene(context, next) : next
+}
+
+export function debugSetVariable(
+  state: GameState,
+  variable: string,
+  value: PrimitiveValue,
+  lastAction = `Set ${variable}`,
+): GameState {
+  const next = markDebugState(state, lastAction)
+  next.variables[variable] = value
+  return next
+}
+
+export function debugDeleteVariable(state: GameState, variable: string): GameState {
+  const next = markDebugState(state, `Deleted ${variable}`)
+  delete next.variables[variable]
+  return next
+}
+
 export function restoreCheckpoint(context: StoryContext, state: GameState): GameState {
   if (!state.checkpoint) {
     return state
@@ -266,6 +318,19 @@ function snapshotCheckpoint(state: GameState) {
   }
 }
 
+function markDebugState(state: GameState, lastAction: string): GameState {
+  const now = new Date().toISOString()
+  return {
+    ...cloneState(state),
+    debug: {
+      dirty: true,
+      lastAction,
+      updatedAt: now,
+    },
+    updatedAt: now,
+  }
+}
+
 function cloneState(state: GameState): GameState {
   return {
     ...state,
@@ -279,6 +344,7 @@ function cloneState(state: GameState): GameState {
       historyDigest: state.checkpoint.historyDigest,
     } : null,
     history: state.history.map(cloneHistoryEvent),
+    debug: state.debug ? { ...state.debug } : undefined,
   }
 }
 

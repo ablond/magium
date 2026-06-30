@@ -20,23 +20,24 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Rose: `public/visuals/book1/characters/rose/portrait.webp` as `rose.webp`
 - Hadrik: `public/visuals/book1/characters/hadrik/portrait.webp` as `hadrik.webp`
 - Flower: `public/visuals/book1/characters/flower/portrait.webp` as `flower.webp`
-- Illuna (aka Petal): `public/visuals/book1/characters/illuna/portrait.webp` as `illuna.webp`
 - Eleya, the golden fox: `public/visuals/book1/characters/eleya/portrait.webp` as `eleya.webp`
-- Arraka: `public/visuals/book1/characters/arraka/portrait.webp` as `arraka.webp`
+- Leo: `public/visuals/book1/characters/leo/portrait.webp` as `leo.webp`
 
 ## Scene Facts
 
 - Setting: Large ancient control room, stone and strange machinery, levers, buttons, inscriptions and bright golden magical effects.
-- Action: Flower/Illuna's shared body stops in the control room as ancient systems and Eleya's power converge.
-- Materials and architecture: Show only one little girl's body for Flower/Illuna, with the current state defined by expression and eye color.
+- Action: Flower stops at the corridor exit as the party enters the bright control room where Eleya the golden fox and Leo the leopard are waiting.
+- Materials and architecture: Show only Flower's little-girl body here; do not switch her to Illuna's blue-eyed state unless the scene specifically asks for Illuna.
 - Materials and architecture: Arraka remains represented through the golden amulet, not a separate person.
 - Unnamed figures: Ancient mechanisms, levers and control surfaces with no readable text.
-- Composition: 16:9 architectural scene, control room depth and golden cage/control magic as focal environment.
-- Timeline overrides: Use Flower and Illuna portraits as alternate states of the same body, never as two visible girls.
+- Composition: 16:9 architectural scene, control room depth, Eleya's overwhelming golden aura and the later golden cage/control magic as focal environment.
+- Timeline overrides: Flower is the visible state of the shared body here; never show Flower and Illuna as two visible girls.
+- Path compatibility: Earlier talk choices change context, so focus on the shared control room, Eleya, Leo, single shared body, amulet and golden control magic rather than a specific line of dialogue.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Avoid: No sci-fi spaceship bridge, no readable inscriptions, no duplicate Flower/Illuna bodies.
 - Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
-- Special: Use Flower and Illuna portraits as alternate expression and eye-state references for the same body, not as two separate character references.
-- Special: Arraka is represented through the golden amulet or its aura unless the scene explicitly says otherwise.
+- Special: Arraka is represented through Flower/Illuna's golden amulet or its aura, never as a separate visible body.
 
 ## Prompt ChatGPT
 
@@ -50,25 +51,30 @@ Attached references:
 - `rose.webp` = Rose
 - `hadrik.webp` = Hadrik
 - `flower.webp` = Flower
-- `illuna.webp` = Illuna (aka Petal)
 - `eleya.webp` = Eleya, the golden fox
-- `arraka.webp` = Arraka
+- `leo.webp` = Leo
 
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Use Flower and Illuna portraits as alternate states of the same body, never as two visible girls.
+- Flower is the visible state of the shared body here; never show Flower and Illuna as two visible girls.
+
+Path compatibility:
+- Earlier talk choices change context, so focus on the shared control room, Eleya, Leo, single shared body, amulet and golden control magic rather than a specific line of dialogue.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 - Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
-- Use Flower and Illuna portraits as alternate expression and eye-state references for the same body, not as two separate character references.
-- Arraka is represented through the golden amulet or its aura unless the scene explicitly says otherwise.
+- Arraka is represented through Flower/Illuna's golden amulet or its aura, never as a separate visible body.
 
 Scene design:
 - Setting: Large ancient control room, stone and strange machinery, levers, buttons, inscriptions and bright golden magical effects.
-- Action: Flower/Illuna's shared body stops in the control room as ancient systems and Eleya's power converge.
-- Materials/architecture: Show only one little girl's body for Flower/Illuna, with the current state defined by expression and eye color.
+- Action: Flower stops at the corridor exit as the party enters the bright control room where Eleya the golden fox and Leo the leopard are waiting.
+- Materials/architecture: Show only Flower's little-girl body here; do not switch her to Illuna's blue-eyed state unless the scene specifically asks for Illuna.
 - Materials/architecture: Arraka remains represented through the golden amulet, not a separate person.
 - Unnamed/background figures: Ancient mechanisms, levers and control surfaces with no readable text.
-- Composition: 16:9 architectural scene, control room depth and golden cage/control magic as focal environment.
+- Composition: 16:9 architectural scene, control room depth, Eleya's overwhelming golden aura and the later golden cage/control magic as focal environment.
 
 Visual direction:
 - grounded realistic fantasy adventure illustration

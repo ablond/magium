@@ -19,18 +19,19 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Kate: `public/visuals/book1/characters/kate/portrait.webp` as `kate.webp`
 - Rose: `public/visuals/book1/characters/rose/portrait.webp` as `rose.webp`
 - Hadrik: `public/visuals/book1/characters/hadrik/portrait.webp` as `hadrik.webp`
-- Flower: `public/visuals/book1/characters/flower/portrait.webp` as `flower.webp`
 
 ## Scene Facts
 
-- Setting: Ancient trap room with stone floor, mechanical or magical ruin elements, damp shadows and monster scale.
-- Action: A hydra blocks or attacks the party in the ruins; Flower's agility and the party's formation matter.
+- Setting: Ancient trap room with stone floor, ruin mechanisms, a hole in the roof or upper opening, and enough scale for the hydra threat.
+- Action: A hydra blocks or attacks the party in the ruins while Daren calls for Flower through the roof opening, but she is not visible in the room.
 - Materials and architecture: Hydra should be multi-headed, reptilian and dangerous, with no humanoid traits.
 - Unnamed figures: Hydra as unnamed monster, ancient trap mechanisms.
 - Composition: 16:9 action scene with hydra heads framing the party, readable scale and architecture.
 - Timeline overrides: Barry can have crossbow on backpack, but not a superhero archer stance.
-- Avoid: No dragon confusion with Tyrath, no gore, no cartoon hydra.
-- Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
+- Path compatibility: The hearing stat changes the available response, so show the hydra threat and room layout without implying whether Barry heard the key detail.
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
+- Avoid: No visible Flower in the room, no dragon confusion with Tyrath, no gore, no cartoon hydra.
 
 ## Prompt ChatGPT
 
@@ -43,17 +44,22 @@ Attached references:
 - `kate.webp` = Kate
 - `rose.webp` = Rose
 - `hadrik.webp` = Hadrik
-- `flower.webp` = Flower
 
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
 - Barry can have crossbow on backpack, but not a superhero archer stance.
-- Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
+
+Path compatibility:
+- The hearing stat changes the available response, so show the hydra threat and room layout without implying whether Barry heard the key detail.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
 
 Scene design:
-- Setting: Ancient trap room with stone floor, mechanical or magical ruin elements, damp shadows and monster scale.
-- Action: A hydra blocks or attacks the party in the ruins; Flower's agility and the party's formation matter.
+- Setting: Ancient trap room with stone floor, ruin mechanisms, a hole in the roof or upper opening, and enough scale for the hydra threat.
+- Action: A hydra blocks or attacks the party in the ruins while Daren calls for Flower through the roof opening, but she is not visible in the room.
 - Materials/architecture: Hydra should be multi-headed, reptilian and dangerous, with no humanoid traits.
 - Unnamed/background figures: Hydra as unnamed monster, ancient trap mechanisms.
 - Composition: 16:9 action scene with hydra heads framing the party, readable scale and architecture.
@@ -65,6 +71,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No dragon confusion with Tyrath, no gore, no cartoon hydra.
+- No visible Flower in the room, no dragon confusion with Tyrath, no gore, no cartoon hydra.
 - no logo, no watermark, no readable text
 ```

@@ -25,6 +25,7 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Unnamed figures: Optional cutthroat silhouettes behind Dave, rough and poorly coordinated.
 - Composition: 16:9 standoff with Dave aggressive in foreground and Eiden calm as the impossible focal point.
 - Timeline overrides: none
+- Path compatibility: none
 - Avoid: No open-eyed Eiden, no armor on Eiden, no noble assassin styling for Dave, no gore.
 
 ## Prompt ChatGPT

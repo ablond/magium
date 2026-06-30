@@ -29,8 +29,11 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Materials and architecture: Screens should be fantasy-mechanical or magical projection devices, with no readable text.
 - Unnamed figures: Civilians and tournament participants watching the announcement.
 - Composition: 16:9 aftermath announcement, party foreground looking up, Golmyck's projected face or figure on screens.
-- Timeline overrides: Barry has crossbow on backpack; Flower/Illuna body should use the currently relevant expression only.
-- Avoid: No modern LED billboard, no readable subtitles, no clean futuristic city.
+- Timeline overrides: Barry left his backpack behind before this city ambush; Flower/Illuna body should use the currently relevant expression only.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
+- Avoid: No modern LED billboard, no readable subtitles, no clean futuristic city, no backpack or crossbow on Barry.
 - Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 ## Prompt ChatGPT
@@ -50,7 +53,11 @@ Attached references:
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Barry has crossbow on backpack; Flower/Illuna body should use the currently relevant expression only.
+- Barry left his backpack behind before this city ambush; Flower/Illuna body should use the currently relevant expression only.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
 - Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 Scene design:
@@ -67,6 +74,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No modern LED billboard, no readable subtitles, no clean futuristic city.
+- No modern LED billboard, no readable subtitles, no clean futuristic city, no backpack or crossbow on Barry.
 - no logo, no watermark, no readable text
 ```

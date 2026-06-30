@@ -18,19 +18,21 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Daren: `public/visuals/book1/characters/daren/portrait.webp` as `daren.webp`
 - Kate: `public/visuals/book1/characters/kate/portrait.webp` as `kate.webp`
 - Hadrik: `public/visuals/book1/characters/hadrik/portrait.webp` as `hadrik.webp`
-- Arraka: `public/visuals/book1/characters/arraka/portrait.webp` as `arraka.webp`
 - Zack: `public/visuals/book1/characters/zack/portrait.webp` as `zack.webp`
 
 ## Scene Facts
 
 - Setting: Thilias battle space with cracked pavement, market debris and dark necromantic pressure.
 - Action: A skeletal dragon or death-magic monster becomes the central threat while the party braces.
-- Materials and architecture: Monster should be skeletal and necromantic, distinct from living Tyrath; Arraka remains amulet-based if present.
+- Materials and architecture: Monster should be skeletal and necromantic, distinct from living Tyrath; do not add a separate Arraka body.
 - Unnamed figures: Skeletal dragon/death monster and fleeing civilians in distance.
 - Composition: 16:9 large-monster battle scene, skeletal form towering over grounded party.
-- Timeline overrides: Barry has crossbow on backpack but remains vulnerable.
-- Avoid: Do not reuse Tyrath as a living dragon, no excessive gore, no cartoon skeleton.
-- Special: Arraka is represented through the golden amulet or its aura unless the scene explicitly says otherwise.
+- Timeline overrides: Barry left his backpack behind before this city ambush; he remains vulnerable without backpack or crossbow.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
+- Avoid: Do not reuse Tyrath as a living dragon, no excessive gore, no cartoon skeleton, no backpack or crossbow on Barry.
+- Special: Arraka is represented through Flower/Illuna's golden amulet or its aura, never as a separate visible body.
 
 ## Prompt ChatGPT
 
@@ -42,19 +44,22 @@ Attached references:
 - `daren.webp` = Daren
 - `kate.webp` = Kate
 - `hadrik.webp` = Hadrik
-- `arraka.webp` = Arraka
 - `zack.webp` = Zack
 
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Barry has crossbow on backpack but remains vulnerable.
-- Arraka is represented through the golden amulet or its aura unless the scene explicitly says otherwise.
+- Barry left his backpack behind before this city ambush; he remains vulnerable without backpack or crossbow.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
+- Arraka is represented through Flower/Illuna's golden amulet or its aura, never as a separate visible body.
 
 Scene design:
 - Setting: Thilias battle space with cracked pavement, market debris and dark necromantic pressure.
 - Action: A skeletal dragon or death-magic monster becomes the central threat while the party braces.
-- Materials/architecture: Monster should be skeletal and necromantic, distinct from living Tyrath; Arraka remains amulet-based if present.
+- Materials/architecture: Monster should be skeletal and necromantic, distinct from living Tyrath; do not add a separate Arraka body.
 - Unnamed/background figures: Skeletal dragon/death monster and fleeing civilians in distance.
 - Composition: 16:9 large-monster battle scene, skeletal form towering over grounded party.
 
@@ -65,6 +70,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- Do not reuse Tyrath as a living dragon, no excessive gore, no cartoon skeleton.
+- Do not reuse Tyrath as a living dragon, no excessive gore, no cartoon skeleton, no backpack or crossbow on Barry.
 - no logo, no watermark, no readable text
 ```

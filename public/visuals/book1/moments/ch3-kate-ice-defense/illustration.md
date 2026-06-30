@@ -20,12 +20,15 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 
 ## Scene Facts
 
-- Setting: Same forest battle zone, now transformed by frost, ice shards and cold mist.
+- Setting: Same forest battle zone with smoke from the ambush and precise ice magic cutting through the trees.
 - Action: Kate uses controlled ice magic to stop the ambush while Barry and Daren reposition.
 - Materials and architecture: Ice hands, ice barriers or floating ice weapons should feel precise and lethal, not decorative.
 - Unnamed figures: Retreating or trapped crossbowmen in the background, partially obscured by ice and trees.
 - Composition: Kate foreground focal point, Barry and Daren secondary, 16:9 with clear ice silhouette.
 - Timeline overrides: Barry still has no crossbow.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
 - Avoid: No fire magic, no glittery fairy ice, no crossbow on Barry.
 
 ## Prompt ChatGPT
@@ -43,8 +46,12 @@ Use the attached references for stable identity, species, body shape, clothing a
 Scene-specific overrides:
 - Barry still has no crossbow.
 
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry's backpack is not enchanted yet for this visual moment; show a plain weathered travel backpack with no magical glow, no magical seams and no inventory screen.
+
 Scene design:
-- Setting: Same forest battle zone, now transformed by frost, ice shards and cold mist.
+- Setting: Same forest battle zone with smoke from the ambush and precise ice magic cutting through the trees.
 - Action: Kate uses controlled ice magic to stop the ambush while Barry and Daren reposition.
 - Materials/architecture: Ice hands, ice barriers or floating ice weapons should feel precise and lethal, not decorative.
 - Unnamed/background figures: Retreating or trapped crossbowmen in the background, partially obscured by ice and trees.

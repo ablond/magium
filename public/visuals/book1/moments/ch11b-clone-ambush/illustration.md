@@ -29,8 +29,11 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 - Materials and architecture: Clones should look uncanny through repeated silhouettes, not sci-fi holograms.
 - Unnamed figures: Duplicate attackers or illusion figures, background civilians retreating.
 - Composition: 16:9 confusion scene, repeated forms and party reactions readable.
-- Timeline overrides: Barry has crossbow on backpack.
-- Avoid: No neon sci-fi clones, no gore, no unreadable crowd.
+- Timeline overrides: Barry left his backpack behind before this city ambush; no backpack or crossbow on him.
+- Path compatibility: none
+- Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry equipment continuity: Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
+- Avoid: No neon sci-fi clones, no gore, no unreadable crowd, no backpack or crossbow on Barry.
 - Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 ## Prompt ChatGPT
@@ -50,7 +53,11 @@ Attached references:
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Barry has crossbow on backpack.
+- Barry left his backpack behind before this city ambush; no backpack or crossbow on him.
+
+Barry equipment continuity:
+- Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
+- Barry is not carrying his backpack in this city sequence; do not show his backpack, crossbow, backpack glow or backpack inventory screen at all.
 - Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 Scene design:
@@ -67,6 +74,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No neon sci-fi clones, no gore, no unreadable crowd.
+- No neon sci-fi clones, no gore, no unreadable crowd, no backpack or crossbow on Barry.
 - no logo, no watermark, no readable text
 ```

@@ -22,8 +22,9 @@ Construire une PWA jouable de Magium a partir des textes originaux, avec :
 - Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis generes en packs runtime `locales/<locale>/ui`.
 - Les traductions narratives source sont dans `content/story-locales/<locale>/*.json`, puis generees en packs runtime `locales/<locale>/<bundle>`.
 - Le choix de langue Settings pilote `settings.uiLocale`, `settings.locale` et `GameState.locale`. Un chapitre absent dans la locale choisie retombe sur `en`.
-- Les images Book 1 sont un workflow manuel ChatGPT : portraits, prompts de moments et WebP sous `public/visuals/book1`, sans RAG, sans embeddings et sans API OpenAI.
+- Les images Book 1 ont un workflow principal manuel ChatGPT : portraits, prompts de moments et WebP sous `public/visuals/book1`, sans RAG ni embeddings. Un chemin API OpenAI optionnel existe uniquement pour finir les illustrations manquantes via planches de references locales et Batch API.
 - Le toggle Settings `settings.illustrations` affiche les illustrations de moments apres la scene declencheuse quand elles existent.
+- Le panneau Debug existe uniquement sous `pnpm dev` / `import.meta.env.DEV` pour explorer scenes, choix, stats et variables. Un etat marque `debug.dirty` peut etre sauvegarde localement, mais ne doit jamais etre exportable en `.magium-save`.
 - Les sauvegardes sont stockees dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
 - localStorage ne doit contenir que des preferences UI non critiques.
 
@@ -102,7 +103,7 @@ pnpm content:all
 
 Exceptions source : `content/ui-locales/*.json` et `content/story-locales/**/*.json` sont editables a la main. Les copies sous `content/canonical/v1/locales/**` et les packs sous `src/generated` restent generes.
 
-Exception images : `public/visuals/book1/**/portrait.md` et `public/visuals/book1/**/illustration.md` sont generes par `pnpm images:prompts -- --book 1`, puis peuvent etre ajustes manuellement. Les fichiers WebP correspondants sont ajoutes manuellement apres generation dans ChatGPT Images.
+Exception images : `public/visuals/book1/**/portrait.md` et `public/visuals/book1/**/illustration.md` sont generes par `pnpm images:prompts -- --book 1`, puis peuvent etre ajustes manuellement. Les fichiers WebP correspondants sont ajoutes manuellement apres generation dans ChatGPT Images, ou ponctuellement via le chemin API optionnel documente dans `docs/manual-images.md`.
 
 ## Packaging Docker Et Coolify
 
@@ -144,16 +145,18 @@ Ordre attendu :
    - ecrit des prompts Markdown courts sous `public/visuals/book1`.
 2. Relire/corriger les prompts publics.
 3. Generer les portraits dans ChatGPT Images, puis sauvegarder `portrait.webp`.
-4. Pour une illustration de moment, lancer `pnpm images:stage -- --book 1 --moment <moment-id>` ou `--chapter <chapter-id>`.
+4. Pour preparer les dossiers ChatGPT, lancer `pnpm images:stage -- --book 1`. La commande stage tous les moments Book 1 par defaut ; utiliser `--moment <moment-id>` ou `--chapter <chapter-id>` pour limiter le scope.
 5. Joindre dans ChatGPT les portraits renommes du dossier `output/visual/staging/book1/<moment-id>/references/`, coller `prompt.md`, puis sauvegarder `illustration.webp` sous `public/visuals/book1/moments/<moment-id>/`.
-6. `pnpm images:check -- --book 1`
+6. Si des PNG/JPG ont ete ajoutes depuis ChatGPT, lancer `pnpm images:normalize -- --book 1` pour creer les `illustration.webp` et archiver les originaux.
+7. Pour le chemin API optionnel : `pnpm images:refsheets -- --book 1 --missing`, puis `OPENAI_API_KEY=... pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`. Recuperer ensuite le batch avec la commande `--retrieve` affichee par le script.
+8. `pnpm images:check -- --book 1`
    - verifie la structure publique ;
    - refuse `evidenceRefs`, RAG, embeddings, marqueurs `.magium`, anciens dossiers `chapters` et copies longues du texte canonique ;
    - accepte les WebP manquants pendant la production.
 
-Ne pas ajouter de cle API, generation image API, RAG, embeddings ou manifest genere pour ce workflow sans demande explicite.
+Ne pas ajouter de RAG ni embeddings. Ne jamais committer de cle API ; `OPENAI_API_KEY` doit rester dans l'environnement local. Les manifests et planches API sous `output/visual/api-inputs/` et `output/visual/api-runs/` sont locaux et ignores par Git.
 
-Pour enrichir les portraits ou moments, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Les moments doivent decrire lieu, architecture, materiaux, personnages anonymes, composition et continuite d'equipement. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps, Arraka est representee par l'amulette, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalete avant `Ch6-Packing`.
+Pour enrichir les portraits ou moments, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Les moments doivent decrire lieu, architecture, materiaux, personnages anonymes, composition, continuite d'equipement et compatibilite multi-chemins quand la scene contient des conditions. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps mais ne doivent jamais etre attaches ensemble a un meme moment, Arraka est representee par l'amulette/aura et jamais attachee comme personnage de moment, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalete avant `Ch6-Packing`, son stat device doit etre explicitement en main ou cache dans chaque moment, son sac reste ordinaire avant l'enchantement de Daren et ne montre glow/inventaire que sur demande, Barry part sans sac pour `ch11a-beggars-district-trap` et `ch11b-*`, Daren est visible et affaibli dans `ch1-cutthroat-dave`, et aucun portrait ne doit etre attache a un moment si le personnage n'est pas visible dans son `triggerSceneId`.
 
 ## Invariants Architecture
 
@@ -220,6 +223,7 @@ Apres changement UI, verifier au moins :
 - panneau Stats avant/apres revelation, allocation, max 3 puis 4, stats aura ;
 - panneau achievements ;
 - panneau settings/about ;
+- panneau Debug visible en dev seulement, absent du build prod, avec jump de scene, choix caches, edition stats/variables, undo/redo et export bloque apres modification debug ;
 - toggle Illustrations et image de moment presente/absente ;
 - bascule de langue FR/EN sans reset de partie, avec récit et stats traduits quand le pack existe.
 
