@@ -109,7 +109,8 @@ Formulations déjà corrigées :
 - `custom-made slide` dans cette même scène devient `la rampe faite sur mesure`, pas `le toboggan fabriqué sur mesure`.
 - `I think I'm starting to root for you!` se rend ici par `Je crois que je commence à être de votre côté !`, pas par `Je crois que je commence à vous soutenir !`.
 - `before long` ne doit pas être traduit mécaniquement par `avant longtemps` ; préférer selon le contexte `bientôt`, `peu après` ou une reformulation qui garde le mouvement naturel de la phrase.
-- `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux` ou `Oh mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
+- `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux`, `Oh mes dieux` ou `Mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
+- Quand `sir` est utilisé par un personnage traumatisé comme réflexe de servitude envers toute figure d'autorité, éviter le `monsieur` genré mécanique ; préférer `maître` pour conserver l'effet de soumission, même face à une femme ou un enfant.
 - `shut the world out` / `shut the whole world out` ne doivent pas devenir `fermer le monde` ; choisir selon le contexte `se couper du monde`, `se fermer aux autres` ou une reformulation équivalente.
 - `That's gonna happen` peut être sarcastique selon le contexte ; ne pas le traduire automatiquement par `Ça va sûrement arriver`, et préférer une réplique comme `Même pas en rêve` quand le personnage refuse clairement.
 - `take a deep breath and think...` ne doit pas devenir mécaniquement `prendre une inspiration avant de réfléchir` ; préférer `souffler/respirer un grand coup et réfléchir...` quand il s'agit de calmer une tension.
