@@ -1,6 +1,6 @@
 {
-  "formatVersion": 2,
-  "contentVersion": "0f472bc7193c-v2",
+  "formatVersion": 3,
+  "contentVersion": "0f472bc7193c-v3",
   "sourceCommit": "0f472bc7193c60bb29ccb1efb7425df8b8defcbe",
   "defaultLocale": "en",
   "initialSceneId": "Ch1-Intro1",
@@ -335,7 +335,7 @@
       "id": "ch11b",
       "key": "b1ch11b",
       "sourceFile": "chapters/ch11b.magium",
-      "sceneCount": 34
+      "sceneCount": 33
     }
   ],
   "sceneToChapter": {
@@ -2496,7 +2496,6 @@
     "Ch11b-Spin": "ch11b",
     "Ch11b-Hole": "ch11b",
     "Ch11b-Revenant": "ch11b",
-    "Ch11b-Ending": "ch11b",
-    "Ch11b-Credits": "ch11b"
+    "Ch11b-Ending": "ch11b"
   }
 }

@@ -25,6 +25,15 @@ describe("magium parser", () => {
     });
   });
 
+  it("parses empty-target checkpoint load choices", () => {
+    const choice = parseChoiceLine('choice("Load from last checkpoint", , v_chapter_save_counter = 5, special:checkpoint_load)');
+
+    expect(choice.text).toBe("Load from last checkpoint");
+    expect(choice.target).toBe("");
+    expect(choice.setVariables).toEqual([{ variable: "v_chapter_save_counter", mode: "set", value: 5 }]);
+    expect(choice.special).toBe("checkpoint_load");
+  });
+
   it("does not treat quoted ') if' text as a choice condition", () => {
     const choice = parseChoiceLine('choice("What happens ) if I ask?", Ch1-Intro2, v_current_scene = Ch1-Intro2)');
 

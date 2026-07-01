@@ -9,6 +9,21 @@ async function readJson(relativePath) {
   return JSON.parse(await fs.readFile(path.join(root, relativePath), "utf8"));
 }
 
+async function readBook1AchievementKeys() {
+  const currentArchive = await readJson("content/archive/original/current.json");
+  const achievements = await readJson(`${currentArchive.archivePath}/chapters/achievements1.json`);
+  const keys = new Set();
+
+  for (const chapterAchievements of Object.values(achievements)) {
+    for (const achievement of chapterAchievements) {
+      keys.add(`achievement.${achievement.variable}.caption`);
+      keys.add(`achievement.${achievement.variable}.title`);
+    }
+  }
+
+  return [...keys].sort();
+}
+
 describe("generated content i18n", () => {
   it("generates French chapter locales with full key coverage", async () => {
     const index = await readJson("content/canonical/v1/index.json");
@@ -26,6 +41,32 @@ describe("generated content i18n", () => {
     }
   });
 
+  it("prunes the obsolete Book 1 credits gate from runtime content", async () => {
+    const index = await readJson("content/canonical/v1/index.json");
+    const story = await readJson("content/canonical/v1/story/ch11b.json");
+    const en = await readJson("content/canonical/v1/locales/en/ch11b.json");
+    const fr = await readJson("content/canonical/v1/locales/fr/ch11b.json");
+    const endingChoice = story.scenes["Ch11b-Ending"].choices[0];
+
+    expect(index.sceneToChapter["Ch11b-Credits"]).toBeUndefined();
+    expect(story.sceneOrder).not.toContain("Ch11b-Credits");
+    expect(story.scenes["Ch11b-Credits"]).toBeUndefined();
+    expect(Object.keys(en.messages).some((key) => key.includes("Ch11b_Credits"))).toBe(false);
+    expect(Object.keys(fr.messages).some((key) => key.includes("Ch11b_Credits"))).toBe(false);
+
+    expect(story.scenes["Ch11b-Ending"].choices).toHaveLength(1);
+    expect(en.messages["ch11b.Ch11b_Ending.c1"]).toBe("Proceed to book 2");
+    expect(fr.messages["ch11b.Ch11b_Ending.c1"]).toBe("Continuer vers le livre 2");
+    expect(endingChoice.target).toBe("B2-Ch01a-Intro");
+    expect(endingChoice.special).toBe("checkpoint_save");
+    expect(endingChoice.setVariables).toEqual([
+      { variable: "v_b1_saved_stats", mode: "set", value: 1 },
+      { variable: "v_current_scene", mode: "set", value: "B2-Ch01a-Intro" },
+      { variable: "v_chapter_save_counter", mode: "set", value: 5 },
+      { variable: "v_checkpoint_rich", mode: "set", value: 1 },
+    ]);
+  });
+
   it("generates complete stat locales and Book 1 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");
@@ -34,16 +75,11 @@ describe("generated content i18n", () => {
 
     expect(Object.keys(frStats.messages).sort()).toEqual(Object.keys(enStats.messages).sort());
     expect(frStats.messages["stat.v_strength"]).toBe("Force");
-    const expectedAchievementKeys = new Set();
-    for (const chapterId of book1FrenchChapters) {
-      const story = await readJson(`content/canonical/v1/story/${chapterId}.json`);
-      for (const variable of JSON.stringify(story).match(/v_ac_[a-z0-9_]+/g) ?? []) {
-        expectedAchievementKeys.add(`achievement.${variable}.caption`);
-        expectedAchievementKeys.add(`achievement.${variable}.title`);
-      }
-    }
+    const expectedAchievementKeys = await readBook1AchievementKeys();
 
-    expect(Object.keys(frAchievements.messages).sort()).toEqual([...expectedAchievementKeys].sort());
+    expect(Object.keys(frAchievements.messages).sort()).toEqual(expectedAchievementKeys);
+    expect(frAchievements.messages["achievement.v_ac_ch6_immersion.title"]).toBe("Immersion totale");
+    expect(frAchievements.messages["achievement.v_ac_ch6_immersion.caption"]).toBe("Vivre de tes propres yeux ce que voit ton personnage.");
     expect(generated).toContain('"locales/fr/achievements"');
     expect(generated).toContain('"locales/fr/stats"');
   });
@@ -58,6 +94,8 @@ describe("generated content i18n", () => {
     expect(enUi.messages["abilities.help"]).toContain("Use +");
     expect(frUi.messages["abilities.help"]).toContain("Utilise +");
     expect(frUi.messages["abilities.help"]).not.toContain("route");
+    expect(enUi.messages["achievements.unlocked"]).toBe("Achievement unlocked");
+    expect(frUi.messages["achievements.unlocked"]).toBe("Succès obtenu");
     expect(enUi.messages["statChecks.success"]).toContain("success");
     expect(enUi.messages["statChecks.failure"]).toContain("failure");
     expect(frUi.messages["statChecks.success"]).toContain("réussite");

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createInitialState, enterCurrentScene } from '../src/lib/story/engine'
 import type { StoryContext } from '../src/lib/story/types'
 import { encryptJson, getLocalSaveKey } from '../src/lib/storage/crypto'
-import { exportSave, importSave, SAVE_IMPORT_ERROR_MESSAGES } from '../src/lib/storage/saves'
+import { exportSave, importSave, listSaveSummaries, renameSave, saveGameState, SAVE_IMPORT_ERROR_MESSAGES } from '../src/lib/storage/saves'
 
 const stores = vi.hoisted(() => ({
   keys: new Map<string, unknown>(),
@@ -112,8 +112,20 @@ describe('save export/import', () => {
     expect(stores.saves.has('autosave')).toBe(true)
   })
 
-  it('rejects a local-key backup after the source browser key is gone', async () => {
-    const raw = await exportSave(makeState(), '')
+  it('rejects export without a passphrase', async () => {
+    await expect(exportSave(makeState(), ''))
+      .rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.exportPasswordRequired)
+  })
+
+  it('rejects legacy local-key backups after the source browser key is gone', async () => {
+    const key = await getLocalSaveKey()
+    const raw = JSON.stringify({
+      kind: 'magium-save',
+      version: 1,
+      encryption: 'local-key',
+      associatedData: 'magium-save-v1',
+      encrypted: await encryptJson(makeState(), key, 'magium-save-v1'),
+    })
     resetStorage()
 
     await expect(importSave(raw, '', CONTENT_VERSION, contextForScene))
@@ -201,5 +213,35 @@ describe('save export/import', () => {
   it('rejects malformed files', async () => {
     await expect(importSave('not json', '', CONTENT_VERSION, contextForScene))
       .rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.unsupported)
+  })
+
+  it('lists save summaries with display labels and decrypted scene metadata', async () => {
+    await saveGameState({
+      ...makeState(),
+      slotId: 'manual-test',
+    }, { label: 'Before the duel' })
+
+    const summaries = await listSaveSummaries()
+
+    expect(summaries).toHaveLength(1)
+    expect(summaries[0]).toMatchObject({
+      slotId: 'manual-test',
+      label: 'Before the duel',
+      currentSceneId: 'Ch1-Intro1',
+      contentVersion: CONTENT_VERSION,
+    })
+  })
+
+  it('renames a local save without changing the encrypted game state', async () => {
+    await saveGameState({
+      ...makeState(),
+      slotId: 'manual-test',
+    }, { label: 'Before the duel' })
+
+    await renameSave('manual-test', 'After the duel')
+
+    const summaries = await listSaveSummaries()
+    expect(summaries[0].label).toBe('After the duel')
+    expect(summaries[0].currentSceneId).toBe('Ch1-Intro1')
   })
 })

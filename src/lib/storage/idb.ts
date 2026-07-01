@@ -1,7 +1,7 @@
 const DB_NAME = 'magium-pwa'
-const DB_VERSION = 1
+const DB_VERSION = 2
 
-type StoreName = 'keys' | 'saves'
+type StoreName = 'achievementProgress' | 'keys' | 'saves'
 
 let dbPromise: Promise<IDBDatabase> | null = null
 
@@ -18,6 +18,9 @@ export function openDatabase(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains('saves')) {
         db.createObjectStore('saves', { keyPath: 'slotId' })
+      }
+      if (!db.objectStoreNames.contains('achievementProgress')) {
+        db.createObjectStore('achievementProgress', { keyPath: 'id' })
       }
     }
     request.onsuccess = () => resolve(request.result)

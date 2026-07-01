@@ -59,6 +59,8 @@ pnpm images:check -- --book 1
 
 `images:check` verifie la structure, refuse les anciens marqueurs `evidenceRefs`, RAG, embeddings, `.magium`, anciens chemins `chapters`, chemins source bruts et copies longues du texte canonique. Il accepte l'absence des `illustration.webp` pour permettre une production progressive.
 
+Certains `triggerSceneId` peuvent avoir plusieurs variantes de moment quand une scene commune depend d'un choix majeur. Dans ce cas, chaque variante garde son propre dossier `moments/<moment-id>/`, son prompt et son WebP. Le runtime choisit la variante avec les variables de `GameState`, puis masque l'image si le WebP de cette variante manque encore.
+
 ## Workflow Manuel ChatGPT
 
 1. Lancer `pnpm images:prompts -- --book 1`.
@@ -110,6 +112,7 @@ Les fichiers `output/visual/api-inputs/` et `output/visual/api-runs/` sont locau
 - Decrire precisement lieu, architecture, materiaux, lumiere, positions, action, personnages anonymes et continuite d'equipement.
 - Pour tout moment dont la scene contient plusieurs branches conditionnelles, ajouter une note `Path compatibility` dans `tools/images/book1-config.mjs`.
 - Une illustration de moment doit rester vraie pour tous les chemins qui atteignent son `triggerSceneId`. Si une branche montre Barry cache, une autre expose, ou une autre blesse, le prompt doit illustrer l'invariant commun plutot qu'un seul resultat.
+- Si une scene commune ne peut pas etre illustree correctement pour tous les chemins, creer des variantes conditionnelles explicites plutot qu'une image fausse pour une branche.
 - Verifier que le `triggerSceneId` montre deja le personnage, l'equipement ou l'evenement illustre. Ne pas attacher un portrait de reference ni annoncer visuellement une action qui n'apparait que dans une scene suivante.
 - Si une scene declencheuse est trop tot dans la chronologie, deplacer le moment vers le bon `triggerSceneId` ou rendre l'image plus sobre et strictement compatible avec ce qui est deja visible.
 - Ne pas ajouter `evidenceRefs`, sourceRefs, chunks RAG, embeddings ou metadata API.
@@ -131,6 +134,7 @@ Les fichiers `output/visual/api-inputs/` et `output/visual/api-runs/` sont locau
 - Dans la sequence de ville apres la nuit chez Rose, Barry part sans son sac a dos. Les moments `ch11a-beggars-district-trap` et `ch11b-*` ne doivent donc pas afficher son sac, son arbalete ou un inventaire de sac.
 - `ch1-cutthroat-dave` doit montrer Daren affaibli pres de Dave, mais ne doit pas forcer Barry a etre cloue a l'arbre : ce detail depend du choix joueur.
 - `ch3-barry-tree-lift` doit rester une scene autour du fallen tree et d'une tentative tactique, sans prouver que Barry a reussi a soulever l'arbre.
+- `Ch11b-Ending` a deux variantes : `ch11b-golmyck-announcement` uniquement quand `v_ch11_saved_rose` vaut `1`, et `ch11b-golmyck-announcement-no-rose` quand Rose n'est pas sauvee. La variante no-Rose ne doit jamais attacher `rose.webp` ni montrer Rose vivante.
 - Illuna et Petal sont la meme personne : Petal est le surnom d'Illuna.
 - Flower et Illuna/Petal partagent exactement le meme corps de fillette ; seules l'expression, l'attitude et la couleur des yeux changent.
 - Un moment ne doit jamais attacher `flower.webp` et `illuna.webp` ensemble. Choisir l'etat visible du corps partage pour la scene, puis le decrire clairement.
@@ -161,8 +165,8 @@ Pour Daren, les ancres incluent `healer in armor`, `heavy armor`, `head is bald`
 
 ## Runtime
 
-Le lecteur utilise une map statique dans `src/lib/visuals/book1.ts`. Cette map relie un `sceneId` canonique a un `moment-id`.
+Le lecteur utilise une map statique dans `src/lib/visuals/book1.ts`. Cette map relie un `sceneId` canonique a un `moment-id`, ou a plusieurs variantes conditionnelles quand une scene finale depend d'une variable narrative importante.
 
-Quand `settings.illustrations` est actif, `src/App.svelte` cherche une illustration pour `state.currentSceneId`. Si `/visuals/book1/moments/<moment-id>/illustration.webp` existe, elle s'affiche apres le texte de la scene et avant les choix. Si le WebP manque ou echoue au chargement, l'image est masquee sans bloquer la lecture.
+Quand `settings.illustrations` est actif, `src/App.svelte` cherche une illustration pour `state.currentSceneId` et `state.variables`. Si `/visuals/book1/moments/<moment-id>/illustration.webp` existe, elle s'affiche apres le texte de la scene et avant les choix. Si le WebP manque ou echoue au chargement, l'image est masquee sans bloquer la lecture.
 
 Ces images ne modifient pas `GameState`, `history`, `historyDigest`, le replay anti-tamper ou le chargement des packs narratifs.

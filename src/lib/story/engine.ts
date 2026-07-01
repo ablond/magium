@@ -85,6 +85,17 @@ export function renderCurrentScene(context: StoryContext, state: GameState): Ren
   }
 }
 
+export function readNewlyUnlockedAchievements(
+  context: StoryContext,
+  previousState: GameState,
+  nextState: GameState,
+): AchievementDefinition[] {
+  return context.achievements.achievements.filter((achievement) =>
+    !previousState.achievements[achievement.variable] &&
+    Boolean(nextState.achievements[achievement.variable])
+  )
+}
+
 export async function applyChoice(context: StoryContext, state: GameState, choice: Choice): Promise<GameState> {
   const currentRendered = renderCurrentScene(context, state)
   if (!currentRendered.choices.some((visibleChoice) => visibleChoice.id === choice.id)) {
@@ -93,6 +104,13 @@ export async function applyChoice(context: StoryContext, state: GameState, choic
 
   if (choice.special === 'restart') {
     return enterCurrentScene(context, createInitialState(state.contentVersion, state.locale, state.slotId))
+  }
+
+  if (choice.special === 'checkpoint_load') {
+    if (!state.checkpoint) {
+      throw new Error('No checkpoint is available')
+    }
+    return restoreCheckpoint(context, state)
   }
 
   const next = cloneState(state)

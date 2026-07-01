@@ -109,7 +109,7 @@ Le graphe `story/<chapterId>.json` contient la logique :
 - set variables ;
 - achievements par scene.
 
-Depuis le format runtime V2, chaque assignment a la forme :
+Depuis le format runtime V2, et dans les versions suivantes, chaque assignment a la forme :
 
 ```json
 { "variable": "v_available_points", "mode": "add", "value": 3 }
@@ -124,6 +124,12 @@ La locale `locales/en/<chapterId>.json` contient les textes originaux :
 - textes d'achievement embarques dans une scene.
 
 `locales/en/achievements.json` contient les titres/captions du catalogue d'achievements.
+
+## Adaptations Produit Du Runtime
+
+L'archive brute reste une copie verifiable des sources originales. Les adaptations produit se font apres parsing, avant l'ecriture canonique et les packs runtime.
+
+Le runtime supprime volontairement `Ch11b-Credits`, l'ancien ecran commercial de fin du livre 1. `Ch11b-Ending` conserve le dernier texte narratif et son unique bouton pointe directement vers `B2-Ch01a-Intro` avec `special: checkpoint_save`, `v_b1_saved_stats = 1`, `v_chapter_save_counter = 5` et `v_checkpoint_rich = 1`. Les textes de paiement, jetons, IAP, redemarrage et chargement de cette page ne doivent pas etre regeneres dans les packs runtime.
 
 Les sources UI sont les fichiers éditables :
 
