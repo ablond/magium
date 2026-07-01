@@ -1,4 +1,4 @@
-# Illuna rescues Daren from the collapsing pit - Book 1 Moment Illustration
+# The lower chamber regrouping - Book 1 Moment Illustration
 
 Public manual prompt for ChatGPT Images. Attach the listed portraits before generating the moment illustration.
 
@@ -23,22 +23,22 @@ Public manual prompt for ChatGPT Images. Attach the listed portraits before gene
 
 ## Scene Facts
 
-- Setting: Ogre fortress trap with cracked beams, broken floor, falling debris and vertical danger.
-- Action: Daren hangs from a cracking beam while Illuna suddenly jumps or teleports to rescue him.
-- Materials and architecture: Illuna's shared body has bright blue eyes and bare feet; Daren's heavy armor makes the rescue physically dramatic.
-- Unnamed figures: Crude ogre construction materials, dust and collapsing planks.
-- Composition: 16:9 vertical action, Daren low or hanging, Illuna moving across danger, party reacting.
-- Timeline overrides: Only one Flower/Illuna body; use Illuna state with cold focus.
+- Setting: Rough fortress service chamber with stone walls, heavy wooden supports, dusty floorboards and dim torchlight.
+- Action: Daren and Illuna stand safely with the party after a sudden repositioning; everyone is upright, alert and recovering their focus.
+- Materials and architecture: Illuna's shared body has bright blue eyes and bare feet; Daren's heavy armor is dusty, with his sword and shield held low in a calm stance.
+- Unnamed figures: Crude fortress construction materials, old planks, rope bundles and rough beam supports in the background.
+- Composition: 16:9 quiet aftermath group scene, all characters on one stable floor level, Daren and Illuna near center, party gathered around them.
+- Timeline overrides: Only one Flower/Illuna body; use Illuna state with controlled, serious focus.
 - Path compatibility: none
 - Barry equipment continuity: Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
 - Barry equipment continuity: Barry's backpack has been enchanted by Daren since chapter 6, but it should still look like an ordinary weathered backpack from the outside; no glow or inventory screen unless this prompt explicitly asks for it.
-- Avoid: No duplicate girl, no gore, no modern teleport VFX.
+- Avoid: Calm non-graphic regrouping composition, one shared Flower/Illuna body only, stable floor, restrained magical atmosphere.
 - Special: Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 ## Prompt ChatGPT
 
 ```text
-Create one Book 1 moment illustration for Magium: Illuna rescues Daren from the collapsing pit.
+Create one Book 1 moment illustration for Magium: The lower chamber regrouping.
 
 Attached references:
 - `daren.webp` = Daren
@@ -51,7 +51,7 @@ Attached references:
 Use the attached references for stable identity, species, body shape, clothing and magical aura, but obey the scene-specific overrides below.
 
 Scene-specific overrides:
-- Only one Flower/Illuna body; use Illuna state with cold focus.
+- Only one Flower/Illuna body; use Illuna state with controlled, serious focus.
 
 Barry equipment continuity:
 - Barry's stat device must stay in his pocket or hidden for this scene; do not put the device in his hands and do not make it a focal prop.
@@ -59,11 +59,11 @@ Barry equipment continuity:
 - Flower and Illuna (aka Petal) share one little girl's body; never show them as two separate visible people in the same moment.
 
 Scene design:
-- Setting: Ogre fortress trap with cracked beams, broken floor, falling debris and vertical danger.
-- Action: Daren hangs from a cracking beam while Illuna suddenly jumps or teleports to rescue him.
-- Materials/architecture: Illuna's shared body has bright blue eyes and bare feet; Daren's heavy armor makes the rescue physically dramatic.
-- Unnamed/background figures: Crude ogre construction materials, dust and collapsing planks.
-- Composition: 16:9 vertical action, Daren low or hanging, Illuna moving across danger, party reacting.
+- Setting: Rough fortress service chamber with stone walls, heavy wooden supports, dusty floorboards and dim torchlight.
+- Action: Daren and Illuna stand safely with the party after a sudden repositioning; everyone is upright, alert and recovering their focus.
+- Materials/architecture: Illuna's shared body has bright blue eyes and bare feet; Daren's heavy armor is dusty, with his sword and shield held low in a calm stance.
+- Unnamed/background figures: Crude fortress construction materials, old planks, rope bundles and rough beam supports in the background.
+- Composition: 16:9 quiet aftermath group scene, all characters on one stable floor level, Daren and Illuna near center, party gathered around them.
 
 Visual direction:
 - grounded realistic fantasy adventure illustration
@@ -72,6 +72,6 @@ Visual direction:
 - prioritize canonical accuracy and continuity over extra ornament
 
 Avoid:
-- No duplicate girl, no gore, no modern teleport VFX.
+- Calm non-graphic regrouping composition, one shared Flower/Illuna body only, stable floor, restrained magical atmosphere.
 - no logo, no watermark, no readable text
 ```
