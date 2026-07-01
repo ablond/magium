@@ -8,6 +8,7 @@ import {
   debugJumpToScene,
   debugSetVariable,
   enterCurrentScene,
+  readNewlyUnlockedAchievements,
   renderCurrentScene,
   replayAndValidate,
 } from '../src/lib/story/engine'
@@ -37,12 +38,14 @@ function makeContext(): StoryContext {
       initialSceneId: 'Ch1-Intro1',
       uiLocales: ['en', 'fr'],
       storyLocales: ['en', 'fr'],
-      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 5 }],
+      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 7 }],
       sceneToChapter: {
         'Ch1-Intro1': 'ch1',
         'Ch2-Stats': 'ch1',
         'Ch2-Avoid2': 'ch1',
         'Ch2-ChoiceOnly': 'ch1',
+        'Ch2-Checkpoint': 'ch1',
+        'Ch2-Death': 'ch1',
         'Ch2-DebugSet': 'ch1',
       },
     },
@@ -52,23 +55,35 @@ function makeContext(): StoryContext {
         formatVersion: 1,
         chapterId: 'ch1',
         sourceFile: 'chapters/ch1.magium',
-        sceneOrder: ['Ch1-Intro1', 'Ch2-Stats', 'Ch2-Avoid2', 'Ch2-ChoiceOnly', 'Ch2-DebugSet'],
+        sceneOrder: ['Ch1-Intro1', 'Ch2-Stats', 'Ch2-Avoid2', 'Ch2-ChoiceOnly', 'Ch2-Checkpoint', 'Ch2-Death', 'Ch2-DebugSet'],
         scenes: {
           'Ch1-Intro1': {
             id: 'Ch1-Intro1',
             blocks: [{ id: 'p1', type: 'paragraph', messageId: 'p1', conditions: null }],
-            choices: [{
-              id: 'c1',
-              messageId: 'c1',
-              target: 'Ch2-Stats',
-              setVariables: [
-                { variable: 'v_ac_start', mode: 'set', value: 1 },
-                { variable: 'v_available_points', mode: 'add', value: 3 },
-                { variable: 'v_available_points_aux', mode: 'add', value: 3 },
-              ],
-              special: 'stats',
-              conditions: null,
-            }],
+            choices: [
+              {
+                id: 'c1',
+                messageId: 'c1',
+                target: 'Ch2-Stats',
+                setVariables: [
+                  { variable: 'v_ac_start', mode: 'set', value: 1 },
+                  { variable: 'v_available_points', mode: 'add', value: 3 },
+                  { variable: 'v_available_points_aux', mode: 'add', value: 3 },
+                ],
+                special: 'stats',
+                conditions: null,
+              },
+              {
+                id: 'c-checkpoint',
+                messageId: 'cCheckpoint',
+                target: 'Ch2-Checkpoint',
+                setVariables: [
+                  { variable: 'v_story_flag', mode: 'set', value: 1 },
+                ],
+                special: 'checkpoint_save',
+                conditions: null,
+              },
+            ],
             setVariables: [],
             achievements: [],
           },
@@ -105,6 +120,55 @@ function makeContext(): StoryContext {
             setVariables: [],
             achievements: [],
           },
+          'Ch2-Checkpoint': {
+            id: 'Ch2-Checkpoint',
+            blocks: [{ id: 'p9', type: 'paragraph', messageId: 'p9', conditions: null }],
+            choices: [{
+              id: 'c-die',
+              messageId: 'cDie',
+              target: 'Ch2-Death',
+              setVariables: [
+                { variable: 'v_failed_branch', mode: 'set', value: 1 },
+                { variable: 'v_ac_death', mode: 'set', value: 1 },
+              ],
+              special: null,
+              conditions: null,
+            }],
+            setVariables: [{
+              id: 'set-checkpoint-entered',
+              variable: 'v_checkpoint_entered',
+              mode: 'set',
+              value: 1,
+              conditions: null,
+            }],
+            achievements: [],
+          },
+          'Ch2-Death': {
+            id: 'Ch2-Death',
+            blocks: [{ id: 'p10', type: 'paragraph', messageId: 'p10', conditions: null }],
+            choices: [
+              {
+                id: 'c-load',
+                messageId: 'cLoad',
+                target: '',
+                setVariables: [
+                  { variable: 'v_chapter_save_counter', mode: 'set', value: 5 },
+                ],
+                special: 'checkpoint_load',
+                conditions: null,
+              },
+              {
+                id: 'c-restart',
+                messageId: 'cRestart',
+                target: '',
+                setVariables: [],
+                special: 'restart',
+                conditions: null,
+              },
+            ],
+            setVariables: [],
+            achievements: [{ id: 'a-death', messageId: 'aDeath', variable: 'v_ac_death' }],
+          },
           'Ch2-DebugSet': {
             id: 'Ch2-DebugSet',
             blocks: [{ id: 'p8', type: 'paragraph', messageId: 'p8', conditions: null }],
@@ -135,26 +199,44 @@ function makeContext(): StoryContext {
           p6: 'You still endure.',
           p7: 'Choose your next move.',
           p8: 'Debug landing.',
+          p9: 'Checkpoint.',
+          p10: 'You died.',
           c2: 'Continue',
+          cCheckpoint: 'Create checkpoint',
+          cDie: 'Die',
+          cLoad: 'Load from last checkpoint',
+          cRestart: 'Restart',
           a1: 'A beginning',
+          aDeath: 'A death',
         },
       },
     },
     achievements: {
       formatVersion: 1,
-      achievements: [{
-        id: 'v_ac_start',
-        variable: 'v_ac_start',
-        chapterKey: 'b1ch1',
-        titleMessageId: 'achievement.v_ac_start.title',
-        captionMessageId: 'achievement.v_ac_start.caption',
-      }],
+      achievements: [
+        {
+          id: 'v_ac_start',
+          variable: 'v_ac_start',
+          chapterKey: 'b1ch1',
+          titleMessageId: 'achievement.v_ac_start.title',
+          captionMessageId: 'achievement.v_ac_start.caption',
+        },
+        {
+          id: 'v_ac_death',
+          variable: 'v_ac_death',
+          chapterKey: 'b1ch1',
+          titleMessageId: 'achievement.v_ac_death.title',
+          captionMessageId: 'achievement.v_ac_death.caption',
+        },
+      ],
     },
     achievementLocale: {
       locale: 'en',
       messages: {
         'achievement.v_ac_start.title': 'A beginning',
         'achievement.v_ac_start.caption': 'Moved forward.',
+        'achievement.v_ac_death.title': 'A death',
+        'achievement.v_ac_death.caption': 'Died.',
       },
     },
     statsLocale: {
@@ -185,6 +267,71 @@ describe('story engine', () => {
 
     const tampered = { ...state, variables: { ...state.variables, v_strength: 99 } }
     expect(await replayAndValidate(async () => context, tampered)).toBe(false)
+  })
+
+  it('reports newly unlocked achievements only once', async () => {
+    const context = makeContext()
+    const previousState = enterCurrentScene(context, createInitialState('test', 'en'))
+    const rendered = renderCurrentScene(context, previousState)
+    const nextState = await applyChoice(context, previousState, rendered.choices[0])
+
+    const newlyUnlocked = readNewlyUnlockedAchievements(context, previousState, nextState)
+
+    expect(newlyUnlocked.map((achievement) => achievement.variable)).toEqual(['v_ac_start'])
+    expect(readNewlyUnlockedAchievements(context, nextState, nextState)).toEqual([])
+  })
+
+  it('restores the last checkpoint from death choices without recording the failed branch', async () => {
+    const context = makeContext()
+    let state = enterCurrentScene(context, createInitialState('test', 'en'))
+    const checkpointChoice = renderCurrentScene(context, state).choices.find((choice) => choice.id === 'c-checkpoint')
+    expect(checkpointChoice).toBeDefined()
+
+    state = await applyChoice(context, state, checkpointChoice!)
+    const checkpoint = state.checkpoint
+    expect(checkpoint).not.toBeNull()
+    if (!checkpoint) throw new Error('Expected checkpoint')
+    expect(state.currentSceneId).toBe('Ch2-Checkpoint')
+    expect(state.variables.v_checkpoint_entered).toBe(1)
+
+    state = await applyChoice(context, state, renderCurrentScene(context, state).choices[0])
+    expect(state.currentSceneId).toBe('Ch2-Death')
+    expect(state.variables.v_failed_branch).toBe(1)
+    expect(state.achievements.v_ac_death).toBe(true)
+    expect(state.history).toHaveLength(2)
+
+    const restored = await applyChoice(context, state, renderCurrentScene(context, state).choices[0])
+
+    expect(restored.currentSceneId).toBe(checkpoint.currentSceneId)
+    expect(restored.variables.v_current_scene).toBe('Ch2-Checkpoint')
+    expect(restored.variables.v_checkpoint_entered).toBe(1)
+    expect(restored.variables.v_failed_branch).toBeUndefined()
+    expect(restored.variables.v_chapter_save_counter).toBeUndefined()
+    expect(restored.achievements.v_ac_death).toBeUndefined()
+    expect(restored.history).toHaveLength(checkpoint.historyLength)
+    expect(restored.historyDigest).toBe(checkpoint.historyDigest)
+    expect(await replayAndValidate(async () => context, restored)).toBe(true)
+  })
+
+  it('restarts the current playthrough without carrying scoped achievements', async () => {
+    const context = makeContext()
+    let state = enterCurrentScene(context, createInitialState('test', 'en'))
+    const checkpointChoice = renderCurrentScene(context, state).choices.find((choice) => choice.id === 'c-checkpoint')
+    expect(checkpointChoice).toBeDefined()
+
+    state = await applyChoice(context, state, checkpointChoice!)
+    state = await applyChoice(context, state, renderCurrentScene(context, state).choices[0])
+    expect(state.currentSceneId).toBe('Ch2-Death')
+    expect(state.achievements.v_ac_death).toBe(true)
+
+    const restartChoice = renderCurrentScene(context, state).choices.find((choice) => choice.id === 'c-restart')
+    expect(restartChoice).toBeDefined()
+    const restarted = await applyChoice(context, state, restartChoice!)
+
+    expect(restarted.currentSceneId).toBe('Ch1-Intro1')
+    expect(restarted.achievements.v_ac_death).toBeUndefined()
+    expect(restarted.history).toHaveLength(0)
+    expect(await replayAndValidate(async () => context, restarted)).toBe(true)
   })
 
   it('reports post-choice stat check success from visible paragraphs', () => {

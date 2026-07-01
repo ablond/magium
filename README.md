@@ -11,9 +11,10 @@ Le récit V1 démarre en anglais original, avec le livre 1 complet jouable en fr
 - Archive brute hashée sous `content/archive/original/<sourceCommit>/`.
 - JSON canonique lisible sous `content/canonical/v1/`.
 - Paquets runtime compresses et verifies sous `src/generated/`.
-- Sauvegarde locale chiffrée dans IndexedDB, export/import `.magium-save`.
+- Sauvegarde locale chiffrée dans IndexedDB, sauvegardes locales nommables et export/import `.magium-save` protege par mot de passe.
+- Succès globaux conservés localement dans IndexedDB chiffré, séparés de la partie courante pour survivre aux nouvelles parties et aux retours checkpoint.
 - PWA installable avec service worker.
-- UI de lecture directe avec rail desktop libellé, panneau Stats a revelation progressive avec allocation de points, sauvegardes expliquees en langage joueur, settings de confort, toggle Illustrations, attribution About et sélection globale FR/EN.
+- UI de lecture directe avec rail desktop libellé, panneau Stats a revelation progressive avec allocation de points, panneau Sauvegardes separe entre sauvegardes locales, point de controle et transfert, settings de confort, toggle Illustrations, attribution About et sélection globale FR/EN.
 - Mode Debug local sous `pnpm dev` pour explorer scenes, choix, stats et variables ; les saves marquees debug restent locales au navigateur et ne s'exportent pas en `.magium-save`.
 - Images Book 1 en workflow manuel ChatGPT : portraits et illustrations de moments avec prompts publics sous `public/visuals/book1`.
 - Chemin API OpenAI optionnel pour les illustrations manquantes, via planches de references locales et Batch API, sans RAG ni embeddings.

@@ -81,7 +81,7 @@ Les distances impériales sont traduites dans un système métrique naturel, ave
 - `stillwater` est rendu par `sans-aura` : le terme est volontairement conservé malgré son imperfection technique pour préserver la continuité avec `ch1` et garder un nom de caste immédiatement lisible.
 - `codswallop` devient `baratin` : effet oral et méprisant conservé sans anglicisme.
 - `out of your hair` devient `te débarrasser le plancher` : expression idiomatique française naturelle dans la bouche de Cutthroat Dave.
-- `A clean mouth and an honest hand...` devient `Bouche propre et main honnête...` : tournure proverbiale conservée, sans chercher un proverbe français préexistant inexact.
+- `A clean mouth and an honest hand...` devient `Parler vrai et agir droit ouvre bien des portes.` : l'effet proverbial est conservé sans calque littéral maladroit.
 - `a few hundred feet from my location` devient `à une centaine de mètres de ma position` : conversion métrique arrondie, naturelle en français.
 - `Remember the still winter` devient `Souvenez-vous de l’Hiver immobile` : formule volontairement solennelle, à garder stable lors des prochains chapitres.
 
@@ -111,6 +111,7 @@ Formulations déjà corrigées :
 - `before long` ne doit pas être traduit mécaniquement par `avant longtemps` ; préférer selon le contexte `bientôt`, `peu après` ou une reformulation qui garde le mouvement naturel de la phrase.
 - `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux`, `Oh mes dieux` ou `Mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
 - Quand `sir` est utilisé par un personnage traumatisé comme réflexe de servitude envers toute figure d'autorité, éviter le `monsieur` genré mécanique ; préférer `maître` pour conserver l'effet de soumission, même face à une femme ou un enfant.
+- `Really, now...` ne doit pas devenir `Vraiment, maintenant...` ; préférer selon le ton `Sérieusement ?`, `Ah oui ?`, `Non mais sérieusement ?` ou une reformulation équivalente.
 - `shut the world out` / `shut the whole world out` ne doivent pas devenir `fermer le monde` ; choisir selon le contexte `se couper du monde`, `se fermer aux autres` ou une reformulation équivalente.
 - `That's gonna happen` peut être sarcastique selon le contexte ; ne pas le traduire automatiquement par `Ça va sûrement arriver`, et préférer une réplique comme `Même pas en rêve` quand le personnage refuse clairement.
 - `take a deep breath and think...` ne doit pas devenir mécaniquement `prendre une inspiration avant de réfléchir` ; préférer `souffler/respirer un grand coup et réfléchir...` quand il s'agit de calmer une tension.
@@ -162,7 +163,8 @@ Achievements du chapitre :
 - rechercher dans `content/canonical/v1/story/<chapterId>.json` toutes les variables d'achievements référencées par le chapitre, généralement sous la forme `v_ac_<chapterId>_*` ;
 - pour chaque variable trouvée, traduire les clés `achievement.<variable>.title` et `achievement.<variable>.caption` depuis `content/canonical/v1/locales/en/achievements.json` ;
 - ajouter ces traductions dans `content/story-locales/fr/achievements.json`, sans supprimer les achievements déjà traduits ;
-- garder un titre court et naturel, et une caption fidèle à l'effet ou au trait humoristique de l'anglais.
+- garder un titre court et naturel, et une caption fidèle à l'effet ou au trait humoristique de l'anglais ;
+- privilégier un français joueur naturel plutôt qu'un calque, avec une adresse cohérente en `tu` / `ta` / `ton` quand le succès s'adresse directement au joueur.
 
 QA structurelle obligatoire :
 

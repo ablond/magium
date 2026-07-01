@@ -35,8 +35,7 @@
     "Ch11b-Spin",
     "Ch11b-Hole",
     "Ch11b-Revenant",
-    "Ch11b-Ending",
-    "Ch11b-Credits"
+    "Ch11b-Ending"
   ],
   "scenes": {
     "Ch11b-Clones": {
@@ -2034,20 +2033,30 @@
         {
           "id": "Ch11b-Ending:c1",
           "messageId": "ch11b.Ch11b_Ending.c1",
-          "target": "Ch11b-Credits",
+          "target": "B2-Ch01a-Intro",
           "setVariables": [
+            {
+              "variable": "v_b1_saved_stats",
+              "mode": "set",
+              "value": 1
+            },
             {
               "variable": "v_current_scene",
               "mode": "set",
-              "value": "Ch11b-Credits"
+              "value": "B2-Ch01a-Intro"
             },
             {
-              "variable": "v_first_book_purchased",
+              "variable": "v_chapter_save_counter",
+              "mode": "set",
+              "value": 5
+            },
+            {
+              "variable": "v_checkpoint_rich",
               "mode": "set",
               "value": 1
             }
           ],
-          "special": null,
+          "special": "checkpoint_save",
           "conditions": null
         }
       ],
@@ -2081,128 +2090,6 @@
           "variable": "v_ac_ch11_average"
         }
       ]
-    },
-    "Ch11b-Credits": {
-      "id": "Ch11b-Credits",
-      "blocks": [
-        {
-          "id": "Ch11b-Credits:p1",
-          "type": "paragraph",
-          "messageId": "ch11b.Ch11b_Credits.p1",
-          "conditions": null
-        }
-      ],
-      "choices": [
-        {
-          "id": "Ch11b-Credits:c1",
-          "messageId": "ch11b.Ch11b_Credits.c1",
-          "target": "B2-Ch01a-Intro",
-          "setVariables": [
-            {
-              "variable": "v_b1_saved_stats",
-              "mode": "set",
-              "value": 1
-            },
-            {
-              "variable": "v_current_scene",
-              "mode": "set",
-              "value": "B2-Ch01a-Intro"
-            },
-            {
-              "variable": "v_chapter_save_counter",
-              "mode": "set",
-              "value": 5
-            },
-            {
-              "variable": "v_checkpoint_rich",
-              "mode": "set",
-              "value": 1
-            }
-          ],
-          "special": "checkpoint_save",
-          "conditions": null
-        },
-        {
-          "id": "Ch11b-Credits:c2",
-          "messageId": "ch11b.Ch11b_Credits.c2",
-          "target": "Ch1-Intro1",
-          "setVariables": [
-            {
-              "variable": "v_current_scene",
-              "mode": "set",
-              "value": "Ch1-Intro1"
-            }
-          ],
-          "special": "restart",
-          "conditions": null
-        },
-        {
-          "id": "Ch11b-Credits:c3",
-          "messageId": "ch11b.Ch11b_Credits.c3",
-          "target": "",
-          "setVariables": [
-            {
-              "variable": "v_chapter_save_counter",
-              "mode": "set",
-              "value": 5
-            }
-          ],
-          "special": "checkpoint_load",
-          "conditions": null
-        },
-        {
-          "id": "Ch11b-Credits:c4",
-          "messageId": "ch11b.Ch11b_Credits.c4",
-          "target": "",
-          "setVariables": [],
-          "special": "saves",
-          "conditions": null
-        }
-      ],
-      "setVariables": [
-        {
-          "id": "Ch11b-Credits:s1",
-          "variable": "v_first_book_purchased",
-          "mode": "set",
-          "value": 1,
-          "conditions": null
-        },
-        {
-          "id": "Ch11b-Credits:s2",
-          "variable": "v_iap_check_resume",
-          "mode": "set",
-          "value": 1,
-          "conditions": {
-            "raw": "(v_iap_checked != 0 && v_iap_checked != 2)",
-            "anyOf": [
-              {
-                "allOf": [
-                  {
-                    "type": "comparison",
-                    "variable": "v_iap_checked",
-                    "operator": "!=",
-                    "value": 0
-                  },
-                  {
-                    "type": "comparison",
-                    "variable": "v_iap_checked",
-                    "operator": "!=",
-                    "value": 2
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "id": "Ch11b-Credits:s3",
-          "variable": "v_iap_check_resume",
-          "mode": "set",
-          "value": 0,
-          "conditions": null
-        }
-      ],
-      "achievements": []
     }
   }
 }

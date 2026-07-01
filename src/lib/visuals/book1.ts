@@ -1,11 +1,20 @@
+import type { PrimitiveValue } from '../story/types'
+
 export type MomentVisual = {
   momentId: string
   sceneId: string
   title: string
   src: string
+  conditions?: MomentVisualCondition[]
 }
 
-export const BOOK1_SCENE_VISUALS: Record<string, MomentVisual> = {
+export type MomentVisualCondition =
+  | { variable: string; equals: PrimitiveValue }
+  | { variable: string; notEquals: PrimitiveValue }
+
+type MomentVisualEntry = MomentVisual | MomentVisual[]
+
+export const BOOK1_SCENE_VISUALS: Record<string, MomentVisualEntry> = {
   'Ch1-Intro2': momentVisual('Ch1-Intro2', 'ch1-forest-arrival', 'Barry arrives in Varathia'),
   'Ch1-Cutthroat Dave': momentVisual('Ch1-Cutthroat Dave', 'ch1-cutthroat-dave', 'Dave confronts Barry while defeated Daren stands nearby'),
   'Ch2-Intro': momentVisual('Ch2-Intro', 'ch2-kate-appears', 'Kate appears behind Barry and Daren'),
@@ -51,18 +60,48 @@ export const BOOK1_SCENE_VISUALS: Record<string, MomentVisual> = {
   'Ch11b-Clones': momentVisual('Ch11b-Clones', 'ch11b-clone-ambush', 'The clone ambush begins'),
   'Ch11b-Monster': momentVisual('Ch11b-Monster', 'ch11b-skeletal-dragon', 'The skeletal dragon threat'),
   'Ch11b-Sacrificial': momentVisual('Ch11b-Sacrificial', 'ch11b-zack-sacrifice', "Zack's sacrificial ritual"),
-  'Ch11b-Ending': momentVisual('Ch11b-Ending', 'ch11b-golmyck-announcement', 'Golmyck appears on giant screens'),
+  'Ch11b-Ending': [
+    momentVisual('Ch11b-Ending', 'ch11b-golmyck-announcement', 'Golmyck appears on giant screens', [
+      { variable: 'v_ch11_saved_rose', equals: 1 },
+    ]),
+    momentVisual(
+      'Ch11b-Ending',
+      'ch11b-golmyck-announcement-no-rose',
+      "Golmyck appears on giant screens after Rose's death",
+      [{ variable: 'v_ch11_saved_rose', notEquals: 1 }],
+    ),
+  ],
 }
 
-export function getBook1SceneVisual(sceneId: string | null | undefined) {
-  return sceneId ? BOOK1_SCENE_VISUALS[sceneId] ?? null : null
+export function getBook1SceneVisual(
+  sceneId: string | null | undefined,
+  variables: Record<string, PrimitiveValue> = {},
+) {
+  if (!sceneId) return null
+  const entry = BOOK1_SCENE_VISUALS[sceneId]
+  if (!entry) return null
+  const visuals = Array.isArray(entry) ? entry : [entry]
+  return visuals.find((visual) => matchesConditions(visual, variables)) ?? null
 }
 
-function momentVisual(sceneId: string, momentId: string, title: string): MomentVisual {
+function momentVisual(
+  sceneId: string,
+  momentId: string,
+  title: string,
+  conditions?: MomentVisualCondition[],
+): MomentVisual {
   return {
     sceneId,
     momentId,
     title,
     src: `/visuals/book1/moments/${momentId}/illustration.webp`,
+    conditions,
   }
+}
+
+function matchesConditions(visual: MomentVisual, variables: Record<string, PrimitiveValue>) {
+  return (visual.conditions ?? []).every((condition) => {
+    if ('equals' in condition) return variables[condition.variable] === condition.equals
+    return variables[condition.variable] !== condition.notEquals
+  })
 }

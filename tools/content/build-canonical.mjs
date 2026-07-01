@@ -24,6 +24,16 @@ import {
   writeText,
 } from "./utils.mjs";
 
+const BOOK1_ENDING_SCENE_ID = "Ch11b-Ending";
+const BOOK1_CREDITS_SCENE_ID = "Ch11b-Credits";
+const BOOK2_INTRO_SCENE_ID = "B2-Ch01a-Intro";
+const BOOK1_TO_BOOK2_ASSIGNMENTS = [
+  { variable: "v_b1_saved_stats", mode: "set", value: 1 },
+  { variable: "v_current_scene", mode: "set", value: BOOK2_INTRO_SCENE_ID },
+  { variable: "v_chapter_save_counter", mode: "set", value: 5 },
+  { variable: "v_checkpoint_rich", mode: "set", value: 1 },
+];
+
 async function main() {
   const archiveRoot = await latestArchiveRoot();
   const pointer = await latestArchivePointer();
@@ -58,6 +68,7 @@ async function main() {
     const sourceFile = `chapters/${fileName}`;
     const source = await fs.readFile(path.join(chaptersRoot, fileName), "utf8");
     const parsed = parseMagiumChapter(source, { chapterId, sourceFile });
+    applyRuntimeContentAdaptations(parsed, { chapterId, sourceFile });
 
     index.chapters.push({
       id: chapterId,
@@ -98,6 +109,61 @@ async function main() {
   await writeRuntimePacks({ index, chapterFiles, uiLocales: index.uiLocales, storyLocalePacks });
 
   console.log(`Canonical content generated for ${chapterFiles.length} chapters`);
+}
+
+function applyRuntimeContentAdaptations(parsed, { chapterId, sourceFile }) {
+  if (chapterId === "ch11b") {
+    pruneBook1CreditsGate(parsed, sourceFile);
+  }
+}
+
+function pruneBook1CreditsGate(parsed, sourceFile) {
+  const { story, messages } = parsed;
+  const ending = story.scenes[BOOK1_ENDING_SCENE_ID];
+  const credits = story.scenes[BOOK1_CREDITS_SCENE_ID];
+  if (!ending || !credits) {
+    throw new Error(`${sourceFile}: expected Book 1 ending and credits scenes before pruning`);
+  }
+  if (ending.choices.length !== 1 || ending.choices[0].target !== BOOK1_CREDITS_SCENE_ID) {
+    throw new Error(`${sourceFile}: expected ${BOOK1_ENDING_SCENE_ID} to lead only to ${BOOK1_CREDITS_SCENE_ID}`);
+  }
+
+  const proceedChoice = credits.choices.find((choice) =>
+    choice.target === BOOK2_INTRO_SCENE_ID && choice.special === "checkpoint_save"
+  );
+  if (!proceedChoice) {
+    throw new Error(`${sourceFile}: expected ${BOOK1_CREDITS_SCENE_ID} to contain a checkpoint transition to book 2`);
+  }
+  assertAssignmentsEqual(
+    proceedChoice.setVariables,
+    BOOK1_TO_BOOK2_ASSIGNMENTS,
+    `${sourceFile}: unexpected Book 1 to Book 2 transition assignments`,
+  );
+
+  const endingChoice = ending.choices[0];
+  endingChoice.target = proceedChoice.target;
+  endingChoice.setVariables = proceedChoice.setVariables.map((assignment) => ({ ...assignment }));
+  endingChoice.special = proceedChoice.special;
+  messages[endingChoice.messageId] = messages[proceedChoice.messageId] ?? messages[endingChoice.messageId];
+
+  story.sceneOrder = story.sceneOrder.filter((sceneId) => sceneId !== BOOK1_CREDITS_SCENE_ID);
+  delete story.scenes[BOOK1_CREDITS_SCENE_ID];
+
+  for (const block of credits.blocks) {
+    delete messages[block.messageId];
+  }
+  for (const choice of credits.choices) {
+    delete messages[choice.messageId];
+  }
+  for (const achievement of credits.achievements) {
+    delete messages[achievement.messageId];
+  }
+}
+
+function assertAssignmentsEqual(actual, expected, context) {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error(context);
+  }
 }
 
 async function writeCanonicalUiLocales() {

@@ -172,7 +172,6 @@ export type Settings = {
   theme: 'dark' | 'light'
   textScale: number
   highContrast: boolean
-  typewriter: boolean
   illustrations: boolean
   locale: LocaleCode
   uiLocale: LocaleCode
