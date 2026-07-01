@@ -296,7 +296,7 @@ describe("manual Book 1 image prompts", () => {
     expect(ch11b).toContain("Barry is not carrying his backpack");
     expect(ch11b).toContain("do not show his backpack, crossbow");
     expect(ch10).toContain("`daren.webp` = Daren");
-    expect(ch10).toContain("Illuna rescues Daren");
+    expect(ch10).toContain("The lower chamber regrouping");
     expect(ch10).toContain("Only one Flower/Illuna body");
     expect(ch10).not.toContain("Create one wide chapter illustration");
   });
