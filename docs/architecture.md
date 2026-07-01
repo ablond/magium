@@ -70,6 +70,7 @@ content/canonical/v1/{locales/en,story}/ch*.json
 - Svelte + Vite + TypeScript : app statique, rapide a iterer.
 - Pas de SvelteKit pour l'instant : aucune route serveur ni SSR necessaire.
 - IndexedDB natif : stockage local plus adapte que localStorage pour des blobs chiffrés et clés CryptoKey.
+- Succès globaux : collection locale chiffrée dans IndexedDB, separée de `GameState.achievements` pour survivre aux restart/checkpoints sans affaiblir le replay anti-tamper.
 - Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dependance externe.
 - Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
 - Langue globale : le setting FR/EN met a jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
@@ -89,6 +90,7 @@ content/canonical/v1/{locales/en,story}/ch*.json
 - Conditions : `src/lib/story/conditions.ts`
 - Types : `src/lib/story/types.ts`
 - Sauvegardes : `src/lib/storage/saves.ts`
+- Progression globale des succes : `src/lib/storage/achievementProgress.ts`
 - Chiffrement : `src/lib/storage/crypto.ts`
 - Pipeline : `tools/content/*.mjs`
 - Pipeline images manuel : `tools/images/*.mjs`, `public/visuals/book1`

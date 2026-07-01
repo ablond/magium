@@ -2,13 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { migrateReaderSettings } from '../src/lib/settings/readerSettings'
 
 describe('reader settings migration', () => {
-  it('enables illustrations when migrating older saved settings', () => {
-    expect(migrateReaderSettings({ locale: 'fr', typewriter: true }, ['en-US'])).toMatchObject({
+  it('enables illustrations and drops legacy scene reveal settings when migrating older saved settings', () => {
+    const migrated = migrateReaderSettings({ locale: 'fr', typewriter: true } as Parameters<typeof migrateReaderSettings>[0] & { typewriter: boolean }, ['en-US'])
+
+    expect(migrated).toMatchObject({
       locale: 'fr',
       uiLocale: 'fr',
-      typewriter: true,
       illustrations: true,
     })
+    expect(migrated).not.toHaveProperty('typewriter')
   })
 
   it('preserves an explicit illustrations toggle value', () => {

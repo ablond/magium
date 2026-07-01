@@ -10,7 +10,16 @@ describe('Book 1 moment visuals', () => {
       src: '/visuals/book1/moments/ch1-forest-arrival/illustration.webp',
     })
     expect(getBook1SceneVisual('Ch10-Teleport')?.src).toBe('/visuals/book1/moments/ch10-pit-rescue/illustration.webp')
-    expect(getBook1SceneVisual('Ch11b-Ending')?.src).toBe('/visuals/book1/moments/ch11b-golmyck-announcement/illustration.webp')
+  })
+
+  it('selects the final Rose visual variant from story variables', () => {
+    expect(getBook1SceneVisual('Ch11b-Ending', { v_ch11_saved_rose: 1 })?.momentId).toBe(
+      'ch11b-golmyck-announcement',
+    )
+    expect(getBook1SceneVisual('Ch11b-Ending', { v_ch11_saved_rose: 0 })?.momentId).toBe(
+      'ch11b-golmyck-announcement-no-rose',
+    )
+    expect(getBook1SceneVisual('Ch11b-Ending')?.momentId).toBe('ch11b-golmyck-announcement-no-rose')
   })
 
   it('returns null outside the configured Book 1 trigger scenes', () => {
@@ -21,7 +30,8 @@ describe('Book 1 moment visuals', () => {
 
   it('keeps the v1 moment set broad enough for Book 1 without using chapter paths', () => {
     expect(Object.keys(BOOK1_SCENE_VISUALS).length).toBeGreaterThanOrEqual(40)
-    for (const visual of Object.values(BOOK1_SCENE_VISUALS)) {
+    const visuals = Object.values(BOOK1_SCENE_VISUALS).flatMap((entry) => (Array.isArray(entry) ? entry : [entry]))
+    for (const visual of visuals) {
       expect(visual.src).toContain('/visuals/book1/moments/')
       expect(visual.src).not.toContain('/chapters/')
     }

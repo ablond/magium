@@ -217,6 +217,9 @@ describe("manual Book 1 image prompts", () => {
       path.join(visualRoot, "moments/ch11a-beggars-district-trap/illustration.md"),
     );
     const ch11b = await readText(path.join(visualRoot, "moments/ch11b-golmyck-announcement/illustration.md"));
+    const ch11bNoRose = await readText(
+      path.join(visualRoot, "moments/ch11b-golmyck-announcement-no-rose/illustration.md"),
+    );
     const ch10 = await readText(path.join(visualRoot, "moments/ch10-pit-rescue/illustration.md"));
 
     expect(ch1).toContain("Attached references:");
@@ -295,6 +298,12 @@ describe("manual Book 1 image prompts", () => {
     expect(beggarsDistrict).toContain("No Zack yet");
     expect(ch11b).toContain("Barry is not carrying his backpack");
     expect(ch11b).toContain("do not show his backpack, crossbow");
+    expect(ch11b).toContain("`rose.webp` = Rose");
+    expect(ch11b).toContain("`v_ch11_saved_rose` is 1");
+    expect(ch11bNoRose).not.toContain("rose.webp");
+    expect(ch11bNoRose).toContain("`v_ch11_saved_rose` is not 1");
+    expect(ch11bNoRose).toContain("must not appear as a living party member");
+    expect(ch11bNoRose).toContain("No Rose alive");
     expect(ch10).toContain("`daren.webp` = Daren");
     expect(ch10).toContain("The lower chamber regrouping");
     expect(ch10).toContain("Only one Flower/Illuna body");
@@ -313,6 +322,7 @@ describe("manual Book 1 image prompts", () => {
       "ch11b-skeletal-dragon",
       "ch11b-zack-sacrifice",
       "ch11b-golmyck-announcement",
+      "ch11b-golmyck-announcement-no-rose",
     ]);
 
     for (const moment of BOOK1_MOMENTS.filter((candidate) => candidate.characters.includes("barry"))) {
@@ -484,6 +494,7 @@ describe("manual Book 1 image prompts", () => {
     expect(result.moments).toBe(BOOK1_MOMENTS.length);
     await expect(fs.stat(path.join(outputRoot, "ch1-forest-arrival/prompt.md"))).resolves.toBeTruthy();
     await expect(fs.stat(path.join(outputRoot, "ch11b-golmyck-announcement/prompt.md"))).resolves.toBeTruthy();
+    await expect(fs.stat(path.join(outputRoot, "ch11b-golmyck-announcement-no-rose/prompt.md"))).resolves.toBeTruthy();
   });
 
   it("stages the corrected Cutthroat Dave moment with Daren as a reference", async () => {
@@ -503,6 +514,28 @@ describe("manual Book 1 image prompts", () => {
     await expect(fs.stat(path.join(outputRoot, "ch1-cutthroat-dave/references/barry.webp"))).resolves.toBeTruthy();
     await expect(fs.stat(path.join(outputRoot, "ch1-cutthroat-dave/references/cutthroat-dave.webp"))).resolves.toBeTruthy();
     await expect(fs.stat(path.join(outputRoot, "ch1-cutthroat-dave/references/daren.webp"))).resolves.toBeTruthy();
+  });
+
+  it("stages the final no-Rose variant without Rose as a reference", async () => {
+    const visualRoot = await createTempVisualRoot();
+    const outputRoot = await fs.mkdtemp(path.join(os.tmpdir(), "magium-staging-no-rose-"));
+    const canonicalRoot = await createCanonicalFixture();
+    await generateBook1Prompts({ visualRoot, canonicalRoot });
+    await writeReferencePortraits(visualRoot, ["barry", "daren", "kate", "hadrik", "flower", "golmyck"]);
+
+    const result = await stageBook1MomentImages({
+      visualRoot,
+      outputRoot,
+      momentId: "ch11b-golmyck-announcement-no-rose",
+    });
+
+    expect(result.moments).toBe(1);
+    await expect(
+      fs.stat(path.join(outputRoot, "ch11b-golmyck-announcement-no-rose/references/rose.webp")),
+    ).rejects.toThrow();
+    await expect(
+      fs.stat(path.join(outputRoot, "ch11b-golmyck-announcement-no-rose/references/golmyck.webp")),
+    ).resolves.toBeTruthy();
   });
 
   it("declares path compatibility notes for real conditional trigger scenes", async () => {

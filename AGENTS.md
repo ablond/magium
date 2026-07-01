@@ -19,13 +19,17 @@ Construire une PWA jouable de Magium a partir des textes originaux, avec :
 - Les fichiers `.magium` sont archives pour audit et regeneration, mais ne sont jamais lus directement par l'app.
 - Le runtime lit seulement des paquets generes sous `src/generated`.
 - Ces paquets sont compresses, encodes, decoupes par chapitre/langue, et verifies par SHA-256 avant decompression.
+- Le pipeline garde l'archive originale intacte, mais applique les adaptations produit necessaires au runtime. `Ch11b-Credits`, l'ancien ecran commercial de fin du livre 1, est supprime des paquets runtime ; `Ch11b-Ending` doit proposer directement le passage au livre 2 via un checkpoint.
 - Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis generes en packs runtime `locales/<locale>/ui`.
 - Les traductions narratives source sont dans `content/story-locales/<locale>/*.json`, puis generees en packs runtime `locales/<locale>/<bundle>`.
 - Le choix de langue Settings pilote `settings.uiLocale`, `settings.locale` et `GameState.locale`. Un chapitre absent dans la locale choisie retombe sur `en`.
 - Les images Book 1 ont un workflow principal manuel ChatGPT : portraits, prompts de moments et WebP sous `public/visuals/book1`, sans RAG ni embeddings. Un chemin API OpenAI optionnel existe uniquement pour finir les illustrations manquantes via planches de references locales et Batch API.
-- Le toggle Settings `settings.illustrations` affiche les illustrations de moments apres la scene declencheuse quand elles existent.
+- Le toggle Settings `settings.illustrations` affiche les illustrations de moments apres la scene declencheuse quand elles existent. Certains `sceneId` communs peuvent choisir une variante conditionnelle avec les variables de jeu, par exemple `Ch11b-Ending` selon `v_ch11_saved_rose`.
 - Le panneau Debug existe uniquement sous `pnpm dev` / `import.meta.env.DEV` pour explorer scenes, choix, stats et variables. Un etat marque `debug.dirty` peut etre sauvegarde localement, mais ne doit jamais etre exportable en `.magium-save`.
 - Les sauvegardes sont stockees dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
+- La collection globale des succes est aussi stockee dans IndexedDB sous forme AES-GCM, separement de `GameState.achievements`. `GameState.achievements` reste l'etat rejouable de la partie courante et peut revenir en arriere avec restart/checkpoint.
+- Le panneau Sauvegardes doit rester joueur : sauvegarde automatique, sauvegardes locales nommables/renommables, point de controle, puis transfert. Ne pas afficher `slotId`, IDs de scene bruts, `route`, `prod`, `local-key` ou `pbkdf2` dans l'UX joueur.
+- Les sauvegardes locales ne demandent pas de mot de passe. L'export/import `.magium-save` demande un mot de passe uniquement dans le flux dedie apres clic sur Exporter ou Importer.
 - localStorage ne doit contenir que des preferences UI non critiques.
 
 ## Commandes De Verification Obligatoires
@@ -156,13 +160,13 @@ Ordre attendu :
 
 Ne pas ajouter de RAG ni embeddings. Ne jamais committer de cle API ; `OPENAI_API_KEY` doit rester dans l'environnement local. Les manifests et planches API sous `output/visual/api-inputs/` et `output/visual/api-runs/` sont locaux et ignores par Git.
 
-Pour enrichir les portraits ou moments, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Les moments doivent decrire lieu, architecture, materiaux, personnages anonymes, composition, continuite d'equipement et compatibilite multi-chemins quand la scene contient des conditions. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps mais ne doivent jamais etre attaches ensemble a un meme moment, Arraka est representee par l'amulette/aura et jamais attachee comme personnage de moment, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalete avant `Ch6-Packing`, son stat device doit etre explicitement en main ou cache dans chaque moment, son sac reste ordinaire avant l'enchantement de Daren et ne montre glow/inventaire que sur demande, Barry part sans sac pour `ch11a-beggars-district-trap` et `ch11b-*`, Daren est visible et affaibli dans `ch1-cutthroat-dave`, et aucun portrait ne doit etre attache a un moment si le personnage n'est pas visible dans son `triggerSceneId`.
+Pour enrichir les portraits ou moments, suivre la methode documentee dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de detail applique a Barry et Daren : ancres canoniques courtes, separation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, equipement ou anatomie visible et style fantasy realiste sobre. Les moments doivent decrire lieu, architecture, materiaux, personnages anonymes, composition, continuite d'equipement et compatibilite multi-chemins quand la scene contient des conditions. Conserver les corrections canoniques deja verifiees : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la meme personne, Flower et Illuna partagent le meme corps mais ne doivent jamais etre attaches ensemble a un meme moment, Arraka est representee par l'amulette/aura et jamais attachee comme personnage de moment, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalete avant `Ch6-Packing`, son stat device doit etre explicitement en main ou cache dans chaque moment, son sac reste ordinaire avant l'enchantement de Daren et ne montre glow/inventaire que sur demande, Barry part sans sac pour `ch11a-beggars-district-trap` et `ch11b-*`, Daren est visible et affaibli dans `ch1-cutthroat-dave`, `Ch11b-Ending` doit utiliser la variante sans Rose quand `v_ch11_saved_rose` n'est pas `1`, et aucun portrait ne doit etre attache a un moment si le personnage n'est pas visible dans son `triggerSceneId`.
 
 ## Invariants Architecture
 
 - Le graphe logique ne doit pas dependre d'une langue.
 - Les images ne modifient pas le graphe logique, les sauvegardes ou le replay anti-triche.
-- Les illustrations de moments sont resolues par une map statique `sceneId -> moment` et masquees si le WebP manque.
+- Les illustrations de moments sont resolues par une map statique `sceneId -> moment`, avec variantes conditionnelles possibles par variables de jeu, et masquees si le WebP manque.
 - Les traductions futures ne doivent jamais modifier :
   - scene IDs ;
   - choice targets ;
@@ -187,6 +191,7 @@ Contraintes :
 
 - utiliser IndexedDB pour les saves ;
 - chiffrer avec Web Crypto AES-GCM ;
+- conserver les succes globaux dans un store chiffre separe des saves ;
 - authentifier les donnees via AES-GCM additionalData ;
 - maintenir un `historyDigest` chaine ;
 - verifier un import par replay du parcours ;
@@ -197,6 +202,7 @@ Ne pas :
 
 - stocker variables/stats/achievements en clair ;
 - ajouter un fallback localStorage pour les donnees de jeu ;
+- alimenter les succes globaux depuis un etat `debug.dirty` ;
 - accepter un import seulement parce qu'il se decrypte.
 
 ## UI / UX
@@ -219,9 +225,9 @@ Apres changement UI, verifier au moins :
 - scene avec paragraphe long ;
 - scene qui commence par `...` ;
 - resultat de stat check apres un choix narratif, localise FR/EN ;
-- panneau sauvegardes ;
+- panneau Sauvegardes avec sauvegarde automatique, sauvegardes locales, renommage, point de controle, export/import avec mot de passe affiche seulement dans le flux de transfert ;
 - panneau Stats avant/apres revelation, allocation, max 3 puis 4, stats aura ;
-- panneau achievements ;
+- panneau achievements, y compris conservation d'un succes de mort apres retour checkpoint ou nouvelle partie ;
 - panneau settings/about ;
 - panneau Debug visible en dev seulement, absent du build prod, avec jump de scene, choix caches, edition stats/variables, undo/redo et export bloque apres modification debug ;
 - toggle Illustrations et image de moment presente/absente ;

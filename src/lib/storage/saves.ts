@@ -1,18 +1,19 @@
 import { replayAndValidate } from '../story/engine'
 import type { GameState, StoryContext } from '../story/types'
 import { base64ToBytes, bytesToBase64, decryptJson, derivePassphraseKey, encryptJson, getLocalSaveKey, type EncryptedBox } from './crypto'
-import { idbAll, idbDelete, idbPut } from './idb'
+import { idbAll, idbDelete, idbGet, idbPut } from './idb'
 
-const SAVE_ASSOCIATED_DATA = 'magium-save-v1'
+export const SAVE_ASSOCIATED_DATA = 'magium-save-v1'
 
 export const SAVE_IMPORT_ERROR_MESSAGES = {
   unsupported: 'Unsupported save file',
-  localOnly: 'This backup only restores in the browser that exported it',
+  localOnly: 'This file was not protected for transfer',
+  exportPasswordRequired: 'Export password is required',
   passwordRequired: 'This backup needs the password used when it was exported',
   passwordOrCorrupt: 'Wrong password or damaged save file',
   contentVersion: 'This save was made for a different content version',
-  tamper: 'This save file does not match a playable route',
-  debug: 'Debug saves stay local to this browser',
+  tamper: 'This save file does not match a playable playthrough',
+  debug: 'Debug saves cannot be exported',
 } as const
 
 export type SaveImportErrorCode = keyof typeof SAVE_IMPORT_ERROR_MESSAGES
@@ -29,6 +30,8 @@ export class SaveImportError extends Error {
 
 export type StoredSaveRecord = {
   slotId: string
+  label?: string
+  createdAt?: string
   updatedAt: string
   contentVersion: string
   encrypted: EncryptedBox
@@ -36,8 +39,10 @@ export type StoredSaveRecord = {
 
 export type SaveSummary = {
   slotId: string
+  label: string | null
   updatedAt: string
   contentVersion: string
+  currentSceneId: string | null
 }
 
 export type SaveContainer = {
@@ -49,11 +54,15 @@ export type SaveContainer = {
   encrypted: EncryptedBox
 }
 
-export async function saveGameState(state: GameState): Promise<void> {
+export async function saveGameState(state: GameState, options: { label?: string } = {}): Promise<void> {
+  const existing = await idbGet<StoredSaveRecord>('saves', state.slotId)
   const key = await getLocalSaveKey()
   const encrypted = await encryptJson(state, key, SAVE_ASSOCIATED_DATA)
+  const label = normalizeLabel(options.label) ?? existing?.label
   await idbPut<StoredSaveRecord>('saves', {
     slotId: state.slotId,
+    label,
+    createdAt: existing?.createdAt ?? state.createdAt,
     updatedAt: state.updatedAt,
     contentVersion: state.contentVersion,
     encrypted,
@@ -62,8 +71,18 @@ export async function saveGameState(state: GameState): Promise<void> {
 
 export async function listSaveSummaries(): Promise<SaveSummary[]> {
   const records = await idbAll<StoredSaveRecord>('saves')
-  return records
-    .map(({ slotId, updatedAt, contentVersion }) => ({ slotId, updatedAt, contentVersion }))
+  const key = await getLocalSaveKey()
+  const summaries = await Promise.all(records.map(async (record) => {
+    const state = await decryptRecordForSummary(record, key)
+    return {
+      slotId: record.slotId,
+      label: record.label ?? null,
+      updatedAt: record.updatedAt,
+      contentVersion: record.contentVersion,
+      currentSceneId: state?.currentSceneId ?? null,
+    }
+  }))
+  return summaries
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
 
@@ -81,21 +100,31 @@ export async function deleteSave(slotId: string): Promise<void> {
   await idbDelete('saves', slotId)
 }
 
+export async function renameSave(slotId: string, label: string): Promise<void> {
+  const record = await idbGet<StoredSaveRecord>('saves', slotId)
+  if (!record) return
+  await idbPut<StoredSaveRecord>('saves', {
+    ...record,
+    label: normalizeLabel(label),
+  })
+}
+
 export async function exportSave(state: GameState, passphrase: string): Promise<string> {
   if (isDebugDirtyState(state)) {
     throw new SaveImportError('debug')
   }
 
   const trimmed = passphrase.trim()
+  if (!trimmed) {
+    throw new SaveImportError('exportPasswordRequired')
+  }
   const salt = crypto.getRandomValues(new Uint8Array(16))
-  const key = trimmed
-    ? await derivePassphraseKey(trimmed, salt)
-    : await getLocalSaveKey()
+  const key = await derivePassphraseKey(trimmed, salt)
   const container: SaveContainer = {
     kind: 'magium-save',
     version: 1,
-    encryption: trimmed ? 'pbkdf2' : 'local-key',
-    salt: trimmed ? bytesToBase64(salt) : undefined,
+    encryption: 'pbkdf2',
+    salt: bytesToBase64(salt),
     associatedData: SAVE_ASSOCIATED_DATA,
     encrypted: await encryptJson(state, key, SAVE_ASSOCIATED_DATA),
   }
@@ -167,6 +196,19 @@ async function validateReplay(
   } catch {
     return false
   }
+}
+
+async function decryptRecordForSummary(record: StoredSaveRecord, key: CryptoKey): Promise<GameState | null> {
+  try {
+    return await decryptJson<GameState>(record.encrypted, key, SAVE_ASSOCIATED_DATA)
+  } catch {
+    return null
+  }
+}
+
+function normalizeLabel(label: string | undefined): string | undefined {
+  const trimmed = label?.trim()
+  return trimmed || undefined
 }
 
 function isSaveContainer(value: unknown): value is SaveContainer {

@@ -49,6 +49,8 @@ type GameState = {
 
 `variables` porte les variables Magium (`v_current_scene`, stats, flags, achievements, compteurs de points).
 
+`achievements` est scope a la partie courante. Il sert au rendu immediat et au replay anti-tamper, et il revient donc au snapshot ancien lors d'un `checkpoint_load` ou a vide lors d'un `restart`. La collection visible dans le panneau Succès est persistée separement par `src/lib/storage/achievementProgress.ts`, dans IndexedDB chiffré, pour conserver les succès entre parties comme l'app d'origine.
+
 `history` contient des evenements types :
 
 - `type: "choice"` pour les choix narratifs ;
@@ -56,7 +58,7 @@ type GameState = {
 
 Il sert a valider les imports par replay.
 
-`historyDigest` est un hash chaine initialise avec `magium:v2:initial` pour detecter les modifications triviales. Le format runtime V2 invalide les anciennes sauvegardes incompatibles.
+`historyDigest` est un hash chaine initialise avec `magium:v2:initial` pour detecter les modifications triviales. Le `contentVersion` inclut le format runtime courant et invalide les sauvegardes incompatibles quand le graphe genere change.
 
 ## Assignations De Variables
 
@@ -100,11 +102,13 @@ Les blocs narratifs canoniques peuvent contenir plusieurs alineas separes par de
 
 Le rendu ne modifie pas l'etat.
 
+`readNewlyUnlockedAchievements(context, previousState, nextState)` compare deux etats deja produits par le moteur et renvoie uniquement les achievements absents de `previousState.achievements` mais presents dans `nextState.achievements`. L'UI lecteur filtre ensuite ces resultats avec la progression globale chiffrée avant d'afficher une notice temporaire `Achievement unlocked` / `Succès obtenu`, sans changer `history` ou le replay anti-triche.
+
 ## Illustrations De Moments
 
-Les illustrations Book 1 ne font pas partie du moteur de scene. `src/App.svelte` lit `state.currentSceneId`, puis resout une image statique avec `src/lib/visuals/book1.ts`.
+Les illustrations Book 1 ne font pas partie du moteur de scene. `src/App.svelte` lit `state.currentSceneId` et `state.variables`, puis resout une image statique avec `src/lib/visuals/book1.ts`.
 
-Le setting `settings.illustrations` est une preference UI locale, activee par defaut a la migration. Quand elle est activee, l'image `/visuals/book1/moments/<moment-id>/illustration.webp` s'affiche apres le texte de la scene declencheuse et avant les choix. Si le WebP manque ou echoue au chargement, l'UI le masque et la lecture continue.
+Le setting `settings.illustrations` est une preference UI locale, activee par defaut a la migration. Quand elle est activee, l'image `/visuals/book1/moments/<moment-id>/illustration.webp` s'affiche apres le texte de la scene declencheuse et avant les choix. Si plusieurs variantes existent pour le meme `sceneId`, la map peut choisir une variante avec une condition simple sur les variables de jeu, par exemple `Ch11b-Ending` selon `v_ch11_saved_rose`. Si le WebP manque ou echoue au chargement, l'UI le masque et la lecture continue.
 
 Ces images ne modifient pas `GameState`, `history`, `historyDigest`, le replay anti-tamper ou le chargement des packs narratifs.
 
@@ -160,12 +164,13 @@ Les libelles de stats viennent de `locales/<locale>/stats`, avec fallback `en`. 
 
 1. verifie que le choix est visible depuis l'etat courant ;
 2. gere `special:restart` ;
-3. applique les assignments du choix en respectant `set` ou `add` ;
-4. ajoute un evenement `type: "choice"` dans `history` ;
-5. etend `historyDigest` ;
-6. change `currentSceneId` ;
-7. cree un checkpoint si `special:checkpoint_save` ;
-8. entre dans la nouvelle scene.
+3. gere `special:checkpoint_load` en restaurant `GameState.checkpoint` sans appliquer les assignments du choix ni ajouter d'evenement d'historique ;
+4. applique les assignments du choix en respectant `set` ou `add` ;
+5. ajoute un evenement `type: "choice"` dans `history` ;
+6. etend `historyDigest` ;
+7. change `currentSceneId` ;
+8. cree un checkpoint si `special:checkpoint_save` ;
+9. entre dans la nouvelle scene.
 
 ## Allocation De Stats
 
@@ -204,6 +209,7 @@ Ces operations ne creent aucun evenement `history` et ne recalculent pas `histor
 
 - `restart`
 - `checkpoint_save`
+- `checkpoint_load`
 - `saves` cote UI quand le target est vide
 - `stats` cote UI pour ouvrir le panneau Stats
 
@@ -228,8 +234,10 @@ Les valeurs absentes valent `0` pour les comparaisons, comme dans le comportemen
 2. rejoue chaque evenement de `saved.history` ;
 3. verifie que chaque choix etait disponible et que chaque allocation respectait stats visibles, plafond et points disponibles ;
 4. recharge la scene cible avant d'entrer dans un nouveau chapitre ;
-5. compare scene courante, variables, achievements et `historyDigest`.
+5. compare scene courante, variables, achievements scopes a la partie, et `historyDigest`.
 
 Cette validation est utilisee a l'import de sauvegarde.
+
+La progression globale des succes n'entre pas dans cette comparaison. Un import valide peut l'enrichir apres replay reussi, mais un `.magium-save` reste une sauvegarde de partie, pas un export complet de collection de succes.
 
 Limite : un attaquant qui modifie le code client peut contourner ce controle. Sans backend, c'est une barriere contre la manipulation triviale, pas une preuve cryptographique globale.

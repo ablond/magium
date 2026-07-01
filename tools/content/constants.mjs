@@ -10,6 +10,6 @@ export const UI_LOCALES_ROOT = path.resolve("content/ui-locales");
 export const STORY_LOCALES_ROOT = path.resolve("content/story-locales");
 export const GENERATED_ROOT = path.resolve("src/generated");
 export const PUBLIC_ROOT = path.resolve("public");
-export const RUNTIME_FORMAT_VERSION = 2;
+export const RUNTIME_FORMAT_VERSION = 3;
 export const INITIAL_SCENE_ID = "Ch1-Intro1";
 export const DEFAULT_LOCALE = "en";

@@ -8,6 +8,7 @@
     Download,
     Library,
     Minus,
+    Pencil,
     Plus,
     RotateCcw,
     Save,
@@ -16,6 +17,7 @@
     ShieldCheck,
     SlidersHorizontal,
     Trophy,
+    Trash2,
     Upload,
     X,
   } from '@lucide/svelte'
@@ -34,6 +36,7 @@
     debugJumpToScene,
     debugSetVariable,
     enterCurrentScene,
+    readNewlyUnlockedAchievements,
     renderCurrentScene,
     restoreCheckpoint,
   } from './lib/story/engine'
@@ -49,6 +52,7 @@
     statAuxVariable,
   } from './lib/story/stats'
   import type {
+    AchievementDefinition,
     Choice,
     ContentIndex,
     GameState,
@@ -59,11 +63,19 @@
     StoryChapter,
     StoryContext,
   } from './lib/story/types'
-  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
+  import {
+    filterNewAchievementUnlocks,
+    loadAchievementProgress,
+    mergeAchievementProgressFromState,
+    recordAchievementUnlocks,
+    type AchievementProgress,
+  } from './lib/storage/achievementProgress'
+  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, renameSave, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
   import { getBook1SceneVisual } from './lib/visuals/book1'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about' | 'debug'
   type DebugValueKind = 'number' | 'string' | 'boolean'
+  type SaveTransferMode = 'none' | 'export' | 'import'
   type DebugSnapshot = {
     label: string
     state: GameState
@@ -82,8 +94,10 @@
     'Choice is not available from the current state': 'errors.choiceUnavailable',
     'No stat points selected': 'errors.noStatPointsSelected',
     'Not enough stat points available': 'errors.notEnoughStatPoints',
+    'No checkpoint is available': 'errors.noCheckpointAvailable',
     'This browser does not support runtime content decompression': 'errors.decompressionUnsupported',
     [SAVE_IMPORT_ERROR_MESSAGES.contentVersion]: 'errors.saveContentVersion',
+    [SAVE_IMPORT_ERROR_MESSAGES.exportPasswordRequired]: 'errors.saveExportPasswordRequired',
     [SAVE_IMPORT_ERROR_MESSAGES.localOnly]: 'errors.saveLocalOnly',
     [SAVE_IMPORT_ERROR_MESSAGES.passwordOrCorrupt]: 'errors.savePasswordOrCorrupt',
     [SAVE_IMPORT_ERROR_MESSAGES.passwordRequired]: 'errors.savePasswordRequired',
@@ -113,11 +127,23 @@
   let panelStatus = ''
   let passphrase = ''
   let importPassphrase = ''
+  let saveTransferMode: SaveTransferMode = 'none'
   let runtimeContentVersion = ''
-  let manualSlotId = 'manual-1'
+  let manualSaveName = ''
+  let editingSaveId = ''
+  let editingSaveName = ''
+  let pendingDeleteSave: SaveSummary | null = null
   let settings: ReaderSettings = { ...defaultReaderSettings }
   let statDraft: Record<string, number> = {}
-  let importInput: HTMLInputElement
+  let achievementProgress: AchievementProgress = {
+    schemaVersion: 1,
+    contentVersion: null,
+    achievements: {},
+    createdAt: '',
+    updatedAt: '',
+  }
+  let recentUnlockedAchievements: AchievementDefinition[] = []
+  let importInput: HTMLInputElement | null = null
   let panelElement: HTMLElement | null = null
   let panelCloseButton: HTMLButtonElement | null = null
   let lastPanelTrigger: HTMLElement | null = null
@@ -141,7 +167,8 @@
   $: availableStatPoints = state ? readAvailableStatPoints(state.variables) : 0
   $: draftedStatPoints = Object.values(statDraft).reduce((sum, amount) => sum + amount, 0)
   $: remainingStatPoints = Math.max(0, availableStatPoints - draftedStatPoints)
-  $: momentVisual = settings.illustrations && state ? getBook1SceneVisual(state.currentSceneId) : null
+  $: browserThemeColor = themeColorFor(settings.theme)
+  $: momentVisual = settings.illustrations && state ? getBook1SceneVisual(state.currentSceneId, state.variables) : null
   $: visibleMomentVisual = momentVisual && !hiddenMomentVisuals[momentVisual.src] ? momentVisual : null
   $: debugChapters = context?.index.chapters ?? []
   $: debugChapter = debugChapterId
@@ -170,6 +197,9 @@
   $: if (activePanel === 'none') {
     focusedPanel = 'none'
   }
+  $: if (activePanel !== 'saves' && saveTransferMode !== 'none') {
+    saveTransferMode = 'none'
+  }
 
   onMount(async () => {
     try {
@@ -196,6 +226,8 @@
         state = enterCurrentScene(context, createInitialState(index.contentVersion, settings.locale))
         await saveGameState(state)
       }
+      achievementProgress = await loadAchievementProgress()
+      achievementProgress = await mergeAchievementProgressFromState(state)
       await refresh()
     } catch (caught) {
       error = formatCaughtError(caught)
@@ -238,11 +270,30 @@
         openPanel('saves')
         return
       }
-      if (choice.target) {
+      if (choice.special === 'checkpoint_load' || choice.special === 'restart') {
+        achievementProgress = await mergeAchievementProgressFromState(state)
+      }
+      if (choice.special === 'checkpoint_load') {
+        if (!state.checkpoint) throw new Error('No checkpoint is available')
+        context = await loadContextForScene(state.checkpoint.currentSceneId, state.locale, context)
+      } else if (choice.target) {
         context = await loadContextForScene(choice.target, state.locale, context)
       }
       const debugSnapshot = captureDebugSnapshot(`Choice ${choice.id}`)
-      state = await applyChoice(context, state, choice)
+      const previousState = state
+      const previousAchievementProgress = achievementProgress
+      const nextState = await applyChoice(context, state, choice)
+      const newlyUnlocked = nextState.debug?.dirty
+        ? []
+        : readNewlyUnlockedAchievements(context, previousState, nextState)
+      recentUnlockedAchievements = filterNewAchievementUnlocks(previousAchievementProgress, newlyUnlocked)
+      state = nextState
+      if (recentUnlockedAchievements.length > 0) {
+        achievementProgress = await recordAchievementUnlocks(
+          recentUnlockedAchievements.map((achievement) => achievement.variable),
+          state.contentVersion,
+        )
+      }
       pushDebugUndo(debugSnapshot)
       resetStatDraft()
       if (choice.special === 'stats') openPanel('abilities')
@@ -259,6 +310,7 @@
   async function startNewGame() {
     if (!context || !state) return
     clearStatus()
+    achievementProgress = await mergeAchievementProgressFromState(state)
     state = enterCurrentScene(context, createInitialState(state.contentVersion, settings.locale))
     resetStatDraft()
     await saveGameState(state)
@@ -280,24 +332,66 @@
   async function saveManualSlot() {
     if (!state) return
     clearSaveFeedback()
-    const slotId = manualSlotId.trim() || 'manual-1'
-    state = { ...state, slotId, updatedAt: new Date().toISOString() }
+    const now = new Date().toISOString()
+    const slotId = `manual-${Date.now().toString(36)}`
+    const label = manualSaveName.trim()
+    const snapshot = { ...state, slotId, updatedAt: now }
+    await saveGameState(snapshot, { label })
+    state = { ...state, updatedAt: now }
     await saveGameState(state)
-    state = { ...state, slotId: 'autosave', updatedAt: new Date().toISOString() }
-    await saveGameState(state)
+    manualSaveName = ''
     await refresh()
-    panelStatus = t(uiMessages, 'status.saved', { slotId }, `Saved ${slotId}`)
+    panelStatus = t(uiMessages, 'status.saved', { saveName: label || formatDefaultSaveTitle(now) }, 'Save created')
+  }
+
+  function requestRemoveSlot(save: SaveSummary) {
+    clearSaveFeedback()
+    pendingDeleteSave = save
+  }
+
+  function cancelRemoveSlot() {
+    pendingDeleteSave = null
+  }
+
+  async function confirmRemoveSlot() {
+    if (!pendingDeleteSave) return
+    const slotId = pendingDeleteSave.slotId
+    pendingDeleteSave = null
+    await removeSlot(slotId)
   }
 
   async function removeSlot(slotId: string) {
     if (slotId === 'autosave') return
+    clearSaveFeedback()
     await deleteSave(slotId)
     await refresh()
+    panelStatus = t(uiMessages, 'status.deleted', {}, 'Save deleted')
+  }
+
+  function startRenameSlot(save: SaveSummary) {
+    clearSaveFeedback()
+    editingSaveId = save.slotId
+    editingSaveName = save.label ?? saveTitle(save)
+  }
+
+  function cancelRenameSlot() {
+    editingSaveId = ''
+    editingSaveName = ''
+  }
+
+  async function confirmRenameSlot(slotId: string) {
+    clearSaveFeedback()
+    await renameSave(slotId, editingSaveName)
+    editingSaveId = ''
+    editingSaveName = ''
+    await refresh()
+    panelStatus = t(uiMessages, 'status.renamed', {}, 'Save renamed')
   }
 
   async function restoreLastCheckpoint() {
     if (!state || !context || !state.checkpoint) return
     clearStatus()
+    achievementProgress = await mergeAchievementProgressFromState(state)
     context = await loadContextForScene(state.checkpoint.currentSceneId, state.locale, context)
     state = restoreCheckpoint(context, state)
     resetStatDraft()
@@ -316,12 +410,12 @@
       const url = URL.createObjectURL(blob)
       const anchor = document.createElement('a')
       anchor.href = url
-      anchor.download = `${state.slotId}-${new Date().toISOString().slice(0, 10)}.magium-save`
+      anchor.download = saveFileName(state.currentSceneId)
       anchor.click()
       URL.revokeObjectURL(url)
-      panelStatus = passphrase.trim()
-        ? t(uiMessages, 'status.exportPortable', {}, 'Portable backup exported')
-        : t(uiMessages, 'status.exportLocal', {}, 'Backup exported for this browser')
+      panelStatus = t(uiMessages, 'status.exported', {}, 'Save file downloaded')
+      passphrase = ''
+      saveTransferMode = 'none'
     } catch (caught) {
       panelError = formatCaughtError(caught)
     } finally {
@@ -340,17 +434,36 @@
         context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
         return context
       })
+      achievementProgress = await mergeAchievementProgressFromState(imported)
       context = await loadContextForScene(imported.currentSceneId, imported.locale, context ?? undefined)
       state = imported
       resetStatDraft()
       await refresh()
       panelStatus = t(uiMessages, 'status.imported', {}, 'Save imported and ready')
+      importPassphrase = ''
+      saveTransferMode = 'none'
     } catch (caught) {
       panelError = formatCaughtError(caught)
     } finally {
       saveBusy = 'none'
       if (importInput) importInput.value = ''
     }
+  }
+
+  function showSaveTransfer(mode: SaveTransferMode) {
+    clearSaveFeedback()
+    saveTransferMode = mode
+    if (mode !== 'export') passphrase = ''
+    if (mode !== 'import') importPassphrase = ''
+  }
+
+  function chooseImportFile() {
+    clearSaveFeedback()
+    if (!importPassphrase.trim()) {
+      panelError = t(uiMessages, 'errors.savePasswordRequired', {}, 'Enter the export password for this save')
+      return
+    }
+    importInput?.click()
   }
 
   function updateSettings(next: Partial<ReaderSettings>) {
@@ -365,6 +478,7 @@
 
   async function updateLanguage(locale: string) {
     try {
+      clearStatus()
       const nextMessages = (await loadUiLocale(locale)).messages
       let nextState = state
       if (state) {
@@ -392,6 +506,11 @@
     document.documentElement.dataset.contrast = next.highContrast ? 'high' : 'normal'
     document.documentElement.lang = next.uiLocale
     document.documentElement.style.setProperty('--reader-scale', String(next.textScale))
+    document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', themeColorFor(next.theme))
+  }
+
+  function themeColorFor(theme: ReaderSettings['theme']) {
+    return theme === 'light' ? '#efe6d4' : '#120f14'
   }
 
   function loadReaderSettings(): ReaderSettings {
@@ -426,6 +545,51 @@
     return t(messages, 'reader.chapterTitle', { book, chapter }, `Book ${book} - Chapter ${chapter}`)
   }
 
+  function saveTitle(save: SaveSummary) {
+    if (save.slotId === 'autosave') {
+      return t(uiMessages, 'saves.autosaveTitle', {}, 'Automatic save')
+    }
+    return save.label ?? formatDefaultSaveTitle(save.updatedAt)
+  }
+
+  function formatDefaultSaveTitle(updatedAt: string) {
+    return t(uiMessages, 'saves.defaultSaveName', { date: formatSaveDateTime(updatedAt) }, `Save from ${formatSaveDateTime(updatedAt)}`)
+  }
+
+  function saveChapter(save: SaveSummary) {
+    return save.currentSceneId
+      ? describeScene(save.currentSceneId, uiMessages)
+      : t(uiMessages, 'saves.unknownChapter', {}, 'Chapter unavailable')
+  }
+
+  function formatSaveDateTime(value: string) {
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) return value
+    return date.toLocaleString(settings.uiLocale, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  }
+
+  function checkpointTitle() {
+    return state?.checkpoint
+      ? describeScene(state.checkpoint.currentSceneId, uiMessages)
+      : t(uiMessages, 'saves.noCheckpoint', {}, 'No checkpoint available')
+  }
+
+  function saveFileName(sceneId: string) {
+    const chapter = describeScene(sceneId, uiMessages)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+    return `magium-${chapter || 'save'}-${new Date().toISOString().slice(0, 10)}.magium-save`
+  }
+
   function achievementText(messageId: string) {
     return context?.achievementLocale.messages[messageId] ?? messageId
   }
@@ -457,6 +621,7 @@
   function closePanel(options: { restoreFocus?: boolean } = {}) {
     const restoreFocus = options.restoreFocus ?? true
     const trigger = lastPanelTrigger
+    pendingDeleteSave = null
     activePanel = 'none'
     if (restoreFocus && trigger) {
       requestAnimationFrame(() => trigger.focus({ preventScroll: true }))
@@ -474,7 +639,13 @@
   }
 
   function handleWindowKeydown(event: KeyboardEvent) {
-    if (event.key !== 'Escape' || activePanel === 'none') return
+    if (event.key !== 'Escape') return
+    if (pendingDeleteSave) {
+      event.preventDefault()
+      cancelRemoveSlot()
+      return
+    }
+    if (activePanel === 'none') return
     event.preventDefault()
     closePanel()
   }
@@ -802,6 +973,7 @@
 
   function clearStatus() {
     status = ''
+    recentUnlockedAchievements = []
   }
 
   function clearSaveFeedback() {
@@ -809,6 +981,7 @@
     panelStatus = ''
     error = ''
     status = ''
+    recentUnlockedAchievements = []
   }
 
   function canUseDropCap(text: string) {
@@ -826,7 +999,7 @@
 
 <svelte:head>
   <title>Magium</title>
-  <meta name="theme-color" content="#120f14" />
+  <meta name="theme-color" content={browserThemeColor} />
   <link rel="manifest" href="/manifest.webmanifest" />
 </svelte:head>
 
@@ -901,10 +1074,24 @@
           </div>
         {/if}
 
+        {#if recentUnlockedAchievements.length}
+          <div class="achievement-unlocks" role="status" aria-live="polite" aria-label={t(uiMessages, 'achievements.unlocked', {}, 'Achievement unlocked')}>
+            {#each recentUnlockedAchievements as achievement}
+              <div class="achievement-unlock">
+                <Trophy size={17} />
+                <div>
+                  <span>{t(uiMessages, 'achievements.unlocked', {}, 'Achievement unlocked')}</span>
+                  <strong>{achievementText(achievement.titleMessageId)}</strong>
+                  <small>{achievementText(achievement.captionMessageId)}</small>
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+
         <article class="scene">
           {#each displayParagraphs as paragraph, index (paragraph.id)}
             <p
-              class:typewriter={settings.typewriter && index === displayParagraphs.length - 1}
               class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
             >{paragraph.text}</p>
           {/each}
@@ -961,51 +1148,117 @@
         </button>
         {#if activePanel === 'saves' && state}
           <h2>{t(uiMessages, 'saves.title', {}, 'Saves')}</h2>
-          <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves after every choice. Named saves let you keep several routes. Export without a password only restores in this browser; add a password for a portable backup you can import in prod or another browser. Import resumes a compatible backup.')}</p>
-          <div class="panel-actions">
-            <button disabled={saveBusy !== 'none'} on:click={startNewGame}><RotateCcw size={17} /> {t(uiMessages, 'saves.newGame', {}, 'New game')}</button>
-            <button disabled={!state.checkpoint || saveBusy !== 'none'} on:click={restoreLastCheckpoint}><Library size={17} /> {t(uiMessages, 'saves.checkpoint', {}, 'Checkpoint')}</button>
-          </div>
-          <label>
-            {t(uiMessages, 'saves.saveName', {}, 'Save name')}
-            <input bind:value={manualSlotId} disabled={saveBusy !== 'none'} />
-          </label>
-          <button class="wide" disabled={saveBusy !== 'none'} on:click={saveManualSlot}><Save size={17} /> {t(uiMessages, 'saves.saveNamedRoute', {}, 'Save named route')}</button>
-          <div class="save-list">
-            {#each saveSummaries as save}
-              <div class="save-row">
-                <button disabled={saveBusy !== 'none'} on:click={() => loadSlot(save.slotId)}>
-                  <strong>{save.slotId}</strong>
-                  <span>{new Date(save.updatedAt).toLocaleString(settings.uiLocale)}</span>
-                </button>
-                {#if save.slotId !== 'autosave'}
-                  <button class="icon-danger" disabled={saveBusy !== 'none'} title={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} aria-label={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} on:click={() => removeSlot(save.slotId)}>×</button>
-                {/if}
-              </div>
-            {/each}
-          </div>
+          <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves automatically after every choice. Use local saves to keep several playthroughs, and export only when you want a file to keep or move elsewhere.')}</p>
+
+          <section class="save-section">
+            <div class="save-section-heading">
+              <h3>{t(uiMessages, 'saves.autosaveTitle', {}, 'Automatic save')}</h3>
+              <p>{t(uiMessages, 'saves.autosaveCopy', {}, 'Your current playthrough is saved after every choice and stat allocation.')}</p>
+            </div>
+            <div class="save-summary">
+              <strong>{chapterTitle}</strong>
+              <span>{formatSaveDateTime(state.updatedAt)}</span>
+            </div>
+            <button class="wide" disabled={saveBusy !== 'none'} on:click={startNewGame}><RotateCcw size={17} /> {t(uiMessages, 'saves.newGame', {}, 'New game')}</button>
+          </section>
+
+          <section class="save-section">
+            <div class="save-section-heading">
+              <h3>{t(uiMessages, 'saves.localTitle', {}, 'Local saves')}</h3>
+              <p>{t(uiMessages, 'saves.localCopy', {}, 'Create a local save before an important choice, then load or rename it later.')}</p>
+            </div>
+            <label>
+              {t(uiMessages, 'saves.saveName', {}, 'Save name')}
+              <input bind:value={manualSaveName} placeholder={t(uiMessages, 'saves.saveNamePlaceholder', {}, 'Optional')} disabled={saveBusy !== 'none'} />
+            </label>
+            <button class="wide" disabled={saveBusy !== 'none'} on:click={saveManualSlot}><Save size={17} /> {t(uiMessages, 'saves.createSave', {}, 'Create save')}</button>
+            <div class="save-list">
+              {#each saveSummaries as save}
+                <div class="save-row" class:active-save={state.slotId === save.slotId}>
+                  {#if editingSaveId === save.slotId}
+                    <div class="save-edit">
+                      <label>
+                        {t(uiMessages, 'saves.renameLabel', {}, 'Save name')}
+                        <input bind:value={editingSaveName} disabled={saveBusy !== 'none'} />
+                      </label>
+                      <div class="save-edit-actions">
+                        <button disabled={saveBusy !== 'none'} on:click={() => confirmRenameSlot(save.slotId)}><CircleCheck size={16} /> {t(uiMessages, 'saves.renameConfirm', {}, 'Save')}</button>
+                        <button disabled={saveBusy !== 'none'} on:click={cancelRenameSlot}><X size={16} /> {t(uiMessages, 'saves.renameCancel', {}, 'Cancel')}</button>
+                      </div>
+                    </div>
+                  {:else}
+                    <button class="save-load" disabled={saveBusy !== 'none'} on:click={() => loadSlot(save.slotId)}>
+                      <strong>{saveTitle(save)}</strong>
+                      <span>{saveChapter(save)}</span>
+                      <small>{formatSaveDateTime(save.updatedAt)}</small>
+                      {#if state.slotId === save.slotId}
+                        <em>{t(uiMessages, 'saves.current', {}, 'Current')}</em>
+                      {/if}
+                    </button>
+                    {#if save.slotId !== 'autosave'}
+                      <div class="save-row-actions">
+                        <button class="icon-action" disabled={saveBusy !== 'none'} title={t(uiMessages, 'saves.rename', {}, 'Rename')} aria-label={t(uiMessages, 'saves.rename', {}, 'Rename')} on:click={() => startRenameSlot(save)}>
+                          <Pencil size={16} />
+                        </button>
+                        <button class="icon-action icon-danger" disabled={saveBusy !== 'none'} title={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} aria-label={t(uiMessages, 'saves.deleteSave', {}, 'Delete save')} on:click={() => requestRemoveSlot(save)}>
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    {/if}
+                  {/if}
+                </div>
+              {/each}
+            </div>
+          </section>
+
+          <section class="save-section">
+            <div class="save-section-heading">
+              <h3>{t(uiMessages, 'saves.checkpoint', {}, 'Checkpoint')}</h3>
+              <p>{checkpointTitle()}</p>
+            </div>
+            <button class="wide" disabled={!state.checkpoint || saveBusy !== 'none'} on:click={restoreLastCheckpoint}><Library size={17} /> {t(uiMessages, 'saves.returnCheckpoint', {}, 'Return to checkpoint')}</button>
+          </section>
+
           {#if state.debug?.dirty}
-            <p class="notice panel-notice error" role="status">{t(uiMessages, 'saves.debugLocalOnly', {}, 'This route was changed with Debug and can only stay in local browser saves.')}</p>
+            <p class="notice panel-notice error" role="status">{t(uiMessages, 'saves.debugLocalOnly', {}, 'This save was changed with Debug and can only stay in local saves.')}</p>
           {/if}
-          <label>
-            {t(uiMessages, 'saves.backupPassword', {}, 'Backup password')}
-            <span class="help">{t(uiMessages, 'saves.backupPasswordHelp', {}, 'Leave it empty for a backup that only restores in this browser.')}</span>
-            <input type="password" bind:value={passphrase} autocomplete="new-password" disabled={saveBusy !== 'none'} />
-          </label>
-          <button class="wide" disabled={saveBusy !== 'none'} on:click={downloadSave}>
-            <Download size={17} />
-            {saveBusy === 'export' ? t(uiMessages, 'saves.exporting', {}, 'Exporting...') : t(uiMessages, 'saves.exportBackup', {}, 'Export backup')}
-          </button>
-          <label>
-            {t(uiMessages, 'saves.restorePassword', {}, 'Restore password')}
-            <span class="help">{t(uiMessages, 'saves.restorePasswordHelp', {}, 'Use the same password you chose when exporting the backup.')}</span>
-            <input type="password" bind:value={importPassphrase} autocomplete="current-password" disabled={saveBusy !== 'none'} />
-          </label>
-          <input class="file-input" bind:this={importInput} type="file" accept=".magium-save,application/json" disabled={saveBusy !== 'none'} on:change={importSelectedSave} />
-          <button class="wide" disabled={saveBusy !== 'none'} on:click={() => importInput?.click()}>
-            <Upload size={17} />
-            {saveBusy === 'import' ? t(uiMessages, 'saves.importing', {}, 'Importing...') : t(uiMessages, 'saves.importBackup', {}, 'Import backup')}
-          </button>
+
+          <section class="save-section">
+            <div class="save-section-heading">
+              <h3>{t(uiMessages, 'saves.transferTitle', {}, 'Transfer')}</h3>
+              <p>{t(uiMessages, 'saves.transferCopy', {}, 'Export or import a save file. A password is only needed for these file actions.')}</p>
+            </div>
+            <div class="panel-actions">
+              <button class:active={saveTransferMode === 'export'} disabled={saveBusy !== 'none'} on:click={() => showSaveTransfer('export')}><Download size={17} /> {t(uiMessages, 'saves.exportBackup', {}, 'Export save')}</button>
+              <button class:active={saveTransferMode === 'import'} disabled={saveBusy !== 'none'} on:click={() => showSaveTransfer('import')}><Upload size={17} /> {t(uiMessages, 'saves.importBackup', {}, 'Import save')}</button>
+            </div>
+            {#if saveTransferMode === 'export'}
+              <div class="save-transfer">
+                <p class="help">{t(uiMessages, 'saves.exportHelp', {}, 'Choose a password to protect this file. You will need it to import the save elsewhere.')}</p>
+                <label>
+                  {t(uiMessages, 'saves.backupPassword', {}, 'Export password')}
+                  <input type="password" bind:value={passphrase} autocomplete="new-password" disabled={saveBusy !== 'none'} />
+                </label>
+                <button class="wide" disabled={saveBusy !== 'none'} on:click={downloadSave}>
+                  <Download size={17} />
+                  {saveBusy === 'export' ? t(uiMessages, 'saves.exporting', {}, 'Exporting...') : t(uiMessages, 'saves.downloadBackup', {}, 'Download save')}
+                </button>
+              </div>
+            {:else if saveTransferMode === 'import'}
+              <div class="save-transfer">
+                <p class="help">{t(uiMessages, 'saves.importHelp', {}, 'Use the password chosen when the save was exported.')}</p>
+                <label>
+                  {t(uiMessages, 'saves.restorePassword', {}, 'Import password')}
+                  <input type="password" bind:value={importPassphrase} autocomplete="current-password" disabled={saveBusy !== 'none'} />
+                </label>
+                <input class="file-input" bind:this={importInput} type="file" accept=".magium-save,application/json" disabled={saveBusy !== 'none'} on:change={importSelectedSave} />
+                <button class="wide" disabled={saveBusy !== 'none'} on:click={chooseImportFile}>
+                  <Upload size={17} />
+                  {saveBusy === 'import' ? t(uiMessages, 'saves.importing', {}, 'Importing...') : t(uiMessages, 'saves.chooseImportFile', {}, 'Choose save file')}
+                </button>
+              </div>
+            {/if}
+          </section>
           {#if panelError}
             <p class="notice panel-notice error" role="alert">{panelError}</p>
           {:else if panelStatus}
@@ -1068,7 +1321,7 @@
           <h2>{t(uiMessages, 'achievements.title', {}, 'Achievements')}</h2>
           <div class="achievement-list">
             {#each context?.achievements.achievements ?? [] as achievement}
-              <div class:locked={!state?.achievements[achievement.variable]} class="achievement">
+              <div class:locked={!achievementProgress.achievements[achievement.variable]} class="achievement">
                 <strong>{achievementText(achievement.titleMessageId)}</strong>
                 <span>{achievementText(achievement.captionMessageId)}</span>
               </div>
@@ -1088,9 +1341,12 @@
               {/if}
             </div>
           </div>
-          <div class="segmented">
-            <button class:active={settings.theme === 'dark'} on:click={() => updateSettings({ theme: 'dark' })}>{t(uiMessages, 'settings.dark', {}, 'Dark')}</button>
-            <button class:active={settings.theme === 'light'} on:click={() => updateSettings({ theme: 'light' })}>{t(uiMessages, 'settings.light', {}, 'Light')}</button>
+          <div class="setting-group">
+            <p class="field-label">{t(uiMessages, 'settings.theme', {}, 'Theme')}</p>
+            <div class="segmented">
+              <button class:active={settings.theme === 'dark'} on:click={() => updateSettings({ theme: 'dark' })}>{t(uiMessages, 'settings.dark', {}, 'Dark')}</button>
+              <button class:active={settings.theme === 'light'} on:click={() => updateSettings({ theme: 'light' })}>{t(uiMessages, 'settings.light', {}, 'Light')}</button>
+            </div>
           </div>
           <label>
             {t(uiMessages, 'settings.textSize', {}, 'Text size')}
@@ -1105,13 +1361,6 @@
             </span>
           </label>
           <label class="toggle">
-            <input type="checkbox" checked={settings.typewriter} on:change={(event) => updateSettings({ typewriter: event.currentTarget.checked })} />
-            <span>
-              {t(uiMessages, 'settings.sceneReveal', {}, 'Scene reveal')}
-              <span class="help">{t(uiMessages, 'settings.sceneRevealHelp', {}, 'Fade in the newest paragraph when a scene opens.')}</span>
-            </span>
-          </label>
-          <label class="toggle">
             <input type="checkbox" checked={settings.illustrations} on:change={(event) => updateSettings({ illustrations: event.currentTarget.checked })} />
             <span>
               {t(uiMessages, 'settings.illustrations', {}, 'Illustrations')}
@@ -1121,7 +1370,7 @@
         {:else if activePanel === 'debug' && isDebugBuild && state}
           <h2>{t(uiMessages, 'debug.title', {}, 'Debug')}</h2>
           <div class:dirty={state.debug?.dirty} class="debug-state">
-            <strong>{state.debug?.dirty ? t(uiMessages, 'debug.dirty', {}, 'Debug save') : t(uiMessages, 'debug.clean', {}, 'Clean route')}</strong>
+            <strong>{state.debug?.dirty ? t(uiMessages, 'debug.dirty', {}, 'Debug save') : t(uiMessages, 'debug.clean', {}, 'Clean save')}</strong>
             <span>{state.debug?.dirty ? state.debug.lastAction : state.currentSceneId}</span>
           </div>
           <div class="debug-toolbar">
@@ -1278,6 +1527,25 @@
           </div>
         {/if}
       </aside>
+    {/if}
+
+    {#if pendingDeleteSave}
+      <button type="button" class="confirm-scrim" aria-label={t(uiMessages, 'saves.deleteConfirmCancel', {}, 'Cancel')} on:click={cancelRemoveSlot}></button>
+      <div class="confirm-modal" role="dialog" aria-modal="true" aria-label={t(uiMessages, 'saves.deleteConfirmTitle', {}, 'Delete this save?')} tabindex="-1">
+        <h3>{t(uiMessages, 'saves.deleteConfirmTitle', {}, 'Delete this save?')}</h3>
+        <p>{t(uiMessages, 'saves.deleteConfirmCopy', {}, 'This only removes the local save. Your automatic save stays available.')}</p>
+        <div class="save-summary">
+          <strong>{saveTitle(pendingDeleteSave)}</strong>
+          <span>{saveChapter(pendingDeleteSave)}</span>
+        </div>
+        <div class="confirm-actions">
+          <button disabled={saveBusy !== 'none'} on:click={cancelRemoveSlot}>{t(uiMessages, 'saves.deleteConfirmCancel', {}, 'Cancel')}</button>
+          <button class="icon-danger" disabled={saveBusy !== 'none'} on:click={confirmRemoveSlot}>
+            <Trash2 size={16} />
+            {t(uiMessages, 'saves.deleteConfirmAction', {}, 'Delete save')}
+          </button>
+        </div>
+      </div>
     {/if}
   </main>
 {/if}
