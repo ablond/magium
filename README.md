@@ -30,6 +30,7 @@ pnpm images:stage -- --book 1
 pnpm images:normalize -- --book 1
 pnpm images:refsheets -- --book 1 --missing
 pnpm images:check -- --book 1
+pnpm images:test
 pnpm check
 pnpm test
 pnpm build
@@ -79,6 +80,7 @@ pnpm images:normalize -- --book 1 # convertit PNG/JPG de moments en illustration
 pnpm images:refsheets -- --book 1 --missing # prépare les planches de références API locales
 pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets # chemin avancé OpenAI optionnel
 pnpm images:check -- --book 1   # vérifie prompts publics et WebP présents
+pnpm images:test                 # teste le pipeline images Book 1 ; nécessite ffmpeg
 ```
 
 Commandes Docker de production :
@@ -165,7 +167,7 @@ Le lecteur peut proposer une correction anonymement depuis un paragraphe ou un c
 - Les propositions publiques de correction ne sont jamais appliquées directement : elles passent par `services/translation-api`, un changeset mainteneur, `tools/contributions/apply-changeset.mjs`, puis une PR GitHub validée.
 - Les emails de suivi de contribution sont optionnels, confirmés par lien, réutilisables un an par navigateur via un jeton local, stockés séparément et supprimés après refus ou publication ; les pseudos optionnels de crédit restent modérables.
 - Le compose local fournit des valeurs non secrètes pour tester les contributions : `docker compose up -d`, PWA sur `5173`, API sur `8090`, admin web sur `/admin`, Mailpit sur `8025`, token admin `dev-admin-token`, mot de passe admin `dev-admin-password`.
-- Les prompts/images Book 1 se gèrent avec `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`, `pnpm images:normalize -- --book 1` puis `pnpm images:check -- --book 1`; `--moment <id>` et `--chapter <id>` limitent le staging si besoin. Ne pas ajouter de RAG ni embeddings.
+- Les prompts/images Book 1 se gèrent avec `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`, `pnpm images:normalize -- --book 1`, `pnpm images:check -- --book 1` puis `pnpm images:test`; `--moment <id>` et `--chapter <id>` limitent le staging si besoin. `pnpm images:test` nécessite `ffmpeg`. Ne pas ajouter de RAG ni embeddings.
 - Le chemin API est avancé et optionnel : `pnpm images:refsheets -- --book 1 --missing`, puis `pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`. La clé reste dans `OPENAI_API_KEY`, jamais dans le repo. Les outputs locaux `output/visual/api-inputs/` et `output/visual/api-runs/` restent ignorés par Git.
 - Les portraits Book 1 doivent rester des prompts plein pied riches en détails physiques, vestimentaires, équipement/anatomie et attitude, avec faits `Canon:`, choix sobres `Design choice:` et garde-fous `Avoid:`.
 - Les illustrations Book 1 sont des moments déclenchés par `sceneId`, pas des images de début de chapitre. Elles s'affichent après la scène correspondante et peuvent manquer pendant la production.
@@ -175,7 +177,7 @@ Le lecteur peut proposer une correction anonymement depuis un paragraphe ou un c
 - Les Markdown sous `public/visuals` sont publics : ils doivent rester courts et reformulés, sans longs extraits du récit original.
 - L'app runtime ne doit pas lire les `.magium` directement.
 - La documentation doit être maintenue et corrigée à chaque changement qui modifie commandes, architecture, pipeline, UI, sauvegardes, i18n ou limites de sécurité.
-- Toute modification du parser, du moteur, du stockage ou du pipeline doit être suivie de `pnpm check`, `pnpm test` et `pnpm build`.
+- Toute modification du parser, du moteur, du stockage ou du pipeline doit être suivie de `pnpm check`, `pnpm test` et `pnpm build`. Toute modification des outils, prompts ou assets images Book 1 doit aussi être suivie de `pnpm images:check -- --book 1` et `pnpm images:test`.
 - Toute modification du packaging Docker ou du déploiement doit aussi être suivie de `pnpm docker:build-prod`; une publication demandée doit aller jusqu'à `pnpm docker:push-prod`.
 - L'anti-triche est une résistance client-side, pas une garantie absolue sans backend.
 - L'UI joueur ne doit pas exposer de vocabulaire d'implémentation inutile ; garder les détails techniques dans la documentation.
