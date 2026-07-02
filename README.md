@@ -24,6 +24,7 @@ Le récit V1 démarre en anglais original, avec le livre 1 complet jouable en fr
 
 ```bash
 pnpm install
+pnpm --dir services/translation-api install --frozen-lockfile
 pnpm content:all
 pnpm images:prompts -- --book 1
 pnpm images:stage -- --book 1
@@ -38,6 +39,8 @@ pnpm dev --host 127.0.0.1
 pnpm docker:build-prod
 pnpm docker:push-prod
 ```
+
+`pnpm test` lance aussi les tests Node de `services/translation-api`. Sur un checkout frais hors Docker Compose, installer les dépendances racine puis celles du service API avant la suite de validation complète.
 
 Commandes Docker locales :
 

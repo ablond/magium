@@ -36,7 +36,9 @@ jobs:
           corepack prepare pnpm@11.9.0 --activate
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --dir services/translation-api install --frozen-lockfile
 
       - name: Fetch changeset
         env:
