@@ -3,6 +3,10 @@ export async function createPostgresRepository(databaseUrl) {
   const pool = new Pool({ connectionString: databaseUrl })
   await ensureSchemaCompatibility(pool)
 
+  return createPostgresRepositoryFromPool(pool)
+}
+
+export function createPostgresRepositoryFromPool(pool) {
   return {
     async createProposal(proposal, contact) {
       await pool.query(
@@ -122,7 +126,7 @@ export async function createPostgresRepository(databaseUrl) {
     },
     async updateChangeset(changeset) {
       await pool.query(
-        `UPDATE translation_changesets SET title=$3, status=$4, branch_name=$5, pull_request_url=$6, created_at=$7, updated_at=$8
+        `UPDATE translation_changesets SET public_id=$2, title=$3, status=$4, branch_name=$5, pull_request_url=$6, created_at=$7, updated_at=$8
          WHERE id=$1`,
         [changeset.id, changeset.publicId, changeset.title, changeset.status, changeset.branchName ?? null, changeset.pullRequestUrl ?? null, changeset.createdAt, changeset.updatedAt],
       )
