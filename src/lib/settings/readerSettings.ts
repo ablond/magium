@@ -6,6 +6,7 @@ export const defaultReaderSettings: ReaderSettings = {
   textScale: 1,
   highContrast: false,
   illustrations: true,
+  translationContributions: false,
   locale: 'en',
   uiLocale: 'en',
 }
@@ -31,6 +32,7 @@ export function migrateReaderSettings(
     ...defaultReaderSettings,
     ...sanitized,
     illustrations: typeof stored.illustrations === 'boolean' ? stored.illustrations : defaultReaderSettings.illustrations,
+    translationContributions: typeof stored.translationContributions === 'boolean' ? stored.translationContributions : defaultReaderSettings.translationContributions,
     locale,
     uiLocale: locale,
   }

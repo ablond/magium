@@ -124,7 +124,7 @@ PWA contribution form
 - Le build ne doit pas exposer de fichier `.magium`.
 - L'app peut afficher les textes originaux, évidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement téléchargeable.
 - La PWA peut envoyer une proposition de correction à l'API, mais l'API ne doit jamais devenir une source runtime de traduction. La source finale reste `content/story-locales/**` après PR.
-- Les emails de contribution sont des données personnelles temporaires : optionnels, confirmés avant notification, non publics et supprimés après refus ou publication.
+- Les emails de contribution sont des données personnelles temporaires : optionnels, confirmés avant notification, non publics et supprimés après notification groupée de refus, d'obsolescence ou de publication.
 - Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.
 - Les JSON story i18n canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/<bundle>`, pas les fichiers JSON bruts.
 - L'image Docker finale doit servir uniquement le résultat `dist/`; elle ne doit pas contenir `content/archive`, `content/canonical`, `node_modules`, `.env*`, exports `.magium-save` ou sources `.magium`.

@@ -171,6 +171,8 @@
     "settings.theme": "Theme",
     "settings.textSize": "Text size",
     "settings.textSizeHelp": "Adjust the story text for longer reading sessions.",
+    "settings.translationContributions": "Translation corrections",
+    "settings.translationContributionsHelp": "Show pencil icons on paragraphs and choices to propose a correction.",
     "settings.title": "Settings",
     "statChecks.aria": "Stat check results",
     "statChecks.failure": "{stat}: failure · level {level}",

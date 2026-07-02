@@ -173,6 +173,7 @@ export type Settings = {
   textScale: number
   highContrast: boolean
   illustrations: boolean
+  translationContributions: boolean
   locale: LocaleCode
   uiLocale: LocaleCode
 }

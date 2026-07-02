@@ -129,7 +129,8 @@ Pour une modification de l'admin mainteneur, vérifier aussi dans un navigateur 
 
 Pour une recette complète du système de contributions traduction, vérifier aussi :
 
-- PWA `http://localhost:5173` : bouton `Proposer une correction` visible sur un paragraphe et sur un choix ;
+- PWA `http://localhost:5173` : avec `Corrections de traduction` désactivé, aucun stylo n'est visible sur les paragraphes ou choix et la mise en page ne garde pas de colonne vide ;
+- Settings : activer `Corrections de traduction`, puis vérifier que les icônes stylo grises et discrètes apparaissent sur un paragraphe et sur un choix ;
 - bloc multi-paragraphes : le modal affiche seulement le paragraphe cliqué, prérempli dans la correction ;
 - aucun `publicId`, `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex` ni hash technique visible dans l'UX joueur ;
 - envoi anonyme : succès simple sans `TR_...`, sans reçu à conserver ;
@@ -142,8 +143,9 @@ Pour une recette complète du système de contributions traduction, vérifier au
 - sélection de deux propositions sur la même cible `locale/chapterId/messageId/segmentIndex` bloquée côté UI et refusée côté API ;
 - bouton `Créer la PR` en local sans GitHub configuré : erreur lisible `GitHub dispatch is not configured` ;
 - bouton `Créer la PR` en environnement configuré : workflow GitHub lancé, PR unique créée après `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build`; ce workflow ne dépend pas de `ffmpeg` ;
-- marquage `published` : notifications envoyées si contacts confirmés, puis emails bruts supprimés ;
-- marquage `rejected` ou `stale` : emails bruts supprimés.
+- marquage `published` : notifications groupées par destinataire si contacts confirmés, puis emails bruts supprimés ;
+- refus ou obsolescence en lot : une seule notification par destinataire confirmé, puis emails bruts supprimés ;
+- marquage `rejected` ou `stale` unitaire : emails bruts supprimés sans notification.
 
 `pnpm docker:push-prod` :
 
@@ -201,14 +203,14 @@ Vérifier :
 15. après un choix menant à un test de stat, le résultat apparaît avant le texte de scène, puis viennent le contenu et les prochains choix, avec succès/échec et niveau localisés ;
 16. quand un choix débloque un succès nouveau pour le navigateur, une notice compacte `Succès obtenu` / `Achievement unlocked` apparaît avant le texte avec le titre et la caption du succès, puis ne se réaffiche pas après reload, import, changement de langue, nouvelle partie ou ouverture du panneau Succès ;
 17. sur une scène de mort, le succès de mort reste visible dans le panneau Succès après `Load from last checkpoint` ou nouvelle partie, tandis que le checkpoint restaure quitte la scène de mort, sauvegarde l'autosave restaurée et ne conserve pas la branche échouée dans l'historique ;
-18. le panneau Paramètres contient les libellés `Langue` et `Thème`, la bascule globale FR/EN, thème, taille du texte, contraste et toggle Illustrations ; en thème clair, le rail, les boutons de navigation, les panneaux, les champs, les notices et les états actifs restent lisibles sur desktop et mobile, puis gagnent encore en contraste avec `High contrast` actif ;
+18. le panneau Paramètres contient les libellés `Langue` et `Thème`, la bascule globale FR/EN, thème, taille du texte, contraste, toggle Illustrations et, si l'URL API de contribution est configurée, le toggle `Corrections de traduction` décoché par défaut ; en thème clair, le rail, les boutons de navigation, les panneaux, les champs, les notices et les états actifs restent lisibles sur desktop et mobile, puis gagnent encore en contraste avec `High contrast` actif ;
 19. le toggle Illustrations masque/affiche l'image de moment après la scène correspondante sans changer la partie ;
 20. une image de moment absente ou non chargeable ne bloque pas la lecture ;
 21. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
 22. changer FR/EN ne reset pas la scène courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
-23. le bouton de correction d'un paragraphe ou choix ouvre un formulaire sans afficher `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex` ni hash technique au joueur ; sur un bloc multi-paragraphes, le formulaire montre et préremplit uniquement le paragraphe cliqué ;
-24. le formulaire de contribution peut être envoyé sans pseudo ni email, affiche une erreur si l'API n'est pas configurée, et explique que l'email/pseudo sont facultatifs ;
-25. si un email est renseigné, la case de notification reste explicite et le texte indique que la première confirmation est mémorisée dans ce navigateur pendant un an, puis que l'email est supprimé après refus ou publication ;
+23. avec `Corrections de traduction` activé, l'icône stylo d'un paragraphe ou choix ouvre un formulaire sans afficher `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex` ni hash technique au joueur ; sur un bloc multi-paragraphes, le formulaire montre et préremplit uniquement le paragraphe cliqué ;
+24. le formulaire de contribution peut être envoyé sans pseudo ni email, garde une erreur robuste si l'API n'est pas configurée, et explique que l'email/pseudo sont facultatifs ;
+25. si un email est renseigné, la case de notification reste explicite et le texte indique que la première confirmation est mémorisée dans ce navigateur pendant un an, puis que l'email est supprimé après notification de refus, d'obsolescence ou de publication ;
 26. si un pseudo est renseigné, la case de crédit reste explicite et le texte indique que le pseudo peut être modéré ;
 27. la mémorisation locale du pseudo/email ne se fait que si `Mémoriser pseudo et email sur cet appareil` est coché, et le bouton d'effacement vide le store `contributionProfile` ;
 28. après envoi d'une contribution, le modal affiche seulement un succès joueur sans `publicId`, sans reçu à conserver, et avec un bouton `Fermer` ;

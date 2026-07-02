@@ -122,6 +122,123 @@ test('admin API keeps bearer token access and accepts session cookie with CSRF',
   })
 })
 
+test('changeset publication groups notification emails by recipient', async () => {
+  await withEmailWebhook(async (sentEmails) => {
+    await withServer(emailAdminEnv(), async (port) => {
+      const first = await createConfirmedProposal(port, {
+        ...basePayload,
+        segmentIndex: 0,
+        segmentCount: 3,
+        proposedText: 'Correction A',
+        email: 'Reader@Example.test',
+        notifyRequested: true,
+      }, sentEmails)
+      const second = await createConfirmedProposal(port, {
+        ...basePayload,
+        segmentIndex: 1,
+        segmentCount: 3,
+        proposedText: 'Correction B',
+        email: 'reader@example.test',
+        notifyRequested: true,
+        emailConsentId: first.consent.id,
+        emailConsentToken: first.consent.token,
+      }, sentEmails)
+      const third = await createConfirmedProposal(port, {
+        ...basePayload,
+        segmentIndex: 2,
+        segmentCount: 3,
+        proposedText: 'Correction C',
+        email: 'other@example.test',
+        notifyRequested: true,
+      }, sentEmails)
+      sentEmails.length = 0
+
+      for (const [index, publicId] of [first.publicId, second.publicId, third.publicId].entries()) {
+        const accepted = await postJson(port, `/v1/admin/proposals/${publicId}/review`, {
+          decision: 'accept',
+          finalText: `Texte final ${index + 1}`,
+        }, adminBearer())
+        assert.equal(accepted.status, 200)
+      }
+      const changeset = await postJson(port, '/v1/admin/changesets', {
+        title: 'Lot publication',
+        proposalPublicIds: [first.publicId, second.publicId, third.publicId],
+      }, adminBearer())
+      assert.equal(changeset.status, 201)
+
+      const published = await postJson(port, `/v1/admin/changesets/${changeset.body.changeset.id}/published`, {}, adminBearer())
+      assert.equal(published.status, 200)
+      assert.equal(published.body.notified, 2)
+      assert.equal(published.body.notifiedRecipients, 2)
+      assert.equal(published.body.notifiedProposals, 3)
+      assert.equal(sentEmails.length, 2)
+      const readerEmail = sentEmails.find((email) => email.to === 'reader@example.test')
+      assert.ok(readerEmail)
+      assert.match(readerEmail.subject, /corrections Magium/)
+      assert.match(readerEmail.text, /2 corrections/)
+      assert.match(readerEmail.html, /Vos corrections ont été publiées/)
+      assert.doesNotMatch(readerEmail.text, /tr_|messageId|sceneId|hash/i)
+
+      sentEmails.length = 0
+      const republished = await postJson(port, `/v1/admin/changesets/${changeset.body.changeset.id}/published`, {}, adminBearer())
+      assert.equal(republished.status, 200)
+      assert.equal(republished.body.notifiedRecipients, 0)
+      assert.equal(republished.body.notifiedProposals, 0)
+      assert.equal(sentEmails.length, 0)
+    })
+  })
+})
+
+test('bulk review rejects pending proposals with one grouped notification per recipient', async () => {
+  await withEmailWebhook(async (sentEmails) => {
+    await withServer(emailAdminEnv(), async (port) => {
+      const first = await createConfirmedProposal(port, {
+        ...basePayload,
+        segmentIndex: 0,
+        segmentCount: 2,
+        proposedText: 'Correction refusée A',
+        email: 'reader@example.test',
+        notifyRequested: true,
+      }, sentEmails)
+      const second = await createConfirmedProposal(port, {
+        ...basePayload,
+        segmentIndex: 1,
+        segmentCount: 2,
+        proposedText: 'Correction refusée B',
+        email: 'Reader@Example.test',
+        notifyRequested: true,
+        emailConsentId: first.consent.id,
+        emailConsentToken: first.consent.token,
+      }, sentEmails)
+      sentEmails.length = 0
+
+      const reviewed = await postJson(port, '/v1/admin/proposals/bulk-review', {
+        decision: 'reject',
+        proposalPublicIds: [first.publicId, second.publicId],
+        moderatorNote: 'Doublon traité en lot',
+      }, adminBearer())
+      assert.equal(reviewed.status, 200)
+      assert.equal(reviewed.body.proposals.length, 2)
+      assert.equal(reviewed.body.proposals.every((proposal) => proposal.status === 'rejected'), true)
+      assert.equal(reviewed.body.notified, 1)
+      assert.equal(reviewed.body.notifiedRecipients, 1)
+      assert.equal(reviewed.body.notifiedProposals, 2)
+      assert.equal(sentEmails.length, 1)
+      assert.equal(sentEmails[0].to, 'reader@example.test')
+      assert.match(sentEmails[0].text, /2 propositions/)
+      assert.match(sentEmails[0].html, /Vos propositions ont été traitées/)
+
+      sentEmails.length = 0
+      const repeated = await postJson(port, '/v1/admin/proposals/bulk-review', {
+        decision: 'stale',
+        proposalPublicIds: [first.publicId],
+      }, adminBearer())
+      assert.equal(repeated.status, 400)
+      assert.equal(sentEmails.length, 0)
+    })
+  })
+})
+
 test('admin login is rate limited by IP', async () => {
   await withServer({
     ...adminEnv(),
@@ -143,6 +260,68 @@ function adminEnv() {
     ADMIN_SESSION_TTL_HOURS: '8',
     ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS: '900000',
     ADMIN_LOGIN_RATE_LIMIT_MAX: '5',
+  }
+}
+
+function emailAdminEnv() {
+  return {
+    ...adminEnv(),
+    EMAIL_WEBHOOK_URL: 'https://email-webhook.example.test/send',
+    EMAIL_FROM: 'Magium <no-reply@magium.app>',
+    EMAIL_CONSENT_SECRET: 'test-email-consent-secret',
+    PUBLIC_WEB_URL: 'https://magium.example.test',
+  }
+}
+
+function adminBearer() {
+  return { authorization: 'Bearer dev-admin-token' }
+}
+
+async function createConfirmedProposal(port, payload, sentEmails) {
+  const created = await postJson(port, '/v1/translation-proposals', payload)
+  assert.equal(created.status, 201)
+  if (created.body.notificationStatus === 'confirmed') {
+    return {
+      publicId: created.body.publicId,
+      consent: {
+        id: payload.emailConsentId,
+        token: payload.emailConsentToken,
+      },
+    }
+  }
+
+  assert.equal(created.body.notificationStatus, 'confirmation_sent')
+  const confirmation = sentEmails.at(-1)
+  assert.ok(confirmation)
+  const token = extractConfirmationToken(confirmation.text)
+  const confirmed = await postJson(port, `/v1/translation-proposals/${created.body.publicId}/confirm-email`, { token })
+  assert.equal(confirmed.status, 200)
+  return {
+    publicId: created.body.publicId,
+    consent: confirmed.body.emailConsent,
+  }
+}
+
+function extractConfirmationToken(text) {
+  const match = String(text).match(/[?&]token=([A-Za-z0-9_-]+)/)
+  assert.ok(match, 'confirmation email should contain a token link')
+  return match[1]
+}
+
+async function withEmailWebhook(callback) {
+  const previousFetch = globalThis.fetch
+  const sentEmails = []
+  globalThis.fetch = async (url, options) => {
+    if (String(url) === 'https://email-webhook.example.test/send') {
+      sentEmails.push(JSON.parse(options.body))
+      return new Response('{}', { status: 200 })
+    }
+    return previousFetch(url, options)
+  }
+  try {
+    await callback(sentEmails)
+  } finally {
+    globalThis.fetch = previousFetch
   }
 }
 

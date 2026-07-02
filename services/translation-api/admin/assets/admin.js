@@ -97,7 +97,7 @@ async function loadProposals() {
   }
   for (const id of [...state.selectedProposalIds]) {
     const proposal = state.proposals.find((item) => item.id === id)
-    if (!proposal || proposal.status !== 'accepted') state.selectedProposalIds.delete(id)
+    if (!proposal || !isSelectableProposal(proposal)) state.selectedProposalIds.delete(id)
   }
 }
 
@@ -223,10 +223,10 @@ function proposalGroupsHtml() {
 }
 
 function proposalRowHtml(proposal) {
-  const canSelect = proposal.status === 'accepted'
+  const canSelect = isSelectableProposal(proposal)
   return `
     <div class="row ${proposal.id === state.activeProposalId ? 'selected' : ''}">
-      <input type="checkbox" data-select-proposal="${escapeAttr(proposal.id)}" ${canSelect ? '' : 'disabled'} ${state.selectedProposalIds.has(proposal.id) ? 'checked' : ''} aria-label="Sélectionner pour changeset" />
+      <input type="checkbox" data-select-proposal="${escapeAttr(proposal.id)}" ${canSelect ? '' : 'disabled'} ${state.selectedProposalIds.has(proposal.id) ? 'checked' : ''} aria-label="Sélectionner cette proposition" />
       <button class="row-main" type="button" data-open-proposal="${escapeAttr(proposal.id)}">
         <strong>${escapeHtml(proposal.id)} - ${escapeHtml(proposal.locale)}/${escapeHtml(proposal.chapterId)}</strong>
         <span class="snippet">${escapeHtml(shortText(proposal.proposedText))}</span>
@@ -294,18 +294,34 @@ function proposalDiffHtml(parts) {
 }
 
 function selectionHtml() {
-  const selected = [...state.selectedProposalIds]
-  const duplicate = selectedDuplicateKey()
+  const selected = selectedProposals()
+  const accepted = selected.filter((proposal) => proposal.status === 'accepted')
+  const pending = selected.filter((proposal) => proposal.status === 'pending')
+  const mixed = accepted.length > 0 && pending.length > 0
+  const duplicate = accepted.length ? selectedDuplicateKey(accepted) : ''
   return `
     <div class="selection-bar">
-      <strong>${selected.length} proposition${selected.length > 1 ? 's' : ''} acceptée${selected.length > 1 ? 's' : ''} sélectionnée${selected.length > 1 ? 's' : ''}</strong>
+      <strong>${selected.length} proposition${selected.length > 1 ? 's' : ''} sélectionnée${selected.length > 1 ? 's' : ''}</strong>
+      ${mixed ? '<p class="notice error">Sélectionne uniquement des propositions en attente ou uniquement des propositions acceptées.</p>' : ''}
       ${duplicate ? `<p class="notice error">Conflit sur ${escapeHtml(duplicate)} : un changeset ne peut garder qu'une version finale par segment.</p>` : ''}
-      <label>
-        Titre du changeset
-        <input type="text" data-changeset-title placeholder="Corrections FR chapitre 1" />
-      </label>
+      ${accepted.length && !mixed ? `
+        <label>
+          Titre du changeset
+          <input type="text" data-changeset-title placeholder="Corrections FR chapitre 1" />
+        </label>
+      ` : ''}
+      ${pending.length && !mixed ? `
+        <label>
+          Note de modération commune
+          <textarea data-bulk-review-note placeholder="Optionnel"></textarea>
+        </label>
+      ` : ''}
       <div class="actions">
-        <button type="button" class="primary" data-create-changeset ${selected.length && !duplicate ? '' : 'disabled'}>Créer un changeset</button>
+        ${accepted.length && !mixed ? `<button type="button" class="primary" data-create-changeset ${accepted.length && !duplicate ? '' : 'disabled'}>Créer un changeset</button>` : ''}
+        ${pending.length && !mixed ? `
+          <button type="button" class="danger" data-bulk-review="reject">Refuser la sélection</button>
+          <button type="button" data-bulk-review="stale">Marquer obsolète</button>
+        ` : ''}
         <button type="button" data-clear-selection ${selected.length ? '' : 'disabled'}>Vider la sélection</button>
       </div>
     </div>
@@ -424,6 +440,9 @@ function bindProposalEvents() {
   app.querySelectorAll('[data-review]').forEach((button) => {
     button.addEventListener('click', () => runAction(() => reviewActiveProposal(button.dataset.review)))
   })
+  app.querySelectorAll('[data-bulk-review]').forEach((button) => {
+    button.addEventListener('click', () => runAction(() => bulkReviewSelected(button.dataset.bulkReview)))
+  })
   app.querySelector('[data-create-changeset]')?.addEventListener('click', () => runAction(createChangeset))
   app.querySelector('[data-clear-selection]')?.addEventListener('click', () => {
     state.selectedProposalIds.clear()
@@ -481,7 +500,9 @@ async function createChangeset() {
   if (duplicate) throw new Error(`Conflit sur ${duplicate}.`)
   const title = app.querySelector('[data-changeset-title]')?.value?.trim()
   if (!title) throw new Error('Titre du changeset requis.')
-  const proposalPublicIds = [...state.selectedProposalIds]
+  const proposalPublicIds = selectedProposals()
+    .filter((proposal) => proposal.status === 'accepted')
+    .map((proposal) => proposal.id)
   if (!proposalPublicIds.length) throw new Error('Sélectionne au moins une proposition acceptée.')
   const payload = await request('/v1/admin/changesets', {
     method: 'POST',
@@ -493,6 +514,28 @@ async function createChangeset() {
   state.activeChangeset = payload.changeset
   state.notice = { type: 'success', message: 'Changeset créé.' }
   await loadChangesets()
+}
+
+async function bulkReviewSelected(decision) {
+  const proposals = selectedProposals()
+  if (!proposals.length) throw new Error('Sélectionne au moins une proposition en attente.')
+  if (proposals.some((proposal) => proposal.status !== 'pending')) {
+    throw new Error('La revue groupée ne traite que les propositions en attente.')
+  }
+  const payload = await request('/v1/admin/proposals/bulk-review', {
+    method: 'POST',
+    body: {
+      decision,
+      proposalPublicIds: proposals.map((proposal) => proposal.id),
+      moderatorNote: app.querySelector('[data-bulk-review-note]')?.value || '',
+    },
+  })
+  state.selectedProposalIds.clear()
+  state.notice = {
+    type: 'success',
+    message: `${payload.proposals.length} proposition${payload.proposals.length > 1 ? 's' : ''} ${statusLabel(decision)}${payload.proposals.length > 1 ? 's' : ''}. ${payload.notifiedRecipients} destinataire${payload.notifiedRecipients > 1 ? 's' : ''} notifié${payload.notifiedRecipients > 1 ? 's' : ''}.`,
+  }
+  await loadProposals()
 }
 
 async function exportActiveChangeset() {
@@ -509,11 +552,9 @@ async function changesetAction(action) {
   await loadChangesets()
 }
 
-function selectedDuplicateKey() {
+function selectedDuplicateKey(proposals = selectedProposals().filter((proposal) => proposal.status === 'accepted')) {
   const seen = new Set()
-  for (const id of state.selectedProposalIds) {
-    const proposal = state.proposals.find((item) => item.id === id)
-    if (!proposal) continue
+  for (const proposal of proposals) {
     const key = proposalTargetKey(proposal)
     if (seen.has(key)) return key
     seen.add(key)
@@ -526,6 +567,16 @@ function proposalTargetKey(proposal) {
     ? 'choice'
     : `segment ${proposal.segmentIndex + 1}/${proposal.segmentCount}`
   return `${proposal.locale}/${proposal.chapterId}/${proposal.messageId}/${segment}`
+}
+
+function selectedProposals() {
+  return [...state.selectedProposalIds]
+    .map((id) => state.proposals.find((proposal) => proposal.id === id))
+    .filter(Boolean)
+}
+
+function isSelectableProposal(proposal) {
+  return proposal.status === 'pending' || proposal.status === 'accepted'
 }
 
 function groupBy(items, getKey) {

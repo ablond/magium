@@ -199,6 +199,7 @@
   $: browserThemeColor = themeColorFor(settings.theme)
   $: momentVisual = settings.illustrations && state ? getBook1SceneVisual(state.currentSceneId, state.variables) : null
   $: visibleMomentVisual = momentVisual && !hiddenMomentVisuals[momentVisual.src] ? momentVisual : null
+  $: showContributionControls = Boolean(contributionApiUrl) && settings.translationContributions
   $: debugChapters = context?.index.chapters ?? []
   $: debugChapter = debugChapterId
     ? debugChapterCache[debugChapterId] ?? context?.chapters[debugChapterId] ?? null
@@ -1311,20 +1312,26 @@
 
         <article class="scene">
           {#each displayParagraphs as paragraph, index (paragraph.id)}
-            <div class="contribution-line">
+            {#if showContributionControls}
+              <div class="contribution-line">
+                <p
+                  class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
+                >{paragraph.text}</p>
+                <button
+                  type="button"
+                  class="text-correction"
+                  title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
+                  aria-label={t(uiMessages, 'contribution.proposeParagraph', {}, 'Propose a correction for this paragraph')}
+                  on:click={() => openParagraphContribution(paragraph)}
+                >
+                  <Pencil size={14} />
+                </button>
+              </div>
+            {:else}
               <p
                 class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
               >{paragraph.text}</p>
-              <button
-                type="button"
-                class="text-correction"
-                title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
-                aria-label={t(uiMessages, 'contribution.proposeParagraph', {}, 'Propose a correction for this paragraph')}
-                on:click={() => openParagraphContribution(paragraph)}
-              >
-                <Pencil size={14} />
-              </button>
-            </div>
+            {/if}
           {/each}
         </article>
 
@@ -1342,21 +1349,28 @@
 
         <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
-            <div class="choice-row">
-              <button disabled={busy} on:click={() => choose(choice)}>
+            {#if showContributionControls}
+              <div class="choice-row">
+                <button class="choice-action" disabled={busy} on:click={() => choose(choice)}>
+                  <ScrollText size={18} />
+                  <span>{choice.text}</span>
+                </button>
+                <button
+                  type="button"
+                  class="text-correction choice-correction"
+                  title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
+                  aria-label={t(uiMessages, 'contribution.proposeChoice', {}, 'Propose a correction for this choice')}
+                  on:click={() => openChoiceContribution(choice)}
+                >
+                  <Pencil size={14} />
+                </button>
+              </div>
+            {:else}
+              <button class="choice-action" disabled={busy} on:click={() => choose(choice)}>
                 <ScrollText size={18} />
                 <span>{choice.text}</span>
               </button>
-              <button
-                type="button"
-                class="text-correction choice-correction"
-                title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
-                aria-label={t(uiMessages, 'contribution.proposeChoice', {}, 'Propose a correction for this choice')}
-                on:click={() => openChoiceContribution(choice)}
-              >
-                <Pencil size={14} />
-              </button>
-            </div>
+            {/if}
           {/each}
         </div>
       {/if}
@@ -1609,6 +1623,15 @@
               <span class="help">{t(uiMessages, 'settings.illustrationsHelp', {}, 'Show moment illustrations after the matching scene when they are available.')}</span>
             </span>
           </label>
+          {#if contributionApiUrl}
+            <label class="toggle">
+              <input type="checkbox" checked={settings.translationContributions} on:change={(event) => updateSettings({ translationContributions: event.currentTarget.checked })} />
+              <span>
+                {t(uiMessages, 'settings.translationContributions', {}, 'Translation corrections')}
+                <span class="help">{t(uiMessages, 'settings.translationContributionsHelp', {}, 'Show pencil icons on paragraphs and choices to propose a correction.')}</span>
+              </span>
+            </label>
+          {/if}
         {:else if activePanel === 'debug' && isDebugBuild && state}
           <h2>{t(uiMessages, 'debug.title', {}, 'Debug')}</h2>
           <div class:dirty={state.debug?.dirty} class="debug-state">
