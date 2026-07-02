@@ -126,6 +126,9 @@ docs/                       Documentation technique détaillée.
 ## Documentation
 
 - [AGENTS.md](./AGENTS.md) : consignes prioritaires pour les futures itérations par agents IA.
+- [Licence et notices](./NOTICE.md) : code applicatif MIT, attribution Magium et contenu CC BY 4.0.
+- [Contribuer](./CONTRIBUTING.md) : workflow PR, checks attendus et règles generated/content.
+- [Sécurité](./SECURITY.md) : signalement privé des vulnérabilités.
 - [Architecture](./docs/architecture.md) : vue d'ensemble du système.
 - [Pipeline contenu](./docs/content-pipeline.md) : archive, parsing, JSON canonique, runtime packs.
 - [Moteur runtime](./docs/runtime-engine.md) : scènes, choix, conditions, stats, achievements.
@@ -137,6 +140,21 @@ docs/                       Documentation technique détaillée.
 - [Images manuelles](./docs/manual-images.md) : prompts ChatGPT Images, portraits et illustrations Book 1.
 - [Déploiement Coolify](./docs/deployment-coolify.md) : build Dockerfile via GitHub App, image GHCR optionnelle et configuration Coolify.
 - [Vérification](./docs/verification.md) : commandes, checks, tests navigateur.
+
+## Licence Et Attribution
+
+Le code applicatif, les outils, les tests, la documentation et la configuration
+de déploiement propres à ce dépôt sont publiés sous licence MIT. Voir
+[LICENSE](./LICENSE).
+
+Le récit et les données Magium importés depuis `raduprv/Magium` restent sous la
+licence indiquée par l'amont : Creative Commons Attribution 4.0 International
+(CC BY 4.0). Les archives originales, le contenu canonique, les packs runtime
+générés et les traductions narratives dérivées de ces textes ne sont pas couverts
+par la licence MIT du code applicatif. Voir [NOTICE.md](./NOTICE.md).
+
+Ce projet est une adaptation non officielle et n'est pas approuvé par les ayants
+droit de l'auteur original ni par les mainteneurs de la communauté Magium.
 
 ## Contribution Traduction : Reprise Rapide
 
