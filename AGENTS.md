@@ -49,7 +49,10 @@ Si une itération touche les prompts, assets ou l'affichage d'images Book 1, lan
 
 ```bash
 pnpm images:check -- --book 1
+pnpm images:test
 ```
+
+`pnpm images:test` couvre les tests Vitest du pipeline images Book 1, notamment les planches de références et le JSONL OpenAI Batch. Il nécessite `ffmpeg` et n'est pas inclus dans `pnpm test`, pour que les workflows de traduction ne dépendent pas des outils images.
 
 `pnpm build` exécute aussi :
 
@@ -162,7 +165,7 @@ Avant de modifier ce sous-système, lire `docs/translation-contributions-system.
 - Les propositions concurrentes sur un même choix ou un même segment `locale/chapterId/messageId/segmentIndex` doivent être résolues dans l'outil de revue. Un changeset peut contenir plusieurs corrections du même `messageId` si les `segmentIndex` sont différents.
 - L'admin mainteneur peut afficher `currentText` et un diff visuel pour aider la revue, mais seule la version finale retenue est éditable et intégrée au changeset. Les anciennes propositions sans `currentText` doivent rester consultables sans diff.
 - `tools/contributions/apply-changeset.mjs` refuse un changeset si `currentTextHash` ne correspond plus au texte source éditable courant. Pour un paragraphe, comparer le hash du segment cible et remplacer uniquement ce segment dans la valeur JSON complète. Dans ce cas, marquer le changeset/propositions `stale` au lieu de forcer.
-- Le workflow `.github/workflows/translation-changeset-pr.yml` doit lancer `pnpm content:all`, `pnpm check`, `pnpm test` et `pnpm build` avant de créer la PR.
+- Le workflow `.github/workflows/translation-changeset-pr.yml` doit lancer `pnpm content:all`, `pnpm check`, `pnpm test` et `pnpm build` avant de créer la PR. `pnpm test` exclut les tests manuels Book 1 qui génèrent des WebP avec `ffmpeg`.
 - Les emails de suivi doivent rester séparés des propositions publiques, confirmés par token, non affichés dans l'admin public/PR, et supprimés après rejet, stale ou publication. Le consentement de suivi est réutilisable un an par navigateur via un jeton local ; côté serveur, ne stocker pour ce consentement qu'un HMAC d'email et un hash de jeton, jamais l'email brut.
 - Les pseudos de crédit sont publics seulement si le contributeur l'a demandé et si le mainteneur les approuve. Refuser ou masquer les pseudos illégaux, violents, haineux, sexuellement explicites, pédopornographiques, de doxxing, d'usurpation ou manifestement inadaptés.
 - La page publique `/legal/contributions.html` doit rester cohérente avec ce comportement. Compléter les mentions légales de l'instance avant activation publique.
@@ -181,7 +184,11 @@ Ordre attendu :
 5. Joindre dans ChatGPT les portraits renommés du dossier `output/visual/staging/book1/<moment-id>/references/`, coller `prompt.md`, puis sauvegarder `illustration.webp` sous `public/visuals/book1/moments/<moment-id>/`.
 6. Si des PNG/JPG ont été ajoutés depuis ChatGPT, lancer `pnpm images:normalize -- --book 1` pour créer les `illustration.webp` et archiver les originaux.
 7. Pour le chemin API optionnel : `pnpm images:refsheets -- --book 1 --missing`, puis `OPENAI_API_KEY=... pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`. Récupérer ensuite le batch avec la commande `--retrieve` affichée par le script.
-8. `pnpm images:check -- --book 1`
+8. `pnpm images:test`
+   - nécessite `ffmpeg` ;
+   - vérifie les prompts, les références personnages, les planches de références API et le JSONL OpenAI Batch ;
+   - reste séparé de `pnpm test` pour ne pas imposer `ffmpeg` aux workflows non image.
+9. `pnpm images:check -- --book 1`
    - vérifie la structure publique ;
    - refuse `evidenceRefs`, RAG, embeddings, marqueurs `.magium`, anciens dossiers `chapters` et copies longues du texte canonique ;
    - accepte les WebP manquants pendant la production.
