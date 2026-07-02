@@ -1,0 +1,87 @@
+services:
+  web:
+    image: node:22-alpine
+    working_dir: /app
+    ports:
+      - "${MAGIUM_WEB_PORT:-5173}:5173"
+    environment:
+      VITE_MAGIUM_CONTRIBUTIONS_API_URL: "${VITE_MAGIUM_CONTRIBUTIONS_API_URL:-http://localhost:8090}"
+      VITE_MAGIUM_TURNSTILE_SITE_KEY: "${VITE_MAGIUM_TURNSTILE_SITE_KEY:-}"
+      CHOKIDAR_USEPOLLING: "${CHOKIDAR_USEPOLLING:-true}"
+    volumes:
+      - .:/app
+      - magium_web_node_modules:/app/node_modules
+      - magium_web_pnpm_store:/pnpm/store
+    command: >
+      sh -c "corepack enable
+      && corepack prepare pnpm@11.9.0 --activate
+      && pnpm install --frozen-lockfile --store-dir /pnpm/store
+      && pnpm dev --host 0.0.0.0"
+
+  translation-api:
+    build:
+      context: ./services/translation-api
+      dockerfile: Dockerfile
+    ports:
+      - "${MAGIUM_TRANSLATION_API_PORT:-8090}:8090"
+    environment:
+      PORT: "8090"
+      DATABASE_URL: "postgres://${POSTGRES_USER:-magium_translation}:${POSTGRES_PASSWORD:-magium_translation}@postgres:5432/${POSTGRES_DB:-magium_translation}"
+      PUBLIC_API_URL: "${MAGIUM_TRANSLATION_PUBLIC_API_URL:-http://localhost:8090}"
+      PUBLIC_WEB_URL: "${MAGIUM_TRANSLATION_PUBLIC_WEB_URL:-http://localhost:5173}"
+      ALLOWED_ORIGIN: "${MAGIUM_TRANSLATION_ALLOWED_ORIGIN:-http://localhost:5173}"
+      ADMIN_TOKEN: "${MAGIUM_TRANSLATION_ADMIN_TOKEN:-dev-admin-token}"
+      ADMIN_PASSWORD: "${MAGIUM_TRANSLATION_ADMIN_PASSWORD:-dev-admin-password}"
+      ADMIN_SESSION_SECRET: "${MAGIUM_TRANSLATION_ADMIN_SESSION_SECRET:-dev-admin-session-secret}"
+      ADMIN_COOKIE_SECURE: "${MAGIUM_TRANSLATION_ADMIN_COOKIE_SECURE:-0}"
+      ADMIN_SESSION_TTL_HOURS: "${MAGIUM_TRANSLATION_ADMIN_SESSION_TTL_HOURS:-8}"
+      TURNSTILE_DISABLED: "${MAGIUM_TRANSLATION_TURNSTILE_DISABLED:-1}"
+      TURNSTILE_SECRET_KEY: "${MAGIUM_TRANSLATION_TURNSTILE_SECRET_KEY:-}"
+      PSEUDONYM_BLOCKLIST: "${MAGIUM_TRANSLATION_PSEUDONYM_BLOCKLIST:-}"
+      SMTP_URL: "${MAGIUM_TRANSLATION_SMTP_URL:-smtp://mailpit:1025}"
+      EMAIL_FROM: "${MAGIUM_TRANSLATION_EMAIL_FROM:-Magium <no-reply@magium.app>}"
+      EMAIL_WEBHOOK_URL: "${MAGIUM_TRANSLATION_EMAIL_WEBHOOK_URL:-}"
+      EMAIL_WEBHOOK_TOKEN: "${MAGIUM_TRANSLATION_EMAIL_WEBHOOK_TOKEN:-}"
+      EMAIL_CONSENT_SECRET: "${MAGIUM_TRANSLATION_EMAIL_CONSENT_SECRET:-dev-email-consent-secret}"
+      GITHUB_TOKEN_FOR_DISPATCH: "${MAGIUM_TRANSLATION_GITHUB_TOKEN_FOR_DISPATCH:-}"
+      GITHUB_REPOSITORY_TARGET: "${MAGIUM_TRANSLATION_GITHUB_REPOSITORY_TARGET:-}"
+      GITHUB_WORKFLOW_FILE: "${MAGIUM_TRANSLATION_GITHUB_WORKFLOW_FILE:-translation-changeset-pr.yml}"
+      GITHUB_REF_NAME: "${MAGIUM_TRANSLATION_GITHUB_REF_NAME:-main}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8090/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    image: postgres:18-alpine
+    ports:
+      - "${MAGIUM_POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:-magium_translation}"
+      POSTGRES_USER: "${POSTGRES_USER:-magium_translation}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-magium_translation}"
+    volumes:
+      - magium_postgres18_data:/var/lib/postgresql
+      - ./services/translation-api/schema.sql:/docker-entrypoint-initdb.d/001-translation-api.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAGIUM_MAILPIT_WEB_PORT:-8025}:8025"
+
+volumes:
+  magium_web_node_modules:
+  magium_web_pnpm_store:
+  magium_postgres18_data:

@@ -23,9 +23,29 @@
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
-  import { loadContextForScene, loadIndex, loadStoryChapter, loadUiLocale } from './lib/content/packedContent'
+  import { loadContextForScene, loadIndex, loadLocaleChapter, loadStoryChapter, loadUiLocale } from './lib/content/packedContent'
+  import { submitTranslationProposal } from './lib/contributions/api'
+  import {
+    buildTranslationProposalPayload,
+    hashContributionText,
+    type TranslationContributionDraft,
+    type TranslationContributionTarget,
+  } from './lib/contributions/payload'
+  import {
+    applyContributionEmailConsent,
+    clearContributionEmailState,
+    clearContributionProfile,
+    loadContributionEmailConsent,
+    loadContributionProfile,
+    parseContributionEmailConsentFragment,
+    removeContributionEmailConsentFragment,
+    saveContributionEmailConsentForEmail,
+    saveContributionProfile,
+    savePendingContributionEmailConsent,
+  } from './lib/contributions/storage'
+  import { requestTurnstileToken } from './lib/contributions/turnstile'
   import { DEFAULT_UI_LOCALES, resolveUiLocale, translateUi as t } from './lib/i18n/ui'
-  import { splitDisplayParagraphs } from './lib/reader/displayParagraphs'
+  import { DISPLAY_PARAGRAPH_BREAK, splitDisplayParagraphs, splitDisplayText, type DisplayParagraph } from './lib/reader/displayParagraphs'
   import { defaultReaderSettings, migrateReaderSettings } from './lib/settings/readerSettings'
   import {
     applyChoice,
@@ -82,6 +102,8 @@
   }
 
   const isDebugBuild = import.meta.env.DEV
+  const contributionApiUrl = (import.meta.env.VITE_MAGIUM_CONTRIBUTIONS_API_URL ?? '').trim()
+  const turnstileSiteKey = (import.meta.env.VITE_MAGIUM_TURNSTILE_SITE_KEY ?? '').trim()
   const maxDebugSnapshots = 80
   const debugNumericVariables = [
     ...STAT_VARIABLES,
@@ -158,6 +180,13 @@
   let debugVariableValue = '0'
   let debugUndoStack: DebugSnapshot[] = []
   let debugRedoStack: DebugSnapshot[] = []
+  let contributionTarget: TranslationContributionTarget | null = null
+  let contributionDraft: TranslationContributionDraft = createEmptyContributionDraft()
+  let rememberContributionProfile = false
+  let contributionBusy = false
+  let contributionError = ''
+  let contributionStatus = ''
+  let contributionSubmitted = false
 
   $: chapterTitle = state
     ? describeScene(state.currentSceneId, uiMessages)
@@ -217,6 +246,22 @@
       persistReaderSettings(settings)
       uiMessages = (await loadUiLocale(settings.uiLocale)).messages
       applyReaderSettings(settings)
+      const emailConsentPayload = parseContributionEmailConsentFragment(window.location.hash)
+      if (emailConsentPayload) {
+        await applyContributionEmailConsent(emailConsentPayload)
+        removeContributionEmailConsentFragment(window.location, window.history)
+      }
+      const contributionProfile = await loadContributionProfile()
+      if (contributionProfile) {
+        contributionDraft = {
+          ...contributionDraft,
+          pseudonym: contributionProfile.pseudonym,
+          email: contributionProfile.email,
+          creditRequested: contributionProfile.pseudonym.length > 0,
+          notifyRequested: contributionProfile.email.length > 0,
+        }
+        rememberContributionProfile = true
+      }
       context = await loadContextForScene(index.initialSceneId, settings.locale)
       const loaded = await loadGameState('autosave')
       if (loaded?.contentVersion === index.contentVersion) {
@@ -640,6 +685,11 @@
 
   function handleWindowKeydown(event: KeyboardEvent) {
     if (event.key !== 'Escape') return
+    if (contributionTarget) {
+      event.preventDefault()
+      closeContributionModal()
+      return
+    }
     if (pendingDeleteSave) {
       event.preventDefault()
       cancelRemoveSlot()
@@ -988,6 +1038,176 @@
     return /^[A-Za-z]/.test(text.trim())
   }
 
+  function createEmptyContributionDraft(): TranslationContributionDraft {
+    return {
+      proposedText: '',
+      note: '',
+      pseudonym: '',
+      creditRequested: false,
+      email: '',
+      notifyRequested: false,
+    }
+  }
+
+  async function openParagraphContribution(paragraph: DisplayParagraph) {
+    if (!rendered) return
+    const block = rendered.scene.blocks.find((candidate) => candidate.id === paragraph.sourceId)
+    if (!block) return
+    await openContributionTarget('paragraph', block.messageId, paragraph)
+  }
+
+  async function openChoiceContribution(choice: Choice) {
+    await openContributionTarget('choice', choice.messageId)
+  }
+
+  async function openContributionTarget(targetType: TranslationContributionTarget['targetType'], messageId: string, paragraph?: DisplayParagraph) {
+    if (!state || !context) return
+    contributionError = ''
+    contributionStatus = ''
+    contributionSubmitted = false
+    const chapterId = context.index.sceneToChapter[state.currentSceneId]
+    if (!chapterId) return
+    const currentBundle = context.locales[chapterId]
+    const sourceBundle = await loadLocaleChapter(chapterId, 'en')
+    const currentMessageText = currentBundle.messages[messageId] ?? ''
+    const sourceMessageText = sourceBundle.messages[messageId] ?? ''
+    const sourceSegments = splitDisplayText(sourceMessageText)
+    const currentText = paragraph ? paragraph.text : currentMessageText
+    const sourceText = paragraph ? (sourceSegments[paragraph.segmentIndex] ?? '') : sourceMessageText
+    contributionTarget = {
+      contentVersion: state.contentVersion,
+      locale: state.locale,
+      chapterId,
+      sceneId: state.currentSceneId,
+      messageId,
+      targetType,
+      ...(paragraph ? { segmentIndex: paragraph.segmentIndex, segmentCount: paragraph.segmentCount } : {}),
+      currentText,
+      sourceText,
+      currentTextHash: await hashContributionText(currentText),
+      sourceTextHash: await hashContributionText(sourceText),
+    }
+    contributionDraft = {
+      ...contributionDraft,
+      proposedText: currentText,
+      note: '',
+    }
+  }
+
+  function closeContributionModal() {
+    if (contributionSubmitted) {
+      contributionDraft = {
+        ...contributionDraft,
+        proposedText: '',
+        note: '',
+      }
+    }
+    contributionTarget = null
+    contributionError = ''
+    contributionStatus = ''
+    contributionSubmitted = false
+  }
+
+  async function submitContribution() {
+    if (!contributionTarget || contributionBusy) return
+    contributionError = ''
+    contributionStatus = ''
+    contributionSubmitted = false
+
+    if (!contributionDraft.proposedText.trim()) {
+      contributionError = t(uiMessages, 'contribution.errorEmpty', {}, 'Enter a proposed correction.')
+      return
+    }
+
+    if (contributionDraft.proposedText.trim() === contributionTarget.currentText.trim()) {
+      contributionError = t(uiMessages, 'contribution.errorUnchanged', {}, 'Change the text before sending a proposal.')
+      return
+    }
+
+    if (contributionTarget.targetType === 'paragraph' && DISPLAY_PARAGRAPH_BREAK.test(contributionDraft.proposedText.trim())) {
+      contributionError = t(uiMessages, 'contribution.errorParagraphBreak', {}, 'Send one paragraph at a time. Remove the blank line or open another paragraph correction.')
+      return
+    }
+
+    if (contributionDraft.creditRequested && !contributionDraft.pseudonym.trim()) {
+      contributionError = t(uiMessages, 'contribution.errorPseudonym', {}, 'Enter a pseudonym or turn off credits.')
+      return
+    }
+
+    if (contributionDraft.notifyRequested && !contributionDraft.email.trim()) {
+      contributionError = t(uiMessages, 'contribution.errorEmail', {}, 'Enter an email address or turn off notifications.')
+      return
+    }
+
+    if (!contributionApiUrl) {
+      contributionError = t(uiMessages, 'contribution.errorUnavailable', {}, 'Translation contributions are not configured on this build.')
+      return
+    }
+
+    try {
+      contributionBusy = true
+      const captchaToken = await requestTurnstileToken(turnstileSiteKey)
+      const emailConsent = contributionDraft.notifyRequested && contributionDraft.email.trim()
+        ? await loadContributionEmailConsent(contributionDraft.email)
+        : null
+      const draft = {
+        ...contributionDraft,
+        ...(emailConsent ? { emailConsentId: emailConsent.id, emailConsentToken: emailConsent.token } : {}),
+      }
+      const payload = buildTranslationProposalPayload(contributionTarget, draft, captchaToken)
+      const response = await submitTranslationProposal(contributionApiUrl, payload)
+      if (rememberContributionProfile) {
+        await saveContributionProfile({
+          pseudonym: contributionDraft.pseudonym.trim(),
+          email: contributionDraft.email.trim(),
+        })
+      } else {
+        await clearContributionProfile()
+      }
+      if (response.notificationStatus === 'confirmation_sent' && contributionDraft.email.trim()) {
+        await savePendingContributionEmailConsent(response.publicId, contributionDraft.email)
+      }
+      if (response.notificationStatus === 'confirmed' && emailConsent && response.emailConsentExpiresAt) {
+        await saveContributionEmailConsentForEmail(contributionDraft.email, {
+          id: emailConsent.id,
+          token: emailConsent.token,
+          expiresAt: response.emailConsentExpiresAt,
+        })
+      }
+      contributionSubmitted = true
+      contributionStatus = contributionSuccessMessage(response.notificationStatus)
+    } catch (caught) {
+      contributionError = formatCaughtError(caught)
+    } finally {
+      contributionBusy = false
+    }
+  }
+
+  async function eraseContributionProfile() {
+    await clearContributionProfile()
+    await clearContributionEmailState()
+    contributionDraft = {
+      ...contributionDraft,
+      pseudonym: '',
+      email: '',
+      creditRequested: false,
+      notifyRequested: false,
+    }
+    rememberContributionProfile = false
+    contributionSubmitted = false
+    contributionStatus = t(uiMessages, 'contribution.statusProfileCleared', {}, 'Contribution details were erased from this device.')
+  }
+
+  function contributionSuccessMessage(notificationStatus: 'none' | 'confirmation_sent' | 'confirmed') {
+    if (notificationStatus === 'confirmation_sent') {
+      return t(uiMessages, 'contribution.statusEmailConfirmationSent', {}, 'Proposal sent. A confirmation email has just been sent.')
+    }
+    if (notificationStatus === 'confirmed') {
+      return t(uiMessages, 'contribution.statusEmailConfirmed', {}, 'Proposal sent. You will receive an email when it has been reviewed.')
+    }
+    return t(uiMessages, 'contribution.statusSent', {}, 'Proposal sent. Thank you for the correction.')
+  }
+
   function formatCaughtError(caught: unknown) {
     const message = caught instanceof Error ? caught.message : String(caught)
     const key = errorMessageKeys[message]
@@ -1091,9 +1311,20 @@
 
         <article class="scene">
           {#each displayParagraphs as paragraph, index (paragraph.id)}
-            <p
-              class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
-            >{paragraph.text}</p>
+            <div class="contribution-line">
+              <p
+                class:dropcap={index === 0 && canUseDropCap(paragraph.text)}
+              >{paragraph.text}</p>
+              <button
+                type="button"
+                class="text-correction"
+                title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
+                aria-label={t(uiMessages, 'contribution.proposeParagraph', {}, 'Propose a correction for this paragraph')}
+                on:click={() => openParagraphContribution(paragraph)}
+              >
+                <Pencil size={14} />
+              </button>
+            </div>
           {/each}
         </article>
 
@@ -1111,10 +1342,21 @@
 
         <div class="choices" aria-label={t(uiMessages, 'choices.aria', {}, 'Choices')}>
           {#each rendered.choices as choice}
-            <button disabled={busy} on:click={() => choose(choice)}>
-              <ScrollText size={18} />
-              <span>{choice.text}</span>
-            </button>
+            <div class="choice-row">
+              <button disabled={busy} on:click={() => choose(choice)}>
+                <ScrollText size={18} />
+                <span>{choice.text}</span>
+              </button>
+              <button
+                type="button"
+                class="text-correction choice-correction"
+                title={t(uiMessages, 'contribution.propose', {}, 'Propose a correction')}
+                aria-label={t(uiMessages, 'contribution.proposeChoice', {}, 'Propose a correction for this choice')}
+                on:click={() => openChoiceContribution(choice)}
+              >
+                <Pencil size={14} />
+              </button>
+            </div>
           {/each}
         </div>
       {/if}
@@ -1523,6 +1765,7 @@
             <p class="meta">{t(uiMessages, 'about.unofficial', {}, "This is an unofficial adaptation and is not endorsed by the original author's estate or the Magium community maintainers.")}</p>
             <p class="meta">{t(uiMessages, 'about.sourceLabel', {}, 'Source:')} <a href="https://github.com/raduprv/Magium" rel="noreferrer" target="_blank">https://github.com/raduprv/Magium</a></p>
             <p class="meta">{t(uiMessages, 'about.licenseLabel', {}, 'License:')} <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" target="_blank">https://creativecommons.org/licenses/by/4.0/</a></p>
+            <p class="meta">{t(uiMessages, 'about.privacyLabel', {}, 'Contribution privacy:')} <a href="/legal/contributions.html" rel="noreferrer" target="_blank">/legal/contributions.html</a></p>
             <p class="meta">{t(uiMessages, 'about.changes', {}, 'Changes: French translation, UI adaptation, technical restructuring, additional interface features.')}</p>
           </div>
         {/if}
@@ -1545,6 +1788,108 @@
             {t(uiMessages, 'saves.deleteConfirmAction', {}, 'Delete save')}
           </button>
         </div>
+      </div>
+    {/if}
+
+    {#if contributionTarget}
+      <button type="button" class="confirm-scrim" aria-label={t(uiMessages, 'contribution.close', {}, 'Close contribution form')} on:click={closeContributionModal}></button>
+      <div class="contribution-modal" role="dialog" aria-modal="true" aria-label={t(uiMessages, 'contribution.title', {}, 'Propose a correction')} tabindex="-1">
+        <div class="contribution-modal-heading">
+          <div>
+            <p class="eyebrow">{contributionTarget.targetType === 'choice' ? t(uiMessages, 'contribution.targetChoice', {}, 'Choice') : t(uiMessages, 'contribution.targetParagraph', {}, 'Paragraph')}</p>
+            <h3>{t(uiMessages, 'contribution.title', {}, 'Propose a correction')}</h3>
+          </div>
+          <button
+            type="button"
+            class="icon-action"
+            title={t(uiMessages, 'contribution.close', {}, 'Close contribution form')}
+            aria-label={t(uiMessages, 'contribution.close', {}, 'Close contribution form')}
+            on:click={closeContributionModal}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {#if contributionSubmitted}
+          <div class="contribution-success" role="status" aria-live="polite">
+            <CircleCheck size={26} />
+            <p>{contributionStatus}</p>
+            <button type="button" on:click={closeContributionModal}>{t(uiMessages, 'contribution.closeSuccess', {}, 'Close')}</button>
+          </div>
+        {:else}
+          <div class="contribution-reference">
+            <strong>{t(uiMessages, 'contribution.currentText', {}, 'Current text')}</strong>
+            <p>{contributionTarget.currentText}</p>
+          </div>
+          {#if contributionTarget.sourceText && contributionTarget.sourceText !== contributionTarget.currentText}
+            <div class="contribution-reference">
+              <strong>{t(uiMessages, 'contribution.sourceText', {}, 'English source')}</strong>
+              <p>{contributionTarget.sourceText}</p>
+            </div>
+          {/if}
+
+          <label>
+            {t(uiMessages, 'contribution.proposedText', {}, 'Proposed correction')}
+            <textarea bind:value={contributionDraft.proposedText} rows="7" disabled={contributionBusy}></textarea>
+          </label>
+          <label>
+            {t(uiMessages, 'contribution.note', {}, 'Comment for the maintainers')}
+            <textarea bind:value={contributionDraft.note} rows="3" placeholder={t(uiMessages, 'contribution.notePlaceholder', {}, 'Optional')} disabled={contributionBusy}></textarea>
+          </label>
+
+          <div class="contribution-fields">
+            <label>
+              {t(uiMessages, 'contribution.pseudonym', {}, 'Pseudonym for credits')}
+              <input type="text" bind:value={contributionDraft.pseudonym} placeholder={t(uiMessages, 'contribution.optional', {}, 'Optional')} disabled={contributionBusy} />
+            </label>
+            <label>
+              {t(uiMessages, 'contribution.email', {}, 'Email for follow-up')}
+              <input type="email" bind:value={contributionDraft.email} placeholder={t(uiMessages, 'contribution.optional', {}, 'Optional')} disabled={contributionBusy} />
+            </label>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" bind:checked={contributionDraft.creditRequested} disabled={contributionBusy || !contributionDraft.pseudonym.trim()} />
+            <span>
+              {t(uiMessages, 'contribution.creditRequested', {}, 'Credit this pseudonym if the contribution is retained')}
+              <span class="help">{t(uiMessages, 'contribution.creditHelp', {}, 'Pseudonyms can be moderated before publication if they are illegal, abusive, explicit, impersonating, or otherwise unsuitable.')}</span>
+            </span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" bind:checked={contributionDraft.notifyRequested} disabled={contributionBusy || !contributionDraft.email.trim()} />
+            <span>
+              {t(uiMessages, 'contribution.notifyRequested', {}, 'Notify me by email about this proposal')}
+              <span class="help">{t(uiMessages, 'contribution.notifyHelp', {}, 'The first email confirmation is saved in this browser for one year. The email is used only for follow-up and is deleted after rejection or publication.')}</span>
+            </span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" bind:checked={rememberContributionProfile} disabled={contributionBusy} />
+            <span>
+              {t(uiMessages, 'contribution.rememberProfile', {}, 'Remember pseudonym and email on this device')}
+              <span class="help">{t(uiMessages, 'contribution.rememberHelp', {}, 'Stored locally in this browser only. You can erase it at any time.')}</span>
+            </span>
+          </label>
+
+          <p class="help contribution-privacy">{t(uiMessages, 'contribution.privacy', {}, 'You can contribute anonymously. Technical IDs are sent to route the proposal, but they are not shown here. Bot protection runs before submission.')}</p>
+
+          <div class="contribution-actions">
+            <button disabled={contributionBusy} on:click={closeContributionModal}>{t(uiMessages, 'contribution.cancel', {}, 'Cancel')}</button>
+            <button disabled={contributionBusy} on:click={submitContribution}>
+              <Pencil size={16} />
+              {contributionBusy ? t(uiMessages, 'contribution.sending', {}, 'Sending...') : t(uiMessages, 'contribution.submit', {}, 'Send proposal')}
+            </button>
+          </div>
+          <button class="contribution-clear" disabled={contributionBusy} on:click={eraseContributionProfile}>
+            <Trash2 size={15} />
+            {t(uiMessages, 'contribution.clearProfile', {}, 'Erase saved contribution details')}
+          </button>
+
+          {#if contributionError}
+            <p class="notice panel-notice error" role="alert">{contributionError}</p>
+          {:else if contributionStatus}
+            <p class="notice panel-notice" role="status" aria-live="polite">{contributionStatus}</p>
+          {/if}
+        {/if}
       </div>
     {/if}
   </main>
