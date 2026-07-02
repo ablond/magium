@@ -1,3 +1,5 @@
+# check=skip=SecretsUsedInArgOrEnv
+# Vite embeds the Turnstile site key as a public client setting; the secret key stays only on the API.
 FROM node:22-alpine AS build
 
 WORKDIR /app
@@ -10,6 +12,10 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
+ARG VITE_MAGIUM_CONTRIBUTIONS_API_URL=""
+ARG VITE_MAGIUM_TURNSTILE_SITE_KEY=""
+ENV VITE_MAGIUM_CONTRIBUTIONS_API_URL="${VITE_MAGIUM_CONTRIBUTIONS_API_URL}"
+ENV VITE_MAGIUM_TURNSTILE_SITE_KEY="${VITE_MAGIUM_TURNSTILE_SITE_KEY}"
 RUN pnpm build
 
 FROM nginxinc/nginx-unprivileged:stable-alpine AS prod

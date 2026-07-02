@@ -1,7 +1,7 @@
 const DB_NAME = 'magium-pwa'
-const DB_VERSION = 2
+const DB_VERSION = 4
 
-type StoreName = 'achievementProgress' | 'keys' | 'saves'
+type StoreName = 'achievementProgress' | 'contributionEmailConsents' | 'contributionEmailPending' | 'contributionProfile' | 'keys' | 'saves'
 
 let dbPromise: Promise<IDBDatabase> | null = null
 
@@ -21,6 +21,15 @@ export function openDatabase(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains('achievementProgress')) {
         db.createObjectStore('achievementProgress', { keyPath: 'id' })
+      }
+      if (!db.objectStoreNames.contains('contributionProfile')) {
+        db.createObjectStore('contributionProfile')
+      }
+      if (!db.objectStoreNames.contains('contributionEmailConsents')) {
+        db.createObjectStore('contributionEmailConsents')
+      }
+      if (!db.objectStoreNames.contains('contributionEmailPending')) {
+        db.createObjectStore('contributionEmailPending')
       }
     }
     request.onsuccess = () => resolve(request.result)
@@ -52,6 +61,13 @@ export async function idbDelete(storeName: StoreName, key: IDBValidKey): Promise
   const db = await openDatabase()
   const transaction = db.transaction(storeName, 'readwrite')
   transaction.objectStore(storeName).delete(key)
+  await transactionDone(transaction)
+}
+
+export async function idbClear(storeName: StoreName): Promise<void> {
+  const db = await openDatabase()
+  const transaction = db.transaction(storeName, 'readwrite')
+  transaction.objectStore(storeName).clear()
   await transactionDone(transaction)
 }
 
