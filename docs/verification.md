@@ -3,13 +3,19 @@
 ## Suite Obligatoire
 
 ```bash
-pnpm images:check -- --book 1
 pnpm check
 pnpm test
 pnpm build
 ```
 
 Ces commandes doivent passer avant de terminer une itération.
+
+Si l'itération touche les prompts, assets, outils ou l'affichage d'images Book 1, ajouter :
+
+```bash
+pnpm images:check -- --book 1
+pnpm images:test
+```
 
 Si Docker, Coolify ou le packaging de production changent, ajouter :
 
@@ -35,7 +41,7 @@ pnpm docker:push-prod
 `pnpm test` :
 
 - régénère le contenu via `content:all` ;
-- exécute Vitest ;
+- exécute Vitest hors tests manuels Book 1 dépendants de `ffmpeg` ;
 - couvre parser, moteur, i18n et changesets de contribution ;
 - exécute aussi les tests Node du service `services/translation-api`.
 
@@ -50,6 +56,13 @@ pnpm docker:push-prod
 - vérifie les prompts publics et les assets WebP Book 1 ;
 - refuse les marqueurs RAG, embeddings, `evidenceRefs`, `.magium` et copies longues du texte canonique ;
 - accepte les WebP manquants pendant la génération manuelle des images.
+
+`pnpm images:test` :
+
+- régénère le contenu via `content:all` ;
+- exécute `tests/manual-images.test.mjs` ;
+- couvre les prompts Book 1, le staging ChatGPT, les planches de références API et le JSONL OpenAI Batch ;
+- nécessite `ffmpeg` pour générer les planches WebP de référence.
 
 `pnpm images:stage -- --book 1` :
 
@@ -68,7 +81,8 @@ pnpm docker:push-prod
 
 - prépare des planches de référence locales sous `output/visual/api-inputs/book1/<moment-id>/` ;
 - regroupe jusqu'à quatre portraits par planche pour réduire les coûts API ;
-- refuse implicitement les erreurs canoniques verrouillées par la config : pas de `arraka.webp`, pas de couple `flower.webp` + `illuna.webp` sur un même moment.
+- refuse implicitement les erreurs canoniques verrouillées par la config : pas de `arraka.webp`, pas de couple `flower.webp` + `illuna.webp` sur un même moment ;
+- nécessite `ffmpeg` pour composer les planches WebP.
 
 `pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets` :
 
@@ -125,7 +139,7 @@ Pour une recette complète du système de contributions traduction, vérifier au
 - acceptation puis création de changeset : export JSON accessible ;
 - sélection de deux propositions sur la même cible `locale/chapterId/messageId/segmentIndex` bloquée côté UI et refusée côté API ;
 - bouton `Créer la PR` en local sans GitHub configuré : erreur lisible `GitHub dispatch is not configured` ;
-- bouton `Créer la PR` en environnement configuré : workflow GitHub lancé, PR unique créée après `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build` ;
+- bouton `Créer la PR` en environnement configuré : workflow GitHub lancé, PR unique créée après `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build`; ce workflow ne dépend pas de `ffmpeg` ;
 - marquage `published` : notifications envoyées si contacts confirmés, puis emails bruts supprimés ;
 - marquage `rejected` ou `stale` : emails bruts supprimés.
 
