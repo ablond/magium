@@ -92,9 +92,17 @@ GITHUB_WORKFLOW_FILE=translation-changeset-pr.yml
 GITHUB_REF_NAME=main
 PSEUDONYM_BLOCKLIST=...
 ADMIN_SESSION_TTL_HOURS=8
+ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS=900000
+ADMIN_LOGIN_RATE_LIMIT_MAX=5
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=20
+MAX_JSON_BODY_BYTES=131072
+TRUST_PROXY=0
 ```
 
 L'interface mainteneur est servie par le service API sur `/admin`. En production, utiliser un `ADMIN_PASSWORD` long, un `ADMIN_SESSION_SECRET` aléatoire et `ADMIN_COOKIE_SECURE=1`. `ADMIN_TOKEN` reste réservé aux scripts et intégrations.
+
+Garder `MAX_JSON_BODY_BYTES=131072` pour refuser les requêtes JSON excessives avant parsing. Garder `TRUST_PROXY=0`, sauf si le proxy Coolify frontal écrase ou nettoie `X-Forwarded-For` avant le conteneur ; dans ce cas seulement, `TRUST_PROXY=1` permet au rate limit d'utiliser l'IP client transmise.
 
 Configurer `SMTP_URL` Brevo pour activer le suivi email en production. Sans transport email, l'API refuse les propositions qui demandent une notification afin de ne pas stocker une adresse inutilisable. `EMAIL_WEBHOOK_URL` reste disponible hors prod ou intégration spécifique, mais est prioritaire sur SMTP s'il est défini.
 
@@ -144,6 +152,8 @@ Translation API Coolify :
 - `PUBLIC_WEB_URL=https://magium.app` ;
 - `ALLOWED_ORIGIN=https://magium.app` ;
 - `TURNSTILE_SECRET_KEY` côté API doit correspondre au site key utilisé au build PWA ;
+- `MAX_JSON_BODY_BYTES=131072` ;
+- `TRUST_PROXY=0`, ou `TRUST_PROXY=1` uniquement si le proxy nettoie `X-Forwarded-For` ;
 - `EMAIL_CONSENT_SECRET` et `ADMIN_SESSION_SECRET` doivent être longs et aléatoires ;
 - `SMTP_URL` doit pointer vers Brevo SMTP en production ;
 - `EMAIL_FROM` doit valoir `Magium <no-reply@magium.app>` ;

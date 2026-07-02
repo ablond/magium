@@ -218,6 +218,8 @@ Authentification :
 - Les actions mutantes via cookie exigent `x-admin-csrf`.
 - `ADMIN_TOKEN` reste supporte pour les scripts via `Authorization: Bearer ...`.
 - Les tentatives de login sont rate-limitées par IP via `ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS` et `ADMIN_LOGIN_RATE_LIMIT_MAX`.
+- Par défaut, l'IP de rate limit est l'adresse socket. `TRUST_PROXY=1` autorise l'utilisation du premier `X-Forwarded-For` uniquement si le reverse proxy écrase ou nettoie ce header.
+- Les bodies JSON sont limités par `MAX_JSON_BODY_BYTES` avant parsing, avec `131072` octets par défaut.
 
 Routes admin API :
 
@@ -292,8 +294,9 @@ Double opt-in navigateur :
 2. Le lien appelle `/confirm-email`.
 3. L'API confirme le contact, crée un consentement email et redirige vers `PUBLIC_WEB_URL`.
 4. La redirection contient un fragment local `translation-email-consent`.
-5. La PWA stocke le jeton de consentement en IndexedDB, sans stocker l'email brut dans ce consentement.
-6. Les propositions suivantes avec le même email depuis le même navigateur réutilisent le jeton pendant un an glissant.
+5. La PWA affiche une notice visible de confirmation après retour sur le lecteur, puis nettoie le fragment de l'URL.
+6. Si le lien est ouvert dans le même navigateur que la proposition initiale, la PWA stocke le jeton de consentement en IndexedDB, sans stocker l'email brut dans ce consentement.
+7. Les propositions suivantes avec le même email depuis le même navigateur réutilisent le jeton pendant un an glissant.
 
 Stores locaux PWA :
 
@@ -461,6 +464,8 @@ ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS=900000
 ADMIN_LOGIN_RATE_LIMIT_MAX=5
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX=20
+MAX_JSON_BODY_BYTES=131072
+TRUST_PROXY=0
 ```
 
 Checklist production :
@@ -470,6 +475,8 @@ Checklist production :
 - `ALLOWED_ORIGIN=https://magium.app`.
 - l'admin mainteneur est disponible sur `https://tr.magium.app/admin`.
 - `ADMIN_COOKIE_SECURE=1` est obligatoire en production HTTPS.
+- `MAX_JSON_BODY_BYTES=131072` limite les requêtes JSON avant parsing.
+- `TRUST_PROXY=0` reste le défaut sûr ; n'utiliser `TRUST_PROXY=1` que derrière un proxy qui nettoie `X-Forwarded-For`.
 - `TURNSTILE_SECRET_KEY` côté API correspond au site key PWA et le domaine `magium.app` est autorisé dans Cloudflare Turnstile.
 - `EMAIL_CONSENT_SECRET` est aleatoire et long.
 - `SMTP_URL` utilise Brevo en production : `smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587`.
@@ -679,7 +686,9 @@ Recette email locale :
 - ouvrir `http://localhost:8025` ;
 - vérifier l'email de confirmation ;
 - cliquer le lien ;
-- vérifier que la PWA stocke le consentement et nettoie l'URL ;
+- vérifier que la PWA revient sur le lecteur avec une notice visible de confirmation ;
+- vérifier que l'URL ne contient plus `translation-email-consent` ;
+- vérifier que la PWA stocke le consentement quand le lien a été ouvert dans le même navigateur que la proposition initiale ;
 - envoyer une nouvelle proposition avec le même email depuis le même navigateur ;
 - vérifier qu'aucun nouvel email de confirmation n'est envoyé.
 

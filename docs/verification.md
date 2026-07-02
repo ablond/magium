@@ -136,7 +136,7 @@ Pour une recette complète du système de contributions traduction, vérifier au
 - envoi anonyme : succès simple sans `TR_...`, sans reçu à conserver ;
 - envoi avec email local : email de confirmation visible dans Mailpit `http://localhost:8025` ;
 - Mailpit affiche l'expéditeur `Magium <no-reply@magium.app>` ;
-- clic du lien de confirmation : retour PWA avec URL nettoyée et consentement navigateur stocké ;
+- clic du lien de confirmation : retour PWA avec notice visible de confirmation sous le titre du lecteur, URL nettoyée sans `translation-email-consent`, et consentement navigateur stocké si le lien est ouvert dans le même navigateur que l'envoi initial ;
 - deuxième proposition avec le même email depuis le même navigateur : pas de deuxième email de confirmation ;
 - admin `http://localhost:8090/admin` : texte d'origine visible, diff proposé lisible, version finale seule éditable ;
 - acceptation puis création de changeset : export JSON accessible ;

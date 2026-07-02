@@ -250,6 +250,52 @@ test('admin login is rate limited by IP', async () => {
   })
 })
 
+test('admin login rate limit ignores spoofed x-forwarded-for by default', async () => {
+  await withServer({
+    ...adminEnv(),
+    ADMIN_LOGIN_RATE_LIMIT_MAX: '2',
+    TRUST_PROXY: '0',
+  }, async (port) => {
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-1' }, { 'x-forwarded-for': '203.0.113.1' })).status, 401)
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-2' }, { 'x-forwarded-for': '203.0.113.2' })).status, 401)
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-3' }, { 'x-forwarded-for': '203.0.113.3' })).status, 429)
+  })
+})
+
+test('admin login rate limit trusts x-forwarded-for only when configured', async () => {
+  await withServer({
+    ...adminEnv(),
+    ADMIN_LOGIN_RATE_LIMIT_MAX: '1',
+    TRUST_PROXY: '1',
+  }, async (port) => {
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-1' }, { 'x-forwarded-for': '203.0.113.10, 10.0.0.1' })).status, 401)
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-2' }, { 'x-forwarded-for': '203.0.113.10, 10.0.0.1' })).status, 429)
+    assert.equal((await postJson(port, '/admin/login', { password: 'bad-3' }, { 'x-forwarded-for': '203.0.113.11, 10.0.0.1' })).status, 401)
+  })
+})
+
+test('JSON body size is limited before parsing', async () => {
+  await withServer({
+    ...adminEnv(),
+    MAX_JSON_BODY_BYTES: '16',
+  }, async (port) => {
+    const response = await postRaw(port, '/admin/login', '{"password":"this body is too long"}')
+    assert.equal(response.status, 413)
+    assert.match(response.body.error, /too large/)
+  })
+})
+
+test('invalid JSON under the body size limit returns a bad request', async () => {
+  await withServer({
+    ...adminEnv(),
+    MAX_JSON_BODY_BYTES: '1024',
+  }, async (port) => {
+    const response = await postRaw(port, '/admin/login', '{"password":')
+    assert.equal(response.status, 400)
+    assert.match(response.body.error, /Invalid JSON body/)
+  })
+})
+
 function adminEnv() {
   return {
     TURNSTILE_DISABLED: '1',
@@ -341,8 +387,18 @@ async function postJson(port, path, body, headers = {}) {
   return responseWithBody(response)
 }
 
-function requestHeaders({ cookie, csrfToken, authorization } = {}) {
+async function postRaw(port, path, body, headers = {}) {
+  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...requestHeaders(headers) },
+    body,
+  })
+  return responseWithBody(response)
+}
+
+function requestHeaders({ cookie, csrfToken, authorization, ...headers } = {}) {
   return {
+    ...headers,
     ...(cookie ? { cookie } : {}),
     ...(csrfToken ? { 'x-admin-csrf': csrfToken } : {}),
     ...(authorization ? { authorization } : {}),

@@ -19,6 +19,12 @@ ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
 ADMIN_COOKIE_SECURE=1
 ADMIN_SESSION_TTL_HOURS=8
+ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS=900000
+ADMIN_LOGIN_RATE_LIMIT_MAX=5
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=20
+MAX_JSON_BODY_BYTES=131072
+TRUST_PROXY=0
 TURNSTILE_SECRET_KEY=...
 PSEUDONYM_BLOCKLIST=...
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
@@ -33,6 +39,8 @@ GITHUB_REF_NAME=main
 ```
 
 `TURNSTILE_DISABLED=1` est réservé au développement local et aux tests.
+`MAX_JSON_BODY_BYTES` vaut `131072` par défaut et limite les bodies JSON avant parsing.
+`TRUST_PROXY=0` est le défaut sûr : le rate limit utilise l'adresse socket. Mettre `TRUST_PROXY=1` uniquement derrière un reverse proxy qui écrase ou nettoie `X-Forwarded-For`.
 
 ## Local Docker
 
@@ -60,6 +68,8 @@ Valeurs locales par défaut :
 - `SMTP_URL=smtp://mailpit:1025`
 - `EMAIL_FROM=Magium <no-reply@magium.app>`
 - `EMAIL_CONSENT_SECRET=dev-email-consent-secret`
+- `MAX_JSON_BODY_BYTES=131072`
+- `TRUST_PROXY=0`
 
 Reset complet :
 
@@ -90,7 +100,7 @@ Dans Coolify, créer une application séparée :
 - port : `8090`
 - PostgreSQL : service séparé
 
-En production, renseigner au minimum `DATABASE_URL`, `ADMIN_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `PUBLIC_API_URL=https://tr.magium.app`, `PUBLIC_WEB_URL=https://magium.app`, `ALLOWED_ORIGIN=https://magium.app`, `TURNSTILE_SECRET_KEY` et `EMAIL_CONSENT_SECRET`. Pour activer les notifications email, configurer aussi Brevo SMTP via `SMTP_URL` et `EMAIL_FROM=Magium <no-reply@magium.app>`. Pour l'admin web `https://tr.magium.app/admin`, mettre `ADMIN_COOKIE_SECURE=1`.
+En production, renseigner au minimum `DATABASE_URL`, `ADMIN_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `PUBLIC_API_URL=https://tr.magium.app`, `PUBLIC_WEB_URL=https://magium.app`, `ALLOWED_ORIGIN=https://magium.app`, `TURNSTILE_SECRET_KEY` et `EMAIL_CONSENT_SECRET`. Pour activer les notifications email, configurer aussi Brevo SMTP via `SMTP_URL` et `EMAIL_FROM=Magium <no-reply@magium.app>`. Pour l'admin web `https://tr.magium.app/admin`, mettre `ADMIN_COOKIE_SECURE=1`. Garder `MAX_JSON_BODY_BYTES=131072`. Garder `TRUST_PROXY=0`, sauf si Coolify ou le proxy frontal garantit que `X-Forwarded-For` est nettoyé avant d'atteindre le conteneur.
 
 Configuration Brevo attendue :
 
@@ -122,7 +132,7 @@ La confirmation email crée un consentement réutilisable un an par navigateur. 
 
 - `POST /v1/translation-proposals`
 - `GET /v1/translation-proposals/:publicId/status`
-- `POST /v1/translation-proposals/:publicId/confirm-email`
+- `GET|POST /v1/translation-proposals/:publicId/confirm-email`
 
 ## Routes admin
 

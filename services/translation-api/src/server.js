@@ -632,6 +632,8 @@ function readConfig() {
     pseudonymBlocklist: (process.env.PSEUDONYM_BLOCKLIST ?? '').split(',').map((item) => item.trim()).filter(Boolean),
     rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS ?? 60000),
     rateLimitMax: Number(process.env.RATE_LIMIT_MAX ?? 20),
+    maxJsonBodyBytes: readPositiveIntegerEnv('MAX_JSON_BODY_BYTES', 131072),
+    trustProxy: process.env.TRUST_PROXY === '1',
     smtpUrl: process.env.SMTP_URL ?? '',
     emailWebhookUrl: process.env.EMAIL_WEBHOOK_URL ?? '',
     emailWebhookToken: process.env.EMAIL_WEBHOOK_TOKEN ?? '',
@@ -653,7 +655,16 @@ async function createRepository(nextConfig) {
 
 async function readJson(request) {
   const chunks = []
-  for await (const chunk of request) chunks.push(chunk)
+  let size = 0
+  for await (const chunk of request) {
+    size += chunk.byteLength
+    if (size > config.maxJsonBodyBytes) {
+      const error = new Error('JSON body is too large')
+      error.statusCode = 413
+      throw error
+    }
+    chunks.push(chunk)
+  }
   if (!chunks.length) return {}
   try {
     return JSON.parse(Buffer.concat(chunks).toString('utf8'))
@@ -686,10 +697,18 @@ function writeCorsHeaders(response) {
 }
 
 function clientIp(request) {
+  const socketAddress = request.socket.remoteAddress ?? ''
+  if (!config.trustProxy) {
+    return socketAddress
+  }
   const forwarded = request.headers['x-forwarded-for']
-  return Array.isArray(forwarded)
-    ? forwarded[0]
-    : String(forwarded ?? request.socket.remoteAddress ?? '').split(',')[0].trim()
+  const forwardedValue = Array.isArray(forwarded) ? forwarded[0] : forwarded
+  return String(forwardedValue ?? '').split(',')[0].trim() || socketAddress
+}
+
+function readPositiveIntegerEnv(name, fallback) {
+  const value = Number(process.env[name] ?? fallback)
+  return Number.isInteger(value) && value > 0 ? value : fallback
 }
 
 function createRateLimiter(windowMs, maxHits) {

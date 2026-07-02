@@ -1348,6 +1348,14 @@ input[type="range"] {
   border-color: var(--danger-line-strong);
 }
 
+.reader-notice {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: var(--text);
+  border-color: var(--accent-line);
+  background: var(--control-active-bg);
+}
+
 .panel-notice {
   max-width: none;
   margin-top: 14px;

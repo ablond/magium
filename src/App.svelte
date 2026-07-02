@@ -186,6 +186,7 @@
   let contributionBusy = false
   let contributionError = ''
   let contributionStatus = ''
+  let contributionEmailNotice = ''
   let contributionSubmitted = false
 
   $: chapterTitle = state
@@ -249,7 +250,10 @@
       applyReaderSettings(settings)
       const emailConsentPayload = parseContributionEmailConsentFragment(window.location.hash)
       if (emailConsentPayload) {
-        await applyContributionEmailConsent(emailConsentPayload)
+        const storedConsent = await applyContributionEmailConsent(emailConsentPayload)
+        contributionEmailNotice = storedConsent
+          ? t(uiMessages, 'contribution.statusEmailConsentStored', {}, 'Email confirmed. Follow-up is enabled for this proposal, and this browser will remember the confirmation for your next contributions.')
+          : t(uiMessages, 'contribution.statusEmailConsentNotStored', {}, 'Email confirmed. Follow-up is enabled for this proposal, but this browser cannot remember the confirmation for your next contributions.')
         removeContributionEmailConsentFragment(window.location, window.history)
       }
       const contributionProfile = await loadContributionProfile()
@@ -1024,6 +1028,7 @@
 
   function clearStatus() {
     status = ''
+    contributionEmailNotice = ''
     recentUnlockedAchievements = []
   }
 
@@ -1032,6 +1037,7 @@
     panelStatus = ''
     error = ''
     status = ''
+    contributionEmailNotice = ''
     recentUnlockedAchievements = []
   }
 
@@ -1277,6 +1283,10 @@
           <h1>{chapterTitle}</h1>
         </div>
       </header>
+
+      {#if contributionEmailNotice}
+        <p class="notice reader-notice" role="status" aria-live="polite">{contributionEmailNotice}</p>
+      {/if}
 
       {#if rendered && state}
         {#if rendered.statChecks.length}

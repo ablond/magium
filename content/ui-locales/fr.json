@@ -53,6 +53,8 @@
     "contribution.sourceText": "Source anglaise",
     "contribution.statusEmailConfirmationSent": "Proposition envoyée. Un email de confirmation vient d’être envoyé.",
     "contribution.statusEmailConfirmed": "Proposition envoyée. Tu recevras un email lorsqu’elle sera traitée.",
+    "contribution.statusEmailConsentNotStored": "Email confirmé. Le suivi de cette proposition est activé, mais ce navigateur ne peut pas mémoriser la validation pour les prochaines contributions.",
+    "contribution.statusEmailConsentStored": "Email confirmé. Le suivi de cette proposition est activé, et cette validation est mémorisée dans ce navigateur pour tes prochaines contributions.",
     "contribution.statusProfileCleared": "Les informations de contribution ont été effacées de cet appareil.",
     "contribution.statusSent": "Proposition envoyée. Merci pour ta correction.",
     "contribution.submit": "Envoyer la proposition",
