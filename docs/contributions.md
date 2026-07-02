@@ -12,13 +12,14 @@ Le flux est privacy-first :
 - pseudo facultatif uniquement pour les crédits ;
 - email facultatif uniquement pour le suivi ;
 - confirmation email initiale avant toute notification, réutilisable un an dans le même navigateur ;
-- suppression de l'email après refus ou publication ;
+- notification groupée par destinataire lors d'un refus/obsolescence en lot ou d'une publication ;
+- suppression de l'email après notification de clôture ou publication ;
 - proposition revue par un mainteneur avant intégration ;
 - intégration par changeset puis pull request GitHub.
 
 ## Surface PWA
 
-La PWA affiche un petit bouton de correction sur les paragraphes et choix visibles. Pour un texte narratif, le bouton cible le paragraphe affiché, pas tout le bloc `messageId` si celui-ci contient plusieurs paragraphes séparés par une ligne vide. Le formulaire montre uniquement ce segment courant, la source anglaise du même segment quand elle diffère, puis les champs de contribution.
+La PWA peut afficher une icône stylo discrète sur les paragraphes et choix visibles. Cette surface est opt-in : les icônes sont absentes par défaut, absentes complètement si `VITE_MAGIUM_CONTRIBUTIONS_API_URL` n'est pas configurée, et visibles seulement quand le lecteur active `Corrections de traduction` dans Settings. Pour un texte narratif, l'icône cible le paragraphe affiché, pas tout le bloc `messageId` si celui-ci contient plusieurs paragraphes séparés par une ligne vide. Le formulaire montre uniquement ce segment courant, la source anglaise du même segment quand elle diffère, puis les champs de contribution.
 
 Les IDs techniques ne sont pas affichés au joueur, mais le payload contient :
 
@@ -35,7 +36,7 @@ Les IDs techniques ne sont pas affichés au joueur, mais le payload contient :
 
 Ces champs servent uniquement à router, vérifier et revoir la proposition. `currentText` n'est pas un bloc source complet : il permet à l'admin mainteneur d'afficher le texte d'origine cible et un diff visuel avec le texte proposé.
 
-Une correction de paragraphe ne peut pas contenir de séparateur de paragraphe `\n\n`. Le bouton joueur sert à corriger un paragraphe affiché à la fois ; une correction éditoriale complète d'un bloc multi-paragraphes reste un cas mainteneur/manual.
+Une correction de paragraphe ne peut pas contenir de séparateur de paragraphe `\n\n`. L'icône joueur sert à corriger un paragraphe affiché à la fois ; une correction éditoriale complète d'un bloc multi-paragraphes reste un cas mainteneur/manual.
 
 Variables de build PWA :
 
@@ -44,7 +45,7 @@ VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
 VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 ```
 
-Si l'URL API n'est pas configurée, le formulaire affiche une erreur et n'envoie rien.
+Si l'URL API n'est pas configurée, l'option Settings et les icônes stylo ne sont pas affichées. Le formulaire garde tout de même une vérification d'envoi robuste et n'envoie rien sans API.
 
 En local Docker, `docker compose up -d` lance la PWA en mode Vite dev avec :
 
@@ -71,6 +72,7 @@ Routes admin protégées par `ADMIN_TOKEN` ou par une session web mainteneur :
 
 - `GET /v1/admin/proposals`
 - `POST /v1/admin/proposals/:publicId/review`
+- `POST /v1/admin/proposals/bulk-review`
 - `POST /v1/admin/changesets`
 - `GET /v1/admin/changesets`
 - `GET /v1/admin/changesets/:publicId`
@@ -118,8 +120,8 @@ PSEUDONYM_BLOCKLIST=...
 
 Transport email :
 
-- `EMAIL_WEBHOOK_URL` défini : l'API envoie le contenu du mail en JSON `{ from, to, subject, text }` vers ce webhook ;
-- sinon `SMTP_URL` défini : l'API envoie via SMTP avec Nodemailer ;
+- `EMAIL_WEBHOOK_URL` défini : l'API envoie le contenu du mail en JSON `{ from, to, subject, text, html }` vers ce webhook ;
+- sinon `SMTP_URL` défini : l'API envoie via SMTP avec Nodemailer, en version texte et HTML ;
 - sinon le suivi email est refusé, sans stocker l'adresse.
 
 En production, `SMTP_URL` doit pointer vers Brevo SMTP (`smtp-relay.brevo.com:587`) et `EMAIL_FROM` doit valoir `Magium <no-reply@magium.app>`. Le sender `no-reply@magium.app` ou le domaine `magium.app` doit être vérifié dans Brevo avant activation publique.
@@ -138,6 +140,9 @@ Une proposition ne crée jamais une PR seule. Le mainteneur accepte, rejette ou 
 
 Règles :
 
+- une acceptation ne déclenche pas d'email immédiat : le mail part seulement quand le changeset est marqué publié ;
+- lors d'une publication, les contacts confirmés sont groupés par email normalisé, avec un seul mail par destinataire même si plusieurs corrections du lot lui appartiennent ;
+- les refus et obsolescences peuvent être traités en lot depuis l'admin pour envoyer un seul mail de clôture par destinataire ;
 - un changeset ne peut contenir qu'une seule version finale par cible `locale/chapterId/messageId/target` ;
 - pour un paragraphe, la cible est `segmentIndex`, donc plusieurs corrections du même `messageId` peuvent cohabiter si elles touchent des segments différents ;
 - les propositions concurrentes sur le même segment ou le même choix doivent être résolues dans l'interface de revue ;
@@ -169,7 +174,8 @@ L'email est stocké séparément de la proposition et ne devient actif qu'après
 
 L'email brut de contact est supprimé :
 
-- immédiatement si la proposition est rejetée ou marquée obsolète ;
+- après notification groupée si la proposition est rejetée ou marquée obsolète en lot ;
+- immédiatement, sans notification, si une proposition est rejetée ou marquée obsolète par l'action unitaire historique ;
 - après notification quand le changeset accepté est publié.
 
 Le formulaire joueur affiche seulement un message de succès après envoi. Il ne demande pas au lecteur de conserver un reçu et n'affiche pas le `publicId` de la proposition.

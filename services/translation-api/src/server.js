@@ -5,7 +5,7 @@ import { createAdminAuth } from './admin-auth.js'
 import { buildTextDiffParts } from './admin-diff.js'
 import { buildEmailConsentRedirectUrl, createEmailConsent, extendEmailConsent, randomConsentToken, verifyEmailConsent } from './email-consents.js'
 import { dispatchChangesetWorkflow } from './github.js'
-import { DEFAULT_EMAIL_FROM, confirmationEmail, createMailer, proposalClosedEmail } from './mailer.js'
+import { DEFAULT_EMAIL_FROM, confirmationEmail, createMailer, proposalsClosedEmail, proposalsPublishedEmail } from './mailer.js'
 import { buildChangeset, buildPublicStatus, hashSecret, normalizeProposalInput, randomEmailToken, reviewProposal } from './proposals.js'
 import { createMemoryRepository } from './repository.memory.js'
 import { createPostgresRepository } from './repository.postgres.js'
@@ -313,6 +313,12 @@ async function routeAdmin(request, response, url) {
     return
   }
 
+  if (request.method === 'POST' && url.pathname === '/v1/admin/proposals/bulk-review') {
+    const result = await bulkReviewProposals(await readJson(request))
+    writeJson(response, 200, result)
+    return
+  }
+
   if (request.method === 'POST' && url.pathname === '/v1/admin/changesets') {
     const body = await readJson(request)
     const proposals = []
@@ -362,22 +368,114 @@ async function routeAdmin(request, response, url) {
   if (request.method === 'POST' && publishedMatch) {
     const changeset = await requireChangeset(publishedMatch[1])
     const contacts = await repository.listChangesetContacts(changeset.id)
-    for (const entry of contacts) {
-      await mailer.send(proposalClosedEmail({
-        to: entry.contact.email,
-        status: 'published',
-        publicId: entry.proposal.publicId,
-        changesetTitle: changeset.title,
-      }))
-    }
+    const notification = await notifyGroupedContacts({
+      contacts,
+      status: 'published',
+      changesetTitle: changeset.title,
+    })
     await repository.deleteContactsForChangeset(changeset.id)
     const next = { ...changeset, status: 'published', updatedAt: new Date().toISOString() }
     await repository.updateChangeset(next)
-    writeJson(response, 200, { changeset: redactChangeset(next), notified: contacts.length })
+    writeJson(response, 200, {
+      changeset: redactChangeset(next),
+      notified: notification.notifiedRecipients,
+      ...notification,
+    })
     return
   }
 
   writeJson(response, 404, { error: 'Admin route not found' })
+}
+
+async function bulkReviewProposals(body) {
+  const decision = typeof body?.decision === 'string' ? body.decision : ''
+  if (decision !== 'reject' && decision !== 'stale') {
+    const error = new Error('decision must be reject or stale for bulk review')
+    error.statusCode = 400
+    throw error
+  }
+  const proposalPublicIds = [...new Set((Array.isArray(body?.proposalPublicIds) ? body.proposalPublicIds : [])
+    .map((publicId) => String(publicId).trim())
+    .filter(Boolean))]
+  if (!proposalPublicIds.length) {
+    const error = new Error('proposalPublicIds is required')
+    error.statusCode = 400
+    throw error
+  }
+
+  const nextProposals = []
+  const contacts = []
+  for (const publicId of proposalPublicIds) {
+    const proposal = await requireProposal(publicId)
+    if (proposal.status !== 'pending') {
+      const error = new Error(`proposal ${proposal.publicId} is not pending`)
+      error.statusCode = 400
+      throw error
+    }
+    const next = reviewProposal(proposal, {
+      decision,
+      moderatorNote: typeof body?.moderatorNote === 'string' ? body.moderatorNote : '',
+    })
+    const contact = await repository.getContactByProposalId(proposal.id)
+    if (contact?.confirmedAt) contacts.push({ proposal: next, contact })
+    nextProposals.push(next)
+  }
+
+  const notification = await notifyGroupedContacts({
+    contacts,
+    status: decision === 'stale' ? 'stale' : 'rejected',
+  })
+  for (const proposal of nextProposals) {
+    await repository.updateProposal(proposal)
+    await repository.deleteContact(proposal.id)
+  }
+
+  return {
+    proposals: nextProposals.map(redactAdminProposal),
+    notified: notification.notifiedRecipients,
+    ...notification,
+  }
+}
+
+async function notifyGroupedContacts({ contacts, status, changesetTitle = '' }) {
+  const groups = groupContactsByEmail(contacts)
+  for (const group of groups) {
+    await mailer.send(status === 'published'
+      ? proposalsPublishedEmail({
+        to: group.to,
+        proposalCount: group.entries.length,
+        changesetTitle,
+      })
+      : proposalsClosedEmail({
+        to: group.to,
+        status,
+        proposalCount: group.entries.length,
+      }))
+  }
+  return {
+    notifiedRecipients: groups.length,
+    notifiedProposals: groups.reduce((total, group) => total + group.entries.length, 0),
+  }
+}
+
+function groupContactsByEmail(contacts) {
+  const groups = new Map()
+  for (const entry of contacts) {
+    const normalizedEmail = normalizeNotificationEmail(entry.contact?.email)
+    if (!normalizedEmail) continue
+    if (!groups.has(normalizedEmail)) {
+      groups.set(normalizedEmail, {
+        to: String(entry.contact.email).trim(),
+        entries: [],
+      })
+    }
+    groups.get(normalizedEmail).entries.push(entry)
+  }
+  return [...groups.values()]
+}
+
+function normalizeNotificationEmail(email) {
+  return String(email ?? '').trim().toLowerCase()
 }
 
 async function requireProposal(publicId) {

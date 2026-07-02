@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createEmailConsent, extendEmailConsent, randomConsentToken, verifyEmailConsent } from '../src/email-consents.js'
-import { DEFAULT_EMAIL_FROM, buildOutboundEmail, createMailer } from '../src/mailer.js'
+import { DEFAULT_EMAIL_FROM, buildOutboundEmail, confirmationEmail, createMailer, proposalsClosedEmail, proposalsPublishedEmail } from '../src/mailer.js'
 import { buildChangeset, hashSecret, normalizeProposalInput, reviewProposal } from '../src/proposals.js'
 import { createMemoryRepository } from '../src/repository.memory.js'
 import { verifyTurnstileToken } from '../src/turnstile.js'
@@ -56,6 +56,34 @@ test('outbound emails use the Magium sender by default and keep configured overr
   )
 })
 
+test('email templates include styled html and plain text fallbacks', () => {
+  const confirmation = confirmationEmail({
+    to: 'reader@example.test',
+    confirmUrl: 'https://tr.magium.test/v1/translation-proposals/tr_test/confirm-email?token=secret',
+  })
+  const published = proposalsPublishedEmail({
+    to: 'reader@example.test',
+    proposalCount: 2,
+    changesetTitle: 'Corrections FR',
+  })
+  const rejected = proposalsClosedEmail({
+    to: 'reader@example.test',
+    status: 'rejected',
+    proposalCount: 1,
+  })
+
+  assert.match(confirmation.text, /Bonjour/)
+  assert.match(confirmation.text, /Merci pour votre contribution/)
+  assert.match(confirmation.html, /<html lang="fr">/)
+  assert.match(confirmation.html, /Magium/)
+  assert.match(confirmation.html, /Confirmer le suivi/)
+  assert.match(published.text, /2 corrections/)
+  assert.match(published.html, /Vos corrections ont été publiées/)
+  assert.match(rejected.text, /ne sera pas intégrée/)
+  assert.doesNotMatch(published.text, /tr_/)
+  assert.doesNotMatch(rejected.text, /messageId|sceneId|hash/i)
+})
+
 test('email webhook payload includes the configured sender', async () => {
   const previousFetch = globalThis.fetch
   let requestPayload
@@ -76,6 +104,38 @@ test('email webhook payload includes the configured sender', async () => {
       to: 'reader@example.test',
       subject: 'Subject',
       text: 'Body',
+    })
+  } finally {
+    globalThis.fetch = previousFetch
+  }
+})
+
+test('email webhook payload keeps html when provided', async () => {
+  const previousFetch = globalThis.fetch
+  let requestPayload
+  globalThis.fetch = async (_url, options) => {
+    requestPayload = JSON.parse(options.body)
+    return new Response('{}', { status: 200 })
+  }
+  try {
+    const mailer = await createMailer({
+      smtpUrl: '',
+      emailWebhookUrl: 'https://email-webhook.example.test/send',
+      emailWebhookToken: '',
+      emailFrom: 'Magium <no-reply@magium.app>',
+    })
+    await mailer.send({
+      to: 'reader@example.test',
+      subject: 'Subject',
+      text: 'Bonjour',
+      html: '<p>Bonjour</p>',
+    })
+    assert.deepEqual(requestPayload, {
+      from: 'Magium <no-reply@magium.app>',
+      to: 'reader@example.test',
+      subject: 'Subject',
+      text: 'Bonjour',
+      html: '<p>Bonjour</p>',
     })
   } finally {
     globalThis.fetch = previousFetch

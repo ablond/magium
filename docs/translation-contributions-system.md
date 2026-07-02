@@ -12,7 +12,8 @@ Flux end-to-end :
 
 ```text
 Lecteur PWA
-  -> bouton Proposer une correction
+  -> active Corrections de traduction dans Settings
+  -> icône stylo de correction sur paragraphe/choix
   -> POST /v1/translation-proposals
   -> services/translation-api + PostgreSQL
   -> /admin mainteneur
@@ -222,6 +223,7 @@ Routes admin API :
 
 - `GET /v1/admin/proposals?status=pending|accepted|changeset|rejected|stale`
 - `POST /v1/admin/proposals/:publicId/review`
+- `POST /v1/admin/proposals/bulk-review`
 - `GET /v1/admin/changesets?status=ready|dispatched|published|stale`
 - `POST /v1/admin/changesets`
 - `GET /v1/admin/changesets/:publicId`
@@ -238,6 +240,7 @@ L'admin permet :
 - voir un diff visuel origine/proposition ;
 - modifier uniquement la version finale retenue ;
 - accepter, rejeter ou marquer obsolète ;
+- sélectionner des propositions en attente pour les refuser ou les marquer obsolètes en lot ;
 - approuver ou masquer un crédit pseudo ;
 - sélectionner des propositions acceptées ;
 - bloquer côté UI deux propositions sur la même cible ;
@@ -269,8 +272,8 @@ Statuts :
 
 Transport email :
 
-- Si `EMAIL_WEBHOOK_URL` est défini, l'API envoie un JSON `{ from, to, subject, text }` à ce webhook HTTP.
-- Sinon, si `SMTP_URL` est défini, l'API utilise Nodemailer/SMTP.
+- Si `EMAIL_WEBHOOK_URL` est défini, l'API envoie un JSON `{ from, to, subject, text, html }` à ce webhook HTTP.
+- Sinon, si `SMTP_URL` est défini, l'API utilise Nodemailer/SMTP avec une version texte et une version HTML.
 - Sinon, le suivi email est refusé et l'adresse n'est pas stockée.
 - En production, le transport retenu est Brevo SMTP via `smtp-relay.brevo.com:587`, avec `EMAIL_FROM=Magium <no-reply@magium.app>`.
 - Le sender `no-reply@magium.app` ou le domaine `magium.app` doit être vérifié/autorisé dans Brevo avant activation publique.
@@ -294,15 +297,18 @@ Double opt-in navigateur :
 
 Stores locaux PWA :
 
+- `magium.readerSettings` dans `localStorage` : contient `translationContributions`, désactivé par défaut, pour afficher ou masquer les icônes stylo quand l'URL API est configurée.
 - `contributionProfile` : pseudo/email mémorisés uniquement si l'utilisateur coche l'option.
 - consentements email : jetons de consentement confirmés, supprimables par le bouton d'effacement local.
 
 Suppression :
 
-- Rejet : suppression immédiate du contact email.
-- Stale : suppression immédiate du contact email.
-- Publication : notification des contacts confirmés puis suppression.
+- Rejet ou stale unitaire : suppression immédiate du contact email, sans notification.
+- Rejet ou stale en lot : notification groupée des contacts confirmés par email normalisé, puis suppression.
+- Publication : notification groupée des contacts confirmés par email normalisé, puis suppression.
 - Consentements expirés : purge opportuniste.
+
+Les emails de clôture et de publication sont des digests par destinataire : si un même email confirmé porte plusieurs propositions dans le même traitement, un seul message est envoyé. Les emails publics restent volontairement sobres et ne contiennent pas `messageId`, `sceneId`, hash, segment ou identifiant interne visible.
 
 Modération pseudo :
 
@@ -645,7 +651,9 @@ docker compose down
 Recette navigateur PWA :
 
 - ouvrir `http://localhost:5173` ;
-- cliquer sur `Proposer une correction` sur un paragraphe multi-paragraphes ;
+- ouvrir Settings et activer `Corrections de traduction` ;
+- vérifier que les icônes stylo grises apparaissent sur les paragraphes et choix ;
+- cliquer sur l'icône stylo d'un paragraphe multi-paragraphes ;
 - vérifier que seul le paragraphe cliqué est affiché et prérempli ;
 - vérifier qu'aucun ID technique n'est visible ;
 - envoyer une proposition anonyme ;

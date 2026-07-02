@@ -108,11 +108,13 @@ Vérifier dans Brevo que le sender `no-reply@magium.app` ou le domaine `magium.a
 3. Le mainteneur traite les propositions via `GET /admin` ou via les routes admin protégées par `ADMIN_TOKEN`.
 4. Les propositions acceptées sont regroupées dans un changeset.
 5. `POST /v1/admin/changesets/<id>/dispatch-pr` déclenche le workflow GitHub.
-6. Après publication, `POST /v1/admin/changesets/<id>/published` notifie les emails confirmés puis les supprime.
+6. Après publication, `POST /v1/admin/changesets/<id>/published` notifie les emails confirmés par destinataire puis les supprime.
+
+Les refus et obsolescences peuvent aussi être appliqués en lot avec `POST /v1/admin/proposals/bulk-review`. Dans ce cas, les contacts confirmés sont groupés par email normalisé pour éviter plusieurs mails à la même personne.
 
 Si aucun transport email n'est configuré, les propositions demandant une notification sont refusées sans stockage de l'adresse.
 
-Si `EMAIL_WEBHOOK_URL` est utilisé hors prod, le payload envoyé contient `{ from, to, subject, text }` avec `from=Magium <no-reply@magium.app>` par défaut.
+Si `EMAIL_WEBHOOK_URL` est utilisé hors prod, le payload envoyé contient `{ from, to, subject, text, html }` avec `from=Magium <no-reply@magium.app>` par défaut. Le transport SMTP envoie aussi les deux versions `text` et `html`.
 
 La confirmation email crée un consentement réutilisable un an par navigateur. La table de consentement ne stocke pas l'email brut : seulement un HMAC de l'email normalisé et un hash du jeton navigateur.
 
@@ -126,6 +128,7 @@ La confirmation email crée un consentement réutilisable un an par navigateur. 
 
 - `GET /v1/admin/proposals`
 - `POST /v1/admin/proposals/:publicId/review`
+- `POST /v1/admin/proposals/bulk-review`
 - `POST /v1/admin/changesets`
 - `GET /v1/admin/changesets`
 - `GET /v1/admin/changesets/:publicId`
@@ -136,7 +139,7 @@ La confirmation email crée un consentement réutilisable un an par navigateur. 
 
 ## Interface Web Mainteneur
 
-`GET /admin` sert une interface web sans framework pour lister les propositions, accepter/rejeter/marquer obsolète, créer un changeset, exporter un changeset, déclencher la PR, puis marquer un lot publié ou stale.
+`GET /admin` sert une interface web sans framework pour lister les propositions, accepter/rejeter/marquer obsolète, refuser ou marquer obsolètes des propositions en attente en lot, créer un changeset, exporter un changeset, déclencher la PR, puis marquer un lot publié ou stale.
 
 Le détail d'une proposition affiche le texte d'origine cible, un diff visuel origine/proposition, et une version finale retenue éditable. Les anciennes propositions qui ne contiennent pas encore le texte d'origine restent visibles, mais sans diff.
 

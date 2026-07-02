@@ -320,12 +320,12 @@ h2 {
 
 .contribution-line .text-correction {
   margin-top: 0.16em;
-  opacity: 0;
+  opacity: 0.48;
 }
 
 .contribution-line:hover .text-correction,
 .contribution-line:focus-within .text-correction {
-  opacity: 1;
+  opacity: 0.84;
 }
 
 .scene p.dropcap::first-letter {
@@ -475,7 +475,7 @@ h2 {
   align-items: stretch;
 }
 
-.choices .choice-row > button:first-child {
+.choices .choice-action {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   gap: 12px;
@@ -492,8 +492,8 @@ h2 {
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
-.choices .choice-row > button:first-child:hover,
-.choices .choice-row > button:first-child:focus-visible {
+.choices .choice-action:hover,
+.choices .choice-action:focus-visible {
   border-color: var(--line-strong);
   background: var(--control-active-bg);
   transform: translateY(-1px);
@@ -511,19 +511,20 @@ h2 {
   min-width: 34px;
   height: 34px;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 8px;
-  color: var(--muted);
-  background: var(--control-bg);
+  color: var(--faint);
+  background: transparent;
+  opacity: 0.58;
   transition: opacity 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
 }
 
 .text-correction:hover,
 .text-correction:focus-visible {
-  color: var(--accent-strong);
-  border-color: var(--line-strong);
-  background: var(--control-hover-bg);
-  opacity: 1;
+  color: var(--muted);
+  border-color: transparent;
+  background: transparent;
+  opacity: 0.92;
 }
 
 .choice-correction {
@@ -1491,7 +1492,7 @@ a:focus-visible {
   }
 
   .contribution-line .text-correction {
-    opacity: 1;
+    opacity: 0.64;
     justify-self: end;
     margin: -2px 0 12px;
   }

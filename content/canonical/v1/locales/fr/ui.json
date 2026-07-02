@@ -171,6 +171,8 @@
     "settings.theme": "Thème",
     "settings.textSize": "Taille du texte",
     "settings.textSizeHelp": "Ajuste le texte de l'histoire pour les longues sessions de lecture.",
+    "settings.translationContributions": "Corrections de traduction",
+    "settings.translationContributionsHelp": "Affiche les icônes stylo sur les paragraphes et choix pour proposer une correction.",
     "settings.title": "Paramètres",
     "statChecks.aria": "Résultats des tests de stats",
     "statChecks.failure": "{stat} : échec · niveau {level}",

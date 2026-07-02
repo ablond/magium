@@ -160,7 +160,7 @@ Accès local non secret :
 - mot de passe admin web : `dev-admin-password`
 - token admin script : `dev-admin-token`
 
-Le lecteur peut proposer une correction anonymement depuis un paragraphe ou un choix visible. Le mainteneur traite les propositions dans `/admin`, compare le diff visuel, accepte/rejette/marque obsolète, crée un changeset, puis déclenche une PR GitHub si le dispatch est configuré. La référence technique complète est [docs/translation-contributions-system.md](./docs/translation-contributions-system.md).
+Le lecteur peut proposer une correction anonymement depuis un paragraphe ou un choix visible après avoir activé `Corrections de traduction` dans les paramètres. Les icônes stylo restent absentes par défaut, et absentes complètement si l'URL API de contribution n'est pas configurée. Le mainteneur traite les propositions dans `/admin`, compare le diff visuel, accepte/rejette/marque obsolète, crée un changeset, puis déclenche une PR GitHub si le dispatch est configuré. La référence technique complète est [docs/translation-contributions-system.md](./docs/translation-contributions-system.md).
 
 ## Règles Importantes
 
