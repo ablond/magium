@@ -3,12 +3,14 @@
 ## Suite Obligatoire
 
 ```bash
+pnpm install
+pnpm --dir services/translation-api install --frozen-lockfile
 pnpm check
 pnpm test
 pnpm build
 ```
 
-Ces commandes doivent passer avant de terminer une itération.
+Ces commandes doivent passer avant de terminer une itération. Le service `services/translation-api` garde son propre `package.json` et son propre lockfile pour rester buildable séparément par Docker/Coolify ; ses dépendances doivent donc être installées en plus des dépendances racine avant `pnpm test` sur un checkout frais.
 
 Si l'itération touche les prompts, assets, outils ou l'affichage d'images Book 1, ajouter :
 
@@ -43,7 +45,7 @@ pnpm docker:push-prod
 - régénère le contenu via `content:all` ;
 - exécute Vitest hors tests manuels Book 1 dépendants de `ffmpeg` ;
 - couvre parser, moteur, i18n et changesets de contribution ;
-- exécute aussi les tests Node du service `services/translation-api`.
+- exécute aussi `pnpm --dir services/translation-api test`.
 
 `pnpm build` :
 
