@@ -1,0 +1,102 @@
+name: Translation changeset PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      changeset_id:
+        description: Public changeset id from the translation API
+        required: true
+        type: string
+      api_url:
+        description: Translation API base URL
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.9.0 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Fetch changeset
+        env:
+          API_URL: ${{ inputs.api_url }}
+          CHANGESET_ID: ${{ inputs.changeset_id }}
+          API_TOKEN: ${{ secrets.MAGIUM_TRANSLATION_API_TOKEN }}
+        run: |
+          curl -fsS \
+            -H "Authorization: Bearer ${API_TOKEN}" \
+            "${API_URL%/}/v1/admin/changesets/${CHANGESET_ID}/export" \
+            -o /tmp/magium-translation-changeset.json
+
+      - name: Apply changeset
+        id: apply
+        env:
+          API_URL: ${{ inputs.api_url }}
+          CHANGESET_ID: ${{ inputs.changeset_id }}
+          API_TOKEN: ${{ secrets.MAGIUM_TRANSLATION_API_TOKEN }}
+        run: |
+          set +e
+          node tools/contributions/apply-changeset.mjs \
+            --changeset /tmp/magium-translation-changeset.json \
+            --stale-report /tmp/magium-translation-stale.json
+          status=$?
+          set -e
+          if [ "$status" -eq 2 ]; then
+            curl -fsS -X POST \
+              -H "Authorization: Bearer ${API_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data @/tmp/magium-translation-stale.json \
+              "${API_URL%/}/v1/admin/changesets/${CHANGESET_ID}/stale"
+            exit 1
+          fi
+          exit "$status"
+
+      - name: Generate and validate
+        run: |
+          pnpm content:all
+          pnpm check
+          pnpm test
+          pnpm build
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHANGESET_ID: ${{ inputs.changeset_id }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes generated for ${CHANGESET_ID}"
+            exit 1
+          fi
+          branch="translation/${CHANGESET_ID}"
+          git config user.name "magium-translation-bot"
+          git config user.email "magium-translation-bot@users.noreply.github.com"
+          git switch -c "$branch"
+          git add content/story-locales content/canonical src/generated
+          git commit -m "Apply translation changeset ${CHANGESET_ID}"
+          git push --set-upstream origin "$branch"
+          gh pr create \
+            --title "Apply translation changeset ${CHANGESET_ID}" \
+            --body "Applies public translation corrections from changeset ${CHANGESET_ID}. Validated with pnpm content:all, pnpm check, pnpm test, and pnpm build." \
+            --base main \
+            --head "$branch"

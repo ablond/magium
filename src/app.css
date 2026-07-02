@@ -143,7 +143,8 @@ body.panel-modal-open {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -309,6 +310,24 @@ h2 {
   margin-bottom: 0;
 }
 
+.contribution-line {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  align-items: start;
+  gap: 10px;
+}
+
+.contribution-line .text-correction {
+  margin-top: 0.16em;
+  opacity: 0;
+}
+
+.contribution-line:hover .text-correction,
+.contribution-line:focus-within .text-correction {
+  opacity: 1;
+}
+
 .scene p.dropcap::first-letter {
   color: var(--accent-strong);
   font-size: 3.2em;
@@ -449,7 +468,14 @@ h2 {
   cursor: pointer;
 }
 
-.choices button {
+.choice-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.choices .choice-row > button:first-child {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   gap: 12px;
@@ -466,8 +492,8 @@ h2 {
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
-.choices button:hover,
-.choices button:focus-visible {
+.choices .choice-row > button:first-child:hover,
+.choices .choice-row > button:first-child:focus-visible {
   border-color: var(--line-strong);
   background: var(--control-active-bg);
   transform: translateY(-1px);
@@ -476,6 +502,35 @@ h2 {
 .choices button:disabled {
   opacity: 0.6;
   cursor: wait;
+}
+
+.text-correction {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--control-bg);
+  transition: opacity 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.text-correction:hover,
+.text-correction:focus-visible {
+  color: var(--accent-strong);
+  border-color: var(--line-strong);
+  background: var(--control-hover-bg);
+  opacity: 1;
+}
+
+.choice-correction {
+  width: 42px;
+  min-width: 42px;
+  height: 100%;
+  min-height: 42px;
 }
 
 .panel-scrim {
@@ -512,7 +567,8 @@ h2 {
 
 .panel button,
 .panel input,
-.panel select {
+.panel select,
+.panel textarea {
   border-radius: 8px;
 }
 
@@ -540,7 +596,8 @@ h2 {
 
 .panel button:disabled,
 .panel input:disabled,
-.panel select:disabled {
+.panel select:disabled,
+.panel textarea:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
@@ -576,16 +633,23 @@ label {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"],
 input[type="number"],
 input:not([type]),
-select {
+select,
+textarea {
   width: 100%;
   min-height: 42px;
   padding: 8px 11px;
   border: 1px solid var(--line);
   background: var(--input-bg);
   color: var(--text);
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.45;
 }
 
 select {
@@ -798,6 +862,130 @@ input[type="range"] {
   background: var(--panel-bg-strong);
   box-shadow: 0 20px 48px var(--shadow);
   transform: translate(-50%, -50%);
+}
+
+.contribution-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 41;
+  display: grid;
+  gap: 13px;
+  width: min(680px, calc(100vw - 32px));
+  max-height: min(88svh, 820px);
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel-bg-strong);
+  box-shadow: 0 20px 48px var(--shadow);
+  transform: translate(-50%, -50%);
+}
+
+.contribution-modal-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  gap: 12px;
+  align-items: start;
+}
+
+.contribution-modal-heading h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.contribution-reference {
+  display: grid;
+  gap: 7px;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--control-bg);
+}
+
+.contribution-reference strong {
+  color: var(--accent);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.contribution-reference p {
+  color: var(--text);
+  font-family: var(--serif);
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.contribution-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.contribution-privacy {
+  padding-top: 2px;
+}
+
+.contribution-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.contribution-actions button,
+.contribution-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--control-bg-strong);
+}
+
+.contribution-clear {
+  color: var(--muted);
+  background: transparent;
+}
+
+.contribution-success {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 18px 10px 8px;
+  text-align: center;
+}
+
+.contribution-success svg {
+  color: var(--accent-strong);
+}
+
+.contribution-success p {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.contribution-success button {
+  min-width: 140px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: var(--control-bg-strong);
+}
+
+.turnstile-hidden {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .confirm-modal h3,
@@ -1168,6 +1356,7 @@ input[type="range"] {
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 a:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
@@ -1287,12 +1476,33 @@ a:focus-visible {
   .segmented,
   .stat-actions,
   .debug-toolbar,
-  .debug-variable-edit {
+  .debug-variable-edit,
+  .contribution-fields,
+  .contribution-actions {
     grid-template-columns: 1fr;
   }
 
   .stat-row {
     grid-template-columns: minmax(0, 1fr) 78px 74px;
+  }
+
+  .contribution-line {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contribution-line .text-correction {
+    opacity: 1;
+    justify-self: end;
+    margin: -2px 0 12px;
+  }
+
+  .choice-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .choice-correction {
+    justify-self: end;
+    height: 38px;
   }
 }
 
