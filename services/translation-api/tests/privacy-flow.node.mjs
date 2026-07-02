@@ -84,6 +84,34 @@ test('email templates include styled html and plain text fallbacks', () => {
   assert.doesNotMatch(rejected.text, /messageId|sceneId|hash/i)
 })
 
+test('smtp transport disables file and URL access for outgoing messages', async () => {
+  let transportUrl = ''
+  let sentMessage = null
+  const mailer = await createMailer({
+    smtpUrl: 'smtp://mail.example.test:1025',
+    emailWebhookUrl: '',
+    emailFrom: 'Magium <no-reply@magium.app>',
+  }, {
+    createTransport(url) {
+      transportUrl = url
+      return {
+        async sendMail(message) {
+          sentMessage = message
+        },
+      }
+    },
+  })
+
+  await mailer.send({ to: 'reader@example.test', subject: 'Subject', text: 'Body', html: '<p>Body</p>' })
+
+  assert.equal(mailer.enabled, true)
+  assert.equal(transportUrl, 'smtp://mail.example.test:1025')
+  assert.equal(sentMessage.disableFileAccess, true)
+  assert.equal(sentMessage.disableUrlAccess, true)
+  assert.equal(sentMessage.from, 'Magium <no-reply@magium.app>')
+  assert.equal(sentMessage.to, 'reader@example.test')
+})
+
 test('email webhook payload includes the configured sender', async () => {
   const previousFetch = globalThis.fetch
   let requestPayload

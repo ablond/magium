@@ -66,7 +66,9 @@ Routes publiques :
 
 - `POST /v1/translation-proposals`
 - `GET /v1/translation-proposals/:publicId/status`
-- `POST /v1/translation-proposals/:publicId/confirm-email`
+- `GET|POST /v1/translation-proposals/:publicId/confirm-email`
+
+Après clic sur le lien de confirmation email, l'API redirige vers la PWA. Le lecteur doit voir une confirmation visible dans le lecteur, sans identifiant technique, et l'URL doit être nettoyée du fragment de consentement. Quand le lien est ouvert dans le même navigateur que la proposition initiale, la PWA mémorise aussi le consentement local pour éviter un nouvel email de confirmation pendant un an.
 
 Routes admin protégées par `ADMIN_TOKEN` ou par une session web mainteneur :
 

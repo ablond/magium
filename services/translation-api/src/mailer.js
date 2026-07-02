@@ -1,6 +1,6 @@
 export const DEFAULT_EMAIL_FROM = 'Magium <no-reply@magium.app>'
 
-export async function createMailer(config) {
+export async function createMailer(config, options = {}) {
   if (!config.smtpUrl && !config.emailWebhookUrl) {
     return {
       enabled: false,
@@ -30,8 +30,8 @@ export async function createMailer(config) {
     }
   }
 
-  const nodemailer = await import('nodemailer')
-  const transport = nodemailer.createTransport(config.smtpUrl)
+  const createTransport = options.createTransport ?? (await import('nodemailer')).createTransport
+  const transport = options.transport ?? createTransport(config.smtpUrl)
   return {
     enabled: true,
     async send(message) {
@@ -42,6 +42,8 @@ export async function createMailer(config) {
         subject: outboundMessage.subject,
         text: outboundMessage.text,
         html: outboundMessage.html,
+        disableFileAccess: true,
+        disableUrlAccess: true,
       })
     },
   }

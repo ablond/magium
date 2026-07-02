@@ -53,6 +53,8 @@
     "contribution.sourceText": "English source",
     "contribution.statusEmailConfirmationSent": "Proposal sent. A confirmation email has just been sent.",
     "contribution.statusEmailConfirmed": "Proposal sent. You will receive an email when it has been reviewed.",
+    "contribution.statusEmailConsentNotStored": "Email confirmed. Follow-up is enabled for this proposal, but this browser cannot remember the confirmation for your next contributions.",
+    "contribution.statusEmailConsentStored": "Email confirmed. Follow-up is enabled for this proposal, and this browser will remember the confirmation for your next contributions.",
     "contribution.statusProfileCleared": "Contribution details were erased from this device.",
     "contribution.statusSent": "Proposal sent. Thank you for the correction.",
     "contribution.submit": "Send proposal",
