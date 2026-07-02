@@ -15,6 +15,8 @@ pull requests, with maintainer review required before merge.
 
 ## Local Setup
 
+Use Node.js 24 LTS with `pnpm@11.9.0`, matching CI and Docker builds.
+
 ```bash
 pnpm install
 pnpm --dir services/translation-api install --frozen-lockfile
@@ -26,6 +28,11 @@ pnpm build
 
 The default test suite intentionally excludes the manual Book 1 image pipeline
 tests because they require `ffmpeg`.
+
+Dependabot version PRs intentionally use a cooldown. pnpm 11 also enforces a
+minimum release age by default; if CI rejects a newly published package with
+`ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`, rerun after the release-age window
+instead of disabling the policy.
 
 ## Generated And Immutable Files
 

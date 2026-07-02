@@ -1,6 +1,6 @@
 services:
   web:
-    image: node:22-alpine
+    image: node:24-alpine
     working_dir: /app
     ports:
       - "${MAGIUM_WEB_PORT:-5173}:5173"

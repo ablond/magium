@@ -15,7 +15,7 @@ Configuration Coolify :
 - build args optionnels si contributions publiques activées : `VITE_MAGIUM_CONTRIBUTIONS_API_URL`, `VITE_MAGIUM_TURNSTILE_SITE_KEY` ;
 - volumes persistants : aucun.
 
-Le Dockerfile construit l'app avec Node 22 et pnpm, exécute `pnpm build`, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged:stable-alpine`.
+Le Dockerfile construit l'app avec Node 24 LTS et pnpm, exécute `pnpm build`, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged:stable-alpine`.
 
 Pré-requis côté builder Coolify :
 

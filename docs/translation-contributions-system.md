@@ -370,7 +370,7 @@ Workflow :
 - permissions : `contents: write`, `pull-requests: write`
 - étapes :
   1. checkout ;
-  2. setup Node 22 + pnpm ;
+  2. setup Node 24 LTS + pnpm ;
   3. fetch du changeset via API admin ;
   4. application du changeset ;
   5. `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build` ;

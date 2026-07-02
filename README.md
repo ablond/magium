@@ -22,6 +22,8 @@ Le récit V1 démarre en anglais original, avec le livre 1 complet jouable en fr
 
 ## Commandes
 
+Utiliser Node.js 24 LTS avec `pnpm@11.9.0` pour rester aligné avec la CI et les builds Docker.
+
 ```bash
 pnpm install
 pnpm --dir services/translation-api install --frozen-lockfile

@@ -2,6 +2,8 @@
 
 ## Suite Obligatoire
 
+Utiliser Node.js 24 LTS avec `pnpm@11.9.0`, comme dans la CI et les builds Docker.
+
 ```bash
 pnpm install
 pnpm --dir services/translation-api install --frozen-lockfile
@@ -11,6 +13,8 @@ pnpm build
 ```
 
 Ces commandes doivent passer avant de terminer une itération. Le service `services/translation-api` garde son propre `package.json` et son propre lockfile pour rester buildable séparément par Docker/Coolify ; ses dépendances doivent donc être installées en plus des dépendances racine avant `pnpm test` sur un checkout frais.
+
+Les PR Dependabot de version sont volontairement ralenties par un cooldown. pnpm 11 applique aussi un âge minimum de publication par défaut ; si une CI échoue avec `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`, relancer après la fenêtre d'attente au lieu de désactiver cette protection.
 
 Si l'itération touche les prompts, assets, outils ou l'affichage d'images Book 1, ajouter :
 

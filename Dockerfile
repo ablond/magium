@@ -1,6 +1,6 @@
 # check=skip=SecretsUsedInArgOrEnv
 # Vite embeds the Turnstile site key as a public client setting; the secret key stays only on the API.
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 ENV PNPM_HOME=/pnpm
