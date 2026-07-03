@@ -1,43 +1,43 @@
 # AGENTS.md
 
-Ce fichier est le point d'entrée pour tout agent IA qui reprend le projet.
+This file is the entry point for any AI agent resuming work on the project.
 
-## Objectif Produit
+## Product Goal
 
-Construire une PWA jouable de Magium à partir des textes originaux, avec :
+Build a playable Magium PWA from the original texts, with:
 
-- contenu original archivé et vérifiable ;
-- runtime qui ne sert pas les `.magium` ni les JSON canoniques bruts ;
-- moteur de jeu client-side ;
-- i18n multi-langues préparée ;
-- sauvegardes locales chiffrées, exportables sans compte ;
-- interface immersive, sombre, arcane, lisible sur mobile et desktop.
+- archived and verifiable original content;
+- a runtime that does not serve `.magium` files or raw canonical JSON;
+- a client-side game engine;
+- prepared multi-language i18n;
+- encrypted local saves that can be exported without an account;
+- an immersive dark arcane interface, readable on mobile and desktop.
 
-## État Actuel À Respecter
+## Current State To Respect
 
-- La source de vérité contenu est `raduprv/Magium@main`, capturée au commit courant dans `content/archive/original/current.json`.
-- Les fichiers `.magium` sont archivés pour audit et régénération, mais ne sont jamais lus directement par l'app.
-- Le runtime lit seulement des paquets générés sous `src/generated`.
-- Ces paquets sont compressés, encodés, découpés par chapitre/langue, et vérifiés par SHA-256 avant décompression.
-- Le pipeline garde l'archive originale intacte, mais applique les adaptations produit nécessaires au runtime. `Ch11b-Credits`, l'ancien écran commercial de fin du livre 1, est supprimé des paquets runtime ; `Ch11b-Ending` doit proposer directement le passage au livre 2 via un checkpoint.
-- Les textes d'interface source sont dans `content/ui-locales/en.json` et `content/ui-locales/fr.json`, puis générés en packs runtime `locales/<locale>/ui`.
-- Les traductions narratives source sont dans `content/story-locales/<locale>/*.json`, puis générées en packs runtime `locales/<locale>/<bundle>`.
-- Le choix de langue Settings pilote `settings.uiLocale`, `settings.locale` et `GameState.locale`. Un chapitre absent dans la locale choisie retombe sur `en`.
-- La PWA peut proposer une correction de traduction depuis un paragraphe ou choix visible. Ces icônes stylo sont masquées par défaut et s'affichent seulement si l'URL API de contribution est configurée et si le lecteur active `settings.translationContributions` dans Settings. Pour les textes narratifs, la cible joueur est le paragraphe affiché (`segmentIndex` dans le `messageId`), pas le bloc multi-paragraphes complet. Cette contribution part vers un service séparé `services/translation-api`; elle ne modifie jamais directement le runtime ni les sources.
-- Les corrections publiques sont anonymes par défaut. Pseudo et email sont facultatifs, le pseudo sert uniquement aux crédits demandés et reste modérable, l'email sert uniquement au suivi confirmé puis doit être supprimé après refus ou publication.
-- Une proposition acceptée doit être groupée dans un changeset mainteneur, appliquée à `content/story-locales/<locale>/<chapter>.json`, régénérée avec `pnpm content:all`, validée, puis livrée par PR GitHub. Ne jamais créer une PR par proposition individuelle.
-- Les images Book 1 ont un workflow principal manuel ChatGPT : portraits, prompts de moments et WebP sous `public/visuals/book1`, sans RAG ni embeddings. Un chemin API OpenAI optionnel existe uniquement pour finir les illustrations manquantes via planches de références locales et Batch API.
-- Le toggle Settings `settings.illustrations` affiche les illustrations de moments après la scène déclencheuse quand elles existent. Certains `sceneId` communs peuvent choisir une variante conditionnelle avec les variables de jeu, par exemple `Ch11b-Ending` selon `v_ch11_saved_rose`.
-- Le panneau Debug existe uniquement sous `pnpm dev` / `import.meta.env.DEV` pour explorer scènes, choix, stats et variables. Un état marqué `debug.dirty` peut être sauvegardé localement, mais ne doit jamais être exportable en `.magium-save`.
-- Les sauvegardes sont stockées dans IndexedDB sous forme AES-GCM, pas en clair dans localStorage.
-- La collection globale des succès est aussi stockée dans IndexedDB sous forme AES-GCM, séparément de `GameState.achievements`. `GameState.achievements` reste l'état rejouable de la partie courante et peut revenir en arrière avec restart/checkpoint.
-- Le panneau Sauvegardes doit rester joueur : sauvegarde automatique, sauvegardes locales nommables/renommables, point de contrôle, puis transfert. Ne pas afficher `slotId`, IDs de scène bruts, `route`, `prod`, `local-key` ou `pbkdf2` dans l'UX joueur.
-- Les sauvegardes locales ne demandent pas de mot de passe. L'export/import `.magium-save` demande un mot de passe uniquement dans le flux dédié après clic sur Exporter ou Importer.
-- localStorage ne doit contenir que des préférences UI non critiques.
+- The content source of truth is `raduprv/Magium@main`, captured at the current commit in `content/archive/original/current.json`.
+- `.magium` files are archived for audit and regeneration, but are never read directly by the app.
+- The runtime reads only generated packs under `src/generated`.
+- These packs are compressed, encoded, split by chapter/language, and verified by SHA-256 before decompression.
+- The pipeline keeps the original archive intact, but applies runtime product adaptations. `Ch11b-Credits`, the old commercial screen at the end of Book 1, is removed from runtime packs; `Ch11b-Ending` must offer a direct transition to Book 2 through a checkpoint.
+- Source UI text lives in `content/ui-locales/en.json` and `content/ui-locales/fr.json`, then is generated into runtime packs `locales/<locale>/ui`.
+- Narrative translation sources live in `content/story-locales/<locale>/*.json`, then are generated into runtime packs `locales/<locale>/<bundle>`.
+- The Settings language choice drives `settings.uiLocale`, `settings.locale`, and `GameState.locale`. A chapter missing in the selected locale falls back to `en`.
+- The PWA can offer a translation correction from a visible paragraph or choice. Pencil icons are hidden by default and appear only when the contribution API URL is configured and the reader enables `settings.translationContributions` in Settings. For narrative text, the player target is the displayed paragraph (`segmentIndex` in the `messageId`), not the complete multi-paragraph block. This contribution goes to the separate `services/translation-api` service; it never directly modifies the runtime or source files.
+- Public corrections are anonymous by default. Pseudonym and email are optional; pseudonym is used only for requested credits and remains moderated, while email is used only for confirmed follow-up and must be deleted after rejection or publication.
+- An accepted proposal must be grouped into a maintainer changeset, applied to `content/story-locales/<locale>/<chapter>.json`, regenerated with `pnpm content:all`, validated, and delivered by GitHub PR. Never create one PR per individual proposal.
+- Book 1 images use a primary manual ChatGPT workflow: portraits, moment prompts, and WebP files under `public/visuals/book1`, with no RAG or embeddings. An optional OpenAI API path exists only to finish missing illustrations through local reference sheets and Batch API.
+- The Settings toggle `settings.illustrations` displays moment illustrations after the trigger scene when they exist. Some shared `sceneId` values can choose a conditional variant with game variables, for example `Ch11b-Ending` based on `v_ch11_saved_rose`.
+- The Debug panel exists only under `pnpm dev` / `import.meta.env.DEV` to explore scenes, choices, stats, and variables. A state marked `debug.dirty` can be saved locally, but must never be exportable as `.magium-save`.
+- Saves are stored in IndexedDB as AES-GCM encrypted data, not plaintext localStorage.
+- The global achievement collection is also stored in IndexedDB as AES-GCM encrypted data, separate from `GameState.achievements`. `GameState.achievements` remains the replayable state of the current playthrough and can roll back with restart/checkpoint.
+- The Saves panel must remain player-facing: autosave, named/renamable local saves, checkpoint, then transfer. Do not show `slotId`, raw scene IDs, `route`, `prod`, `local-key`, or `pbkdf2` in the player UX.
+- Local saves do not ask for a password. `.magium-save` export/import asks for a password only in the dedicated flow after clicking Export or Import.
+- localStorage must contain only non-critical UI preferences.
 
-## Commandes De Vérification Obligatoires
+## Required Verification Commands
 
-Avant de considérer une itération terminée :
+Before considering an iteration complete:
 
 ```bash
 pnpm check
@@ -45,240 +45,283 @@ pnpm test
 pnpm build
 ```
 
-Si une itération touche les prompts, assets ou l'affichage d'images Book 1, lancer aussi :
+If an iteration touches Book 1 prompts, assets, or image display, also run:
 
 ```bash
 pnpm images:check -- --book 1
 pnpm images:test
 ```
 
-`pnpm images:test` couvre les tests Vitest du pipeline images Book 1, notamment les planches de références et le JSONL OpenAI Batch. Il nécessite `ffmpeg` et n'est pas inclus dans `pnpm test`, pour que les workflows de traduction ne dépendent pas des outils images.
+`pnpm images:test` covers Vitest tests for the Book 1 image pipeline, including
+reference sheets and OpenAI Batch JSONL. It requires `ffmpeg` and is not
+included in `pnpm test`, so translation workflows do not depend on image tools.
 
-`pnpm build` exécute aussi :
+`pnpm build` also runs:
 
 - `pnpm content:all`
 - `vite build`
 - `pnpm dist:check`
 
-`dist:check` doit rester vert : aucun `.magium`, aucun JSON canonique brut, aucun extrait source brut évident dans `dist/`.
+`dist:check` must stay green: no `.magium`, no raw canonical JSON, and no
+obvious raw source excerpt in `dist/`.
 
-Si une itération touche Docker, Coolify ou le packaging de production, lancer aussi :
+If an iteration touches Docker, Coolify, or production packaging, also run:
 
 ```bash
 pnpm docker:build-prod
 ```
 
-Si l'objectif demande une publication d'image, aller jusqu'à :
+If the objective asks for Docker/container image publication, continue through:
 
 ```bash
 pnpm docker:push-prod
 ```
 
-L'image publiée manuellement est `ghcr.io/ablond/magium`, avec un tag timestamp UTC `YYYYMMDD-HHMMSS` et `latest`. Le déploiement Coolify principal peut aussi builder directement le `Dockerfile` à la racine via GitHub App.
+The manually published container image is `ghcr.io/ablond/magium`, with a UTC timestamp
+tag `YYYYMMDD-HHMMSS` and `latest`. The main Coolify deployment may also build
+the root `Dockerfile` directly through the GitHub App.
 
-Pour vérifier le stack local Docker, utiliser `docker compose up -d --build`, puis tester `http://localhost:5173`, `http://localhost:8090/health`, une proposition publique et une route admin avec le token local `dev-admin-token`. `docker compose down -v` reset la base PostgreSQL locale.
+To verify the local Docker stack, use `docker compose up -d --build`, then test
+`http://localhost:5173`, `http://localhost:8090/health`, one public proposal,
+and an admin route with the local token `dev-admin-token`. `docker compose down
+-v` resets the local PostgreSQL database.
 
-## Documentation Obligatoire
+## Required Documentation
 
-La documentation fait partie du produit. Elle doit être maintenue, corrigée et synchronisée à chaque itération.
+Documentation is part of the product. It must be maintained, corrected, and
+synchronized at every iteration.
 
-Si une modification change une commande, un flux, une structure de fichier, une limite de sécurité, un comportement UI, le pipeline contenu, le modèle i18n ou les sauvegardes, mettre à jour la documentation dans le même changement.
+If a change modifies a command, flow, file structure, security limit, UI
+behavior, content pipeline, i18n model, or save behavior, update documentation
+in the same change.
 
-Ne pas laisser une doc connue comme fausse, incomplète ou ambiguë. Si une vérification montre que la doc ne correspond plus au comportement réel, corriger la doc avant de terminer.
+Do not leave known documentation false, incomplete, or ambiguous. If
+verification shows that documentation no longer matches real behavior, correct
+the documentation before finishing.
 
-Fichiers à considérer en priorité :
+Priority files:
 
-- `README.md` pour la vue d'ensemble et les commandes ;
-- `AGENTS.md` pour les consignes de reprise par agents IA ;
-- `docs/architecture.md` pour les décisions système ;
-- `docs/content-pipeline.md` pour import, parsing, canonicalisation et packs ;
-- `docs/runtime-engine.md` pour le moteur ;
-- `docs/saves-and-anti-tamper.md` pour stockage, chiffrement et limites ;
-- `docs/i18n.md` pour le modèle de traduction ;
-- `docs/contributions.md` pour propositions publiques, privacy, API de revue et changesets ;
-- `docs/translation-contributions-system.md` comme source de reprise technique exhaustive du sous-système contributions traduction, incluant PWA, API, PostgreSQL, Mailpit, double opt-in email, admin mainteneur, diff, changesets, workflow GitHub PR, Docker local et Coolify ;
-- `docs/manual-images.md` pour les portraits, illustrations et prompts ChatGPT manuels ;
-- `docs/deployment-coolify.md` pour Docker, GHCR et Coolify ;
-- `docs/verification.md` pour les checks attendus.
+- `README.md` for overview and commands;
+- `AGENTS.md` for AI-agent handoff instructions;
+- `docs/architecture.md` for system decisions;
+- `docs/content-pipeline.md` for import, parsing, canonicalization, and packs;
+- `docs/runtime-engine.md` for the engine;
+- `docs/saves-and-anti-tamper.md` for storage, encryption, and limits;
+- `docs/i18n.md` for the translation model;
+- `docs/contributions.md` for public proposals, privacy, review API, and changesets;
+- `docs/translation-contributions-system.md` as the exhaustive technical handoff for the translation contribution subsystem, including PWA, API, PostgreSQL, Mailpit, email double opt-in, maintainer admin, diff, changesets, GitHub PR workflow, local Docker, and Coolify;
+- `docs/manual-images.md` for manual ChatGPT portraits, illustrations, and prompts;
+- `docs/deployment-coolify.md` for Docker, GHCR, and Coolify;
+- `docs/verification.md` for expected checks.
 
-## Fichiers Générés Ou Immuables
+## Generated Or Immutable Files
 
-Ne pas éditer à la main :
+Do not edit by hand:
 
 - `content/archive/original/**`
 - `content/canonical/v1/**`
 - `src/generated/**`
 
-Pour changer ces fichiers, modifier les scripts sous `tools/content/`, puis lancer :
+To change those files, modify scripts under `tools/content/`, then run:
 
 ```bash
 pnpm content:all
 ```
 
-Exceptions source : `content/ui-locales/*.json` et `content/story-locales/**/*.json` sont éditables à la main. Les copies sous `content/canonical/v1/locales/**` et les packs sous `src/generated` restent générés.
+Source exceptions: `content/ui-locales/*.json` and
+`content/story-locales/**/*.json` are editable by hand. Copies under
+`content/canonical/v1/locales/**` and packs under `src/generated` remain
+generated.
 
-Exception images : `public/visuals/book1/**/portrait.md` et `public/visuals/book1/**/illustration.md` sont générés par `pnpm images:prompts -- --book 1`, puis peuvent être ajustés manuellement. Les fichiers WebP correspondants sont ajoutés manuellement après génération dans ChatGPT Images, ou ponctuellement via le chemin API optionnel documenté dans `docs/manual-images.md`.
+Image exception: `public/visuals/book1/**/portrait.md` and
+`public/visuals/book1/**/illustration.md` are generated by
+`pnpm images:prompts -- --book 1`, then may be adjusted manually. Matching WebP
+files are added manually after ChatGPT Images generation, or occasionally
+through the optional API path documented in `docs/manual-images.md`.
 
-## Packaging Docker Et Coolify
+## Docker And Coolify Packaging
 
-- Le Dockerfile de production est à la racine pour le build pack Dockerfile de Coolify via GitHub App. Il construit l'app avec pnpm, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged` exposée sur le port `8080`.
-- Le Dockerfile racine accepte les build args `VITE_MAGIUM_CONTRIBUTIONS_API_URL` et `VITE_MAGIUM_TURNSTILE_SITE_KEY` pour activer le formulaire de contribution dans l'image PWA. Les valeurs par défaut restent vides.
-- Le runtime Coolify peut builder depuis le dépôt. Le flux `pnpm docker:push-prod` reste un chemin optionnel pour publier une image préconstruite `ghcr.io/ablond/magium`.
-- Le service `services/translation-api` a son propre Dockerfile et doit être déployé comme application Coolify séparée du runtime PWA, avec une base PostgreSQL séparée.
-- Le compose local lance la PWA en mode Vite dev, l'API de contribution et PostgreSQL. Les valeurs locales sont non secrètes et ne doivent pas être recopiées en production.
-- Ne pas copier `content/archive`, `content/canonical`, `src/generated` source, `node_modules`, `.env*` ou des exports `.magium-save` dans l'image finale.
-- `.dockerignore` doit exclure les fichiers locaux sensibles ou volumineux, mais ne doit pas casser le build `pnpm build` dans le stage builder.
-- `tools/docker/build-prod-push.sh` valide le filesystem de l'image, démarre le conteneur, teste `/`, `/sw.js`, `/manifest.webmanifest` et le fallback SPA avant push.
-- Coolify PWA doit utiliser le build pack Dockerfile, chemin `Dockerfile`, port exposé `8080`, sans volume et sans variable d'environnement runtime. Si le déploiement utilise le package GHCR privé au lieu du build GitHub App, le serveur Coolify doit être authentifié avec `docker login ghcr.io`.
+- The production Dockerfile is at the repository root for Coolify's Dockerfile build pack through GitHub App. It builds the app with pnpm, then copies only `dist/` into an `nginxinc/nginx-unprivileged` image exposed on port `8080`.
+- The root Dockerfile accepts build args `VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY` to enable the contribution form in the PWA image. Defaults remain empty.
+- Coolify runtime can build from the repository. `pnpm docker:push-prod` remains an optional path for publishing a prebuilt image `ghcr.io/ablond/magium`.
+- `services/translation-api` has its own Dockerfile and must be deployed as a Coolify application separate from the PWA runtime, with a separate PostgreSQL database.
+- The local compose stack runs the PWA in Vite dev mode, the contribution API, and PostgreSQL. Local values are non-secret and must not be copied to production.
+- Do not copy `content/archive`, `content/canonical`, source `src/generated`, `node_modules`, `.env*`, or `.magium-save` exports into the final image.
+- `.dockerignore` must exclude sensitive or bulky local files, but must not break `pnpm build` in the builder stage.
+- `tools/docker/build-prod-push.sh` validates the image filesystem, starts the container, tests `/`, `/sw.js`, `/manifest.webmanifest`, and SPA fallback before push.
+- Coolify PWA must use the Dockerfile build pack, `Dockerfile` path, exposed port `8080`, no volume, and no runtime environment variable. If deployment uses the private GHCR package instead of the GitHub App build, authenticate the Coolify server with `docker login ghcr.io`.
 
-## Pipeline Contenu
+## Content Pipeline
 
-Ordre attendu :
+Expected order:
 
 1. `content:import`
-   - resolve `raduprv/Magium@main` en SHA exact ;
-   - archive `README.md`, `LICENSE`, `chapters/**` ;
-   - génère `manifest.json` avec tailles et SHA-256 ;
-   - vérifie qu'il y a 54 `.magium`.
+   - resolve `raduprv/Magium@main` to an exact SHA;
+   - archive `README.md`, `LICENSE`, `chapters/**`;
+   - generate `manifest.json` with sizes and SHA-256;
+   - verify that there are 54 `.magium` files.
 2. `content:archive:check`
-   - relit l'archive et compare les hash.
+   - reread the archive and compare hashes.
 3. `content:parse`
-   - parse les `.magium` ;
-   - écrit le graphe logique dans `content/canonical/v1/story`;
-   - écrit les messages anglais dans `content/canonical/v1/locales/en`;
-   - copie les bundles UI depuis `content/ui-locales` vers `content/canonical/v1/locales/<locale>/ui.json` ;
-   - copie les traductions narratives depuis `content/story-locales` vers `content/canonical/v1/locales/<locale>/` ;
-   - génère les paquets runtime TS sous `src/generated`.
+   - parse `.magium` files;
+   - write the logic graph to `content/canonical/v1/story`;
+   - write English messages to `content/canonical/v1/locales/en`;
+   - copy UI bundles from `content/ui-locales` to `content/canonical/v1/locales/<locale>/ui.json`;
+   - copy narrative translations from `content/story-locales` to `content/canonical/v1/locales/<locale>/`;
+   - generate TS runtime packs under `src/generated`.
 4. `content:validate`
-   - vérifie messages, targets, achievements, scène map, couverture stricte des clés UI/story/stats, packs générés, et absence de fuite brute dans les paquets générés.
+   - verify messages, targets, achievements, scene map, strict UI/story/stat key coverage, generated packs, and no raw leak in generated packs.
 
-## Contributions Publiques De Traduction
+## Public Translation Contributions
 
-Avant de modifier ce sous-système, lire `docs/translation-contributions-system.md`. C'est la référence de reprise pour les routes, variables d'environnement, schéma PostgreSQL, statuts, email, admin, changesets, GitHub dispatch, Docker local et Coolify. `docs/contributions.md` reste la vue produit/fonctionnelle.
+Before modifying this subsystem, read `docs/translation-contributions-system.md`.
+It is the handoff reference for routes, environment variables, PostgreSQL
+schema, statuses, email, admin, changesets, GitHub dispatch, local Docker, and
+Coolify. `docs/contributions.md` remains the product/functional view.
 
-- Quand `settings.translationContributions` est activé et que l'URL API est configurée, la PWA affiche des icônes stylo discrètes sur les paragraphes et choix visibles. Le modal joueur doit afficher et préremplir uniquement le paragraphe cliqué ; les choix restent corrigés en entier. Ne pas afficher au joueur `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex`, hash ou autre détail de routage.
-- Les variables de build PWA sont `VITE_MAGIUM_CONTRIBUTIONS_API_URL` et `VITE_MAGIUM_TURNSTILE_SITE_KEY`.
-- Le service `services/translation-api` est séparé du runtime PWA, exposé `/health`, utilise PostgreSQL en production, et peut être lancé localement avec `docker compose up -d`. Il ne doit pas servir les fichiers canoniques ou les packs générés comme JSON public.
-- Le captcha par défaut documenté est Cloudflare Turnstile en mode invisible/non interactif, avec validation obligatoire côté API via Siteverify. `TURNSTILE_DISABLED=1` est réservé au dev/test.
-- Les routes admin doivent rester protégées par `ADMIN_TOKEN` pour les scripts, ou par la session web mainteneur de `/admin` avec cookie `HttpOnly` et CSRF pour les actions mutantes. Le compose local utilise `dev-admin-token` et `dev-admin-password`, valeurs non secrètes interdites en production.
-- Une proposition publique reste en base jusqu'à revue. Le mainteneur peut accepter, rejeter ou marquer obsolète ; l'acceptation produit une version finale éditable, pas un merge automatique.
-- Les propositions concurrentes sur un même choix ou un même segment `locale/chapterId/messageId/segmentIndex` doivent être résolues dans l'outil de revue. Un changeset peut contenir plusieurs corrections du même `messageId` si les `segmentIndex` sont différents.
-- L'admin mainteneur peut afficher `currentText` et un diff visuel pour aider la revue, mais seule la version finale retenue est éditable et intégrée au changeset. Les anciennes propositions sans `currentText` doivent rester consultables sans diff.
-- `tools/contributions/apply-changeset.mjs` refuse un changeset si `currentTextHash` ne correspond plus au texte source éditable courant. Pour un paragraphe, comparer le hash du segment cible et remplacer uniquement ce segment dans la valeur JSON complète. Dans ce cas, marquer le changeset/propositions `stale` au lieu de forcer.
-- Le workflow `.github/workflows/translation-changeset-pr.yml` doit lancer `pnpm content:all`, `pnpm check`, `pnpm test` et `pnpm build` avant de créer la PR. `pnpm test` exclut les tests manuels Book 1 qui génèrent des WebP avec `ffmpeg`.
-- Les emails de suivi doivent rester séparés des propositions publiques, confirmés par token, non affichés dans l'admin public/PR, et supprimés après rejet, stale ou publication. Le consentement de suivi est réutilisable un an par navigateur via un jeton local ; côté serveur, ne stocker pour ce consentement qu'un HMAC d'email et un hash de jeton, jamais l'email brut.
-- Les pseudos de crédit sont publics seulement si le contributeur l'a demandé et si le mainteneur les approuve. Refuser ou masquer les pseudos illégaux, violents, haineux, sexuellement explicites, pédopornographiques, de doxxing, d'usurpation ou manifestement inadaptés.
-- La page publique `/legal/contributions.html` doit rester cohérente avec ce comportement. Compléter les mentions légales de l'instance avant activation publique.
+- When `settings.translationContributions` is enabled and the API URL is configured, the PWA shows discreet pencil icons on visible paragraphs and choices. The player modal must display and prefill only the clicked paragraph; choices are still corrected as a whole. Do not show the player `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex`, hash, or other routing detail.
+- PWA build variables are `VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY`.
+- `services/translation-api` is separate from the PWA runtime, exposes `/health`, uses PostgreSQL in production, and can run locally with `docker compose up -d`. It must not serve canonical files or generated packs as public JSON.
+- The documented default captcha is Cloudflare Turnstile in invisible/non-interactive mode, with required API-side Siteverify validation. `TURNSTILE_DISABLED=1` is only for dev/test.
+- Admin routes must stay protected by `ADMIN_TOKEN` for scripts, or by the `/admin` maintainer web session with `HttpOnly` cookie and CSRF for mutating actions. Local compose uses `dev-admin-token` and `dev-admin-password`, non-secret values that are forbidden in production.
+- A public proposal remains in the database until review. The maintainer can accept, reject, or mark stale; acceptance produces an editable final version, not an automatic merge.
+- Competing proposals for the same choice or same `locale/chapterId/messageId/segmentIndex` must be resolved in the review tool. A changeset may contain several corrections for the same `messageId` if `segmentIndex` differs.
+- Maintainer admin may display `currentText` and a visual diff to help review, but only the retained final version is editable and integrated into the changeset. Older proposals without `currentText` must remain viewable without a diff.
+- `tools/contributions/apply-changeset.mjs` rejects a changeset if `currentTextHash` no longer matches the current editable source text. For a paragraph, compare the target segment hash and replace only that segment in the complete JSON value. Mark the changeset/proposals `stale` instead of forcing.
+- `.github/workflows/translation-changeset-pr.yml` must run `pnpm content:all`, `pnpm check`, `pnpm test`, and `pnpm build` before creating the PR. `pnpm test` excludes manual Book 1 tests that generate WebP files with `ffmpeg`.
+- Follow-up emails must stay separate from public proposals, confirmed by token, hidden from public admin/PR surfaces, and deleted after rejection, stale, or publication. Follow-up consent is reusable for one year per browser through a local token; server-side, store only an email HMAC and token hash for this consent, never the raw email.
+- Credit pseudonyms are public only if requested by the contributor and approved by the maintainer. Reject or hide illegal, violent, hateful, sexually explicit, child-sexual-abuse, doxxing, impersonation, or clearly inappropriate pseudonyms.
+- The public page `/legal/contributions.html` must stay coherent with this behavior. Complete the public instance legal notices before public activation.
 
-## Pipeline Images Manuel Book 1
+## Manual Book 1 Image Pipeline
 
-Ordre attendu :
+Expected order:
 
 1. `pnpm images:prompts -- --book 1`
-   - lit les textes canoniques anglais du Book 1 ;
-   - vérifie les ancres manuelles de `tools/images/book1-config.mjs`, notamment les descriptions avant révélation du nom ;
-   - écrit des prompts Markdown courts sous `public/visuals/book1`.
-2. Relire/corriger les prompts publics.
-3. Générer les portraits dans ChatGPT Images, puis sauvegarder `portrait.webp`.
-4. Pour préparer les dossiers ChatGPT, lancer `pnpm images:stage -- --book 1`. La commande stage tous les moments Book 1 par défaut ; utiliser `--moment <moment-id>` ou `--chapter <chapter-id>` pour limiter le scope.
-5. Joindre dans ChatGPT les portraits renommés du dossier `output/visual/staging/book1/<moment-id>/references/`, coller `prompt.md`, puis sauvegarder `illustration.webp` sous `public/visuals/book1/moments/<moment-id>/`.
-6. Si des PNG/JPG ont été ajoutés depuis ChatGPT, lancer `pnpm images:normalize -- --book 1` pour créer les `illustration.webp` et archiver les originaux.
-7. Pour le chemin API optionnel : `pnpm images:refsheets -- --book 1 --missing`, puis `OPENAI_API_KEY=... pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`. Récupérer ensuite le batch avec la commande `--retrieve` affichée par le script.
+   - reads canonical English Book 1 text;
+   - verifies manual anchors in `tools/images/book1-config.mjs`, including descriptions before name reveal;
+   - writes short Markdown prompts under `public/visuals/book1`.
+2. Review/correct public prompts.
+3. Generate portraits in ChatGPT Images, then save `portrait.webp`.
+4. To prepare ChatGPT folders, run `pnpm images:stage -- --book 1`. The command stages every Book 1 moment by default; use `--moment <moment-id>` or `--chapter <chapter-id>` to limit scope.
+5. Attach renamed portraits from `output/visual/staging/book1/<moment-id>/references/` in ChatGPT, paste `prompt.md`, then save `illustration.webp` under `public/visuals/book1/moments/<moment-id>/`.
+6. If PNG/JPG files were added from ChatGPT, run `pnpm images:normalize -- --book 1` to create `illustration.webp` and archive originals.
+7. For the optional API path: `pnpm images:refsheets -- --book 1 --missing`, then `OPENAI_API_KEY=... pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`. Retrieve the batch with the `--retrieve` command printed by the script.
 8. `pnpm images:test`
-   - nécessite `ffmpeg` ;
-   - vérifie les prompts, les références personnages, les planches de références API et le JSONL OpenAI Batch ;
-   - reste séparé de `pnpm test` pour ne pas imposer `ffmpeg` aux workflows non image.
+   - requires `ffmpeg`;
+   - verifies prompts, character references, API reference sheets, and OpenAI Batch JSONL;
+   - remains separate from `pnpm test` so non-image workflows do not require `ffmpeg`.
 9. `pnpm images:check -- --book 1`
-   - vérifie la structure publique ;
-   - refuse `evidenceRefs`, RAG, embeddings, marqueurs `.magium`, anciens dossiers `chapters` et copies longues du texte canonique ;
-   - accepte les WebP manquants pendant la production.
+   - verifies public structure;
+   - rejects `evidenceRefs`, RAG, embeddings, `.magium` markers, old `chapters` folders, and long canonical text copies;
+   - accepts missing WebP files during production.
 
-Ne pas ajouter de RAG ni embeddings. Ne jamais committer de clé API ; `OPENAI_API_KEY` doit rester dans l'environnement local. Les manifests et planches API sous `output/visual/api-inputs/` et `output/visual/api-runs/` sont locaux et ignorés par Git.
+Do not add RAG or embeddings. Never commit an API key; `OPENAI_API_KEY` must
+stay in the local environment. API manifests and sheets under
+`output/visual/api-inputs/` and `output/visual/api-runs/` are local and ignored
+by Git.
 
-Pour enrichir les portraits ou moments, suivre la méthode documentée dans `docs/manual-images.md`. Tous les personnages Book 1 doivent garder le niveau de détail appliqué à Barry et Daren : ancres canoniques courtes, séparation explicite `Canon:` / `Design choice:` / `Avoid:`, portrait plein pied, équipement ou anatomie visible et style fantasy réaliste sobre. Les moments doivent décrire lieu, architecture, matériaux, personnages anonymes, composition, continuité d'équipement et compatibilité multi-chemins quand la scène contient des conditions. Conserver les corrections canoniques déjà vérifiées : Azarius n'est pas Felran, Molan est un faon, Illuna et Petal sont la même personne, Flower et Illuna partagent le même corps mais ne doivent jamais être attachés ensemble à un même moment, Arraka est représentée par l'amulette/aura et jamais attachée comme personnage de moment, Eleya est la renarde canonique, Taurus reste un animal naturel, Barry n'a pas d'arbalète avant `Ch6-Packing`, son stat device doit être explicitement en main ou caché dans chaque moment, son sac reste ordinaire avant l'enchantement de Daren et ne montre glow/inventaire que sur demande, Barry part sans sac pour `ch11a-beggars-district-trap` et `ch11b-*`, Daren est visible et affaibli dans `ch1-cutthroat-dave`, `Ch11b-Ending` doit utiliser la variante sans Rose quand `v_ch11_saved_rose` n'est pas `1`, et aucun portrait ne doit être attaché à un moment si le personnage n'est pas visible dans son `triggerSceneId`.
+To enrich portraits or moments, follow `docs/manual-images.md`. Every Book 1
+character must keep the detail level applied to Barry and Daren: short
+canonical anchors, explicit `Canon:` / `Design choice:` / `Avoid:` separation,
+full-body portrait, visible equipment or anatomy, and restrained realistic
+fantasy style. Moments must describe place, architecture, materials, anonymous
+characters, composition, equipment continuity, and multi-path compatibility
+when the scene contains conditions. Preserve verified canonical corrections:
+Azarius is not Felran, Molan is a fawn, Illuna and Petal are the same person,
+Flower and Illuna share the same body but must never be attached together to
+the same moment, Arraka is represented by the amulet/aura and never attached as
+a moment character, Eleya is the canonical fox, Taurus remains a natural
+animal, Barry has no crossbow before `Ch6-Packing`, his stat device must be
+explicitly in hand or hidden in every moment, his backpack remains ordinary
+before Daren enchants it and shows glow/inventory only when requested, Barry
+leaves without a backpack for `ch11a-beggars-district-trap` and `ch11b-*`,
+Daren is visible and weakened in `ch1-cutthroat-dave`, `Ch11b-Ending` must use
+the no-Rose variant when `v_ch11_saved_rose` is not `1`, and no portrait may be
+attached to a moment if the character is not visible in its `triggerSceneId`.
 
-## Invariants Architecture
+## Architecture Invariants
 
-- Le graphe logique ne doit pas dépendre d'une langue.
-- Les images ne modifient pas le graphe logique, les sauvegardes ou le replay anti-triche.
-- Les illustrations de moments sont résolues par une map statique `sceneId -> moment`, avec variantes conditionnelles possibles par variables de jeu, et masquées si le WebP manque.
-- Les traductions futures ne doivent jamais modifier :
-  - scène IDs ;
-  - choice targets ;
-  - variable names ;
-  - conditions ;
-  - assignments ;
-  - specials ;
+- The logic graph must not depend on a language.
+- Images do not modify the logic graph, saves, or anti-cheat replay.
+- Moment illustrations are resolved by a static `sceneId -> moment` map, with possible conditional variants by game variables, and hidden if the WebP is missing.
+- Future translations must never modify:
+  - scene IDs;
+  - choice targets;
+  - variable names;
+  - conditions;
+  - assignments;
+  - specials;
   - achievement variables.
-- Ajouter une langue signifie ajouter des messages pour les mêmes `messageId`.
-- Le fallback runtime est `en`.
-- Les chunks runtime doivent rester lazy-loadés par chapitre/langue.
-- Les stats et achievements affichés doivent suivre `GameState.locale`, avec fallback anglais par bundle absent.
-- Les assignments canoniques sont explicites : `mode: "set"` remplace, `mode: "add"` additionne. Les valeurs source signées `+N` / `-N` sont des deltas.
-- `v_max_stat` pilote le plafond manuel des stats (`3` par défaut, `4` quand le contenu original le définit). Les boosts narratifs peuvent dépasser ce plafond, mais pas l'allocation UI.
-- `history` contient des événements types `choice` et `stats`; le replay doit vérifier les allocations de stats, les points disponibles et les plafonds.
+- Adding a language means adding messages for the same `messageId` keys.
+- Runtime fallback is `en`.
+- Runtime chunks must remain lazy-loaded by chapter/language.
+- Displayed stats and achievements must follow `GameState.locale`, with English fallback when a bundle is absent.
+- Canonical assignments are explicit: `mode: "set"` replaces, `mode: "add"` increments. Signed source values `+N` / `-N` are deltas.
+- `v_max_stat` drives the manual stat cap (`3` by default, `4` when original content defines it). Narrative boosts may exceed this cap, but UI allocation may not.
+- `history` contains typed `choice` and `stats` events; replay must verify stat allocations, available points, and caps.
 
-## Anti-Triche Et Sauvegardes
+## Anti-Cheat And Saves
 
-Objectif réaliste : résistance et détection, pas sécurité absolue.
+Realistic goal: resistance and detection, not absolute security.
 
-Contraintes :
+Constraints:
 
-- utiliser IndexedDB pour les saves ;
-- chiffrer avec Web Crypto AES-GCM ;
-- conserver les succès globaux dans un store chiffré séparé des saves ;
-- authentifier les données via AES-GCM additionalData ;
-- maintenir un `historyDigest` chaîne ;
-- vérifier un import par replay du parcours ;
-- rejouer aussi les allocations de stats ;
-- rejeter une sauvegarde déchiffrée si son état ne correspond pas à un chemin jouable.
+- use IndexedDB for saves;
+- encrypt with Web Crypto AES-GCM;
+- keep global achievements in an encrypted store separate from saves;
+- authenticate data through AES-GCM additionalData;
+- maintain a chained `historyDigest`;
+- verify import by replaying the path;
+- also replay stat allocations;
+- reject a decrypted save if its state does not match a playable path.
 
-Ne pas :
+Do not:
 
-- stocker variables/stats/achievements en clair ;
-- ajouter un fallback localStorage pour les données de jeu ;
-- alimenter les succès globaux depuis un état `debug.dirty` ;
-- accepter un import seulement parce qu'il se déchiffre.
+- store variables/stats/achievements in plaintext;
+- add a localStorage fallback for game data;
+- feed global achievements from a `debug.dirty` state;
+- accept an import only because it decrypts.
 
 ## UI / UX
 
-Première vue = expérience jouable, pas landing page.
+First view = playable experience, not a landing page.
 
-Direction :
+Direction:
 
-- fantasy sombre, arcane, épique ;
-- texte prioritaire ;
-- commandes compactes ;
-- lisible mobile ;
-- pas de décorations qui cassent la lecture ;
-- pas de texte qui chevauche ses conteneurs.
+- dark, arcane, epic fantasy;
+- text first;
+- compact controls;
+- readable on mobile;
+- no decoration that breaks reading;
+- no text overlapping containers.
 
-Après changement UI, vérifier au moins :
+After UI changes, verify at least:
 
-- desktop 1280 x 720 ;
-- mobile environ 390 x 844 ;
-- scène avec paragraphe long ;
-- scène qui commence par `...` ;
-- résultat de stat check après un choix narratif, localisé FR/EN ;
-- panneau Sauvegardes avec sauvegarde automatique, sauvegardes locales, renommage, point de contrôle, export/import avec mot de passe affiché seulement dans le flux de transfert ;
-- panneau Stats avant/après révélation, allocation, max 3 puis 4, stats aura ;
-- panneau achievements, y compris conservation d'un succès de mort après retour checkpoint ou nouvelle partie ;
-- panneau settings/about ;
-- panneau Debug visible en dev seulement, absent du build prod, avec jump de scène, choix cachés, édition stats/variables, undo/redo et export bloqué après modification debug ;
-- toggle Illustrations et image de moment présente/absente ;
-- bascule de langue FR/EN sans reset de partie, avec récit et stats traduits quand le pack existe.
+- desktop 1280 x 720;
+- mobile around 390 x 844;
+- scene with a long paragraph;
+- scene starting with `...`;
+- stat check result after a narrative choice, localized FR/EN;
+- Saves panel with autosave, local saves, renaming, checkpoint, export/import with password shown only in the transfer flow;
+- Stats panel before/after reveal, allocation, max 3 then 4, aura stats;
+- achievements panel, including keeping a death achievement after checkpoint rollback or new game;
+- settings/about panels;
+- Debug panel visible only in dev and absent from production build, with scene jump, hidden choices, stat/variable editing, undo/redo, and export blocked after debug modification;
+- Illustrations toggle and present/missing moment image;
+- FR/EN language switch without resetting the game, with story and stats translated when the pack exists.
 
-## Pièges Connus
+## Known Pitfalls
 
-- Le dev server Vite peut voir `src/generated` changer pendant `content:all` et produire des erreurs HMR temporaires. Si cela arrive, relancer la page après régénération. Le build propre reste la référence.
-- `content:import` prend `main` à jour, puis épingle le SHA exact dans le manifest. Ce n'est pas un vieux commit historique.
-- Les fichiers `logic.txt` originaux peuvent aider à auditer, mais la source runtime principale est `.magium`.
-- L'app est 100% client. Un utilisateur déterminé avec DevTools peut toujours patcher le code exécuté ; ne pas promettre une anti-triche absolue sans backend.
+- The Vite dev server can see `src/generated` change during `content:all` and produce temporary HMR errors. If this happens, reload the page after regeneration. The clean build remains the reference.
+- `content:import` takes the current `main`, then pins the exact SHA in the manifest. It is not an old historical commit.
+- Original `logic.txt` files can help audit behavior, but the main runtime source is `.magium`.
+- The app is 100% client-side. A determined user with DevTools can always patch executed code; do not promise absolute anti-cheat without a backend.
 
-## Prochaines Itérations Logiques
+## Logical Next Iterations
 
-- UI de sélection de chapitre/livre.
-- Tests navigateur automatisés pour les résultats de stat checks post-choix.
-- Workflow i18n narratif : export XLIFF/JSON de traduction, import, coverage report.
-- Tests navigateur automatisés pour export/import et offline.
-- Gestion plus fine des saves incompatibles lors d'un changement de `contentVersion`.
+- Chapter/book selection UI.
+- Browser automation tests for post-choice stat check results.
+- Narrative i18n workflow: XLIFF/JSON translation export, import, coverage report.
+- Browser automation tests for export/import and offline behavior.
+- Finer handling of incompatible saves after a `contentVersion` change.

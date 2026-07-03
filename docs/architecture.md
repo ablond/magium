@@ -1,39 +1,44 @@
 # Architecture
 
-## Vue D'Ensemble
+## Overview
 
-Le runtime jouable est une PWA statique. Il n'y a pas de backend, pas de compte utilisateur, pas de stockage cloud pour jouer, sauvegarder ou relire une partie.
+The playable runtime is a static PWA. There is no backend, account system, or
+cloud storage required to play, save, or replay a game.
 
-Un service séparé optionnel existe pour les contributions publiques de traduction. Il ne fait pas partie du runtime jeu, ne sert pas les JSON canoniques bruts, et ne publie jamais une correction sans revue mainteneur et PR GitHub. Son interface mainteneur est servie par le service API sur `/admin`, protégée par mot de passe serveur, cookie `HttpOnly` et CSRF ; la PWA joueur reste statique.
+An optional standalone service handles public translation contributions. It is
+not part of the game runtime, does not serve raw canonical JSON, and never
+publishes a correction without maintainer review and a GitHub PR. Its
+maintainer UI is served by the API service at `/admin`, protected by a server
+password, `HttpOnly` cookie, and CSRF. The reader-facing PWA remains static.
 
-Le système est découpé en quatre couches :
+The system is split into these layers:
 
-1. Sources archivées
-   - fichiers originaux `.magium` et données associées ;
-   - conservés pour audit, régénération et preuve de provenance.
-2. Contenu canonique
-   - JSON lisible, normalisé, généré depuis les sources ;
-   - séparé logique, messages narratifs et messages UI.
-3. Paquets runtime
-   - modules TypeScript générés contenant des blobs `base64+gzip` ;
-   - chargés dynamiquement par chapitre/langue ;
-   - vérifiés par SHA-256 avant utilisation.
+1. Archived sources
+   - Original `.magium` files and associated upstream data.
+   - Kept for audit, regeneration, and provenance.
+2. Canonical content
+   - Readable normalized JSON generated from sources.
+   - Separates story logic, narrative messages, and UI messages.
+3. Runtime packs
+   - Generated TypeScript modules containing `base64+gzip` blobs.
+   - Loaded dynamically by chapter and language.
+   - Verified by SHA-256 before use.
 4. Application
-   - moteur de scène ;
-   - i18n ;
-   - stockage chiffré ;
-   - UI PWA ;
-   - affichage optionnel des illustrations de moments Book 1.
-5. Image de production
-   - build Vite sous Node/pnpm ;
-   - copie de `dist/` seulement dans nginx unprivileged ;
-   - service statique exposé sur `8080` pour Coolify.
-6. Service contribution traduction
-   - API Node séparée sous `services/translation-api` ;
-   - stockage PostgreSQL des propositions et emails confirmés ;
-   - revue par lots, dispatch GitHub Actions et PR unique par changeset.
+   - Scene engine.
+   - I18n.
+   - Encrypted local storage.
+   - PWA UI.
+   - Optional display of Book 1 moment illustrations.
+5. Production image
+   - Vite build under Node/pnpm.
+   - Only `dist/` is copied into `nginxinc/nginx-unprivileged`.
+   - Static service exposed on `8080` for Coolify.
+6. Translation contribution service
+   - Standalone Node API under `services/translation-api`.
+   - PostgreSQL storage for proposals and confirmed email contacts.
+   - Batch review, GitHub Actions dispatch, and one PR per changeset.
 
-## Flux De Données
+## Data Flow
 
 ```text
 raduprv/Magium@main
@@ -65,7 +70,7 @@ content/canonical/v1/{locales/en,story}/ch*.json
   -> public/visuals/book1/**/{portrait,illustration}.md
   -> tools/images/stage-chatgpt.mjs
   -> output/visual/staging/book1/<moment-id>/
-  -> génération manuelle ChatGPT Images
+  -> manual ChatGPT Images generation
   -> public/visuals/book1/**/*.webp
   -> src/lib/visuals/book1.ts
   -> src/App.svelte
@@ -81,52 +86,52 @@ PWA contribution form
   -> GitHub pull request
 ```
 
-## Choix Techniques
+## Technical Choices
 
-- Svelte + Vite + TypeScript : app statique, rapide à itérer.
-- Pas de SvelteKit pour l'instant : aucune route serveur ni SSR nécessaire.
-- IndexedDB natif : stockage local plus adapté que localStorage pour des blobs chiffrés et clés CryptoKey.
-- Succès globaux : collection locale chiffrée dans IndexedDB, séparée de `GameState.achievements` pour survivre aux restart/checkpoints sans affaiblir le replay anti-tamper.
-- Web Crypto API : AES-GCM, PBKDF2, SHA-256 sans dépendance externe.
-- Runtime packs en modules TS : pas de `.json` public et lazy loading par import dynamique.
-- Langue globale : le setting FR/EN met à jour le shell UI, `GameState.locale`, les textes narratifs disponibles, les achievements et les stats. Les chapitres non traduits retombent sur `en`.
-- Contributions de traduction : formulaire anonyme par défaut dans la PWA, Cloudflare Turnstile configurable, email optionnel avec confirmation, pseudo optionnel pour crédits, API séparée et PR GitHub par changeset.
-- Images Book 1 : workflow manuel ChatGPT, sans RAG, sans embeddings et sans API OpenAI. Les prompts publics restent courts et paraphrasés, les portraits vivent sous `public/visuals/book1/characters` et les illustrations affichables sous `public/visuals/book1/moments`.
-- Docker de production : le `Dockerfile` racine est compatible avec le build pack Dockerfile de Coolify via GitHub App. Le stage builder exécute `pnpm build`, puis le stage runtime `nginxinc/nginx-unprivileged` ne contient que les assets publics de `dist/` et expose le port `8080`.
+- Svelte + Vite + TypeScript: fast static app iteration.
+- No SvelteKit for now: no server routes or SSR are needed.
+- Native IndexedDB: better than localStorage for encrypted blobs and CryptoKey storage.
+- Global achievements: encrypted local IndexedDB collection, separate from `GameState.achievements`, so restarts/checkpoints do not lose unlocked achievements while anti-tamper replay stays strict.
+- Web Crypto API: AES-GCM, PBKDF2, and SHA-256 without extra dependencies.
+- Runtime packs as TS modules: no public `.json` files and lazy loading through dynamic imports.
+- Global language setting: FR/EN updates UI shell, `GameState.locale`, available narrative text, achievements, and stats. Missing translated chapters fall back to `en`.
+- Translation contributions: anonymous-by-default PWA form, configurable Cloudflare Turnstile, optional confirmed email, optional credit pseudonym, separate API, one GitHub PR per changeset.
+- Book 1 images: manual ChatGPT workflow, no RAG, no embeddings. Public prompts stay short and paraphrased; portraits live under `public/visuals/book1/characters`, displayable illustrations under `public/visuals/book1/moments`.
+- Production Docker: the root `Dockerfile` is compatible with Coolify's Dockerfile build pack through the GitHub App. The builder runs `pnpm build`; the runtime stage contains only public `dist/` assets and exposes `8080`.
 
-## Repères De Code
+## Code Landmarks
 
-- UI principale : `src/App.svelte`
-- Style global : `src/app.css`
-- Sources UI i18n : `content/ui-locales/*.json`
-- Sources story i18n : `content/story-locales/**/*.json`
-- Contribution API : `services/translation-api`
-- Interface mainteneur contributions : `services/translation-api` sur `/admin`
-- Application des changesets traduction : `tools/contributions/apply-changeset.mjs`
-- Helper UI i18n : `src/lib/i18n/ui.ts`
-- Chargeur runtime : `src/lib/content/packedContent.ts`
-- Moteur : `src/lib/story/engine.ts`
-- Stats : `src/lib/story/stats.ts`
-- Conditions : `src/lib/story/conditions.ts`
-- Types : `src/lib/story/types.ts`
-- Sauvegardes : `src/lib/storage/saves.ts`
-- Progression globale des succès : `src/lib/storage/achievementProgress.ts`
-- Chiffrement : `src/lib/storage/crypto.ts`
-- Pipeline : `tools/content/*.mjs`
-- Pipeline images manuel : `tools/images/*.mjs`, `public/visuals/book1`
-- Docker production : `Dockerfile`, `docker/nginx.conf`, `tools/docker/build-prod-push.sh`
+- Main UI: `src/App.svelte`
+- Global styles: `src/app.css`
+- UI i18n sources: `content/ui-locales/*.json`
+- Story i18n sources: `content/story-locales/**/*.json`
+- Contribution API: `services/translation-api`
+- Contribution maintainer UI: `services/translation-api` on `/admin`
+- Translation changeset application: `tools/contributions/apply-changeset.mjs`
+- UI i18n helper: `src/lib/i18n/ui.ts`
+- Runtime loader: `src/lib/content/packedContent.ts`
+- Engine: `src/lib/story/engine.ts`
+- Stats: `src/lib/story/stats.ts`
+- Conditions: `src/lib/story/conditions.ts`
+- Types: `src/lib/story/types.ts`
+- Saves: `src/lib/storage/saves.ts`
+- Global achievement progress: `src/lib/storage/achievementProgress.ts`
+- Encryption: `src/lib/storage/crypto.ts`
+- Content pipeline: `tools/content/*.mjs`
+- Manual image pipeline: `tools/images/*.mjs`, `public/visuals/book1`
+- Production Docker: `Dockerfile`, `docker/nginx.conf`, `tools/docker/build-prod-push.sh`
 
-## Contrats Importants
+## Important Contracts
 
-- `content/archive` et `content/canonical` ne sont pas des assets runtime.
-- `public/` ne doit contenir que des assets publics non sensibles.
-- Les prompts Markdown sous `public/visuals` sont publics : pas de longs extraits narratifs, pas de données sensibles, pas de clé API.
-- Le build ne doit pas exposer de fichier `.magium`.
-- L'app peut afficher les textes originaux, évidemment, mais ils doivent venir des paquets runtime et pas d'un fichier brut directement téléchargeable.
-- La PWA peut envoyer une proposition de correction à l'API, mais l'API ne doit jamais devenir une source runtime de traduction. La source finale reste `content/story-locales/**` après PR.
-- Les emails de contribution sont des données personnelles temporaires : optionnels, confirmés avant notification, non publics et supprimés après notification groupée de refus, d'obsolescence ou de publication.
-- Les JSON UI canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/ui`, pas les fichiers JSON bruts.
-- Les JSON story i18n canoniques suivent la même règle : l'app charge les packs compressés `locales/<locale>/<bundle>`, pas les fichiers JSON bruts.
-- L'image Docker finale doit servir uniquement le résultat `dist/`; elle ne doit pas contenir `content/archive`, `content/canonical`, `node_modules`, `.env*`, exports `.magium-save` ou sources `.magium`.
-- Le moteur stocke les choix et allocations de stats dans `history` sous forme d'événements types, puis valide les imports par replay.
-- Les assignments canoniques déclarent `mode: "set"` ou `mode: "add"` ; le runtime ne doit pas réinterpréter les deltas depuis des chaînes brutes.
+- `content/archive` and `content/canonical` are not runtime assets.
+- `public/` must contain only public, non-sensitive assets.
+- Markdown prompts under `public/visuals` are public: no long story excerpts, no sensitive data, no API key.
+- The build must not expose `.magium` files.
+- The app may display original story text, but it must come from runtime packs and not from a directly downloadable raw file.
+- The PWA may send a correction proposal to the API, but the API must never become a runtime translation source. The final source remains `content/story-locales/**` after PR.
+- Contribution emails are temporary personal data: optional, confirmed before notification, not public, and deleted after grouped rejection/stale/publication notification.
+- Canonical UI JSON follows the same rule: the app loads compressed `locales/<locale>/ui` packs, not raw JSON files.
+- Canonical story i18n JSON follows the same rule: the app loads compressed `locales/<locale>/<bundle>` packs, not raw JSON files.
+- The final Docker image must serve only `dist/`; it must not contain `content/archive`, `content/canonical`, `node_modules`, `.env*`, `.magium-save` exports, or `.magium` sources.
+- The engine stores choices and stat allocations in typed `history` events, then validates imports by replay.
+- Canonical assignments declare `mode: "set"` or `mode: "add"`; the runtime must not reinterpret deltas from raw strings.

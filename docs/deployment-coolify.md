@@ -1,70 +1,75 @@
-# Déploiement Coolify
+# Coolify Deployment
 
-## Build Depuis GitHub App
+## Build From GitHub App
 
-Le chemin principal de déploiement Coolify est un build Dockerfile depuis le dépôt connecté par GitHub App.
+The primary Coolify deployment path is a Dockerfile build from the repository
+connected through the GitHub App.
 
-Configuration Coolify :
+Coolify configuration:
 
-- source : repository GitHub `ablond/magium` via GitHub App ;
-- build pack : `Dockerfile` ;
-- Dockerfile : `Dockerfile` à la racine ;
-- base directory : racine du dépôt ;
-- port exposé : `8080` ;
-- variables runtime : aucune ;
-- build args optionnels si contributions publiques activées : `VITE_MAGIUM_CONTRIBUTIONS_API_URL`, `VITE_MAGIUM_TURNSTILE_SITE_KEY` ;
-- volumes persistants : aucun.
+- source: GitHub repository `ablond/magium` through GitHub App;
+- build pack: `Dockerfile`;
+- Dockerfile: root `Dockerfile`;
+- base directory: repository root;
+- exposed port: `8080`;
+- runtime variables: none;
+- optional build args when public contributions are enabled: `VITE_MAGIUM_CONTRIBUTIONS_API_URL`, `VITE_MAGIUM_TURNSTILE_SITE_KEY`;
+- persistent volumes: none.
 
-Le Dockerfile construit l'app avec Node 24 LTS et pnpm, exécute `pnpm build`, puis copie uniquement `dist/` dans une image `nginxinc/nginx-unprivileged:stable-alpine`.
+The Dockerfile builds the app with Node 24 LTS and pnpm, runs `pnpm build`, and
+copies only `dist/` into `nginxinc/nginx-unprivileged:stable-alpine`.
 
-Pré-requis côté builder Coolify :
+Coolify builder prerequisites:
 
-- accès réseau à `raduprv/Magium` pendant `pnpm build`, car `content:import` vérifie `main` ;
-- accès réseau au registre npm et aux images Docker de base.
+- network access to `raduprv/Magium` during `pnpm build`, because `content:import` verifies `main`;
+- network access to the npm registry and base Docker images.
 
-## Stack Local Docker Compose
+## Local Docker Compose Stack
 
-Le stack local complet se lance depuis la racine :
+Start the full local stack from the repository root:
 
 ```bash
 docker compose up -d
 ```
 
-Services :
+Services:
 
-- PWA Vite dev : `http://localhost:5173`
-- Translation API : `http://localhost:8090`
-- PostgreSQL 18 : `localhost:5432`
+- PWA Vite dev: `http://localhost:5173`
+- Translation API: `http://localhost:8090`
+- PostgreSQL 18: `localhost:5432`
 
-Valeurs locales par défaut :
+Default local values:
 
-- base/user/password PostgreSQL : `magium_translation`
-- token admin API : `dev-admin-token`
-- Turnstile API désactivé : `TURNSTILE_DISABLED=1`
+- PostgreSQL database/user/password: `magium_translation`
+- API admin token: `dev-admin-token`
+- API Turnstile disabled: `TURNSTILE_DISABLED=1`
 
-Le compose local utilise `postgres:18-alpine` et monte son volume sur `/var/lib/postgresql`, conformément au layout Docker PostgreSQL 18. Ce volume ne doit pas réutiliser un ancien volume PostgreSQL 17 monté sur `/var/lib/postgresql/data`.
+The local compose stack uses `postgres:18-alpine` and mounts its volume at
+`/var/lib/postgresql`, matching the Docker PostgreSQL 18 layout. Do not reuse
+an older PostgreSQL 17 volume mounted at `/var/lib/postgresql/data`.
 
-Le fichier `.env.example` documente les overrides possibles sans être requis. Pour reset la base locale :
+`.env.example` documents optional overrides but is not required. To reset the
+local database:
 
 ```bash
 docker compose down -v
 ```
 
-## Service Coolify Translation API
+## Translation API Coolify Service
 
-Les contributions publiques utilisent une application Coolify séparée de la PWA.
+Public contributions use a Coolify application separate from the PWA.
 
-Configuration Coolify :
+Coolify configuration:
 
-- source : même repository GitHub ;
-- build pack : `Dockerfile` ;
-- base directory : `services/translation-api` ;
-- Dockerfile : `Dockerfile` ;
-- port exposé : `8090` ;
-- healthcheck HTTP : `/health` ;
-- base PostgreSQL : service PostgreSQL Coolify séparé.
+- source: same GitHub repository;
+- build pack: `Dockerfile`;
+- base directory: `services/translation-api`;
+- Dockerfile: `Dockerfile`;
+- exposed port: `8090`;
+- HTTP healthcheck: `/health`;
+- PostgreSQL: separate Coolify PostgreSQL service.
 
-Variables obligatoires :
+Required variables:
 
 ```text
 DATABASE_URL=postgres://...
@@ -79,7 +84,7 @@ EMAIL_CONSENT_SECRET=...
 ADMIN_COOKIE_SECURE=1
 ```
 
-Variables optionnelles :
+Optional variables:
 
 ```text
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
@@ -100,106 +105,122 @@ MAX_JSON_BODY_BYTES=131072
 TRUST_PROXY=0
 ```
 
-L'interface mainteneur est servie par le service API sur `/admin`. En production, utiliser un `ADMIN_PASSWORD` long, un `ADMIN_SESSION_SECRET` aléatoire et `ADMIN_COOKIE_SECURE=1`. `ADMIN_TOKEN` reste réservé aux scripts et intégrations.
+The maintainer interface is served by the API service at `/admin`. In
+production, use a long `ADMIN_PASSWORD`, a random `ADMIN_SESSION_SECRET`, and
+`ADMIN_COOKIE_SECURE=1`. `ADMIN_TOKEN` remains reserved for scripts and
+integrations.
 
-Garder `MAX_JSON_BODY_BYTES=131072` pour refuser les requêtes JSON excessives avant parsing. Garder `TRUST_PROXY=0`, sauf si le proxy Coolify frontal écrase ou nettoie `X-Forwarded-For` avant le conteneur ; dans ce cas seulement, `TRUST_PROXY=1` permet au rate limit d'utiliser l'IP client transmise.
+Keep `MAX_JSON_BODY_BYTES=131072` to reject excessive JSON bodies before
+parsing. Keep `TRUST_PROXY=0` unless the front Coolify proxy overwrites or
+cleans `X-Forwarded-For` before the container; only then may `TRUST_PROXY=1`
+let rate limiting use the forwarded client IP.
 
-Configurer `SMTP_URL` Brevo pour activer le suivi email en production. Sans transport email, l'API refuse les propositions qui demandent une notification afin de ne pas stocker une adresse inutilisable. `EMAIL_WEBHOOK_URL` reste disponible hors prod ou intégration spécifique, mais est prioritaire sur SMTP s'il est défini.
+Configure Brevo `SMTP_URL` to enable email follow-up in production. Without an
+email transport, the API refuses proposals that request notification so it does
+not store an unusable address. `EMAIL_WEBHOOK_URL` remains available outside
+production or for a specific integration, and takes priority over SMTP when set.
 
-Configuration Brevo production attendue :
+Expected Brevo production configuration:
 
 ```text
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
 EMAIL_FROM=Magium <no-reply@magium.app>
 ```
 
-Avant activation publique, vérifier dans Brevo que `no-reply@magium.app` ou le domaine `magium.app` est autorisé. Les identifiants SMTP Brevo doivent rester uniquement dans Coolify, jamais dans le dépôt. Encoder le login et la clé SMTP dans l'URL si leurs caractères l'exigent.
+Before public activation, verify in Brevo that `no-reply@magium.app` or the
+`magium.app` domain is authorized. Brevo SMTP credentials must stay only in
+Coolify, never in the repository. URL-encode the login and SMTP key if their
+characters require it.
 
-Pour relier la PWA production à cette API, configurer sur le build PWA :
+To connect the production PWA to this API, configure the PWA build with:
 
 ```text
 VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
 VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 ```
 
-## Checklist Production Contributions
+## Production Contributions Checklist
 
-Référence complète : [docs/translation-contributions-system.md](./translation-contributions-system.md).
+Full reference: [docs/translation-contributions-system.md](./translation-contributions-system.md).
 
-PWA Coolify :
+PWA Coolify:
 
-- application séparée de l'API ;
-- Dockerfile racine ;
-- port `8080` ;
-- domaine production `magium.app` ;
-- build args `VITE_MAGIUM_CONTRIBUTIONS_API_URL` et `VITE_MAGIUM_TURNSTILE_SITE_KEY` si les contributions sont activées ;
-- `VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app` ;
-- le site key Turnstile doit autoriser `magium.app` ;
-- aucune variable runtime ni volume.
+- separate application from the API;
+- root Dockerfile;
+- port `8080`;
+- production domain `magium.app`;
+- build args `VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY` if contributions are enabled;
+- `VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app`;
+- Turnstile site key must allow `magium.app`;
+- no runtime variable and no volume.
 
-Translation API Coolify :
+Translation API Coolify:
 
-- application séparée ;
-- base directory `services/translation-api` ;
-- Dockerfile `Dockerfile` ;
-- port `8090` ;
-- domaine production `tr.magium.app` ;
-- admin mainteneur `https://tr.magium.app/admin` ;
-- healthcheck `/health` ;
-- PostgreSQL Coolify séparé avec `DATABASE_URL` injecté dans l'API ;
-- `ADMIN_COOKIE_SECURE=1` obligatoire en production HTTPS ;
-- `PUBLIC_API_URL=https://tr.magium.app`, joignable par GitHub Actions ;
-- `PUBLIC_WEB_URL=https://magium.app` ;
-- `ALLOWED_ORIGIN=https://magium.app` ;
-- `TURNSTILE_SECRET_KEY` côté API doit correspondre au site key utilisé au build PWA ;
-- `MAX_JSON_BODY_BYTES=131072` ;
-- `TRUST_PROXY=0`, ou `TRUST_PROXY=1` uniquement si le proxy nettoie `X-Forwarded-For` ;
-- `EMAIL_CONSENT_SECRET` et `ADMIN_SESSION_SECRET` doivent être longs et aléatoires ;
-- `SMTP_URL` doit pointer vers Brevo SMTP en production ;
-- `EMAIL_FROM` doit valoir `Magium <no-reply@magium.app>` ;
-- le sender `no-reply@magium.app` ou le domaine `magium.app` doit être vérifié dans Brevo ;
-- `ADMIN_PASSWORD` sert uniquement à l'interface `/admin` ;
-- `ADMIN_TOKEN` sert aux scripts et au workflow GitHub.
+- separate application;
+- base directory `services/translation-api`;
+- Dockerfile `Dockerfile`;
+- port `8090`;
+- production domain `tr.magium.app`;
+- maintainer admin `https://tr.magium.app/admin`;
+- healthcheck `/health`;
+- separate Coolify PostgreSQL with `DATABASE_URL` injected into the API;
+- `ADMIN_COOKIE_SECURE=1` required for HTTPS production;
+- `PUBLIC_API_URL=https://tr.magium.app`, reachable by GitHub Actions;
+- `PUBLIC_WEB_URL=https://magium.app`;
+- `ALLOWED_ORIGIN=https://magium.app`;
+- API `TURNSTILE_SECRET_KEY` must match the PWA site key used at build time;
+- `MAX_JSON_BODY_BYTES=131072`;
+- `TRUST_PROXY=0`, or `TRUST_PROXY=1` only if the proxy cleans `X-Forwarded-For`;
+- `EMAIL_CONSENT_SECRET` and `ADMIN_SESSION_SECRET` must be long and random;
+- `SMTP_URL` must point to Brevo SMTP in production;
+- `EMAIL_FROM` must be `Magium <no-reply@magium.app>`;
+- `no-reply@magium.app` or the `magium.app` domain must be verified in Brevo;
+- `ADMIN_PASSWORD` is only for the `/admin` interface;
+- `ADMIN_TOKEN` is for scripts and GitHub workflow use.
 
-GitHub dispatch PR :
+GitHub PR dispatch:
 
-- dans l'API, configurer `GITHUB_TOKEN_FOR_DISPATCH`, `GITHUB_REPOSITORY_TARGET`, `GITHUB_WORKFLOW_FILE`, `GITHUB_REF_NAME` ;
-- le token recommandé est un fine-grained PAT limité au repo cible avec permission repository `Actions: Read and write` ;
-- dans GitHub Actions, ajouter le secret `MAGIUM_TRANSLATION_API_TOKEN` avec la même valeur que `ADMIN_TOKEN` côté API ;
-- vérifier que `.github/workflows/translation-changeset-pr.yml` est présent et actif sur la branche cible ;
-- ne pas utiliser `http://localhost:8090` en production : le workflow GitHub doit joindre `PUBLIC_API_URL` depuis Internet.
+- in the API, configure `GITHUB_TOKEN_FOR_DISPATCH`, `GITHUB_REPOSITORY_TARGET`, `GITHUB_WORKFLOW_FILE`, `GITHUB_REF_NAME`;
+- the recommended token is a fine-grained PAT limited to the target repo with repository permission `Actions: Read and write`;
+- in GitHub Actions, add secret `MAGIUM_TRANSLATION_API_TOKEN` with the same value as API-side `ADMIN_TOKEN`;
+- verify `.github/workflows/translation-changeset-pr.yml` exists and is active on the target branch;
+- do not use `http://localhost:8090` in production: the GitHub workflow must reach `PUBLIC_API_URL` from the Internet.
 
-Email :
+Email:
 
-- configurer soit `SMTP_URL`, soit `EMAIL_WEBHOOK_URL` pour autoriser le suivi email ;
-- en production, préférer Brevo SMTP avec `smtp-relay.brevo.com:587` ;
-- sans transport email, l'API refuse une proposition demandant le suivi et ne stocke pas l'adresse ;
-- ne jamais afficher l'email brut dans l'admin ; il est supprimé après rejet, stale ou publication.
+- configure either `SMTP_URL` or `EMAIL_WEBHOOK_URL` to allow email follow-up;
+- in production, prefer Brevo SMTP with `smtp-relay.brevo.com:587`;
+- without email transport, the API refuses a proposal requesting follow-up and does not store the address;
+- never display raw email in admin; it is deleted after rejection, stale, or publication.
 
-## Image GHCR Optionnelle
+## Optional GHCR Image
 
-Le dépôt garde aussi un flux de publication manuelle vers GitHub Container Registry :
+The repository also keeps a manual publication flow to GitHub Container
+Registry:
 
 ```text
 ghcr.io/ablond/magium
 ```
 
-Tags produits par défaut :
+Default tags:
 
-- `YYYYMMDD-HHMMSS` en UTC pour une version immutable ;
-- `latest` pour le déploiement courant.
+- `YYYYMMDD-HHMMSS` in UTC for an immutable version;
+- `latest` for the current deployment.
 
-Ce flux sert si l'on veut déployer une image préconstruite plutôt que laisser Coolify builder depuis GitHub. Le conteneur expose toujours `8080`, ne lit aucune variable d'environnement runtime et n'utilise aucun volume. Les sauvegardes restent côté navigateur, dans IndexedDB.
+Use this flow if you want to deploy a prebuilt image instead of letting Coolify
+build from GitHub. The container still exposes `8080`, reads no runtime
+environment variable, and uses no volume. Saves remain browser-side in
+IndexedDB.
 
-## Build Et Publication
+## Build And Publication
 
-Pré-requis local :
+Local prerequisites:
 
-- Docker avec Buildx ;
-- accès réseau à `raduprv/Magium` pendant `pnpm build`, car `content:import` vérifie `main` ;
-- authentification GHCR locale si publication : `docker login ghcr.io`.
+- Docker with Buildx;
+- network access to `raduprv/Magium` during `pnpm build`, because `content:import` verifies `main`;
+- local GHCR authentication for publication: `docker login ghcr.io`.
 
-Commandes :
+Commands:
 
 ```bash
 pnpm check
@@ -209,18 +230,20 @@ pnpm docker:build-prod
 pnpm docker:push-prod
 ```
 
-`pnpm docker:build-prod` construit l'image finale localement et valide :
+`pnpm docker:build-prod` builds the final image locally and validates:
 
-- absence de `.magium` ;
-- absence de JSON canonique brut ;
-- absence de `node_modules` et de `.env*` ;
-- absence d'extraits source bruts évidents ;
-- réponse HTTP sur `/`, `/sw.js`, `/manifest.webmanifest` ;
-- fallback SPA vers `index.html`.
+- no `.magium`;
+- no raw canonical JSON;
+- no `node_modules` or `.env*`;
+- no obvious raw source excerpts;
+- HTTP response on `/`, `/sw.js`, `/manifest.webmanifest`;
+- SPA fallback to `index.html`.
 
-`pnpm docker:push-prod` refait la même validation, pousse `ghcr.io/ablond/magium:<timestamp>` et `ghcr.io/ablond/magium:latest`, puis inspecte les tags publiés.
+`pnpm docker:push-prod` repeats the same validation, pushes
+`ghcr.io/ablond/magium:<timestamp>` and `ghcr.io/ablond/magium:latest`, then
+inspects the published tags.
 
-Variables utiles :
+Useful variables:
 
 ```bash
 MAGIUM_IMAGE=ghcr.io/ablond/magium
@@ -228,36 +251,42 @@ MAGIUM_TAG=20260627-180000
 MAGIUM_PLATFORM=linux/amd64
 ```
 
-`MAGIUM_PLATFORM` vaut `linux/amd64` par défaut. La validation runtime locale nécessite une plateforme exécutable sur la machine courante.
-En mode sans push, la plateforme doit donc correspondre à la machine locale. En mode push, le script valide d'abord une image locale, puis build et publie la plateforme demandée si elle est différente.
+`MAGIUM_PLATFORM` defaults to `linux/amd64`. Local runtime validation requires
+a platform executable on the current machine. In non-push mode, the platform
+must therefore match the local machine. In push mode, the script validates a
+local image first, then builds and publishes the requested platform if it
+differs.
 
-## Configuration Coolify Par Image Préconstruite
+## Coolify Configuration With A Prebuilt Image
 
-Alternative au build GitHub App : créer une application de type Docker Image / image préconstruite :
+Alternative to the GitHub App build: create a Docker Image / prebuilt image
+application:
 
-- image : `ghcr.io/ablond/magium` ;
-- tag : `latest` ou un tag timestamp ;
-- port exposé : `8080` ;
-- variables d'environnement : aucune ;
-- volumes persistants : aucun.
+- image: `ghcr.io/ablond/magium`;
+- tag: `latest` or a timestamp tag;
+- exposed port: `8080`;
+- environment variables: none;
+- persistent volumes: none.
 
-Si le package GHCR est privé, se connecter au serveur Coolify avec l'utilisateur utilisé par Coolify pour Docker, puis authentifier GHCR :
+If the GHCR package is private, connect to the Coolify server as the user used
+by Coolify for Docker, then authenticate GHCR:
 
 ```bash
 echo "$GH_TOKEN" | docker login ghcr.io -u "$USERNAME" --password-stdin
 ```
 
-Le token doit permettre de lire le package. Coolify détecte ensuite les identifiants Docker côté serveur pour tirer l'image.
+The token must be able to read the package. Coolify then detects the
+server-side Docker credentials when pulling the image.
 
-Références :
+References:
 
 - https://coolify.io/docs/applications
 - https://coolify.io/docs/applications/ci-cd/github/actions
 - https://coolify.io/docs/knowledge-base/docker/registry
 
-## Limites
+## Limits
 
-- Le flux GitHub App laisse Coolify builder l'image depuis le `Dockerfile` racine.
-- Il n'y a pas de webhook Coolify automatique dans le flux GHCR manuel.
-- L'image finale sert les bundles Vite générés ; elle ne contient pas les sources d'archive ni les JSON canoniques.
-- Une publication GHCR doit être faite après un commit poussé, afin que le tag GHCR corresponde à l'état Git livré.
+- The GitHub App flow lets Coolify build the image from the root `Dockerfile`.
+- There is no automatic Coolify webhook in the manual GHCR flow.
+- The final image serves generated Vite bundles; it does not contain archived sources or canonical JSON.
+- GHCR publication should happen after a pushed commit so the GHCR tag matches the delivered Git state.

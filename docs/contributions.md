@@ -1,27 +1,37 @@
-# Contributions Publiques De Traduction
+# Public Translation Contributions
 
-## Objectif
+## Goal
 
-Permettre à un lecteur de proposer une correction de traduction depuis la PWA, sans compte et sans exposer les fichiers sources au runtime.
+Allow a reader to suggest a translation correction from the PWA, without an
+account and without exposing source files to the runtime.
 
-La référence technique exhaustive pour reprendre ou faire évoluer ce sous-système est [docs/translation-contributions-system.md](./translation-contributions-system.md). Ce document-ci reste la vue produit/fonctionnelle.
+The exhaustive technical handoff for maintaining or evolving this subsystem is
+[docs/translation-contributions-system.md](./translation-contributions-system.md).
+This document stays focused on product and functional behavior.
 
-Le flux est privacy-first :
+The flow is privacy-first:
 
-- contribution anonyme par défaut ;
-- pseudo facultatif uniquement pour les crédits ;
-- email facultatif uniquement pour le suivi ;
-- confirmation email initiale avant toute notification, réutilisable un an dans le même navigateur ;
-- notification groupée par destinataire lors d'un refus/obsolescence en lot ou d'une publication ;
-- suppression de l'email après notification de clôture ou publication ;
-- proposition revue par un mainteneur avant intégration ;
-- intégration par changeset puis pull request GitHub.
+- anonymous contribution by default;
+- optional pseudonym only for credits;
+- optional email only for follow-up;
+- initial email confirmation before any notification, reusable for one year in the same browser;
+- grouped notification per recipient when proposals are rejected or marked stale in batch, or published;
+- email deletion after closing or publication notification;
+- maintainer review before integration;
+- integration through a changeset and GitHub pull request.
 
-## Surface PWA
+## PWA Surface
 
-La PWA peut afficher une icône stylo discrète sur les paragraphes et choix visibles. Cette surface est opt-in : les icônes sont absentes par défaut, absentes complètement si `VITE_MAGIUM_CONTRIBUTIONS_API_URL` n'est pas configurée, et visibles seulement quand le lecteur active `Corrections de traduction` dans Settings. Pour un texte narratif, l'icône cible le paragraphe affiché, pas tout le bloc `messageId` si celui-ci contient plusieurs paragraphes séparés par une ligne vide. Le formulaire montre uniquement ce segment courant, la source anglaise du même segment quand elle diffère, puis les champs de contribution.
+The PWA may show a discreet pencil icon on visible paragraphs and choices. This
+surface is opt-in: icons are hidden by default, fully absent when
+`VITE_MAGIUM_CONTRIBUTIONS_API_URL` is not configured, and visible only when the
+reader enables `Translation corrections` in Settings. For narrative text, the
+icon targets the displayed paragraph, not the whole `messageId` block when that
+block contains multiple paragraphs separated by blank lines. The form shows
+only that current segment, the corresponding English source segment when it
+differs, and contribution fields.
 
-Les IDs techniques ne sont pas affichés au joueur, mais le payload contient :
+Technical IDs are not shown to the player, but the payload contains:
 
 - `contentVersion`
 - `locale`
@@ -29,48 +39,61 @@ Les IDs techniques ne sont pas affichés au joueur, mais le payload contient :
 - `sceneId`
 - `messageId`
 - `targetType`
-- `segmentIndex` et `segmentCount` pour `targetType: "paragraph"`
-- `currentText`, limité au paragraphe ou choix affiché au moment de la proposition
+- `segmentIndex` and `segmentCount` for `targetType: "paragraph"`
+- `currentText`, limited to the displayed paragraph or choice at submission time
 - `currentTextHash`
 - `sourceTextHash`
 
-Ces champs servent uniquement à router, vérifier et revoir la proposition. `currentText` n'est pas un bloc source complet : il permet à l'admin mainteneur d'afficher le texte d'origine cible et un diff visuel avec le texte proposé.
+These fields are used only to route, verify, and review the proposal.
+`currentText` is not a complete source block; it lets the maintainer admin show
+the exact original target text and a visual diff against the proposed text.
 
-Une correction de paragraphe ne peut pas contenir de séparateur de paragraphe `\n\n`. L'icône joueur sert à corriger un paragraphe affiché à la fois ; une correction éditoriale complète d'un bloc multi-paragraphes reste un cas mainteneur/manual.
+A paragraph correction cannot contain a paragraph separator `\n\n`. The player
+icon corrects one displayed paragraph at a time; full editorial rewrites of
+multi-paragraph blocks remain a maintainer/manual case.
 
-Variables de build PWA :
+PWA build variables:
 
 ```text
 VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
 VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 ```
 
-Si l'URL API n'est pas configurée, l'option Settings et les icônes stylo ne sont pas affichées. Le formulaire garde tout de même une vérification d'envoi robuste et n'envoie rien sans API.
+If the API URL is not configured, the Settings option and pencil icons are not
+rendered. The form still keeps robust submission checks and sends nothing
+without an API.
 
-En local Docker, `docker compose up -d` lance la PWA en mode Vite dev avec :
+Local Docker with `docker compose up -d` starts:
 
-- PWA : `http://localhost:5173`
-- API : `http://localhost:8090`
-- admin mainteneur : `http://localhost:8090/admin`
-- Turnstile désactivé côté API par `TURNSTILE_DISABLED=1`
-- token admin : `dev-admin-token`
-- mot de passe admin : `dev-admin-password`
+- PWA: `http://localhost:5173`
+- API: `http://localhost:8090`
+- maintainer admin: `http://localhost:8090/admin`
+- Turnstile disabled API-side through `TURNSTILE_DISABLED=1`
+- admin token: `dev-admin-token`
+- admin password: `dev-admin-password`
 
-## API De Contribution
+## Contribution API
 
-Le service vit sous `services/translation-api`. Il est séparé de l'image PWA statique et peut être déployé comme service Coolify distinct avec PostgreSQL.
+The service lives under `services/translation-api`. It is separate from the
+static PWA image and can be deployed as a distinct Coolify service with
+PostgreSQL.
 
-La route `GET /health` retourne `{ "status": "ok" }` pour Docker Compose et Coolify.
+`GET /health` returns `{ "status": "ok" }` for Docker Compose and Coolify.
 
-Routes publiques :
+Public routes:
 
 - `POST /v1/translation-proposals`
 - `GET /v1/translation-proposals/:publicId/status`
 - `GET|POST /v1/translation-proposals/:publicId/confirm-email`
 
-Après clic sur le lien de confirmation email, l'API redirige vers la PWA. Le lecteur doit voir une confirmation visible dans le lecteur, sans identifiant technique, et l'URL doit être nettoyée du fragment de consentement. Quand le lien est ouvert dans le même navigateur que la proposition initiale, la PWA mémorise aussi le consentement local pour éviter un nouvel email de confirmation pendant un an.
+After the reader clicks the email confirmation link, the API redirects to the
+PWA. The reader must see a visible confirmation in the reader UI, without a
+technical identifier, and the consent fragment must be removed from the URL.
+When the link is opened in the same browser that submitted the initial
+proposal, the PWA also stores local consent to avoid another confirmation email
+for one year.
 
-Routes admin protégées par `ADMIN_TOKEN` ou par une session web mainteneur :
+Admin routes protected by `ADMIN_TOKEN` or by a maintainer web session:
 
 - `GET /v1/admin/proposals`
 - `POST /v1/admin/proposals/:publicId/review`
@@ -83,14 +106,14 @@ Routes admin protégées par `ADMIN_TOKEN` ou par une session web mainteneur :
 - `POST /v1/admin/changesets/:publicId/stale`
 - `POST /v1/admin/changesets/:publicId/published`
 
-Interface mainteneur :
+Maintainer interface:
 
-- `GET /admin` sert une interface web simple depuis le service API ;
-- `POST /admin/login`, `GET /admin/session` et `POST /admin/logout` gèrent une session cookie `HttpOnly`, `SameSite=Strict` ;
-- les actions mutantes depuis l'interface web utilisent un jeton CSRF ; les scripts peuvent continuer à utiliser `Authorization: Bearer ADMIN_TOKEN`.
-- le détail d'une proposition affiche le texte d'origine, un diff entre origine et proposition, puis la version finale retenue éditable.
+- `GET /admin` serves a simple web interface from the API service;
+- `POST /admin/login`, `GET /admin/session`, and `POST /admin/logout` manage an `HttpOnly`, `SameSite=Strict` cookie session;
+- mutating web UI actions use a CSRF token; scripts may keep using `Authorization: Bearer ADMIN_TOKEN`;
+- proposal detail shows original target text, a diff between original/proposal, and an editable final retained version.
 
-Variables API production obligatoires :
+Required production API variables:
 
 ```text
 DATABASE_URL=postgres://...
@@ -106,7 +129,7 @@ ADMIN_COOKIE_SECURE=1
 ADMIN_SESSION_TTL_HOURS=8
 ```
 
-Variables API production optionnelles :
+Optional production API variables:
 
 ```text
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
@@ -120,68 +143,85 @@ GITHUB_REF_NAME=main
 PSEUDONYM_BLOCKLIST=...
 ```
 
-Transport email :
+Email transport:
 
-- `EMAIL_WEBHOOK_URL` défini : l'API envoie le contenu du mail en JSON `{ from, to, subject, text, html }` vers ce webhook ;
-- sinon `SMTP_URL` défini : l'API envoie via SMTP avec Nodemailer, en version texte et HTML ;
-- sinon le suivi email est refusé, sans stocker l'adresse.
+- if `EMAIL_WEBHOOK_URL` is set, the API sends mail content as JSON `{ from, to, subject, text, html }` to that webhook;
+- otherwise, if `SMTP_URL` is set, the API sends text and HTML mail through SMTP with Nodemailer;
+- otherwise, email follow-up is refused and the address is not stored.
 
-En production, `SMTP_URL` doit pointer vers Brevo SMTP (`smtp-relay.brevo.com:587`) et `EMAIL_FROM` doit valoir `Magium <no-reply@magium.app>`. Le sender `no-reply@magium.app` ou le domaine `magium.app` doit être vérifié dans Brevo avant activation publique.
+In production, `SMTP_URL` should point to Brevo SMTP
+(`smtp-relay.brevo.com:587`) and `EMAIL_FROM` should be
+`Magium <no-reply@magium.app>`. The sender `no-reply@magium.app` or the
+`magium.app` domain must be verified in Brevo before public activation.
 
-Domaines production :
+Production domains:
 
-- application de lecture : `https://magium.app` ;
-- API de contribution et admin mainteneur : `https://tr.magium.app`, avec admin sur `https://tr.magium.app/admin` ;
-- `ALLOWED_ORIGIN` doit rester strictement `https://magium.app`.
+- reading app: `https://magium.app`;
+- contribution API and maintainer admin: `https://tr.magium.app`, with admin at `https://tr.magium.app/admin`;
+- `ALLOWED_ORIGIN` must remain strictly `https://magium.app`.
 
-En local Docker, le compose configure `SMTP_URL=smtp://mailpit:1025` et `EMAIL_FROM=Magium <no-reply@magium.app>`. Les emails sont visibles dans Mailpit sur `http://localhost:8025` et ne sortent pas vers Internet.
+In local Docker, compose sets `SMTP_URL=smtp://mailpit:1025` and
+`EMAIL_FROM=Magium <no-reply@magium.app>`. Emails are visible in Mailpit at
+`http://localhost:8025` and do not leave the machine.
 
-## Revue Et Changesets
+## Review And Changesets
 
-Une proposition ne crée jamais une PR seule. Le mainteneur accepte, rejette ou marque obsolète les propositions, puis crée un changeset.
+A proposal never creates a PR by itself. The maintainer accepts, rejects, or
+marks proposals stale, then creates a changeset.
 
-Règles :
+Rules:
 
-- une acceptation ne déclenche pas d'email immédiat : le mail part seulement quand le changeset est marqué publié ;
-- lors d'une publication, les contacts confirmés sont groupés par email normalisé, avec un seul mail par destinataire même si plusieurs corrections du lot lui appartiennent ;
-- les refus et obsolescences peuvent être traités en lot depuis l'admin pour envoyer un seul mail de clôture par destinataire ;
-- un changeset ne peut contenir qu'une seule version finale par cible `locale/chapterId/messageId/target` ;
-- pour un paragraphe, la cible est `segmentIndex`, donc plusieurs corrections du même `messageId` peuvent cohabiter si elles touchent des segments différents ;
-- les propositions concurrentes sur le même segment ou le même choix doivent être résolues dans l'interface de revue ;
-- le diff mainteneur est une aide de revue, pas une source de vérité ; la version finale éditable reste celle qui entre dans le changeset ;
-- une proposition de paragraphe dont le hash du segment courant ne correspond plus devient obsolète, même si le reste du message est encore valide ;
-- le pseudo crédité reste soumis à modération.
+- accepting a proposal does not send an immediate email; mail is sent only when the changeset is marked published;
+- publication groups confirmed contacts by normalized email, with one email per recipient even if several corrections in the batch belong to them;
+- rejections and stale markings can be processed in batch from admin to send one closing mail per recipient;
+- a changeset may contain only one final version per `locale/chapterId/messageId/target`;
+- for a paragraph, the target is `segmentIndex`, so multiple corrections for the same `messageId` may coexist if they touch different segments;
+- competing proposals on the same segment or choice must be resolved in the review UI;
+- the maintainer diff is a review aid, not a source of truth; the editable final version is what enters the changeset;
+- a paragraph proposal whose current segment hash no longer matches becomes stale, even if the rest of the message is still valid;
+- credited pseudonyms remain subject to moderation.
 
 ## GitHub Actions
 
-Le workflow `.github/workflows/translation-changeset-pr.yml` est déclenche par `workflow_dispatch`.
+`.github/workflows/translation-changeset-pr.yml` is triggered by
+`workflow_dispatch`.
 
-Il :
+It:
 
-1. récupère le changeset depuis l'API ;
-2. applique les corrections dans `content/story-locales/<locale>/<chapter>.json` avec `tools/contributions/apply-changeset.mjs`, en remplaçant seulement le segment visé pour une correction de paragraphe ;
-3. refuse tout lot partiellement obsolète ;
-4. lance `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build` ;
-5. ouvre une PR unique pour le lot.
+1. fetches the changeset from the API;
+2. applies corrections to `content/story-locales/<locale>/<chapter>.json` with `tools/contributions/apply-changeset.mjs`, replacing only the targeted segment for paragraph corrections;
+3. rejects any partially stale batch;
+4. runs `pnpm content:all`, `pnpm check`, `pnpm test`, and `pnpm build`;
+5. opens one PR for the batch.
 
-Secret GitHub attendu :
+Expected GitHub secret:
 
 ```text
 MAGIUM_TRANSLATION_API_TOKEN
 ```
 
-## Données Personnelles
+## Personal Data
 
-L'email est stocké séparément de la proposition et ne devient actif qu'après confirmation par lien. La première confirmation crée aussi un jeton local dans le navigateur, valable un an glissant pour le même email saisi depuis ce navigateur. Le serveur conserve seulement un HMAC de l'email et un hash du jeton, jamais l'email brut dans cette preuve de consentement.
+Email is stored separately from the proposal and becomes active only after link
+confirmation. The first confirmation also creates a local browser token, valid
+for one rolling year for the same email entered from that browser. The server
+keeps only an HMAC of the normalized email and a hash of the token, never the
+raw email in that consent proof.
 
-L'email brut de contact est supprimé :
+Raw contact email is deleted:
 
-- après notification groupée si la proposition est rejetée ou marquée obsolète en lot ;
-- immédiatement, sans notification, si une proposition est rejetée ou marquée obsolète par l'action unitaire historique ;
-- après notification quand le changeset accepté est publié.
+- after grouped notification if the proposal is rejected or marked stale in batch;
+- immediately, without notification, if a proposal is rejected or marked stale through the legacy single action;
+- after notification when the accepted changeset is published.
 
-Le formulaire joueur affiche seulement un message de succès après envoi. Il ne demande pas au lecteur de conserver un reçu et n'affiche pas le `publicId` de la proposition.
+The player form shows only a success message after submission. It does not ask
+the reader to keep a receipt and does not display the proposal `publicId`.
 
-Le pseudo n'est public que si le contributeur demande explicitement un crédit et si le mainteneur l'approuve. Les pseudos illégaux, violents, haineux, sexuellement explicites, pédopornographiques, de doxxing, d'usurpation ou manifestement inadaptés doivent être refusés ou masqués.
+The pseudonym is public only if the contributor explicitly asks for credit and
+the maintainer approves it. Illegal, violent, hateful, sexually explicit,
+child-sexual-abuse, doxxing, impersonation, or otherwise clearly inappropriate
+pseudonyms must be rejected or hidden.
 
-La page publique `/legal/contributions.html` résume ces règles pour les lecteurs. L'éditeur de l'instance publique doit compléter ses mentions légales avant activation du formulaire.
+The public page `/legal/contributions.html` summarizes these rules for readers.
+The public instance operator must complete its legal notices before enabling the
+form publicly.

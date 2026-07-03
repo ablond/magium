@@ -1,97 +1,107 @@
-# Sauvegardes Et Anti-Tamper
+# Saves And Anti-Tamper
 
-## Objectif
+## Goal
 
-Stocker la progression sans compte utilisateur, tout en evitant :
+Store progress without a user account while avoiding:
 
-- variables en clair dans localStorage ;
-- modification manuelle simple des stats ;
-- import d'un fichier de sauvegarde incoherent.
+- plaintext variables in localStorage;
+- simple manual stat modification;
+- importing an incoherent save file.
 
-## Stockage Local
+## Local Storage
 
-Fichiers :
+Files:
 
 - `src/lib/storage/idb.ts`
 - `src/lib/storage/crypto.ts`
 - `src/lib/storage/saves.ts`
 - `src/lib/storage/achievementProgress.ts`
 
-Base IndexedDB :
+IndexedDB database:
 
 ```text
 magium-pwa
 ```
 
-Object stores :
+Object stores:
 
 - `achievementProgress`
 - `keys`
 - `saves`
 
-`achievementProgress` stocke la collection globale des succes sous forme d'un record chiffré.
-`keys` stocke la clé AES-GCM locale.
-`saves` stocke des `StoredSaveRecord` chiffrés.
+`achievementProgress` stores the global achievement collection as one encrypted
+record.
+`keys` stores the local AES-GCM key.
+`saves` stores encrypted `StoredSaveRecord` values.
 
-## Pourquoi IndexedDB
+## Why IndexedDB
 
-IndexedDB permet :
+IndexedDB can:
 
-- stocker des `CryptoKey` non exportables ;
-- stocker des objets chiffrés sans passer par localStorage ;
-- gerer plusieurs slots.
+- store non-exportable `CryptoKey` values;
+- store encrypted objects without localStorage;
+- manage several slots.
 
-localStorage est reserve aux preferences UI non critiques.
+localStorage is reserved for non-critical UI preferences.
 
-## Chiffrement Local
+## Local Encryption
 
-`getLocalSaveKey()` :
+`getLocalSaveKey()`:
 
-- cherche `local-aes-gcm-v1` dans IndexedDB ;
-- sinon genere une clé AES-GCM 256 bits ;
-- stocke la clé avec `extractable: false`.
+- looks for `local-aes-gcm-v1` in IndexedDB;
+- otherwise generates a 256-bit AES-GCM key;
+- stores the key with `extractable: false`.
 
-`encryptJson()` :
+`encryptJson()`:
 
-- serialise l'objet en JSON ;
-- genere un IV 96 bits ;
-- chiffre avec AES-GCM ;
-- utilise `additionalData = "magium-save-v1"`.
+- serializes the object to JSON;
+- generates a 96-bit IV;
+- encrypts with AES-GCM;
+- uses `additionalData = "magium-save-v1"`.
 
-Si un octet du ciphertext, de l'IV ou de l'additionalData change, le decrypt doit echouer.
+If one byte of ciphertext, IV, or additionalData changes, decryption must fail.
 
 ## Slots
 
-Autosave :
+Autosave:
 
-- slot `autosave` ;
-- mis a jour apres chaque choix et apres chaque allocation de stats confirmee.
+- slot `autosave`;
+- updated after every choice and every confirmed stat allocation.
 
-Slots manuels :
+Manual slots:
 
-- crees depuis le panneau Sauvegardes comme sauvegardes locales nommables et renommables ;
-- identifies par un `slotId` interne stable qui n'est pas affiche tel quel au joueur ;
-- stockes dans le meme object store ;
-- chaque record reste chiffre.
+- created from the Saves panel as local saves that can be named and renamed;
+- identified by a stable internal `slotId` that is not shown raw to the player;
+- stored in the same object store;
+- each record remains encrypted.
 
-## Progression Globale Des Succes
+## Global Achievement Progress
 
-`GameState.achievements` reste volontairement scope a la partie courante, car le replay d'import compare ce champ avec l'etat reconstruit depuis `history`. Un retour checkpoint ou une nouvelle partie peut donc retirer un succes de `GameState` sans le retirer au joueur.
+`GameState.achievements` is intentionally scoped to the current playthrough,
+because import replay compares this field with state reconstructed from
+`history`. A checkpoint rollback or new game may therefore remove an
+achievement from `GameState` without removing it from the player's collection.
 
-La collection visible dans le panneau Succès vit dans `achievementProgress` :
+The collection visible in the Achievements panel lives in `achievementProgress`:
 
-- un seul record `global` ;
-- payload chiffre avec la clé AES-GCM locale ;
-- `additionalData = "magium-achievement-progress-v1"` ;
-- variables de succes stockees seulement dans le payload chiffre.
+- one `global` record;
+- payload encrypted with the local AES-GCM key;
+- `additionalData = "magium-achievement-progress-v1"`;
+- achievement variables stored only in the encrypted payload.
 
-Au demarrage, si aucun record global n'existe, l'app migre les succes trouves dans les saves locales chiffrees non-debug. Les etats `debug.dirty` sont ignores et ne peuvent pas alimenter la progression globale.
+On startup, if no global record exists, the app migrates achievements found in
+encrypted non-debug local saves. `debug.dirty` states are ignored and cannot
+feed global progress.
 
-Un `.magium-save` exporte reste une sauvegarde de partie. Il n'embarque pas la collection globale de succes. Apres un import valide par replay, les succes prouves par l'etat importe sont fusionnes dans `achievementProgress`.
+A `.magium-save` export remains a playthrough save. It does not include the
+global achievement collection. After an import validated by replay, achievements
+proved by the imported state are merged into `achievementProgress`.
 
-## Saves Debug Locales
+## Local Debug Saves
 
-Le mode Debug local peut modifier directement la scene, les choix, les stats, les compteurs et les variables. Des qu'une operation debug touche l'etat, le payload chiffre contient :
+Local Debug mode can directly change scene, choices, stats, counters, and
+variables. As soon as a debug operation touches state, the encrypted payload
+contains:
 
 ```ts
 debug?: {
@@ -101,33 +111,41 @@ debug?: {
 }
 ```
 
-Ces etats restent autorises dans IndexedDB et dans les saves nommees locales, car ils servent a explorer rapidement le graphe depuis `pnpm dev`. Ils ne sont pas rejouables par `history`, puisque les helpers debug ne creent pas d'evenements `choice` ou `stats` et ne recalculent pas `historyDigest`.
+These states remain allowed in IndexedDB and named local saves because they are
+useful for exploring the graph from `pnpm dev`. They are not replayable through
+`history`, because debug helpers do not create `choice` or `stats` events and
+do not recalculate `historyDigest`.
 
-Contraintes :
+Constraints:
 
-- `exportSave()` refuse tout etat `debug.dirty` ;
-- l'UI affiche que la sauvegarde debug reste locale ;
-- `importSave()` rejette aussi un payload fabrique avec `debug.dirty`.
+- `exportSave()` refuses every `debug.dirty` state;
+- the UI states that the debug save remains local;
+- `importSave()` also rejects a crafted payload with `debug.dirty`.
 
-Ne pas transformer ce mode en contournement exportable du replay anti-tamper. Si une exploration debug doit devenir une partie jouable, il faut la rejouer avec les choix et allocations normales.
+Do not turn this mode into an exportable bypass of anti-tamper replay. If a
+debug exploration should become a playable save, replay it through normal
+choices and allocations.
 
-## UX Du Panneau Sauvegardes
+## Saves Panel UX
 
-Le panneau separe les usages joueur :
+The panel separates player use cases:
 
-- la sauvegarde automatique indique que la partie courante est sauvegardee apres chaque choix et allocation de stats ;
-- les sauvegardes locales permettent de creer, charger, renommer et supprimer des points de sauvegarde sans mot de passe ;
-- le point de controle reste une action separee, avec un libelle de chapitre lisible ;
-- la section Transfert affiche seulement deux actions, exporter ou importer une sauvegarde ;
-- les champs de mot de passe n'apparaissent qu'apres avoir choisi exporter ou importer.
+- autosave states that the current game is saved after every choice and stat allocation;
+- local saves allow creating, loading, renaming, and deleting save points without a password;
+- checkpoint remains a separate action with a readable chapter label;
+- Transfer shows only two actions, export or import a save;
+- password fields appear only after choosing export or import.
 
-L'UI ne doit pas afficher `slotId`, `local-key`, `pbkdf2`, `prod` ou des scene IDs comme `Ch12`. Elle affiche un nom de sauvegarde, une date et un chapitre lisible comme `Livre 1 - Chapitre 12`.
+The UI must not show `slotId`, `local-key`, `pbkdf2`, `prod`, or scene IDs such
+as `Ch12`. It shows a save name, a date, and a readable chapter like
+`Book 1 - Chapter 12`.
 
-Les statuts visibles restent orientes joueur, par exemple `Fichier de sauvegarde telecharge` ou `Sauvegarde importee et prete`.
+Visible statuses stay player-oriented, for example `Save file downloaded` or
+`Save imported and ready`.
 
 ## Export
 
-L'export produit un fichier `.magium-save` qui est un conteneur JSON :
+Export produces a `.magium-save` JSON container:
 
 ```ts
 type SaveContainer = {
@@ -140,45 +158,57 @@ type SaveContainer = {
 }
 ```
 
-Depuis l'UI joueur, l'export demande toujours une phrase de passe :
+From the player UI, export always asks for a passphrase:
 
-- derive une clé PBKDF2 SHA-256 ;
-- 250 000 iterations ;
-- salt 16 octets ;
-- produit un fichier transferable entre navigateurs et appareils si le `contentVersion` est identique.
+- derives a PBKDF2 SHA-256 key;
+- 250,000 iterations;
+- 16-byte salt;
+- produces a file transferable between browsers and devices if `contentVersion` is identical.
 
-Le mode `local-key` reste seulement accepte pour rejeter proprement d'anciens fichiers ou des fichiers non transferables ; l'UI ne cree plus d'export sans phrase de passe.
+`local-key` mode remains accepted only to reject old or non-transferable files
+cleanly; the UI no longer creates exports without a passphrase.
 
-Sans phrase de passe, `exportSave()` refuse l'export.
+Without a passphrase, `exportSave()` refuses export.
 
 ## Import
 
-L'import :
+Import:
 
-1. parse le conteneur ;
-2. derive ou recupere la clé ;
-3. decrypte ;
-4. verifie que le `contentVersion` de la sauvegarde correspond au runtime courant ;
-5. rejoue `history` depuis le debut ;
-6. compare l'etat obtenu a l'etat decrypte ;
-7. sauvegarde seulement si la validation passe.
+1. parses the container;
+2. derives or retrieves the key;
+3. decrypts;
+4. verifies that the save `contentVersion` matches the current runtime;
+5. replays `history` from the start;
+6. compares the reconstructed state with the decrypted state;
+7. saves only if validation passes.
 
-Une sauvegarde decryptee mais incoherente doit etre rejetee.
+A decrypted but incoherent save must be rejected.
 
-`history` contient deux types d'evenements :
+`history` contains two event types:
 
-- `choice` : choix narratif visible au moment du replay ;
-- `stats` : allocation manuelle de points.
+- `choice`: narrative choice visible at replay time;
+- `stats`: manual point allocation.
 
-Le replay des allocations verifie que la stat etait visible, qu'elle etait allouable, que `v_available_points` suffisait, et que la valeur finale ne depassait pas `v_max_stat`. Il reconstruit aussi les variables `_aux` et les compteurs de points. Une sauvegarde qui modifie directement une stat ou un compteur est donc rejetee si elle ne correspond pas au chemin rejoue.
+Stat allocation replay verifies that the stat was visible, allocatable,
+supported by enough `v_available_points`, and did not exceed `v_max_stat`. It
+also reconstructs `_aux` variables and point counters. A save that directly
+modifies a stat or counter is therefore rejected if it does not match the
+replayed path.
 
-Le `historyDigest` part de `magium:v2:initial`. Ce digest reste stable tant que le format d'historique ne change pas ; l'invalidation des sauvegardes incompatibles passe aussi par le `contentVersion`, qui inclut le format runtime courant et change quand le graphe genere change. Une sauvegarde exportee doit donc etre chiffree avec phrase de passe et viser le meme `contentVersion`.
+`historyDigest` starts from `magium:v2:initial`. This digest remains stable as
+long as the history format does not change; incompatible save invalidation also
+uses `contentVersion`, which includes the current runtime format and changes
+when the generated graph changes. An exported save must therefore be encrypted
+with a passphrase and target the same `contentVersion`.
 
-Les erreurs affichees cote UI doivent rester comprehensibles et visibles dans le panneau Sauvegardes, par exemple `Fichier de sauvegarde non pris en charge`, `Mot de passe incorrect ou fichier de sauvegarde endommage`, `Cette sauvegarde appartient a une autre version du contenu` ou `Ce fichier de sauvegarde ne correspond pas a une partie jouable`.
+UI-side errors must stay understandable and visible in the Saves panel, for
+example `Unsupported save file`, `Wrong password or damaged save file`,
+`This save belongs to another content version`, or
+`This save file does not match a playable game`.
 
-## Donnees Non Chiffrees Acceptables
+## Acceptable Unencrypted Data
 
-Dans IndexedDB `saves`, le record expose seulement :
+In the IndexedDB `saves` store, the record exposes only:
 
 - `slotId`
 - `label`
@@ -187,9 +217,10 @@ Dans IndexedDB `saves`, le record expose seulement :
 - `contentVersion`
 - `encrypted`
 
-Ces metadonnees servent a lister et renommer les sauvegardes. Le `label` est un nom saisi par le joueur ; il ne doit pas contenir d'etat de jeu.
+These metadata fields are used to list and rename saves. `label` is a name
+entered by the player; it must not contain game state.
 
-Dans IndexedDB `achievementProgress`, le record expose seulement :
+In the IndexedDB `achievementProgress` store, the record exposes only:
 
 - `id`
 - `createdAt`
@@ -197,30 +228,30 @@ Dans IndexedDB `achievementProgress`, le record expose seulement :
 - `contentVersion`
 - `encrypted`
 
-Les variables de succes ne doivent pas apparaitre en clair dans ce record.
+Achievement variables must not appear in plaintext in this record.
 
-Ne pas ajouter :
+Do not add:
 
-- `currentSceneId` en clair ;
-- variables ;
-- stats ;
-- achievements ;
-- digest ;
+- plaintext `currentSceneId`;
+- variables;
+- stats;
+- achievements;
+- digest;
 - history.
 
-## Limites Connues
+## Known Limits
 
-Sans backend :
+Without a backend:
 
-- le code client peut etre modifie ;
-- la clé locale vit dans le navigateur ;
-- DevTools peut observer le runtime apres dechiffrement ;
-- on ne peut pas empecher un utilisateur determine de tricher.
+- client code can be modified;
+- the local key lives in the browser;
+- DevTools can observe runtime data after decryption;
+- a determined user cannot be prevented from cheating.
 
-Ce qui est garanti par l'implementation :
+What the implementation guarantees:
 
-- pas de manipulation triviale de localStorage ;
-- pas de variables de jeu en clair ;
-- detection des fichiers exportes modifies ;
-- detection d'un etat incompatible avec un chemin jouable ;
-- detection des stats et compteurs de points incompatibles avec le replay.
+- no trivial localStorage manipulation;
+- no plaintext game variables;
+- detection of modified exported files;
+- detection of state incompatible with a playable path;
+- detection of stats and point counters incompatible with replay.

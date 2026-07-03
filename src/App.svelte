@@ -1797,6 +1797,7 @@
             <p class="meta">{t(uiMessages, 'about.translation', {}, 'French translation and adaptation by Foobar, 2026.')}</p>
             <p class="meta">{t(uiMessages, 'about.unofficial', {}, "This is an unofficial adaptation and is not endorsed by the original author's estate or the Magium community maintainers.")}</p>
             <p class="meta">{t(uiMessages, 'about.sourceLabel', {}, 'Source:')} <a href="https://github.com/raduprv/Magium" rel="noreferrer" target="_blank">https://github.com/raduprv/Magium</a></p>
+            <p class="meta">{t(uiMessages, 'about.projectLabel', {}, 'Project:')} <a href="https://github.com/ablond/magium/" rel="noreferrer" target="_blank">ablond/magium</a></p>
             <p class="meta">{t(uiMessages, 'about.licenseLabel', {}, 'License:')} <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" target="_blank">https://creativecommons.org/licenses/by/4.0/</a></p>
             <p class="meta">{t(uiMessages, 'about.privacyLabel', {}, 'Contribution privacy:')} <a href="/legal/contributions.html" rel="noreferrer" target="_blank">/legal/contributions.html</a></p>
             <p class="meta">{t(uiMessages, 'about.changes', {}, 'Changes: French translation, UI adaptation, technical restructuring, additional interface features.')}</p>
