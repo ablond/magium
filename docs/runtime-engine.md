@@ -1,32 +1,35 @@
-# Moteur Runtime
+# Runtime Engine
 
-## Responsabilite
+## Responsibility
 
-Le moteur transforme un `GameState` et un `StoryContext` en scene affichable, puis applique les choix du joueur.
+The engine transforms a `GameState` and `StoryContext` into a renderable scene,
+then applies player choices.
 
-Fichiers :
+Files:
 
 - `src/lib/story/engine.ts`
 - `src/lib/story/conditions.ts`
 - `src/lib/story/digest.ts`
 - `src/lib/story/types.ts`
 
-## Chargement
+## Loading
 
-`src/lib/content/packedContent.ts` charge :
+`src/lib/content/packedContent.ts` loads:
 
 - `index`
-- chapitre contenant la scene courante ;
-- locale du chapitre ;
-- achievements ;
-- locale achievements ;
-- locale stats.
+- the chapter containing the current scene;
+- the chapter locale;
+- achievements;
+- achievement locale;
+- stat locale.
 
-Le chargement est lazy. Un nouveau chapitre n'est importe que lorsque le joueur atteint une scene qui y appartient. Si la locale de récit demandée ne possède pas encore le chapitre, le chargeur retombe sur `en` pour ce chapitre.
+Loading is lazy. A new chapter is imported only when the player reaches a scene
+inside it. If the requested story locale does not yet have that chapter, the
+loader falls back to `en` for that chapter.
 
 ## GameState
 
-Modele principal :
+Main model:
 
 ```ts
 type GameState = {
@@ -45,24 +48,33 @@ type GameState = {
 }
 ```
 
-`locale` porte la langue de lecture active. Changer de langue ne modifie pas l'historique ni le `historyDigest`; il recharge seulement les packs de textes.
+`locale` carries the active reading language. Changing language does not modify
+history or `historyDigest`; it only reloads text packs.
 
-`variables` porte les variables Magium (`v_current_scene`, stats, flags, achievements, compteurs de points).
+`variables` carries Magium variables (`v_current_scene`, stats, flags,
+achievements, point counters).
 
-`achievements` est scope a la partie courante. Il sert au rendu immediat et au replay anti-tamper, et il revient donc au snapshot ancien lors d'un `checkpoint_load` ou a vide lors d'un `restart`. La collection visible dans le panneau Succès est persistée separement par `src/lib/storage/achievementProgress.ts`, dans IndexedDB chiffré, pour conserver les succès entre parties comme l'app d'origine.
+`achievements` is scoped to the current playthrough. It is used for immediate
+rendering and anti-tamper replay, so it rolls back to an older snapshot on
+`checkpoint_load` and clears on `restart`. The collection visible in the
+Achievements panel is persisted separately by
+`src/lib/storage/achievementProgress.ts`, in encrypted IndexedDB, to preserve
+achievements between playthroughs like the original app.
 
-`history` contient des evenements types :
+`history` contains typed events:
 
-- `type: "choice"` pour les choix narratifs ;
-- `type: "stats"` pour les allocations manuelles de points de stats.
+- `type: "choice"` for narrative choices;
+- `type: "stats"` for manual stat point allocations.
 
-Il sert a valider les imports par replay.
+It is used to validate imported saves by replay.
 
-`historyDigest` est un hash chaine initialise avec `magium:v2:initial` pour detecter les modifications triviales. Le `contentVersion` inclut le format runtime courant et invalide les sauvegardes incompatibles quand le graphe genere change.
+`historyDigest` is a chained hash initialized with `magium:v2:initial` to
+detect trivial modifications. `contentVersion` includes the current runtime
+format and invalidates incompatible saves when the generated graph changes.
 
-## Assignations De Variables
+## Variable Assignments
 
-Les assignations canoniques sont explicites :
+Canonical assignments are explicit:
 
 ```ts
 type VariableAssignment = {
@@ -72,51 +84,71 @@ type VariableAssignment = {
 }
 ```
 
-- `mode: "set"` remplace la valeur courante ;
-- `mode: "add"` ajoute un delta numerique a la valeur courante.
+- `mode: "set"` replaces the current value;
+- `mode: "add"` adds a numeric delta to the current value.
 
-Dans les `.magium`, les valeurs signees comme `v_available_points = +3` ou `set(v_hearing,-3)` deviennent des deltas `add`. Les valeurs non signees comme `v_max_stat = 4` restent des `set`.
+In `.magium`, signed values such as `v_available_points = +3` or
+`set(v_hearing,-3)` become `add` deltas. Unsigned values such as
+`v_max_stat = 4` remain `set`.
 
-## Entree Dans Une Scene
+## Entering A Scene
 
-`enterCurrentScene(context, state)` :
+`enterCurrentScene(context, state)`:
 
-1. trouve la scene ;
-2. applique les `setVariables` dont les conditions sont vraies ;
-3. debloque les achievements dont la variable vaut `1` ;
-4. met a jour `updatedAt`.
+1. finds the scene;
+2. applies `setVariables` whose conditions are true;
+3. unlocks achievements whose variable is `1`;
+4. updates `updatedAt`.
 
-Attention : appeler cette fonction apres creation d'un nouvel etat ou apres application d'un choix.
+Call this after creating a new state or after applying a choice.
 
-## Rendu D'Une Scene
+## Rendering A Scene
 
-`renderCurrentScene(context, state)` :
+`renderCurrentScene(context, state)`:
 
-- filtre les paragraphes par conditions ;
-- filtre les choix par conditions ;
-- remplace les `messageId` par le texte de la locale chargee ;
-- deduit les resultats de stat checks visibles apres l'arrivee dans la scene ;
-- renvoie les achievements debloques.
+- filters paragraphs by condition;
+- filters choices by condition;
+- replaces `messageId` with loaded locale text;
+- derives visible stat check results after arriving in the scene;
+- returns newly unlocked achievements.
 
-Les blocs narratifs canoniques peuvent contenir plusieurs alineas separes par des lignes vides. Le lecteur les decoupe au rendu en vrais paragraphes DOM, sans modifier le graphe logique ni les packs de contenu.
+Canonical narrative blocks may contain several paragraphs separated by blank
+lines. The reader splits them into real DOM paragraphs at render time without
+changing the logic graph or content packs.
 
-Le rendu ne modifie pas l'etat.
+Rendering does not mutate state.
 
-`readNewlyUnlockedAchievements(context, previousState, nextState)` compare deux etats deja produits par le moteur et renvoie uniquement les achievements absents de `previousState.achievements` mais presents dans `nextState.achievements`. L'UI lecteur filtre ensuite ces resultats avec la progression globale chiffrée avant d'afficher une notice temporaire `Achievement unlocked` / `Succès obtenu`, sans changer `history` ou le replay anti-triche.
+`readNewlyUnlockedAchievements(context, previousState, nextState)` compares two
+states already produced by the engine and returns only achievements absent from
+`previousState.achievements` but present in `nextState.achievements`. The
+reader UI then filters these against encrypted global progress before showing a
+temporary `Achievement unlocked` / `Succès obtenu` notice, without changing
+`history` or anti-tamper replay.
 
-## Illustrations De Moments
+## Moment Illustrations
 
-Les illustrations Book 1 ne font pas partie du moteur de scene. `src/App.svelte` lit `state.currentSceneId` et `state.variables`, puis resout une image statique avec `src/lib/visuals/book1.ts`.
+Book 1 illustrations are not part of the scene engine. `src/App.svelte` reads
+`state.currentSceneId` and `state.variables`, then resolves a static image with
+`src/lib/visuals/book1.ts`.
 
-Le setting `settings.illustrations` est une preference UI locale, activee par defaut a la migration. Quand elle est activee, l'image `/visuals/book1/moments/<moment-id>/illustration.webp` s'affiche apres le texte de la scene declencheuse et avant les choix. Si plusieurs variantes existent pour le meme `sceneId`, la map peut choisir une variante avec une condition simple sur les variables de jeu, par exemple `Ch11b-Ending` selon `v_ch11_saved_rose`. Si le WebP manque ou echoue au chargement, l'UI le masque et la lecture continue.
+`settings.illustrations` is a local UI preference enabled by default on
+migration. When active, `/visuals/book1/moments/<moment-id>/illustration.webp`
+appears after the trigger scene text and before choices. If several variants
+exist for the same `sceneId`, the map may choose a variant with a simple
+condition on game variables, for example `Ch11b-Ending` based on
+`v_ch11_saved_rose`. If the WebP is missing or fails to load, the UI hides it
+and reading continues.
 
-Ces images ne modifient pas `GameState`, `history`, `historyDigest`, le replay anti-tamper ou le chargement des packs narratifs.
+These images do not modify `GameState`, `history`, `historyDigest`,
+anti-tamper replay, or narrative pack loading.
 
-## Stat Checks Post-Choix
+## Post-Choice Stat Checks
 
-Les tests de stats ne sont jamais affiches sur un choix avant que le joueur clique. Le moteur les deduit seulement depuis la scene courante, apres application du choix et entree dans la scene cible.
+Stat checks are never displayed on a choice before the player clicks. The engine
+derives them only from the current scene, after choice application and entry
+into the target scene.
 
-`RenderedScene.statChecks` contient les resultats affichables :
+`RenderedScene.statChecks` contains displayable results:
 
 ```ts
 type StatCheckResult = {
@@ -128,116 +160,141 @@ type StatCheckResult = {
 }
 ```
 
-La detection utilise les conditions canoniques du `.magium` :
+Detection uses canonical `.magium` conditions:
 
-- `>= N`, `== N` et `> N-1` sur une variable de stat connue donnent une reussite niveau `N` ;
-- `< N`, `<= N-1`, et `== 0` avec seuil frere inferable donnent un echec niveau `N` ;
-- les conditions non-stat sont ignorees dans l'affichage, mais restent necessaires pour savoir si le paragraphe est visible ;
-- les doublons `variable/outcome/level` sont supprimes.
+- `>= N`, `== N`, and `> N-1` on a known stat variable produce a level `N` success;
+- `< N`, `<= N-1`, and `== 0` with an inferable sibling threshold produce a level `N` failure;
+- non-stat conditions are ignored for display but still required to know whether the paragraph is visible;
+- duplicate `variable/outcome/level` results are removed.
 
-Les conditions des paragraphes visibles sont prioritaires. Les conditions des choix visibles ne sont utilisees qu'en secours si aucun paragraphe visible ne porte le resultat, pour les scenes ou le contenu original expose le check dans la branche suivante. Les `logic.txt` originaux peuvent aider a auditer les seuils, mais ne deviennent pas une source runtime.
+Visible paragraph conditions have priority. Visible choice conditions are used
+only as fallback if no visible paragraph carries the result, for scenes where
+the original content exposes the check in the following branch. Original
+`logic.txt` files can help audit thresholds, but do not become a runtime source.
 
-## Affichage Des Stats
+## Stats Display
 
-Le moteur conserve toutes les variables de stats dans `GameState.variables`, mais l'UI ne les montre pas toutes des le depart.
+The engine keeps all stat variables in `GameState.variables`, but the UI does
+not reveal all of them from the start.
 
-Dans `src/App.svelte`, le panneau affiche `Stats` en francais. Son identifiant interne reste `abilities` pour eviter un refactor technique sans impact joueur. Il revele :
+In `src/App.svelte`, the French panel label is `Stats`. The internal identifier
+remains `abilities` to avoid a technical refactor with no player impact. It
+reveals:
 
-- aucune stat avant que Barry atteigne `Ch2-Stats` ;
-- les stats de base apres `Ch2-Stats` ou `Ch2-Stats-spent` ;
-- `Bluff`, `Magical sense` et `Aura hardening` apres l'introduction aura de `B3-Ch04a`.
+- no stat before Barry reaches `Ch2-Stats`;
+- base stats after `Ch2-Stats` or `Ch2-Stats-spent`;
+- `Bluff`, `Magical sense`, and `Aura hardening` after the aura introduction in `B3-Ch04a`.
 
-`Magical Power` et `Magical Knowledge` restent verrouillees et invisibles tant que le contenu original ne les rend pas jouables.
+`Magical Power` and `Magical Knowledge` remain locked and invisible until the
+original content makes them playable.
 
-Le plafond manuel vient de `v_max_stat` :
+The manual cap comes from `v_max_stat`:
 
-- `3` par defaut ;
-- `4` quand le contenu original affecte `v_max_stat = 4`.
+- `3` by default;
+- `4` when the original content assigns `v_max_stat = 4`.
 
-Les points disponibles viennent de `v_available_points`. L'allocation manuelle incrémente la stat, incrémente sa variable `_aux`, puis decremente `v_available_points` et `v_available_points_aux`. Les boosts narratifs peuvent depasser le plafond, mais le panneau ne permet pas d'ajouter manuellement au-dessus de `v_max_stat`.
+Available points come from `v_available_points`. Manual allocation increments
+the stat, increments its `_aux` variable, then decrements `v_available_points`
+and `v_available_points_aux`. Narrative boosts may exceed the cap, but the
+panel does not allow manual additions above `v_max_stat`.
 
-Les libelles de stats viennent de `locales/<locale>/stats`, avec fallback `en`. Les entrees non introduites par le contenu actuel restent invisibles, meme si elles existent dans la liste des variables de stats.
+Stat labels come from `locales/<locale>/stats`, with `en` fallback. Entries not
+yet introduced by current content remain invisible even if they exist in the
+stat variable list.
 
-## Application D'Un Choix
+## Applying A Choice
 
-`applyChoice(context, state, choice)` :
+`applyChoice(context, state, choice)`:
 
-1. verifie que le choix est visible depuis l'etat courant ;
-2. gere `special:restart` ;
-3. gere `special:checkpoint_load` en restaurant `GameState.checkpoint` sans appliquer les assignments du choix ni ajouter d'evenement d'historique ;
-4. applique les assignments du choix en respectant `set` ou `add` ;
-5. ajoute un evenement `type: "choice"` dans `history` ;
-6. etend `historyDigest` ;
-7. change `currentSceneId` ;
-8. cree un checkpoint si `special:checkpoint_save` ;
-9. entre dans la nouvelle scene.
+1. verifies that the choice is visible from the current state;
+2. handles `special:restart`;
+3. handles `special:checkpoint_load` by restoring `GameState.checkpoint` without applying choice assignments or adding a history event;
+4. applies choice assignments with `set` or `add`;
+5. appends a `type: "choice"` event to `history`;
+6. extends `historyDigest`;
+7. changes `currentSceneId`;
+8. creates a checkpoint if `special:checkpoint_save`;
+9. enters the new scene.
 
-## Allocation De Stats
+## Stat Allocation
 
-`applyStatAllocation(state, deltas)` :
+`applyStatAllocation(state, deltas)`:
 
-1. fusionne les deltas par variable ;
-2. verifie que chaque stat est visible et allouable ;
-3. verifie que le total ne depasse pas `v_available_points` ;
-4. verifie que chaque stat reste sous `v_max_stat` ;
-5. applique atomiquement les deltas de stat, `_aux`, `v_available_points` et `v_available_points_aux` ;
-6. ajoute un evenement `type: "stats"` dans `history` ;
-7. etend `historyDigest`.
+1. merges deltas by variable;
+2. verifies that each stat is visible and allocatable;
+3. verifies that the total does not exceed `v_available_points`;
+4. verifies that each stat remains under `v_max_stat`;
+5. atomically applies stat deltas, `_aux`, `v_available_points`, and `v_available_points_aux`;
+6. appends a `type: "stats"` event to `history`;
+7. extends `historyDigest`.
 
-Le panneau UI ne peut retirer que les points du brouillon non confirme. Les points deja confirmes ne sont modifiables que par un retour checkpoint ou une nouvelle partie.
+The UI panel can remove only unconfirmed draft points. Confirmed points can be
+changed only by returning to a checkpoint or starting a new game.
 
-## Mode Debug Local
+## Local Debug Mode
 
-Le mode debug est un outil local de developpement expose uniquement par `src/App.svelte` quand `import.meta.env.DEV` vaut `true`, donc sous `pnpm dev`. Il ne doit pas apparaitre dans un build de production.
+Debug mode is a local development tool exposed only by `src/App.svelte` when
+`import.meta.env.DEV` is `true`, therefore under `pnpm dev`. It must not appear
+in a production build.
 
-Le panneau Debug permet :
+The Debug panel can:
 
-- de sauter vers une scene depuis `ContentIndex.chapters` et le `sceneOrder` du chapitre charge ;
-- d'appliquer les choix de la scene courante, y compris ceux masques par leurs conditions ;
-- de modifier les stats, compteurs et variables primitives ;
-- d'annuler ou retablir les changements de la session courante via une pile en memoire.
+- jump to a scene from `ContentIndex.chapters` and the loaded chapter `sceneOrder`;
+- apply current-scene choices, including choices hidden by conditions;
+- edit stats, counters, and primitive variables;
+- undo or redo current-session changes through an in-memory stack.
 
-Les helpers debug restent separes du moteur normal :
+Debug helpers stay separate from the normal engine:
 
-- `debugJumpToScene(context, state, sceneId)` met `currentSceneId` et `v_current_scene`, puis entre dans la scene cible ;
-- `debugApplyChoice(context, state, choice)` applique les assignments et la cible du choix sans verifier sa visibilite ;
-- `debugSetVariable(state, variable, value)` et `debugDeleteVariable(state, variable)` modifient directement `variables`.
+- `debugJumpToScene(context, state, sceneId)` sets `currentSceneId` and `v_current_scene`, then enters the target scene;
+- `debugApplyChoice(context, state, choice)` applies assignments and target without checking visibility;
+- `debugSetVariable(state, variable, value)` and `debugDeleteVariable(state, variable)` directly modify `variables`.
 
-Ces operations ne creent aucun evenement `history` et ne recalculent pas `historyDigest`. Elles marquent l'etat avec `GameState.debug = { dirty: true, lastAction, updatedAt }`. Un etat debug peut rester dans IndexedDB et dans les saves nommees locales, mais ne doit pas etre exporte en `.magium-save`.
+These operations do not create `history` events and do not recalculate
+`historyDigest`. They mark the state with
+`GameState.debug = { dirty: true, lastAction, updatedAt }`. A debug state may
+remain in IndexedDB and named local saves, but must not be exported as
+`.magium-save`.
 
-## Specials Supportes Actuellement
+## Currently Supported Specials
 
 - `restart`
 - `checkpoint_save`
 - `checkpoint_load`
-- `saves` cote UI quand le target est vide
-- `stats` cote UI pour ouvrir le panneau Stats
+- `saves` on the UI side when target is empty
+- `stats` on the UI side to open the Stats panel
 
-D'autres `special:*` peuvent exister dans le corpus. Si une nouvelle valeur doit avoir un effet moteur, l'ajouter dans `applyChoice` et couvrir par test.
+Other `special:*` values may exist in the corpus. If a new value needs engine
+behavior, add it in `applyChoice` and cover it with tests.
 
 ## Conditions
 
-`evaluateCondition` supporte :
+`evaluateCondition` supports:
 
 - `true`
 - `false`
-- comparaisons `<`, `>`, `<=`, `>=`, `==`, `!=`
-- OR de groupes AND via `anyOf/allOf`.
+- comparisons `<`, `>`, `<=`, `>=`, `==`, `!=`
+- OR of AND groups through `anyOf/allOf`.
 
-Les valeurs absentes valent `0` pour les comparaisons, comme dans le comportement historique attendu.
+Missing values count as `0` for comparisons, matching expected historical
+behavior.
 
-## Replay Anti-Tamper
+## Anti-Tamper Replay
 
-`replayAndValidate(contextForScene, saved)` :
+`replayAndValidate(contextForScene, saved)`:
 
-1. repart de `Ch1-Intro1` ;
-2. rejoue chaque evenement de `saved.history` ;
-3. verifie que chaque choix etait disponible et que chaque allocation respectait stats visibles, plafond et points disponibles ;
-4. recharge la scene cible avant d'entrer dans un nouveau chapitre ;
-5. compare scene courante, variables, achievements scopes a la partie, et `historyDigest`.
+1. starts again from `Ch1-Intro1`;
+2. replays every event in `saved.history`;
+3. verifies that every choice was available and every stat allocation respected visible stats, caps, and available points;
+4. reloads the target scene before entering a new chapter;
+5. compares current scene, variables, playthrough-scoped achievements, and `historyDigest`.
 
-Cette validation est utilisee a l'import de sauvegarde.
+This validation is used during save import.
 
-La progression globale des succes n'entre pas dans cette comparaison. Un import valide peut l'enrichir apres replay reussi, mais un `.magium-save` reste une sauvegarde de partie, pas un export complet de collection de succes.
+Global achievement progress is not part of this comparison. A valid import may
+enrich it after successful replay, but a `.magium-save` remains a playthrough
+save, not a complete achievement collection export.
 
-Limite : un attaquant qui modifie le code client peut contourner ce controle. Sans backend, c'est une barriere contre la manipulation triviale, pas une preuve cryptographique globale.
+Limit: an attacker who modifies client code can bypass this control. Without a
+backend, it is a barrier against trivial manipulation, not a global
+cryptographic proof.

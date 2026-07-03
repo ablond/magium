@@ -1,10 +1,15 @@
 # Magium Translation API
 
-Service séparé pour recevoir, modérer et grouper les propositions publiques de correction de traduction.
+Standalone service for receiving, moderating, and grouping public translation
+correction proposals.
 
-La PWA reste statique. Ce service ne sert pas le contenu narratif brut ; il reçoit seulement des propositions ciblées par hash, identifiants techniques, et le segment affiché nécessaire à la revue mainteneur.
+The PWA stays static. This service does not serve raw narrative content; it
+receives only proposals targeted by hash, technical identifiers, and the
+displayed segment needed for maintainer review.
 
-La référence de reprise complète du sous-système est [../../docs/translation-contributions-system.md](../../docs/translation-contributions-system.md). Ce README reste une fiche courte propre au service.
+The complete subsystem handoff reference is
+[../../docs/translation-contributions-system.md](../../docs/translation-contributions-system.md).
+This README remains a short service-specific sheet.
 
 ## Variables
 
@@ -38,27 +43,30 @@ GITHUB_WORKFLOW_FILE=translation-changeset-pr.yml
 GITHUB_REF_NAME=main
 ```
 
-`TURNSTILE_DISABLED=1` est réservé au développement local et aux tests.
-`MAX_JSON_BODY_BYTES` vaut `131072` par défaut et limite les bodies JSON avant parsing.
-`TRUST_PROXY=0` est le défaut sûr : le rate limit utilise l'adresse socket. Mettre `TRUST_PROXY=1` uniquement derrière un reverse proxy qui écrase ou nettoie `X-Forwarded-For`.
+`TURNSTILE_DISABLED=1` is reserved for local development and tests.
+`MAX_JSON_BODY_BYTES` defaults to `131072` and limits JSON bodies before
+parsing.
+`TRUST_PROXY=0` is the safe default: rate limiting uses the socket address. Set
+`TRUST_PROXY=1` only behind a reverse proxy that overwrites or cleans
+`X-Forwarded-For`.
 
 ## Local Docker
 
-Depuis la racine du dépôt :
+From the repository root:
 
 ```bash
 docker compose up -d
 ```
 
-Le stack lance :
+The stack starts:
 
-- PWA Vite dev : `http://localhost:5173`
-- API : `http://localhost:8090`
-- Admin mainteneur : `http://localhost:8090/admin`
-- PostgreSQL 18 : `localhost:5432`
-- Mailpit : `http://localhost:8025`
+- PWA Vite dev: `http://localhost:5173`
+- API: `http://localhost:8090`
+- Maintainer admin: `http://localhost:8090/admin`
+- PostgreSQL 18: `localhost:5432`
+- Mailpit: `http://localhost:8025`
 
-Valeurs locales par défaut :
+Default local values:
 
 - `ADMIN_TOKEN=dev-admin-token`
 - `ADMIN_PASSWORD=dev-admin-password`
@@ -71,15 +79,17 @@ Valeurs locales par défaut :
 - `MAX_JSON_BODY_BYTES=131072`
 - `TRUST_PROXY=0`
 
-Reset complet :
+Full reset:
 
 ```bash
 docker compose down -v
 ```
 
-Le compose local utilise `postgres:18-alpine` avec un volume monté sur `/var/lib/postgresql`. Ce layout est différent de PostgreSQL 17 ; supprimer l'ancien volume local avant de repartir sur PostgreSQL 18.
+The local compose stack uses `postgres:18-alpine` with a volume mounted at
+`/var/lib/postgresql`. This layout differs from PostgreSQL 17; delete the old
+local volume before restarting with PostgreSQL 18.
 
-Healthcheck :
+Healthcheck:
 
 ```bash
 curl http://localhost:8090/health
@@ -87,54 +97,73 @@ curl http://localhost:8090/health
 
 ## Docker Coolify
 
-Le service API a son propre Dockerfile :
+The API service has its own Dockerfile:
 
 ```bash
 docker build -f services/translation-api/Dockerfile services/translation-api
 ```
 
-Dans Coolify, créer une application séparée :
+In Coolify, create a separate application:
 
-- base directory : `services/translation-api`
-- Dockerfile : `Dockerfile`
-- port : `8090`
-- PostgreSQL : service séparé
+- base directory: `services/translation-api`
+- Dockerfile: `Dockerfile`
+- port: `8090`
+- PostgreSQL: separate service
 
-En production, renseigner au minimum `DATABASE_URL`, `ADMIN_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `PUBLIC_API_URL=https://tr.magium.app`, `PUBLIC_WEB_URL=https://magium.app`, `ALLOWED_ORIGIN=https://magium.app`, `TURNSTILE_SECRET_KEY` et `EMAIL_CONSENT_SECRET`. Pour activer les notifications email, configurer aussi Brevo SMTP via `SMTP_URL` et `EMAIL_FROM=Magium <no-reply@magium.app>`. Pour l'admin web `https://tr.magium.app/admin`, mettre `ADMIN_COOKIE_SECURE=1`. Garder `MAX_JSON_BODY_BYTES=131072`. Garder `TRUST_PROXY=0`, sauf si Coolify ou le proxy frontal garantit que `X-Forwarded-For` est nettoyé avant d'atteindre le conteneur.
+In production, set at least `DATABASE_URL`, `ADMIN_TOKEN`, `ADMIN_PASSWORD`,
+`ADMIN_SESSION_SECRET`, `PUBLIC_API_URL=https://tr.magium.app`,
+`PUBLIC_WEB_URL=https://magium.app`, `ALLOWED_ORIGIN=https://magium.app`,
+`TURNSTILE_SECRET_KEY`, and `EMAIL_CONSENT_SECRET`. To enable email
+notifications, also configure Brevo SMTP through `SMTP_URL` and
+`EMAIL_FROM=Magium <no-reply@magium.app>`. For the web admin at
+`https://tr.magium.app/admin`, set `ADMIN_COOKIE_SECURE=1`. Keep
+`MAX_JSON_BODY_BYTES=131072`. Keep `TRUST_PROXY=0` unless Coolify or the front
+proxy guarantees that `X-Forwarded-For` is cleaned before reaching the
+container.
 
-Configuration Brevo attendue :
+Expected Brevo configuration:
 
 ```text
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
 EMAIL_FROM=Magium <no-reply@magium.app>
 ```
 
-Vérifier dans Brevo que le sender `no-reply@magium.app` ou le domaine `magium.app` est autorisé avant activation publique. Les identifiants SMTP Brevo doivent rester dans Coolify.
+Verify in Brevo that sender `no-reply@magium.app` or domain `magium.app` is
+authorized before public activation. Brevo SMTP credentials must stay in
+Coolify.
 
-## Flux
+## Flow
 
-1. La PWA envoie `POST /v1/translation-proposals`.
-2. Si un email est fourni, le service envoie un lien de confirmation, sauf si un jeton navigateur confirme déjà cet email.
-3. Le mainteneur traite les propositions via `GET /admin` ou via les routes admin protégées par `ADMIN_TOKEN`.
-4. Les propositions acceptées sont regroupées dans un changeset.
-5. `POST /v1/admin/changesets/<id>/dispatch-pr` déclenche le workflow GitHub.
-6. Après publication, `POST /v1/admin/changesets/<id>/published` notifie les emails confirmés par destinataire puis les supprime.
+1. The PWA sends `POST /v1/translation-proposals`.
+2. If an email is provided, the service sends a confirmation link unless a browser token already confirms that email.
+3. The maintainer handles proposals through `GET /admin` or through admin routes protected by `ADMIN_TOKEN`.
+4. Accepted proposals are grouped into a changeset.
+5. `POST /v1/admin/changesets/<id>/dispatch-pr` triggers the GitHub workflow.
+6. After publication, `POST /v1/admin/changesets/<id>/published` notifies confirmed emails per recipient and then deletes them.
 
-Les refus et obsolescences peuvent aussi être appliqués en lot avec `POST /v1/admin/proposals/bulk-review`. Dans ce cas, les contacts confirmés sont groupés par email normalisé pour éviter plusieurs mails à la même personne.
+Rejections and stale markings can also be applied in batch with
+`POST /v1/admin/proposals/bulk-review`. In that case, confirmed contacts are
+grouped by normalized email to avoid multiple emails to the same person.
 
-Si aucun transport email n'est configuré, les propositions demandant une notification sont refusées sans stockage de l'adresse.
+If no email transport is configured, proposals requesting notification are
+rejected without storing the address.
 
-Si `EMAIL_WEBHOOK_URL` est utilisé hors prod, le payload envoyé contient `{ from, to, subject, text, html }` avec `from=Magium <no-reply@magium.app>` par défaut. Le transport SMTP envoie aussi les deux versions `text` et `html`.
+If `EMAIL_WEBHOOK_URL` is used outside production, the sent payload contains
+`{ from, to, subject, text, html }` with
+`from=Magium <no-reply@magium.app>` by default. SMTP transport also sends both
+`text` and `html` versions.
 
-La confirmation email crée un consentement réutilisable un an par navigateur. La table de consentement ne stocke pas l'email brut : seulement un HMAC de l'email normalisé et un hash du jeton navigateur.
+Email confirmation creates reusable consent for one year per browser. The
+consent table does not store raw email: only an HMAC of normalized email and a
+browser token hash.
 
-## Routes publiques
+## Public Routes
 
 - `POST /v1/translation-proposals`
 - `GET /v1/translation-proposals/:publicId/status`
 - `GET|POST /v1/translation-proposals/:publicId/confirm-email`
 
-## Routes admin
+## Admin Routes
 
 - `GET /v1/admin/proposals`
 - `POST /v1/admin/proposals/:publicId/review`
@@ -147,14 +176,22 @@ La confirmation email crée un consentement réutilisable un an par navigateur. 
 - `POST /v1/admin/changesets/:publicId/stale`
 - `POST /v1/admin/changesets/:publicId/published`
 
-## Interface Web Mainteneur
+## Maintainer Web Interface
 
-`GET /admin` sert une interface web sans framework pour lister les propositions, accepter/rejeter/marquer obsolète, refuser ou marquer obsolètes des propositions en attente en lot, créer un changeset, exporter un changeset, déclencher la PR, puis marquer un lot publié ou stale.
+`GET /admin` serves a framework-free web interface for listing proposals,
+accepting, rejecting, marking proposals as stale, batch-processing rejection or
+stale marking for pending proposals, creating a changeset, exporting a changeset,
+triggering the PR, and then marking a batch published or stale.
 
-Le détail d'une proposition affiche le texte d'origine cible, un diff visuel origine/proposition, et une version finale retenue éditable. Les anciennes propositions qui ne contiennent pas encore le texte d'origine restent visibles, mais sans diff.
+A proposal detail shows the target original text, a visual original/proposal
+diff, and an editable retained final version. Older proposals that do not yet
+contain original text remain visible, without diff.
 
-L'interface utilise `ADMIN_PASSWORD` pour ouvrir une session cookie `HttpOnly` signée avec `ADMIN_SESSION_SECRET`. Les actions POST effectuées avec cookie exigent le jeton CSRF renvoyé par `/admin/session`. Les appels machine peuvent continuer à utiliser `Authorization: Bearer ADMIN_TOKEN`.
+The interface uses `ADMIN_PASSWORD` to open a signed `HttpOnly` cookie session
+with `ADMIN_SESSION_SECRET`. POST actions performed with a cookie require the
+CSRF token returned by `/admin/session`. Machine calls may keep using
+`Authorization: Bearer ADMIN_TOKEN`.
 
-## Base De Données
+## Database
 
-Exécuter `schema.sql` sur la base PostgreSQL avant le premier démarrage.
+Run `schema.sql` on PostgreSQL before the first startup.

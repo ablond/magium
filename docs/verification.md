@@ -1,8 +1,8 @@
-# Vérification
+# Verification
 
-## Suite Obligatoire
+## Required Suite
 
-Utiliser Node.js 24 LTS avec `pnpm@11.9.0`, comme dans la CI et les builds Docker.
+Use Node.js 24 LTS with `pnpm@11.9.0`, as in CI and Docker builds.
 
 ```bash
 pnpm install
@@ -12,104 +12,111 @@ pnpm test
 pnpm build
 ```
 
-Ces commandes doivent passer avant de terminer une itération. Le service `services/translation-api` garde son propre `package.json` et son propre lockfile pour rester buildable séparément par Docker/Coolify ; ses dépendances doivent donc être installées en plus des dépendances racine avant `pnpm test` sur un checkout frais.
+These commands must pass before an iteration is considered complete. The
+`services/translation-api` service keeps its own `package.json` and lockfile so
+it remains independently buildable by Docker/Coolify; its dependencies must
+therefore be installed in addition to root dependencies before `pnpm test` on a
+fresh checkout.
 
-Les PR Dependabot de version sont volontairement ralenties par un cooldown. pnpm 11 applique aussi un âge minimum de publication par défaut ; si une CI échoue avec `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`, relancer après la fenêtre d'attente au lieu de désactiver cette protection.
+Dependabot version PRs intentionally use a cooldown. pnpm 11 also enforces a
+minimum release age by default; if CI fails with
+`ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`, rerun after the waiting window
+instead of disabling this protection.
 
-Si l'itération touche les prompts, assets, outils ou l'affichage d'images Book 1, ajouter :
+If the iteration touches Book 1 prompts, assets, tools, or image display, add:
 
 ```bash
 pnpm images:check -- --book 1
 pnpm images:test
 ```
 
-Si Docker, Coolify ou le packaging de production changent, ajouter :
+If Docker, Coolify, or production packaging changes, add:
 
 ```bash
 docker compose config
 pnpm docker:build-prod
 ```
 
-Si une publication est demandée, finir avec :
+If publication is requested, finish with:
 
 ```bash
 pnpm docker:push-prod
 ```
 
-## Ce Que Vérifie Chaque Commande
+## What Each Command Checks
 
-`pnpm check` :
+`pnpm check`:
 
-- `svelte-check` ;
-- TypeScript app ;
-- TypeScript config Vite.
+- `svelte-check`;
+- app TypeScript;
+- Vite TypeScript config.
 
-`pnpm test` :
+`pnpm test`:
 
-- régénère le contenu via `content:all` ;
-- exécute Vitest hors tests manuels Book 1 dépendants de `ffmpeg` ;
-- couvre parser, moteur, i18n et changesets de contribution ;
-- exécute aussi `pnpm --dir services/translation-api test`.
+- regenerates content through `content:all`;
+- runs Vitest excluding manual Book 1 tests that depend on `ffmpeg`;
+- covers parser, engine, i18n, and contribution changesets;
+- also runs `pnpm --dir services/translation-api test`.
 
-`pnpm build` :
+`pnpm build`:
 
-- régénère et valide le contenu ;
-- build Vite ;
-- lance `dist:check`.
+- regenerates and validates content;
+- builds with Vite;
+- runs `dist:check`.
 
-`pnpm images:check -- --book 1` :
+`pnpm images:check -- --book 1`:
 
-- vérifie les prompts publics et les assets WebP Book 1 ;
-- refuse les marqueurs RAG, embeddings, `evidenceRefs`, `.magium` et copies longues du texte canonique ;
-- accepte les WebP manquants pendant la génération manuelle des images.
+- verifies public Book 1 prompts and WebP assets;
+- rejects RAG markers, embeddings, `evidenceRefs`, `.magium`, and long canonical text copies;
+- accepts missing WebP files during manual image production.
 
-`pnpm images:test` :
+`pnpm images:test`:
 
-- régénère le contenu via `content:all` ;
-- exécute `tests/manual-images.test.mjs` ;
-- couvre les prompts Book 1, le staging ChatGPT, les planches de références API et le JSONL OpenAI Batch ;
-- nécessite `ffmpeg` pour générer les planches WebP de référence.
+- regenerates content through `content:all`;
+- runs `tests/manual-images.test.mjs`;
+- covers Book 1 prompts, ChatGPT staging, API reference sheets, and OpenAI Batch JSONL;
+- requires `ffmpeg` to generate WebP reference sheets.
 
-`pnpm images:stage -- --book 1` :
+`pnpm images:stage -- --book 1`:
 
-- prépare par défaut tous les dossiers locaux ignorés par Git sous `output/visual/staging/book1/<moment-id>/` ;
-- copie `prompt.md` et les portraits de référence renommés sous `references/<character-id>.webp` ;
-- permet de joindre les bonnes images dans ChatGPT sans manipulation manuelle des noms `portrait.webp`.
-- accepte aussi `--moment <id>` ou `--chapter <id>` pour limiter le staging.
+- prepares every local Git-ignored folder under `output/visual/staging/book1/<moment-id>/` by default;
+- copies `prompt.md` and renamed reference portraits under `references/<character-id>.webp`;
+- lets the right images be attached in ChatGPT without manual `portrait.webp` filename work;
+- also accepts `--moment <id>` or `--chapter <id>` to limit staging.
 
-`pnpm images:normalize -- --book 1` :
+`pnpm images:normalize -- --book 1`:
 
-- convertit les PNG/JPG de moments en `illustration.webp` avec `ffmpeg` ;
-- déplace les originaux sous `output/visual/originals/book1/moments/` ;
-- laisse `public/visuals/book1/moments/` avec seulement `illustration.md` et `illustration.webp`.
+- converts PNG/JPG moment images to `illustration.webp` with `ffmpeg`;
+- moves originals under `output/visual/originals/book1/moments/`;
+- leaves `public/visuals/book1/moments/` with only `illustration.md` and `illustration.webp`.
 
-`pnpm images:refsheets -- --book 1 --missing` :
+`pnpm images:refsheets -- --book 1 --missing`:
 
-- prépare des planches de référence locales sous `output/visual/api-inputs/book1/<moment-id>/` ;
-- regroupe jusqu'à quatre portraits par planche pour réduire les coûts API ;
-- refuse implicitement les erreurs canoniques verrouillées par la config : pas de `arraka.webp`, pas de couple `flower.webp` + `illuna.webp` sur un même moment ;
-- nécessite `ffmpeg` pour composer les planches WebP.
+- prepares local reference sheets under `output/visual/api-inputs/book1/<moment-id>/`;
+- groups up to four portraits per sheet to reduce API costs;
+- implicitly rejects canonical errors locked by config: no `arraka.webp`, no `flower.webp` + `illuna.webp` pair on the same moment;
+- requires `ffmpeg` to compose WebP sheets.
 
-`pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets` :
+`pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`:
 
-- chemin avancé optionnel qui exige `OPENAI_API_KEY` dans l'environnement ;
-- prépare et soumet un batch OpenAI `/v1/images/edits` avec `gpt-image-2`, WebP et `quality=high` ;
-- affiche la commande `--retrieve` à relancer quand le batch est terminé ;
-- garde les manifests et outputs temporaires sous `output/visual/api-runs/`, ignorés par Git.
+- optional advanced path requiring `OPENAI_API_KEY` in the environment;
+- prepares and submits an OpenAI `/v1/images/edits` batch with `gpt-image-2`, WebP, and `quality=high`;
+- prints the `--retrieve` command to rerun when the batch finishes;
+- keeps manifests and temporary outputs under `output/visual/api-runs/`, ignored by Git.
 
-`pnpm docker:build-prod` :
+`pnpm docker:build-prod`:
 
-- build l'image `ghcr.io/ablond/magium:<timestamp>` localement ;
-- vérifie le filesystem runtime ;
-- démarre le conteneur nginx unprivileged sur un port local temporaire ;
-- vérifie `/`, `/sw.js`, `/manifest.webmanifest` et le fallback SPA.
+- builds `ghcr.io/ablond/magium:<timestamp>` locally;
+- verifies the runtime filesystem;
+- starts the unprivileged nginx container on a temporary local port;
+- checks `/`, `/sw.js`, `/manifest.webmanifest`, and SPA fallback.
 
-`docker compose config` :
+`docker compose config`:
 
-- vérifie la syntaxe du stack local PWA dev, API contribution, PostgreSQL et Mailpit ;
-- confirme que les valeurs locales par défaut suffisent sans fichier `.env`.
+- verifies syntax for the local PWA dev, contribution API, PostgreSQL, and Mailpit stack;
+- confirms local default values are enough without a `.env` file.
 
-Pour une modification du stack local contribution, vérifier aussi :
+For a local contribution-stack change, also verify:
 
 ```bash
 docker build -f services/translation-api/Dockerfile services/translation-api
@@ -122,120 +129,121 @@ curl http://localhost:8025
 docker compose down
 ```
 
-Pour une modification de l'admin mainteneur, vérifier aussi dans un navigateur :
+For a maintainer-admin change, also check in a browser:
 
-- `/admin` affiche le formulaire de connexion hors session ;
-- `dev-admin-password` ouvre le dashboard local ;
-- le détail d'une proposition affiche le texte d'origine et le diff proposé ;
-- une proposition peut être acceptée/rejetée/marquée obsolète depuis l'UI ;
-- une ou plusieurs propositions acceptées peuvent être groupées en changeset ;
-- l'UI bloque la sélection de deux propositions concurrentes sur le même segment.
+- `/admin` shows the login form outside a session;
+- `dev-admin-password` opens the local dashboard;
+- proposal detail shows original text and proposed diff;
+- a proposal can be accepted/rejected/marked stale from the UI;
+- one or more accepted proposals can be grouped into a changeset;
+- the UI blocks selecting two competing proposals on the same segment.
 
-Pour une recette complète du système de contributions traduction, vérifier aussi :
+For a complete translation contribution acceptance pass, also verify:
 
-- PWA `http://localhost:5173` : avec `Corrections de traduction` désactivé, aucun stylo n'est visible sur les paragraphes ou choix et la mise en page ne garde pas de colonne vide ;
-- Settings : activer `Corrections de traduction`, puis vérifier que les icônes stylo grises et discrètes apparaissent sur un paragraphe et sur un choix ;
-- bloc multi-paragraphes : le modal affiche seulement le paragraphe cliqué, prérempli dans la correction ;
-- aucun `publicId`, `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex` ni hash technique visible dans l'UX joueur ;
-- envoi anonyme : succès simple sans `TR_...`, sans reçu à conserver ;
-- envoi avec email local : email de confirmation visible dans Mailpit `http://localhost:8025` ;
-- Mailpit affiche l'expéditeur `Magium <no-reply@magium.app>` ;
-- clic du lien de confirmation : retour PWA avec notice visible de confirmation sous le titre du lecteur, URL nettoyée sans `translation-email-consent`, et consentement navigateur stocké si le lien est ouvert dans le même navigateur que l'envoi initial ;
-- deuxième proposition avec le même email depuis le même navigateur : pas de deuxième email de confirmation ;
-- admin `http://localhost:8090/admin` : texte d'origine visible, diff proposé lisible, version finale seule éditable ;
-- acceptation puis création de changeset : export JSON accessible ;
-- sélection de deux propositions sur la même cible `locale/chapterId/messageId/segmentIndex` bloquée côté UI et refusée côté API ;
-- bouton `Créer la PR` en local sans GitHub configuré : erreur lisible `GitHub dispatch is not configured` ;
-- bouton `Créer la PR` en environnement configuré : workflow GitHub lancé, PR unique créée après `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build`; ce workflow ne dépend pas de `ffmpeg` ;
-- marquage `published` : notifications groupées par destinataire si contacts confirmés, puis emails bruts supprimés ;
-- refus ou obsolescence en lot : une seule notification par destinataire confirmé, puis emails bruts supprimés ;
-- marquage `rejected` ou `stale` unitaire : emails bruts supprimés sans notification.
+- PWA `http://localhost:5173`: with `Translation corrections` disabled, no pencil is visible on paragraphs or choices and layout keeps no empty column;
+- Settings: enable `Translation corrections`, then verify grey discreet pencil icons appear on a paragraph and a choice;
+- multi-paragraph block: the modal displays only the clicked paragraph, prefilled in the correction field;
+- no `publicId`, `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex`, or technical hash is visible in the player UX;
+- anonymous submission: simple success without `TR_...` and without a receipt to keep;
+- local email submission: confirmation email visible in Mailpit at `http://localhost:8025`;
+- Mailpit shows sender `Magium <no-reply@magium.app>`;
+- confirmation link click: PWA returns to reader with a visible confirmation notice below the reader title, URL cleaned without `translation-email-consent`, and browser consent stored if the link is opened in the same browser as the initial submission;
+- second proposal with the same email from the same browser: no second confirmation email;
+- admin `http://localhost:8090/admin`: original text visible, proposed diff readable, only final version editable;
+- acceptance then changeset creation: export JSON accessible;
+- selecting two proposals on the same `locale/chapterId/messageId/segmentIndex` target blocked UI-side and rejected API-side;
+- `Create PR` locally without GitHub configured: readable `GitHub dispatch is not configured`;
+- `Create PR` in configured environment: GitHub workflow launched, one PR created after `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build`; this workflow does not depend on `ffmpeg`;
+- marking `published`: grouped notifications by recipient if contacts are confirmed, then raw emails deleted;
+- batch rejection or stale: one notification per confirmed recipient, then raw emails deleted;
+- single `rejected` or `stale`: raw emails deleted without notification.
 
-`pnpm docker:push-prod` :
+`pnpm docker:push-prod`:
 
-- exécute les mêmes contrôles ;
-- pousse `ghcr.io/ablond/magium:<timestamp>` et `ghcr.io/ablond/magium:latest` ;
-- inspecte les tags publiés avec `docker buildx imagetools inspect`.
+- runs the same checks;
+- pushes `ghcr.io/ablond/magium:<timestamp>` and `ghcr.io/ablond/magium:latest`;
+- inspects published tags with `docker buildx imagetools inspect`.
 
-## Checks Contenu
+## Content Checks
 
 ```bash
 pnpm content:all
 ```
 
-Doit confirmer :
+Must confirm:
 
-- archive à jour ou import effectue ;
-- 54 `.magium` ;
-- 278 fichiers archives au commit actuel ;
-- 54 chapitres générés ;
-- 136 achievements ;
-- packs UI `locales/en/ui` et `locales/fr/ui` générés et clés UI synchronisees ;
-- packs story FR du livre 1 (`locales/fr/ch1` à `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats` et `locales/fr/stats` générés et valides, avec achievements FR couverts pour le livre 1 ;
-- assignments canoniques en `mode: "set" | "add"` ;
-- `Ch11b-Credits` absent du contenu runtime, avec `Ch11b-Ending` qui pointe directement vers `B2-Ch01a-Intro` en `checkpoint_save` ;
-- aucune condition `choice(...) if (...)` embarquee dans `target`, `special` ou `setVariables`.
-- prompts images Book 1 publics courts sous `public/visuals/book1`, sans RAG, embeddings, `evidenceRefs`, `.magium`, anciens chemins `chapters` ou copie longue du texte canonique.
-- aucun prompt de moment n'attache `arraka.webp`, ni `flower.webp` et `illuna.webp` ensemble.
+- archive up to date or import performed;
+- 54 `.magium` files;
+- 278 archived files at the current commit;
+- 54 generated chapters;
+- 136 achievements;
+- generated UI packs `locales/en/ui` and `locales/fr/ui` with synchronized UI keys;
+- generated and valid Book 1 FR story packs (`locales/fr/ch1` through `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats`, and `locales/fr/stats`, with FR achievements covered for Book 1;
+- canonical assignments in `mode: "set" | "add"`;
+- `Ch11b-Credits` absent from runtime content, with `Ch11b-Ending` pointing directly to `B2-Ch01a-Intro` through `checkpoint_save`;
+- no `choice(...) if (...)` condition embedded in `target`, `special`, or `setVariables`;
+- short public Book 1 image prompts under `public/visuals/book1`, without RAG, embeddings, `evidenceRefs`, `.magium`, old `chapters` paths, or long canonical text copies;
+- no moment prompt attaches `arraka.webp`, or `flower.webp` and `illuna.webp` together.
 
-Les nombres peuvent evoluer si `raduprv/Magium@main` change. Dans ce cas, adapter la doc seulement après vérification consciente.
+Counts may change if `raduprv/Magium@main` changes. In that case, update docs
+only after deliberate verification.
 
-## Checks Navigateur Recommandes
+## Recommended Browser Checks
 
-Avec le serveur :
+With the server:
 
 ```bash
 pnpm dev --host 127.0.0.1
 ```
 
-Vérifier :
+Verify:
 
-1. la page charge directement le livre 1 chapitre 1 ;
-2. cliquer `Excited` affiche la scène suivante ;
-3. recharger la page reprend la progression ;
-4. si le navigateur préfère `fr`, l'interface et le livre 1 démarrent en français ; sinon utiliser Settings pour basculer sur `Français` ;
-5. desktop 1280 x 720 : le rail gauche affiche `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` en mode FR sans couper les libellés, le header lecteur ne montre plus de badge de succès ni de sauvegarde auto, la zone de lecture utilise Literata sur une largeur confortable et un espacement inter-paragraphes dense, façon livre, sans chevauchement entre lignes ou dialogues, les scènes du livre 1 utilisent les packs narratifs `fr/ch1` à `fr/ch11b`, les dialogues courts comme `ch5.Ch5_Intro.p2` sont rendus en plusieurs vrais paragraphes DOM plutôt qu'en un seul gros `<p>`, et le rail gauche ainsi que le panneau droit ouvert restent visibles pendant un scroll long ;
-6. mobile 390 x 844 : la navigation reste compacte, le récit garde un rythme dense et lisible en FR et EN sans chevauchement UI/texte, et les panneaux s'ouvrent en overlay au-dessus du récit avec fermeture par bouton, fond cliquable et touche `Escape`, sans repousser le contenu vers le bas ;
-7. la lettrine du premier paragraphe alphabétique monte légèrement au-dessus de la ligne et ne semble pas tomber dans le paragraphe ;
-8. le panneau Sauvegardes séparé clairement sauvegarde automatique, sauvegardes locales, point de contrôle et transfert ; il n'affiche pas `autosave`, `slotId`, `Ch12`, `route`, `prod`, `local-key` ou `pbkdf2` au joueur ;
-9. le panneau Stats est vide au début, puis affiche les stats de base après `Ch2-Stats` avec compteur de points, valeur/max, boutons `+/-`, confirmation, effacement et aide courte sous les boutons ;
-10. à `Ch2-Stats`, le max manuel est `3`, le bouton `+` se désactive quand une stat atteint le max ou quand il ne reste plus de points, et `-` ne retire que le brouillon non confirmé ;
-11. confirmer une allocation décrémente `v_available_points`, sauvegarde, puis garde les points confirmés non retirables par le panneau ;
-12. le choix narratif `special:stats` avance vers la scène cible puis ouvre le panneau, et le bouton Stats permet aussi d'investir plus tard ;
-13. après le passage original qui affecte `v_max_stat = 4`, le panneau affiche le max `4` ;
-14. les stats d'aura apparaissent après l'introduction de `B3-Ch04a`, tandis que `Magical Power` et `Magical Knowledge` restent invisibles ;
-15. après un choix menant à un test de stat, le résultat apparaît avant le texte de scène, puis viennent le contenu et les prochains choix, avec succès/échec et niveau localisés ;
-16. quand un choix débloque un succès nouveau pour le navigateur, une notice compacte `Succès obtenu` / `Achievement unlocked` apparaît avant le texte avec le titre et la caption du succès, puis ne se réaffiche pas après reload, import, changement de langue, nouvelle partie ou ouverture du panneau Succès ;
-17. sur une scène de mort, le succès de mort reste visible dans le panneau Succès après `Load from last checkpoint` ou nouvelle partie, tandis que le checkpoint restaure quitte la scène de mort, sauvegarde l'autosave restaurée et ne conserve pas la branche échouée dans l'historique ;
-18. le panneau Paramètres contient les libellés `Langue` et `Thème`, la bascule globale FR/EN, thème, taille du texte, contraste, toggle Illustrations et, si l'URL API de contribution est configurée, le toggle `Corrections de traduction` décoché par défaut ; en thème clair, le rail, les boutons de navigation, les panneaux, les champs, les notices et les états actifs restent lisibles sur desktop et mobile, puis gagnent encore en contraste avec `High contrast` actif ;
-19. le toggle Illustrations masque/affiche l'image de moment après la scène correspondante sans changer la partie ;
-20. une image de moment absente ou non chargeable ne bloque pas la lecture ;
-21. le panneau À propos affiche l'attribution, les liens source/licence et les changements de l'adaptation ;
-22. changer FR/EN ne reset pas la scène courante, ne modifie pas l'historique, et met bien `GameState.locale` sur la langue choisie ;
-23. avec `Corrections de traduction` activé, l'icône stylo d'un paragraphe ou choix ouvre un formulaire sans afficher `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex` ni hash technique au joueur ; sur un bloc multi-paragraphes, le formulaire montre et préremplit uniquement le paragraphe cliqué ;
-24. le formulaire de contribution peut être envoyé sans pseudo ni email, garde une erreur robuste si l'API n'est pas configurée, et explique que l'email/pseudo sont facultatifs ;
-25. si un email est renseigné, la case de notification reste explicite et le texte indique que la première confirmation est mémorisée dans ce navigateur pendant un an, puis que l'email est supprimé après notification de refus, d'obsolescence ou de publication ;
-26. si un pseudo est renseigné, la case de crédit reste explicite et le texte indique que le pseudo peut être modéré ;
-27. la mémorisation locale du pseudo/email ne se fait que si `Mémoriser pseudo et email sur cet appareil` est coché, et le bouton d'effacement vide le store `contributionProfile` ;
-28. après envoi d'une contribution, le modal affiche seulement un succès joueur sans `publicId`, sans reçu à conserver, et avec un bouton `Fermer` ;
-29. IndexedDB contient des objets `encrypted` pour `saves` et `achievementProgress`, sans variables, stats ou noms de succès en clair ;
-30. créer, charger, renommer et supprimer une sauvegarde locale garde des libellés joueur lisibles, avec chapitre affiché comme `Livre 1 - Chapitre 12` plutôt qu'un ID technique ;
-31. cliquer `Exporter une sauvegarde` ouvre seulement alors le champ de mot de passe ; sans mot de passe, le fichier n'est pas téléchargé ;
-32. export avec phrase de passe produit un `.magium-save` dont le nom de fichier contient `magium`, le chapitre lisible et la date ;
-33. cliquer `Importer une sauvegarde` ouvre seulement alors le champ de mot de passe et le choix de fichier ;
-34. import avec la même phrase de passe restaure la progression si le `contentVersion` courant correspond ;
-35. mauvais mot de passe, fichier incompatible, `contentVersion` différent, ou stat / `v_available_points` incohérent affichent une erreur claire dans le panneau et ne modifient pas la sauvegarde locale.
-36. sous `pnpm dev`, le rail affiche un panneau `Debug` ;
-37. le panneau Debug permet de sauter vers une scène d'un autre chapitre et applique les `setVariables` d'entrée de scène ;
-38. un choix masqué par ses conditions peut être appliqué depuis Debug sans ajouter d'événement `history` ;
-39. les boutons undo/redo Debug fonctionnent après un choix normal, un jump debug et une édition de stats ;
-40. l'édition debug de `v_available_points`, `v_available_points_aux`, `v_max_stat`, d'une stat et de sa variable `_aux` est sauvegardée localement puis rechargeable via un slot nommé ;
-41. après une modification debug, le panneau Sauvegardes bloque l'export `.magium-save` avec une erreur claire et laisse la save locale utilisable ;
-42. après `pnpm build` puis `pnpm preview`, le bouton Debug n'apparaît pas.
+1. the page loads directly into Book 1 chapter 1;
+2. clicking `Excited` displays the next scene;
+3. reloading the page resumes progress;
+4. if the browser prefers `fr`, the interface and Book 1 start in French; otherwise use Settings to switch to `Français`;
+5. desktop 1280 x 720: the left rail displays `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` in FR without cutting labels, the reader header no longer shows achievement or autosave badges, the reading area uses Literata at a comfortable width and dense book-like paragraph spacing, with no line/dialogue overlap, Book 1 scenes use narrative packs `fr/ch1` through `fr/ch11b`, short dialogue such as `ch5.Ch5_Intro.p2` renders as several real DOM paragraphs instead of one large `<p>`, and the left rail and open right panel stay visible during long scroll;
+6. mobile 390 x 844: navigation remains compact, story remains dense and readable in FR and EN without UI/text overlap, and panels open as overlays above the story with close button, clickable backdrop, and `Escape`, without pushing content down;
+7. the drop cap for the first alphabetical paragraph rises slightly above the line and does not look like it falls into the paragraph;
+8. the Saves panel clearly separates autosave, local saves, checkpoint, and transfer; it does not show `autosave`, `slotId`, `Ch12`, `route`, `prod`, `local-key`, or `pbkdf2` to the player;
+9. the Stats panel is empty at the start, then shows base stats after `Ch2-Stats` with point counter, value/max, `+/-` buttons, confirmation, clearing, and short help below buttons;
+10. at `Ch2-Stats`, manual max is `3`, `+` disables when a stat reaches max or no point remains, and `-` removes only unconfirmed draft points;
+11. confirming an allocation decrements `v_available_points`, saves, then keeps confirmed points non-removable by the panel;
+12. the narrative choice `special:stats` advances to the target scene and then opens the panel, and the Stats button also allows investing later;
+13. after the original passage that assigns `v_max_stat = 4`, the panel shows max `4`;
+14. aura stats appear after the `B3-Ch04a` introduction, while `Magical Power` and `Magical Knowledge` remain invisible;
+15. after a choice leading to a stat check, the result appears before scene text, followed by content and next choices, with localized success/failure and level;
+16. when a choice unlocks an achievement new for the browser, a compact `Succès obtenu` / `Achievement unlocked` notice appears before the text with the achievement title and caption, then does not reappear after reload, import, language switch, new game, or opening the Achievements panel;
+17. on a death scene, the death achievement remains visible in the Achievements panel after `Load from last checkpoint` or new game, while checkpoint restore exits the death scene, saves restored autosave, and does not keep the failed branch in history;
+18. the Settings panel contains `Langue` and `Thème`, the global FR/EN switch, theme, text size, contrast, Illustrations toggle, and, if the contribution API URL is configured, the `Corrections de traduction` toggle unchecked by default; in light theme, rail, nav buttons, panels, fields, notices, and active states remain readable on desktop and mobile, then gain contrast with `High contrast` active;
+19. the Illustrations toggle hides/shows the moment image after the matching scene without changing the game;
+20. a missing or unloadable moment image does not block reading;
+21. the About panel shows attribution, source/license links, and adaptation changes;
+22. switching FR/EN does not reset the current scene, does not modify history, and sets `GameState.locale` to the selected language;
+23. with `Translation corrections` enabled, a paragraph or choice pencil opens a form without showing `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex`, or technical hash to the player; on a multi-paragraph block, the form shows and prefills only the clicked paragraph;
+24. the contribution form can be submitted without pseudonym or email, keeps a robust error if the API is not configured, and explains that email/pseudonym are optional;
+25. if an email is entered, the notification checkbox remains explicit and text states that first confirmation is remembered in this browser for one year, then email is deleted after the proposal is rejected, marked stale, or published;
+26. if a pseudonym is entered, the credit checkbox remains explicit and text states that the pseudonym can be moderated;
+27. local pseudonym/email memory happens only if `Remember pseudonym and email on this device` is checked, and the clear button empties the `contributionProfile` store;
+28. after contribution submission, the modal shows only player-facing success without `publicId`, without receipt to keep, and with a `Close` button;
+29. IndexedDB contains `encrypted` objects for `saves` and `achievementProgress`, without plaintext variables, stats, or achievement names;
+30. creating, loading, renaming, and deleting a local save keeps readable player labels, with chapter displayed as `Book 1 - Chapter 12` rather than a technical ID;
+31. clicking `Export save` opens the password field only then; without a password, the file is not downloaded;
+32. export with passphrase produces a `.magium-save` whose filename contains `magium`, readable chapter, and date;
+33. clicking `Import save` opens the password field and file choice only then;
+34. import with the same passphrase restores progress if current `contentVersion` matches;
+35. wrong password, incompatible file, different `contentVersion`, or incoherent stat / `v_available_points` displays a clear panel error and does not modify the local save;
+36. under `pnpm dev`, the rail shows a `Debug` panel;
+37. the Debug panel can jump to a scene from another chapter and applies scene-entry `setVariables`;
+38. a choice hidden by conditions can be applied from Debug without adding a `history` event;
+39. Debug undo/redo buttons work after a normal choice, debug jump, and stat edit;
+40. debug editing of `v_available_points`, `v_available_points_aux`, `v_max_stat`, one stat, and its `_aux` variable is saved locally and reloadable through a named slot;
+41. after a debug modification, the Saves panel blocks `.magium-save` export with a clear error and keeps the local save usable;
+42. after `pnpm build` then `pnpm preview`, the Debug button does not appear.
 
-## Exemple De Vérification IndexedDB
+## IndexedDB Verification Example
 
-Dans la console navigateur :
+In the browser console:
 
 ```js
 const dbReq = indexedDB.open('magium-pwa')
@@ -258,37 +266,38 @@ const achievementProgress = await new Promise((resolve, reject) => {
 console.log({ saves, achievementProgress })
 ```
 
-Attendu :
+Expected:
 
-- `slotId`, `label`, `createdAt`, `updatedAt`, `contentVersion` visibles ;
-- `encrypted.iv` et `encrypted.ciphertext` visibles ;
-- pas de `currentSceneId`, stats, variables ou noms de succès en clair.
+- `slotId`, `label`, `createdAt`, `updatedAt`, `contentVersion` visible;
+- `encrypted.iv` and `encrypted.ciphertext` visible;
+- no plaintext `currentSceneId`, stats, variables, or achievement names.
 
-## Controle Dist
+## Dist Check
 
-`pnpm dist:check` doit rejeter :
+`pnpm dist:check` must reject:
 
-- `.magium` dans `dist` ;
-- JSON canonique brut dans `dist` ;
-- texte brut source évident dans des assets publics.
+- `.magium` in `dist`;
+- raw canonical JSON in `dist`;
+- obvious raw source text in public assets.
 
-Ce check est volontairement conservateur. Si un faux positif apparaît, corriger le check avec prudence plutôt que le supprimer.
+This check is deliberately conservative. If a false positive appears, fix the
+check carefully instead of removing it.
 
-## Controle Image Docker
+## Docker Image Check
 
-Le script Docker doit rejeter :
+The Docker script must reject:
 
-- `.magium` dans le filesystem runtime ;
-- JSON canonique brut dans le filesystem runtime ;
-- `node_modules` ;
-- `.env*` ;
-- extrait source brut évident comme `ID: Ch1-Intro1` ou `chapters/ch1.magium`.
+- `.magium` in the runtime filesystem;
+- raw canonical JSON in the runtime filesystem;
+- `node_modules`;
+- `.env*`;
+- obvious raw source excerpts such as `ID: Ch1-Intro1` or `chapters/ch1.magium`.
 
-L'image finale attendue sert uniquement le contenu de `dist/` via nginx sur le port `8080`.
+The expected final image serves only `dist/` through nginx on port `8080`.
 
-## Artefacts Locaux
+## Local Artifacts
 
-Ne pas committer :
+Do not commit:
 
 - `dist/`
 - `node_modules/`
@@ -298,6 +307,6 @@ Ne pas committer :
 - `output/visual/api-runs/`
 - `output/visual/originals/`
 - `output/visual/staging/`
-- exports `.magium-save` de test.
+- test `.magium-save` exports.
 
-Ces chemins sont ignorés par `.gitignore`.
+These paths are ignored by `.gitignore`.

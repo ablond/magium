@@ -1,69 +1,75 @@
-# Système De Contributions Publiques De Traduction
+# Public Translation Contribution System
 
-Ce document est la référence technique de reprise pour le système de contributions publiques de traduction de Magium. Il décrit ce qui existe, comment le lancer, comment le déployer, comment l'exploiter, et comment diagnostiquer les pannes courantes.
+This document is the technical handoff reference for Magium's public
+translation contribution system. It describes what exists, how to run it, how
+to deploy it, how to operate it, and how to diagnose common failures.
 
-La documentation produit plus courte reste dans [docs/contributions.md](./contributions.md). Les commandes de vérification restent dans [docs/verification.md](./verification.md). Le déploiement Coolify reste dans [docs/deployment-coolify.md](./deployment-coolify.md).
+The shorter product documentation is in [docs/contributions.md](./contributions.md).
+Verification commands are in [docs/verification.md](./verification.md).
+Coolify deployment is in [docs/deployment-coolify.md](./deployment-coolify.md).
 
-## 1. Vue D'ensemble
+## 1. Overview
 
-Le runtime jeu reste une PWA statique. Les contributions publiques passent par un service API séparé, avec revue mainteneur et PR GitHub avant toute intégration.
+The game runtime remains a static PWA. Public contributions go through a
+separate API service, with maintainer review and GitHub PR before any
+integration.
 
-Flux end-to-end :
+End-to-end flow:
 
 ```text
-Lecteur PWA
-  -> active Corrections de traduction dans Settings
-  -> icône stylo de correction sur paragraphe/choix
+PWA reader
+  -> enables Translation corrections in Settings
+  -> correction pencil on paragraph/choice
   -> POST /v1/translation-proposals
   -> services/translation-api + PostgreSQL
-  -> /admin mainteneur
+  -> maintainer /admin
   -> accept/reject/stale
-  -> changeset mainteneur
-  -> workflow_dispatch GitHub
+  -> maintainer changeset
+  -> GitHub workflow_dispatch
   -> tools/contributions/apply-changeset.mjs
   -> pnpm content:all + check + test + build
-  -> PR GitHub unique
+  -> single GitHub PR
   -> merge/publication
-  -> notification email optionnelle puis suppression email
+  -> optional email notification, then email deletion
 ```
 
-Rôles :
+Roles:
 
-- Joueur : propose une correction depuis un paragraphe ou un choix visible, sans compte.
-- Mainteneur : relit, compare le diff, accepte/rejette/marque obsolète, groupe en changeset, déclenche la PR.
-- PWA : affiche le formulaire, calcule les hashes, gère Turnstile et le stockage local opt-in.
-- Translation API : valide, stocke, protège l'admin, envoie les emails, expose les changesets, déclenche GitHub.
-- PostgreSQL : stocke propositions, contacts email temporaires, consentements email anonymisés et changesets.
-- GitHub Actions : applique le changeset aux sources éditables, régénère et ouvre une PR.
-- Coolify : héberge la PWA statique et l'API comme deux applications distinctes.
+- Reader: proposes a correction from a visible paragraph or choice, without an account.
+- Maintainer: reviews, compares diff, accepts/rejects/marks stale, groups into a changeset, dispatches the PR.
+- PWA: displays the form, computes hashes, handles Turnstile and local opt-in storage.
+- Translation API: validates, stores, protects admin, sends emails, exposes changesets, triggers GitHub.
+- PostgreSQL: stores proposals, temporary email contacts, anonymized email consents, and changesets.
+- GitHub Actions: applies the changeset to editable sources, regenerates, and opens a PR.
+- Coolify: hosts the static PWA and API as two distinct applications.
 
-Limites V1 :
+V1 limits:
 
-- pas de compte utilisateur ;
-- pas de vote public ;
-- pas de traduction collaborative d'une nouvelle langue complète ;
-- pas de PR par proposition individuelle ;
-- pas de merge automatique dans `content/story-locales/**` ;
-- le bouton joueur corrige un seul paragraphe affiché ou un choix entier ;
-- le split/merge de paragraphes n'est pas supporté depuis le formulaire joueur.
+- no user accounts;
+- no public voting;
+- no collaborative translation of a complete new language;
+- no PR per individual proposal;
+- no automatic merge into `content/story-locales/**`;
+- the player button corrects one displayed paragraph or one complete choice;
+- paragraph split/merge is not supported from the player form.
 
-## 2. Lancement Local
+## 2. Local Startup
 
-Le stack local complet se lance depuis la racine :
+Start the full local stack from the repository root:
 
 ```bash
 docker compose up -d --build
 ```
 
-Services :
+Services:
 
-- PWA Vite dev : `http://localhost:5173`
-- Translation API : `http://localhost:8090`
-- Admin mainteneur : `http://localhost:8090/admin`
-- Mailpit : `http://localhost:8025`
-- PostgreSQL 18 : `localhost:5432`
+- PWA Vite dev: `http://localhost:5173`
+- Translation API: `http://localhost:8090`
+- Maintainer admin: `http://localhost:8090/admin`
+- Mailpit: `http://localhost:8025`
+- PostgreSQL 18: `localhost:5432`
 
-Valeurs locales non secrètes :
+Non-secret local values:
 
 - `ADMIN_TOKEN=dev-admin-token`
 - `ADMIN_PASSWORD=dev-admin-password`
@@ -71,74 +77,82 @@ Valeurs locales non secrètes :
 - `TURNSTILE_DISABLED=1`
 - `SMTP_URL=smtp://mailpit:1025`
 - `EMAIL_FROM=Magium <no-reply@magium.app>`
-- base/user/password PostgreSQL : `magium_translation`
+- PostgreSQL database/user/password: `magium_translation`
 
-Reset complet de la base locale :
+Full local database reset:
 
 ```bash
 docker compose down -v
 ```
 
-Le compose local utilise `postgres:18-alpine` et un volume `magium_postgres18_data` monté sur `/var/lib/postgresql`. Ne pas réutiliser directement un ancien volume PostgreSQL 17 : l'image Docker PostgreSQL 18 utilise un layout de données différent.
+The local compose stack uses `postgres:18-alpine` and a
+`magium_postgres18_data` volume mounted at `/var/lib/postgresql`. Do not
+directly reuse an older PostgreSQL 17 volume: the PostgreSQL 18 Docker image
+uses a different data layout.
 
-Arrêt sans supprimer le volume PostgreSQL :
+Stop without removing the PostgreSQL volume:
 
 ```bash
 docker compose down
 ```
 
-Le fichier [.env.example](../.env.example) documente les overrides locaux. Il n'est pas nécessaire de le copier pour démarrer le stack, car `docker-compose.yml` fournit des valeurs de développement.
+[.env.example](../.env.example) documents local overrides. It is not required
+to copy it before starting the stack because `docker-compose.yml` provides
+development defaults.
 
-Si un ancien volume PostgreSQL 18 existe, `schema.sql` est rejoué uniquement à l'initialisation du volume. Le service API applique aussi les colonnes de compatibilité au démarrage avec `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` pour éviter une panne sur une base locale déjà créée.
+If an older PostgreSQL 18 volume exists, `schema.sql` is replayed only at volume
+initialization. The API service also applies compatibility columns at startup
+with `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` to avoid breaking an already
+created local database.
 
-## 3. Modèle De Données
+## 3. Data Model
 
-Tables principales :
+Main tables:
 
-- `translation_proposals` : proposition publique et métadonnées de routage.
-- `translation_proposal_contacts` : email brut temporaire d'une proposition, séparé de la proposition.
-- `translation_email_consents` : preuve de consentement réutilisable, sans email brut.
-- `translation_changesets` : lot mainteneur de propositions acceptées.
+- `translation_proposals`: public proposal and routing metadata.
+- `translation_proposal_contacts`: temporary raw email for a proposal, separate from the proposal.
+- `translation_email_consents`: reusable consent proof, without raw email.
+- `translation_changesets`: maintainer batch of accepted proposals.
 
-Champs importants d'une proposition :
+Important proposal fields:
 
-- `public_id` : identifiant public API/admin, jamais affiché dans l'UX joueur.
-- `status` : `pending`, `accepted`, `changeset`, `rejected` ou `stale`.
-- `content_version`, `locale`, `chapter_id`, `scene_id`, `message_id` : routage technique.
-- `target_type` : `paragraph` ou `choice`.
-- `segment_index`, `segment_count` : cible exacte pour un paragraphe affiché.
-- `current_text` : texte cible affiché au moment de la proposition, limité au paragraphe ou choix.
-- `current_text_hash` : SHA-256 du texte cible affiché.
-- `source_text_hash` : SHA-256 du segment source anglais correspondant quand disponible.
-- `proposed_text` : correction proposée par le lecteur.
-- `final_text` : version retenue par le mainteneur si acceptée.
-- `note` : commentaire lecteur optionnel.
-- `pseudonym`, `credit_requested`, `credit_approved` : crédit facultatif et modérable.
-- `moderator_note` : note mainteneur.
-- `changeset_id` : lien vers un changeset après regroupement.
+- `public_id`: public API/admin identifier, never shown in the player UX.
+- `status`: `pending`, `accepted`, `changeset`, `rejected`, or `stale`.
+- `content_version`, `locale`, `chapter_id`, `scene_id`, `message_id`: technical routing.
+- `target_type`: `paragraph` or `choice`.
+- `segment_index`, `segment_count`: exact target for a displayed paragraph.
+- `current_text`: target text displayed when the proposal was made, limited to paragraph or choice.
+- `current_text_hash`: SHA-256 of the displayed target text.
+- `source_text_hash`: SHA-256 of the matching English source segment when available.
+- `proposed_text`: correction proposed by the reader.
+- `final_text`: version retained by the maintainer when accepted.
+- `note`: optional reader comment.
+- `pseudonym`, `credit_requested`, `credit_approved`: optional and moderated credit.
+- `moderator_note`: maintainer note.
+- `changeset_id`: link to a changeset after grouping.
 
-Compatibilité :
+Compatibility:
 
-- Les anciennes propositions sans `current_text` restent listables.
-- L'admin affiche alors `Texte d'origine indisponible pour cette proposition`.
-- Le diff visuel est désactivé seulement pour ces anciennes propositions.
+- Old proposals without `current_text` remain listable.
+- Admin then displays `Original text unavailable for this proposal`.
+- The visual diff is disabled only for those older proposals.
 
-Données personnelles :
+Personal data:
 
-- Le pseudo est facultatif, public uniquement si le contributeur demande un crédit et si le mainteneur l'approuve.
-- L'email est facultatif, stocké séparément, jamais affiché dans l'admin, et supprimé après rejet, stale ou publication.
-- Le consentement email réutilisable ne stocke pas l'email brut : seulement un HMAC de l'email normalisé et un hash du jeton navigateur.
+- Pseudonym is optional and public only when the contributor requests credit and the maintainer approves it.
+- Email is optional, stored separately, never displayed in admin, and deleted after rejection, stale, or publication.
+- Reusable email consent does not store raw email: only an HMAC of normalized email and a browser token hash.
 
-## 4. API Publique
+## 4. Public API
 
-Routes publiques :
+Public routes:
 
 - `POST /v1/translation-proposals`
 - `GET /v1/translation-proposals/:publicId/status`
 - `GET|POST /v1/translation-proposals/:publicId/confirm-email`
 - `GET /health`
 
-Payload principal `POST /v1/translation-proposals` :
+Main `POST /v1/translation-proposals` payload:
 
 ```json
 {
@@ -150,36 +164,36 @@ Payload principal `POST /v1/translation-proposals` :
   "targetType": "paragraph",
   "segmentIndex": 0,
   "segmentCount": 5,
-  "currentText": "Texte affiche au joueur",
+  "currentText": "Text shown to the player",
   "currentTextHash": "sha256-hex",
   "sourceTextHash": "sha256-hex",
-  "proposedText": "Texte corrige",
-  "note": "commentaire optionnel",
-  "pseudonym": "pseudo optionnel",
+  "proposedText": "Corrected text",
+  "note": "optional comment",
+  "pseudonym": "optional pseudonym",
   "creditRequested": false,
-  "email": "lecteur@example.test",
+  "email": "reader@example.test",
   "notifyRequested": false,
-  "emailConsentId": "optionnel",
-  "emailConsentToken": "optionnel",
+  "emailConsentId": "optional",
+  "emailConsentToken": "optional",
   "captchaToken": "turnstile-token"
 }
 ```
 
-Règles de validation :
+Validation rules:
 
-- `contentVersion`, `locale`, `chapterId`, `sceneId`, `messageId`, `targetType`, `currentTextHash`, `sourceTextHash` et `proposedText` sont requis.
-- `targetType` vaut `paragraph` ou `choice`.
-- Une proposition `paragraph` exige `segmentIndex` et `segmentCount`.
-- Une proposition `paragraph` ne peut pas contenir un séparateur de paragraphe `\n\n` dans `proposedText`.
-- `proposedText` et `currentText` sont limités à 12000 caractères.
-- Si `currentText` est fourni, son SHA-256 doit correspondre à `currentTextHash`.
-- `currentTextHash` et `sourceTextHash` doivent être des SHA-256 hexadecimaux.
-- `chapterId`, `sceneId` et `messageId` acceptent seulement des IDs techniques attendus.
-- Si `notifyRequested` est vrai, un email valide et un transport email configure sont requis.
-- Si `creditRequested` est vrai, un pseudo valide et non modéré est requis.
-- Turnstile est obligatoire sauf si `TURNSTILE_DISABLED=1` ou `NODE_ENV=test`.
+- `contentVersion`, `locale`, `chapterId`, `sceneId`, `messageId`, `targetType`, `currentTextHash`, `sourceTextHash`, and `proposedText` are required.
+- `targetType` is `paragraph` or `choice`.
+- A `paragraph` proposal requires `segmentIndex` and `segmentCount`.
+- A `paragraph` proposal cannot contain a paragraph separator `\n\n` in `proposedText`.
+- `proposedText` and `currentText` are limited to 12000 characters.
+- If `currentText` is provided, its SHA-256 must match `currentTextHash`.
+- `currentTextHash` and `sourceTextHash` must be hexadecimal SHA-256 strings.
+- `chapterId`, `sceneId`, and `messageId` accept only expected technical IDs.
+- If `notifyRequested` is true, a valid email and configured email transport are required.
+- If `creditRequested` is true, a valid non-moderated pseudonym is required.
+- Turnstile is required unless `TURNSTILE_DISABLED=1` or `NODE_ENV=test`.
 
-Reponse de création :
+Creation response:
 
 ```json
 {
@@ -190,17 +204,17 @@ Reponse de création :
 }
 ```
 
-`notificationStatus` vaut :
+`notificationStatus` values:
 
-- `none` : pas de suivi email demande.
-- `confirmation_sent` : email de confirmation envoyé.
-- `confirmed` : consentement navigateur réutilisé, contact confirme directement.
+- `none`: no email follow-up requested.
+- `confirmation_sent`: confirmation email sent.
+- `confirmed`: reusable browser consent used, contact directly confirmed.
 
-La PWA ne montre pas `publicId` au joueur.
+The PWA does not show `publicId` to the player.
 
-## 5. Interface Admin
+## 5. Admin Interface
 
-L'admin web est servi par le service API, pas par la PWA :
+The web admin is served by the API service, not by the PWA:
 
 - `GET /admin`
 - `GET /admin/assets/admin.css`
@@ -209,19 +223,19 @@ L'admin web est servi par le service API, pas par la PWA :
 - `POST /admin/login`
 - `POST /admin/logout`
 
-Authentification :
+Authentication:
 
-- `ADMIN_PASSWORD` sert au login humain.
-- `ADMIN_SESSION_SECRET` signe le cookie de session.
-- Le cookie `magium_translation_admin` est `HttpOnly`, `SameSite=Strict`, `Path=/`, avec TTL `ADMIN_SESSION_TTL_HOURS`.
-- En HTTPS production, `ADMIN_COOKIE_SECURE=1` doit être configure.
-- Les actions mutantes via cookie exigent `x-admin-csrf`.
-- `ADMIN_TOKEN` reste supporte pour les scripts via `Authorization: Bearer ...`.
-- Les tentatives de login sont rate-limitées par IP via `ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS` et `ADMIN_LOGIN_RATE_LIMIT_MAX`.
-- Par défaut, l'IP de rate limit est l'adresse socket. `TRUST_PROXY=1` autorise l'utilisation du premier `X-Forwarded-For` uniquement si le reverse proxy écrase ou nettoie ce header.
-- Les bodies JSON sont limités par `MAX_JSON_BODY_BYTES` avant parsing, avec `131072` octets par défaut.
+- `ADMIN_PASSWORD` is for human login.
+- `ADMIN_SESSION_SECRET` signs the session cookie.
+- Cookie `magium_translation_admin` is `HttpOnly`, `SameSite=Strict`, `Path=/`, with TTL `ADMIN_SESSION_TTL_HOURS`.
+- In HTTPS production, `ADMIN_COOKIE_SECURE=1` must be configured.
+- Mutating actions through cookie require `x-admin-csrf`.
+- `ADMIN_TOKEN` remains supported for scripts through `Authorization: Bearer ...`.
+- Login attempts are rate-limited by IP through `ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS` and `ADMIN_LOGIN_RATE_LIMIT_MAX`.
+- By default, the rate-limit IP is the socket address. `TRUST_PROXY=1` allows using the first `X-Forwarded-For` only if the reverse proxy overwrites or cleans this header.
+- JSON bodies are limited before parsing by `MAX_JSON_BODY_BYTES`, defaulting to `131072` bytes.
 
-Routes admin API :
+Admin API routes:
 
 - `GET /v1/admin/proposals?status=pending|accepted|changeset|rejected|stale`
 - `POST /v1/admin/proposals/:publicId/review`
@@ -234,110 +248,113 @@ Routes admin API :
 - `POST /v1/admin/changesets/:publicId/stale`
 - `POST /v1/admin/changesets/:publicId/published`
 
-L'admin permet :
+Admin supports:
 
-- filtrer les propositions par statut ;
-- regrouper visuellement par `locale/chapterId/messageId/segmentIndex` ;
-- voir le texte d'origine cible ;
-- voir un diff visuel origine/proposition ;
-- modifier uniquement la version finale retenue ;
-- accepter, rejeter ou marquer obsolète ;
-- sélectionner des propositions en attente pour les refuser ou les marquer obsolètes en lot ;
-- approuver ou masquer un crédit pseudo ;
-- sélectionner des propositions acceptées ;
-- bloquer côté UI deux propositions sur la même cible ;
-- créer un changeset ;
-- lister et exporter les changesets ;
-- déclencher la PR GitHub ;
-- marquer un changeset publié ou stale.
+- filtering proposals by status;
+- visual grouping by `locale/chapterId/messageId/segmentIndex`;
+- viewing target original text;
+- viewing a visual original/proposal diff;
+- editing only the retained final version;
+- accepting, rejecting, or marking stale;
+- selecting pending proposals for batch rejection or stale marking;
+- approving or hiding pseudonym credit;
+- selecting accepted proposals;
+- blocking two proposals on the same target in the UI;
+- creating a changeset;
+- listing and exporting changesets;
+- dispatching the GitHub PR;
+- marking a changeset published or stale.
 
-Diff visuel :
+Visual diff:
 
-- Le package `diff` est utilisé côté API avec `diffWordsWithSpace`.
-- La réponse admin contient `diffParts`.
-- L'UI affiche les ajouts en vert, suppressions en rouge barré, modifications en orange.
-- Le diff est une aide de revue, pas une source de vérité.
-- La source de vérité du lot reste `finalText`.
+- API side uses the `diff` package with `diffWordsWithSpace`.
+- Admin responses contain `diffParts`.
+- UI displays additions in green, deletions in red strikethrough, modifications in orange.
+- The diff is a review aid, not a source of truth.
+- The batch source of truth remains `finalText`.
 
-Statuts :
+Statuses:
 
-- `pending` : proposition reçue, pas encore traitée.
-- `accepted` : proposition acceptée avec `finalText`, disponible pour changeset.
-- `changeset` : proposition incluse dans un changeset.
-- `rejected` : proposition refusée, email de contact supprimé.
-- `stale` : proposition ou changeset obsolète, email de contact supprimé.
-- `ready` : changeset créé, pas encore dispatch.
-- `dispatched` : dispatch GitHub demandé.
-- `published` : changeset publié, notifications envoyées, contacts supprimés.
+- `pending`: proposal received, not reviewed.
+- `accepted`: proposal accepted with `finalText`, available for changeset.
+- `changeset`: proposal included in a changeset.
+- `rejected`: proposal rejected, email contact deleted.
+- `stale`: proposal or changeset stale, email contact deleted.
+- `ready`: changeset created, not dispatched.
+- `dispatched`: GitHub dispatch requested.
+- `published`: changeset published, notifications sent, contacts deleted.
 
-## 6. Emails Et Confidentialité
+## 6. Email And Privacy
 
-Transport email :
+Email transport:
 
-- Si `EMAIL_WEBHOOK_URL` est défini, l'API envoie un JSON `{ from, to, subject, text, html }` à ce webhook HTTP.
-- Sinon, si `SMTP_URL` est défini, l'API utilise Nodemailer/SMTP avec une version texte et une version HTML.
-- Sinon, le suivi email est refusé et l'adresse n'est pas stockée.
-- En production, le transport retenu est Brevo SMTP via `smtp-relay.brevo.com:587`, avec `EMAIL_FROM=Magium <no-reply@magium.app>`.
-- Le sender `no-reply@magium.app` ou le domaine `magium.app` doit être vérifié/autorisé dans Brevo avant activation publique.
-- Les identifiants SMTP Brevo doivent être stockés uniquement dans Coolify et URL-encodés dans `SMTP_URL`.
+- If `EMAIL_WEBHOOK_URL` is set, the API sends JSON `{ from, to, subject, text, html }` to that HTTP webhook.
+- Otherwise, if `SMTP_URL` is set, the API uses Nodemailer/SMTP with text and HTML versions.
+- Otherwise, email follow-up is refused and the address is not stored.
+- In production, the selected transport is Brevo SMTP through `smtp-relay.brevo.com:587`, with `EMAIL_FROM=Magium <no-reply@magium.app>`.
+- Sender `no-reply@magium.app` or domain `magium.app` must be verified/authorized in Brevo before public activation.
+- Brevo SMTP credentials must be stored only in Coolify and URL-encoded in `SMTP_URL`.
 
-Local :
+Local:
 
-- Docker Compose configure `SMTP_URL=smtp://mailpit:1025`.
-- Docker Compose configure `EMAIL_FROM=Magium <no-reply@magium.app>`.
-- Les emails sont visibles sur `http://localhost:8025`.
-- Aucun email local ne sort vers Internet.
+- Docker Compose sets `SMTP_URL=smtp://mailpit:1025`.
+- Docker Compose sets `EMAIL_FROM=Magium <no-reply@magium.app>`.
+- Emails are visible at `http://localhost:8025`.
+- No local email leaves the machine.
 
-Double opt-in navigateur :
+Browser double opt-in:
 
-1. Première proposition avec email : l'API crée un contact non confirmé et envoie un lien.
-2. Le lien appelle `/confirm-email`.
-3. L'API confirme le contact, crée un consentement email et redirige vers `PUBLIC_WEB_URL`.
-4. La redirection contient un fragment local `translation-email-consent`.
-5. La PWA affiche une notice visible de confirmation après retour sur le lecteur, puis nettoie le fragment de l'URL.
-6. Si le lien est ouvert dans le même navigateur que la proposition initiale, la PWA stocke le jeton de consentement en IndexedDB, sans stocker l'email brut dans ce consentement.
-7. Les propositions suivantes avec le même email depuis le même navigateur réutilisent le jeton pendant un an glissant.
+1. First proposal with email: the API creates an unconfirmed contact and sends a link.
+2. The link calls `/confirm-email`.
+3. The API confirms the contact, creates email consent, and redirects to `PUBLIC_WEB_URL`.
+4. The redirect contains a local `translation-email-consent` fragment.
+5. The PWA shows a visible confirmation notice after returning to the reader, then cleans the URL fragment.
+6. If the link is opened in the same browser as the initial proposal, the PWA stores the consent token in IndexedDB without storing raw email in this consent.
+7. Later proposals with the same email from the same browser reuse the token for one rolling year.
 
-Stores locaux PWA :
+PWA local stores:
 
-- `magium.readerSettings` dans `localStorage` : contient `translationContributions`, désactivé par défaut, pour afficher ou masquer les icônes stylo quand l'URL API est configurée.
-- `contributionProfile` : pseudo/email mémorisés uniquement si l'utilisateur coche l'option.
-- consentements email : jetons de consentement confirmés, supprimables par le bouton d'effacement local.
+- `magium.readerSettings` in `localStorage`: contains `translationContributions`, disabled by default, to show or hide pencil icons when the API URL is configured.
+- `contributionProfile`: pseudonym/email remembered only if the user opts in.
+- email consents: confirmed consent tokens, removable through the local clear button.
 
-Suppression :
+Deletion:
 
-- Rejet ou stale unitaire : suppression immédiate du contact email, sans notification.
-- Rejet ou stale en lot : notification groupée des contacts confirmés par email normalisé, puis suppression.
-- Publication : notification groupée des contacts confirmés par email normalisé, puis suppression.
-- Consentements expirés : purge opportuniste.
+- Single rejection or stale marking: immediate email contact deletion, without notification.
+- Batch rejection or stale: grouped notification for confirmed contacts by normalized email, then deletion.
+- Publication: grouped notification for confirmed contacts by normalized email, then deletion.
+- Expired consents: opportunistic purge.
 
-Les emails de clôture et de publication sont des digests par destinataire : si un même email confirmé porte plusieurs propositions dans le même traitement, un seul message est envoyé. Les emails publics restent volontairement sobres et ne contiennent pas `messageId`, `sceneId`, hash, segment ou identifiant interne visible.
+Closing and publication emails are digests per recipient: if the same confirmed
+email has several proposals in the same processing batch, only one message is
+sent. Public emails deliberately stay restrained and do not expose `messageId`,
+`sceneId`, hash, segment, or visible internal identifier.
 
-Modération pseudo :
+Pseudonym moderation:
 
-- Le pseudo est facultatif.
-- Il peut être refuse ou masque s'il est illégal, violent, haineux, sexuellement explicite, pédopornographique, contient du doxxing, de l'usurpation, une URL/email, ou un terme configure dans `PSEUDONYM_BLOCKLIST`.
+- Pseudonym is optional.
+- It can be rejected or hidden if illegal, violent, hateful, sexually explicit, child-sexual-abuse material, doxxing, impersonation, a URL/email, or a term configured in `PSEUDONYM_BLOCKLIST`.
 
 ## 7. GitHub PR Automation
 
-Le bouton `Creer la PR` appelle :
+The `Create PR` button calls:
 
 ```text
 POST /v1/admin/changesets/:publicId/dispatch-pr
 ```
 
-L'API appelle ensuite l'endpoint GitHub :
+The API then calls GitHub:
 
 ```text
 POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
 ```
 
-Inputs envoyes au workflow :
+Workflow inputs:
 
-- `changeset_id` : `publicId` du changeset.
-- `api_url` : `PUBLIC_API_URL` de l'API.
+- `changeset_id`: changeset `publicId`.
+- `api_url`: API `PUBLIC_API_URL`.
 
-Variables API requises pour le dispatch :
+API variables required for dispatch:
 
 ```text
 GITHUB_TOKEN_FOR_DISPATCH=...
@@ -347,71 +364,72 @@ GITHUB_REF_NAME=main
 PUBLIC_API_URL=https://tr.magium.app
 ```
 
-Token GitHub recommande :
+Recommended GitHub token:
 
-- fine-grained personal access token ;
-- limite au repo `ablond/magium` ;
-- permission repository `Actions: Read and write`.
+- fine-grained personal access token;
+- limited to repository `ablond/magium`;
+- repository permission `Actions: Read and write`.
 
-La permission `Actions: write` est requise par GitHub pour l'endpoint "Create a workflow dispatch event" :
+GitHub requires `Actions: write` for the "Create a workflow dispatch event"
+endpoint:
 
 - https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event
 
-Secret GitHub Actions requis dans le repo :
+Required GitHub Actions secret in the repository:
 
 ```text
-MAGIUM_TRANSLATION_API_TOKEN=<valeur de ADMIN_TOKEN cote translation-api>
+MAGIUM_TRANSLATION_API_TOKEN=<translation-api ADMIN_TOKEN value>
 ```
 
-Workflow :
+Workflow:
 
-- fichier : `.github/workflows/translation-changeset-pr.yml`
-- trigger : `workflow_dispatch`
-- permissions : `contents: write`, `pull-requests: write`
-- étapes :
-  1. checkout ;
-  2. setup Node 24 LTS + pnpm ;
-  3. fetch du changeset via API admin ;
-  4. application du changeset ;
-  5. `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build` ;
-  6. commit, push branche `translation/<changeset_id>`, PR vers `main`.
+- file: `.github/workflows/translation-changeset-pr.yml`
+- trigger: `workflow_dispatch`
+- permissions: `contents: write`, `pull-requests: write`
+- steps:
+  1. checkout;
+  2. setup Node 24 LTS + pnpm;
+  3. fetch changeset through the admin API;
+  4. apply changeset;
+  5. `pnpm content:all`, `pnpm check`, `pnpm test`, `pnpm build`;
+  6. commit, push branch `translation/<changeset_id>`, PR to `main`.
 
-Application du changeset :
+Changeset application:
 
-- outil : `tools/contributions/apply-changeset.mjs`
-- source modifiee : `content/story-locales/<locale>/<chapter>.json`
-- pour `targetType: "choice"` : remplace le texte du choix cible ;
-- pour `targetType: "paragraph"` : remplace seulement le segment `segmentIndex` dans la valeur complète du `messageId` ;
-- preserve les autres paragraphes et les separateurs existants ;
-- compare `currentTextHash` au texte courant éditable ;
-- si le hash ne correspond plus, produit un rapport stale et le workflow marque le changeset stale via l'API.
+- tool: `tools/contributions/apply-changeset.mjs`
+- modified source: `content/story-locales/<locale>/<chapter>.json`
+- for `targetType: "choice"`: replace the target choice text;
+- for `targetType: "paragraph"`: replace only `segmentIndex` inside the full `messageId` value;
+- preserve other paragraphs and existing separators;
+- compare `currentTextHash` against current editable text;
+- if the hash no longer matches, produce a stale report and have the workflow mark the changeset stale through the API.
 
-Important :
+Important:
 
-- GitHub Actions doit pouvoir joindre `PUBLIC_API_URL` depuis Internet, donc `https://tr.magium.app` en production.
-- Un `PUBLIC_API_URL=http://localhost:8090` ne fonctionne pas pour une vraie PR GitHub.
-- `GITHUB_TOKEN_FOR_DISPATCH` et `MAGIUM_TRANSLATION_API_TOKEN` sont deux secrets différents.
+- GitHub Actions must reach `PUBLIC_API_URL` from the Internet, therefore `https://tr.magium.app` in production.
+- `PUBLIC_API_URL=http://localhost:8090` does not work for a real GitHub PR.
+- `GITHUB_TOKEN_FOR_DISPATCH` and `MAGIUM_TRANSLATION_API_TOKEN` are two different secrets.
 
-## 8. Deploiement Coolify
+## 8. Coolify Deployment
 
-Le déploiement production a deux applications Coolify :
+Production deployment has two Coolify applications:
 
-1. PWA statique Magium sur `https://magium.app`.
-2. Translation API et admin mainteneur sur `https://tr.magium.app`.
+1. Static Magium PWA on `https://magium.app`.
+2. Translation API and maintainer admin on `https://tr.magium.app`.
 
 ### PWA
 
-Configuration :
+Configuration:
 
-- source : repo GitHub via GitHub App ;
-- build pack : Dockerfile ;
-- Dockerfile : `Dockerfile` à la racine ;
-- base directory : racine ;
-- port : `8080` ;
-- domaine production : `magium.app` ;
-- volume : aucun.
+- source: GitHub repo through GitHub App;
+- build pack: Dockerfile;
+- Dockerfile: root `Dockerfile`;
+- base directory: root;
+- port: `8080`;
+- production domain: `magium.app`;
+- volume: none.
 
-Build args si les contributions sont activées :
+Build args if contributions are enabled:
 
 ```text
 VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
@@ -420,19 +438,19 @@ VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 
 ### Translation API
 
-Configuration :
+Configuration:
 
-- source : même repo GitHub ;
-- build pack : Dockerfile ;
-- base directory : `services/translation-api` ;
-- Dockerfile : `Dockerfile` ;
-- port : `8090` ;
-- domaine production : `tr.magium.app` ;
-- admin mainteneur : `https://tr.magium.app/admin` ;
-- healthcheck : `/health` ;
-- base PostgreSQL : service Coolify séparé.
+- source: same GitHub repo;
+- build pack: Dockerfile;
+- base directory: `services/translation-api`;
+- Dockerfile: `Dockerfile`;
+- port: `8090`;
+- production domain: `tr.magium.app`;
+- maintainer admin: `https://tr.magium.app/admin`;
+- healthcheck: `/health`;
+- PostgreSQL database: separate Coolify service.
 
-Variables obligatoires :
+Required variables:
 
 ```text
 DATABASE_URL=postgres://...
@@ -447,7 +465,7 @@ EMAIL_CONSENT_SECRET=...
 ADMIN_COOKIE_SECURE=1
 ```
 
-Variables optionnelles mais recommandees selon les fonctions activées :
+Optional variables, depending on enabled functions:
 
 ```text
 SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
@@ -468,166 +486,172 @@ MAX_JSON_BODY_BYTES=131072
 TRUST_PROXY=0
 ```
 
-Checklist production :
+Production checklist:
 
 - `PUBLIC_API_URL=https://tr.magium.app`.
 - `PUBLIC_WEB_URL=https://magium.app`.
 - `ALLOWED_ORIGIN=https://magium.app`.
-- l'admin mainteneur est disponible sur `https://tr.magium.app/admin`.
-- `ADMIN_COOKIE_SECURE=1` est obligatoire en production HTTPS.
-- `MAX_JSON_BODY_BYTES=131072` limite les requêtes JSON avant parsing.
-- `TRUST_PROXY=0` reste le défaut sûr ; n'utiliser `TRUST_PROXY=1` que derrière un proxy qui nettoie `X-Forwarded-For`.
-- `TURNSTILE_SECRET_KEY` côté API correspond au site key PWA et le domaine `magium.app` est autorisé dans Cloudflare Turnstile.
-- `EMAIL_CONSENT_SECRET` est aleatoire et long.
-- `SMTP_URL` utilise Brevo en production : `smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587`.
-- `EMAIL_FROM` vaut `Magium <no-reply@magium.app>`.
-- Le sender `no-reply@magium.app` ou le domaine `magium.app` est vérifie dans Brevo avant ouverture publique.
-- `ADMIN_SESSION_SECRET` est aleatoire et long.
-- `ADMIN_PASSWORD` est un mot de passe humain fort.
-- `ADMIN_TOKEN` est un token long, reserve scripts/workflows.
-- `MAGIUM_TRANSLATION_API_TOKEN` côté GitHub Actions vaut `ADMIN_TOKEN`.
-- `GITHUB_TOKEN_FOR_DISPATCH` a `Actions: Read and write` sur le repo cible.
-- `GITHUB_REPOSITORY_TARGET` vaut `ablond/magium`.
+- Maintainer admin available at `https://tr.magium.app/admin`.
+- `ADMIN_COOKIE_SECURE=1` required in HTTPS production.
+- `MAX_JSON_BODY_BYTES=131072` limits JSON requests before parsing.
+- `TRUST_PROXY=0` remains the safe default; use `TRUST_PROXY=1` only behind a proxy that cleans `X-Forwarded-For`.
+- API `TURNSTILE_SECRET_KEY` matches the PWA site key and domain `magium.app` is allowed in Cloudflare Turnstile.
+- `EMAIL_CONSENT_SECRET` is long and random.
+- Production `SMTP_URL` uses Brevo: `smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587`.
+- `EMAIL_FROM` is `Magium <no-reply@magium.app>`.
+- Sender `no-reply@magium.app` or domain `magium.app` is verified in Brevo before public opening.
+- `ADMIN_SESSION_SECRET` is long and random.
+- `ADMIN_PASSWORD` is a strong human password.
+- `ADMIN_TOKEN` is a long token reserved for scripts/workflows.
+- GitHub Actions `MAGIUM_TRANSLATION_API_TOKEN` equals `ADMIN_TOKEN`.
+- `GITHUB_TOKEN_FOR_DISPATCH` has `Actions: Read and write` on the target repo.
+- `GITHUB_REPOSITORY_TARGET` is `ablond/magium`.
 
-## 9. Depannage
+## 9. Troubleshooting
 
 ### `GitHub dispatch is not configured`
 
-Cause : `GITHUB_TOKEN_FOR_DISPATCH` ou `GITHUB_REPOSITORY_TARGET` est vide côté API.
+Cause: `GITHUB_TOKEN_FOR_DISPATCH` or `GITHUB_REPOSITORY_TARGET` is empty
+API-side.
 
-Correction :
+Fix:
 
 ```text
-GITHUB_TOKEN_FOR_DISPATCH=<token-github>
+GITHUB_TOKEN_FOR_DISPATCH=<github-token>
 GITHUB_REPOSITORY_TARGET=ablond/magium
 GITHUB_WORKFLOW_FILE=translation-changeset-pr.yml
 GITHUB_REF_NAME=main
 ```
 
-Redemarrer le service API après modification.
+Restart the API service after changing variables.
 
 ### `GitHub workflow dispatch failed: 401`
 
-Causes probables :
+Likely causes:
 
-- token GitHub invalide ;
-- token expire ;
-- token non autorisé sur le repo cible.
+- invalid GitHub token;
+- expired token;
+- token not authorized on the target repository.
 
-Vérifier le token dans Coolify et sa portee repo.
+Check the token in Coolify and its repository scope.
 
 ### `GitHub workflow dispatch failed: 403`
 
-Causes probables :
+Likely causes:
 
-- permission `Actions: Read and write` absente ;
-- organisation GitHub bloque l'usage du token ;
-- workflow désactivé.
+- missing `Actions: Read and write` permission;
+- GitHub organization blocks token use;
+- workflow disabled.
 
-Vérifier les permissions du fine-grained PAT et l'état du workflow.
+Check the fine-grained PAT permissions and workflow state.
 
-### Dispatch OK mais workflow GitHub echoue au fetch changeset
+### Dispatch OK But GitHub Workflow Fails Fetching Changeset
 
-Causes probables :
+Likely causes:
 
-- `PUBLIC_API_URL` n'est pas accessible depuis GitHub Actions ;
-- `PUBLIC_API_URL` pointe vers `localhost` ;
-- secret GitHub `MAGIUM_TRANSLATION_API_TOKEN` absent ou différent de `ADMIN_TOKEN` ;
-- `ALLOWED_ORIGIN` ne concerne pas les appels serveur GitHub, mais un reverse proxy peut bloquer.
+- `PUBLIC_API_URL` is not reachable from GitHub Actions;
+- `PUBLIC_API_URL` points to `localhost`;
+- GitHub secret `MAGIUM_TRANSLATION_API_TOKEN` is absent or differs from `ADMIN_TOKEN`;
+- `ALLOWED_ORIGIN` does not affect GitHub server calls, but a reverse proxy may block them.
 
 ### `email notifications are not configured`
 
-Cause : utilisateur demande le suivi email mais ni `SMTP_URL` ni `EMAIL_WEBHOOK_URL` n'est configuré.
+Cause: user requested email follow-up but neither `SMTP_URL` nor
+`EMAIL_WEBHOOK_URL` is configured.
 
-Correction : configurer un transport email ou laisser le suivi email désactivé.
+Fix: configure an email transport or leave email follow-up disabled.
 
-### Aucun email visible en local
+### No Email Visible Locally
 
-Vérifier :
+Check:
 
-- `SMTP_URL=smtp://mailpit:1025` dans le conteneur API ;
-- `EMAIL_FROM=Magium <no-reply@magium.app>` dans le conteneur API ;
-- Mailpit accessible sur `http://localhost:8025` ;
-- l'utilisateur a coche le suivi email ;
-- le mail n'a pas été evite par consentement email déjà confirme.
+- `SMTP_URL=smtp://mailpit:1025` inside the API container;
+- `EMAIL_FROM=Magium <no-reply@magium.app>` inside the API container;
+- Mailpit reachable at `http://localhost:8025`;
+- user checked email follow-up;
+- mail was not skipped by already confirmed email consent.
 
-### Brevo refuse l'authentification SMTP
+### Brevo Rejects SMTP Authentication
 
-Causes probables :
+Likely causes:
 
-- login SMTP Brevo incorrect ;
-- clé SMTP Brevo incorrecte ou revoquee ;
-- login ou clé non URL-encodés dans `SMTP_URL` ;
-- `SMTP_URL` ne pointe pas vers `smtp-relay.brevo.com:587`.
+- wrong Brevo SMTP login;
+- wrong or revoked Brevo SMTP key;
+- login or key not URL-encoded in `SMTP_URL`;
+- `SMTP_URL` does not point to `smtp-relay.brevo.com:587`.
 
-Correction : régénérer/vérifier les identifiants SMTP dans Brevo, les stocker uniquement dans Coolify, puis redémarrer le service API.
+Fix: regenerate/verify SMTP credentials in Brevo, store them only in Coolify,
+then restart the API service.
 
-### Brevo refuse l'expéditeur
+### Brevo Rejects Sender
 
-Causes probables :
+Likely causes:
 
-- `EMAIL_FROM` ne vaut pas `Magium <no-reply@magium.app>` ;
-- le sender `no-reply@magium.app` n'est pas vérifie ;
-- le domaine `magium.app` n'est pas authentifié/validé dans Brevo.
+- `EMAIL_FROM` is not `Magium <no-reply@magium.app>`;
+- sender `no-reply@magium.app` is not verified;
+- domain `magium.app` is not authenticated/validated in Brevo.
 
-Correction : vérifier le sender ou authentifier le domaine dans Brevo avant activation publique.
+Fix: verify the sender or authenticate the domain in Brevo before public
+activation.
 
-### Email absent des logs transactionnels Brevo
+### Email Missing From Brevo Transactional Logs
 
-Vérifier :
+Check:
 
-- la production utilise bien `SMTP_URL` Brevo, pas Mailpit ;
-- `EMAIL_WEBHOOK_URL` n'est pas configure par erreur, car il est prioritaire sur SMTP ;
-- l'utilisateur a demande le suivi email ;
-- le consentement navigateur n'a pas evite un nouvel email de confirmation ;
-- les logs du conteneur API ne montrent pas une erreur SMTP.
+- production really uses Brevo `SMTP_URL`, not Mailpit;
+- `EMAIL_WEBHOOK_URL` is not configured by mistake, because it takes priority over SMTP;
+- user requested email follow-up;
+- browser consent did not skip a new confirmation email;
+- API container logs do not show an SMTP error.
 
-### Turnstile refuse les propositions
+### Turnstile Rejects Proposals
 
-Vérifier :
+Check:
 
-- PWA : `VITE_MAGIUM_TURNSTILE_SITE_KEY` ;
-- API : `TURNSTILE_SECRET_KEY` ;
-- domaine autorisé dans Cloudflare Turnstile ;
-- en local/test uniquement : `TURNSTILE_DISABLED=1`.
+- PWA: `VITE_MAGIUM_TURNSTILE_SITE_KEY`;
+- API: `TURNSTILE_SECRET_KEY`;
+- allowed domain in Cloudflare Turnstile;
+- local/test only: `TURNSTILE_DISABLED=1`.
 
-### Schema PostgreSQL ancien
+### Old PostgreSQL Schema
 
-Symptome : erreur sur une colonne manquante comme `current_text`, `segment_index` ou `segment_count`.
+Symptom: missing column error such as `current_text`, `segment_index`, or
+`segment_count`.
 
-Corrections :
+Fixes:
 
-- redémarrer l'API pour laisser les `ALTER TABLE ... IF NOT EXISTS` de compatibilité s'appliquer ;
-- en local, appliquer le schema ou repartir de zero :
+- restart the API so compatibility `ALTER TABLE ... IF NOT EXISTS` migrations can run;
+- locally, apply the schema or start from zero:
 
 ```bash
 docker compose exec -T postgres psql -U magium_translation -d magium_translation -f /docker-entrypoint-initdb.d/001-translation-api.sql
 docker compose down -v
 ```
 
-### Proposition obsolète
+### Stale Proposal
 
-Cause : le texte cible éditable ne correspond plus à `currentTextHash`.
+Cause: editable target text no longer matches `currentTextHash`.
 
-Comportement attendu :
+Expected behavior:
 
-- ne pas forcer l'application ;
-- marquer proposition/changeset `stale` ;
-- demander une nouvelle proposition si nécessaire.
+- do not force application;
+- mark proposal/changeset `stale`;
+- ask for a new proposal if needed.
 
-### Le diff admin est absent
+### Admin Diff Missing
 
-Causes probables :
+Likely causes:
 
-- ancienne proposition sans `current_text` ;
-- `currentText` n'était pas envoyé par l'ancienne PWA ;
-- proposition créée avant l'ajout du diff visuel.
+- old proposal without `current_text`;
+- `currentText` was not sent by the older PWA;
+- proposal created before visual diff was added.
 
-Comportement attendu : l'admin reste utilisable, avec seulement le texte propose et la version finale éditable.
+Expected behavior: admin stays usable, with only proposed text and editable
+final version.
 
-## 10. Tests Et Validation
+## 10. Tests And Validation
 
-Validation repo obligatoire :
+Required repository validation:
 
 ```bash
 pnpm check
@@ -635,7 +659,7 @@ pnpm test
 pnpm build
 ```
 
-Si Docker, Coolify, l'API ou le packaging sont touches :
+If Docker, Coolify, the API, or packaging is touched:
 
 ```bash
 docker compose config
@@ -643,7 +667,7 @@ docker build -f services/translation-api/Dockerfile services/translation-api
 pnpm docker:build-prod
 ```
 
-Validation locale complète :
+Full local validation:
 
 ```bash
 docker compose up -d --build
@@ -655,72 +679,73 @@ curl http://localhost:8025
 docker compose down
 ```
 
-Recette navigateur PWA :
+PWA browser acceptance:
 
-- ouvrir `http://localhost:5173` ;
-- ouvrir Settings et activer `Corrections de traduction` ;
-- vérifier que les icônes stylo grises apparaissent sur les paragraphes et choix ;
-- cliquer sur l'icône stylo d'un paragraphe multi-paragraphes ;
-- vérifier que seul le paragraphe cliqué est affiché et prérempli ;
-- vérifier qu'aucun ID technique n'est visible ;
-- envoyer une proposition anonyme ;
-- vérifier le succès sans `TR_...`, sans `publicId`, sans reçu.
+- open `http://localhost:5173`;
+- open Settings and enable `Translation corrections`;
+- verify grey pencil icons appear on paragraphs and choices;
+- click a pencil on a multi-paragraph block;
+- verify only the clicked paragraph is shown and prefilled;
+- verify no technical ID is visible;
+- submit an anonymous proposal;
+- verify success without `TR_...`, `publicId`, or receipt.
 
-Recette navigateur admin :
+Admin browser acceptance:
 
-- ouvrir `http://localhost:8090/admin` ;
-- se connecter avec `dev-admin-password` ;
-- vérifier la liste des propositions ;
-- vérifier le texte d'origine, le diff proposé et la version finale éditable ;
-- accepter/rejeter/marquer obsolète ;
-- filtrer `accepted` ;
-- créer un changeset ;
-- exporter le JSON ;
-- tester `Créer la PR` :
-  - en local sans GitHub configuré : message lisible `GitHub dispatch is not configured` ;
-  - en production configurée : statut `PR demandée`, puis run GitHub Actions.
+- open `http://localhost:8090/admin`;
+- log in with `dev-admin-password`;
+- verify the proposal list;
+- verify original text, proposed diff, and editable final version;
+- accept/reject/mark stale;
+- filter `accepted`;
+- create a changeset;
+- export JSON;
+- test `Create PR`:
+  - locally without GitHub configured: readable `GitHub dispatch is not configured`;
+  - in configured production: `PR requested`, then GitHub Actions run.
 
-Recette email locale :
+Local email acceptance:
 
-- envoyer une proposition avec email et suivi coché ;
-- ouvrir `http://localhost:8025` ;
-- vérifier l'email de confirmation ;
-- cliquer le lien ;
-- vérifier que la PWA revient sur le lecteur avec une notice visible de confirmation ;
-- vérifier que l'URL ne contient plus `translation-email-consent` ;
-- vérifier que la PWA stocke le consentement quand le lien a été ouvert dans le même navigateur que la proposition initiale ;
-- envoyer une nouvelle proposition avec le même email depuis le même navigateur ;
-- vérifier qu'aucun nouvel email de confirmation n'est envoyé.
+- submit a proposal with email follow-up checked;
+- open `http://localhost:8025`;
+- verify the confirmation email;
+- click the link;
+- verify the PWA returns to the reader with a visible confirmation notice;
+- verify the URL no longer contains `translation-email-consent`;
+- verify the PWA stores consent when the link was opened in the same browser as the initial proposal;
+- submit another proposal with the same email from the same browser;
+- verify no new confirmation email is sent.
 
-Tests couverts :
+Covered tests:
 
-- `tests/contribution-payload.test.ts` : payload PWA, champs techniques invisibles.
-- `tests/contribution-email-consent.test.ts` : consentement navigateur.
-- `tests/contribution-changesets.test.mjs` : application de segments, stale, conflits.
-- `services/translation-api/tests/proposals.node.mjs` : validation proposal, currentText/hash, paragraphes.
-- `services/translation-api/tests/privacy-flow.node.mjs` : email, consentement, suppression.
-- `services/translation-api/tests/admin-flow.node.mjs` : session admin, CSRF, changesets.
-- `services/translation-api/tests/admin-diff.node.mjs` : diff admin.
+- `tests/contribution-payload.test.ts`: PWA payload, invisible technical fields.
+- `tests/contribution-email-consent.test.ts`: browser consent.
+- `tests/contribution-changesets.test.mjs`: segment application, stale, conflicts.
+- `services/translation-api/tests/proposals.node.mjs`: proposal validation, currentText/hash, paragraphs.
+- `services/translation-api/tests/privacy-flow.node.mjs`: email, consent, deletion.
+- `services/translation-api/tests/admin-flow.node.mjs`: admin session, CSRF, changesets.
+- `services/translation-api/tests/admin-diff.node.mjs`: admin diff.
 
-Ne pas lancer `pnpm images:check -- --book 1` pour une itération qui ne touche pas les images Book 1.
+Do not run `pnpm images:check -- --book 1` for an iteration that does not touch
+Book 1 images.
 
-## Fichiers A Connaitre
+## Files To Know
 
-- `src/App.svelte` : UI joueur, modal contribution.
-- `src/lib/contributions/payload.ts` : construction payload et hash PWA.
-- `src/lib/contributions/storage.ts` : profil local opt-in et consentement email.
-- `src/lib/contributions/turnstile.ts` : intégration Turnstile.
-- `services/translation-api/src/server.js` : routes API/admin.
-- `services/translation-api/src/proposals.js` : validation et transitions propositions.
-- `services/translation-api/src/admin-auth.js` : session admin, cookie, CSRF.
-- `services/translation-api/src/admin-diff.js` : diff visuel admin.
-- `services/translation-api/src/email-consents.js` : consentement email.
-- `services/translation-api/src/mailer.js` : SMTP/webhook email.
-- `services/translation-api/src/github.js` : workflow dispatch GitHub.
-- `services/translation-api/schema.sql` : schema PostgreSQL.
-- `services/translation-api/admin/` : UI admin vanilla.
-- `tools/contributions/apply-changeset.mjs` : application JSON et stale.
-- `.github/workflows/translation-changeset-pr.yml` : PR automation.
-- `docker-compose.yml` : stack local complet.
-- `docs/contributions.md` : doc produit/fonctionnelle.
-- `public/legal/contributions.html` : page publique données/contributions.
+- `src/App.svelte`: reader UI, contribution modal.
+- `src/lib/contributions/payload.ts`: PWA payload and hash construction.
+- `src/lib/contributions/storage.ts`: local opt-in profile and email consent.
+- `src/lib/contributions/turnstile.ts`: Turnstile integration.
+- `services/translation-api/src/server.js`: API/admin routes.
+- `services/translation-api/src/proposals.js`: proposal validation and transitions.
+- `services/translation-api/src/admin-auth.js`: admin session, cookie, CSRF.
+- `services/translation-api/src/admin-diff.js`: admin visual diff.
+- `services/translation-api/src/email-consents.js`: email consent.
+- `services/translation-api/src/mailer.js`: SMTP/webhook email.
+- `services/translation-api/src/github.js`: GitHub workflow dispatch.
+- `services/translation-api/schema.sql`: PostgreSQL schema.
+- `services/translation-api/admin/`: vanilla admin UI.
+- `tools/contributions/apply-changeset.mjs`: JSON application and stale detection.
+- `.github/workflows/translation-changeset-pr.yml`: PR automation.
+- `docker-compose.yml`: full local stack.
+- `docs/contributions.md`: product/functional documentation.
+- `public/legal/contributions.html`: public data/contribution page.

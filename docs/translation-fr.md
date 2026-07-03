@@ -1,45 +1,47 @@
-# Traduction Française
+# French Translation Guide
 
-## Registre Et Ton
+## Register And Tone
 
-La narration française conserve la première personne de Barry : directe, introspective, parfois ironique, avec un registre accessible plutôt que solennel. Le texte doit rester fluide et littéraire sans effacer le côté oral du narrateur.
+The French narration keeps Barry's first-person voice: direct, introspective,
+sometimes ironic, and accessible rather than solemn. The text should remain
+fluid and literary without erasing the narrator's spoken quality.
 
-Principes retenus :
+Chosen principles:
 
-- préserver les phrases longues quand elles portent l'élan ou la panique ;
-- garder les répétitions utiles, notamment dans les moments de tension ;
-- traduire les répliques dans un français naturel, avec des contractions de ton quand le personnage est familier ou agressif ;
-- conserver les noms propres anglais : Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent ;
-- conserver `Cutthroat` et `Cutthroat Dave` comme noms propres quand ils désignent le personnage : ne pas traduire en `coupe-gorge`.
+- preserve long sentences when they carry momentum or panic;
+- keep useful repetitions, especially during tense moments;
+- translate dialogue into natural French, with more contracted or colloquial tone when the character is familiar or aggressive;
+- keep English proper names: Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent;
+- keep `Cutthroat` and `Cutthroat Dave` as proper names when they designate the character; do not translate them as `coupe-gorge`.
 
-## Figures De Style Caractéristiques
+## Characteristic Style Patterns
 
-- Opposition courage/stupidité : rendue par une formulation proche, `la frontière entre le courage et la stupidité`.
-- Accumulations introspectives : conservées avec des segments coordonnés plutôt que fortement résumés.
-- Hyperboles de tournoi et de magie : maintenues sans les neutraliser.
-- Répétitions de tension : `C’était juste. C’était vraiment juste.` conserve la redite de `That was close`.
-- Humour de décalage : Barry reste lucide et légèrement auto-dérisoire, surtout face au sérieux héroïque de Daren.
+- Courage/stupidity opposition: rendered close to `la frontière entre le courage et la stupidité`.
+- Introspective accumulations: preserved through coordinated segments rather than strong summarization.
+- Tournament and magic hyperbole: kept instead of neutralized.
+- Tension repetitions: `C'était juste. C'était vraiment juste.` preserves the repeated force of `That was close`.
+- Deadpan humor: Barry stays lucid and lightly self-deprecating, especially when facing Daren's heroic seriousness.
 
-## Glossaire
+## Glossary
 
-| Original | Français | Note |
+| Original | French | Note |
 | --- | --- | --- |
-| stillwater | sans-aura | Choix stabilisé à partir de `ch2`. Le terme reste techniquement imparfait, car les `stillwaters` ont une aura indiscernable de celle d'un humain ordinaire plutôt qu'une absence totale d'aura, mais il est court, lisible, déjà établi dans `ch1`, et fonctionne comme nom de caste. |
-| mage | mage | Terme fantasy standard. |
-| shield spell | sort de bouclier | Terme transparent, à réutiliser. |
-| white magic | magie blanche | Terme fantasy standard. |
-| throwing knives / daggers | couteaux de lancer / dagues | Choix selon le contexte de la phrase source. |
-| checkpoint | point de contrôle | Terme UI et récit cohérent. |
-| stat device / stat booster | appareil de stats | Forme stabilisée dans `ch3` pour éviter `amplificateur` ou `dispositif`, trop techniques et moins cohérents avec `ch1`/`ch2`. |
-| abilities | Stats | Libellé UI FR retenu pour le panneau des stats. Les identifiants techniques `abilities.*` restent en anglais. |
-| common language | langue commune | Langue des humains, à distinguer des langues anciennes. |
-| golden fox | renard doré / grande renarde | `renard doré` quand Barry/Daren en parlent comme figure encore vague ; `grande renarde` dans la bouche d'Elaria quand elle parle de sa protectrice. |
-| still winter | Hiver immobile | Nom d'événement et formule codée introduite par Eiden dans `ch4`. Capitaliser quand l'expression désigne l'événement. |
-| oildrip | suintenoire | Terme stabilisé dans `ch11a` pour la crise sanitaire du quartier du Moineau. |
-| time weaver | tisseur / tisseuse du temps | Utiliser le féminin `tisseuse du temps` pour Rose. |
-| dragon hunter | chasseur de dragons | Terme de caste/fonction, à accorder naturellement au pluriel. |
-| ethereal | éthéré | Adjectif magique, notamment pour les êtres ou effets intangibles. |
-| Northern Continent / Western Continent | Northern Continent / Western Continent | Noms propres conservés en anglais, comme `Eastern Continent`. |
+| stillwater | sans-aura | Stabilized choice from `ch2`. The term remains technically imperfect, because `stillwaters` have an aura indistinguishable from an ordinary human's rather than no aura at all, but it is short, readable, already established in `ch1`, and works as a caste name. |
+| mage | mage | Standard fantasy term. |
+| shield spell | sort de bouclier | Transparent term to reuse. |
+| white magic | magie blanche | Standard fantasy term. |
+| throwing knives / daggers | couteaux de lancer / dagues | Choose according to source context. |
+| checkpoint | point de contrôle | Coherent UI and narrative term. |
+| stat device / stat booster | appareil de stats | Stabilized in `ch3` to avoid `amplificateur` or `dispositif`, which are too technical and less coherent with `ch1`/`ch2`. |
+| abilities | Stats | French UI label retained for the stats panel. Technical IDs `abilities.*` stay in English. |
+| common language | langue commune | Human language, distinct from ancient languages. |
+| golden fox | renard doré / grande renarde | `renard doré` when Barry/Daren talk about a still-vague figure; `grande renarde` when Elaria speaks of her protector. |
+| still winter | Hiver immobile | Event name and coded phrase introduced by Eiden in `ch4`. Capitalize when the expression designates the event. |
+| oildrip | suintenoire | Stabilized in `ch11a` for the Sparrow district health crisis. |
+| time weaver | tisseur / tisseuse du temps | Use feminine `tisseuse du temps` for Rose. |
+| dragon hunter | chasseur de dragons | Caste/function term, naturally inflected in plural. |
+| ethereal | éthéré | Magical adjective, especially for intangible beings or effects. |
+| Northern Continent / Western Continent | Northern Continent / Western Continent | Proper names kept in English, like `Eastern Continent`. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
 | Speed | Vitesse | Stat. |
@@ -49,156 +51,161 @@ Principes retenus :
 | Ancient languages | Langues anciennes | Stat. |
 | Combat technique | Technique de combat | Stat. |
 | Premonition | Prémonition | Stat. |
-| Bluff | Bluff | Stat, terme intégré en français. |
+| Bluff | Bluff | Stat, already natural in French. |
 | Magical sense | Sens magique | Stat. |
-| Aura hardening | Renforcement d’aura | Stat. |
+| Aura hardening | Renforcement d'aura | Stat. |
 | Magical power | Puissance magique | Stat. |
 | Magical knowledge | Connaissances magiques | Stat. |
 
-## Unités Et Distances
+## Units And Distances
 
-Les distances impériales sont traduites dans un système métrique naturel, avec un arrondi idiomatique plutôt qu'une conversion mécanique. L'objectif est que le texte sonne français sans donner une précision artificielle.
+Imperial distances are translated into natural metric phrasing, with idiomatic
+rounding instead of mechanical conversion. The goal is for the text to sound
+French without fake precision.
 
-- `100 feet` vaut environ `30 mètres`, mais la formulation dépend du contexte.
-- `a few hundred feet` devient `à une centaine de mètres`, pas `quelques centaines de pieds`.
-- `a few feet` devient souvent `à quelques pas`, ou `à deux ou trois mètres` si la mesure importe.
-- `fifty foot giants` devient `des géants de quinze mètres`.
-- `five foot seven` devient `un mètre soixante-dix`.
-- `five mile radius` devient `un rayon d'environ huit kilomètres`.
+- `100 feet` is about `30 mètres`, but phrasing depends on context.
+- `a few hundred feet` becomes `à une centaine de mètres`, not `quelques centaines de pieds`.
+- `a few feet` often becomes `à quelques pas`, or `à deux ou trois mètres` if the measure matters.
+- `fifty foot giants` becomes `des géants de quinze mètres`.
+- `five foot seven` becomes `un mètre soixante-dix`.
+- `five mile radius` becomes `un rayon d'environ huit kilomètres`.
 
-## Tutoiement / Vouvoiement
+## Tu / Vous
 
-| Relation | Choix | Justification |
+| Relation | Choice | Reason |
 | --- | --- | --- |
-| Barry -> Cutthroat Dave | Tu | Menace directe, combat, aucun respect social. |
-| Cutthroat Dave -> Barry/Daren | Tu | Agressivité et mépris. |
-| Barry -> Daren | Tu | Relation de compagnonnage rapide après le sauvetage. |
-| Daren -> Barry | Tu | Ton protecteur puis familier. |
-| Voix féminine inconnue -> Daren | Vous | Politesse initiale envers une figure légendaire. |
+| Barry -> Cutthroat Dave | Tu | Direct threat, combat, no social respect. |
+| Cutthroat Dave -> Barry/Daren | Tu | Aggression and contempt. |
+| Barry -> Daren | Tu | Fast companionship after the rescue. |
+| Daren -> Barry | Tu | Protective, then familiar tone. |
+| Unknown female voice -> Daren | Vous | Initial politeness toward a legendary figure. |
 
-## Adaptations Notables
+## Notable Adaptations
 
-- `stillwater` est rendu par `sans-aura` : le terme est volontairement conservé malgré son imperfection technique pour préserver la continuité avec `ch1` et garder un nom de caste immédiatement lisible.
-- `codswallop` devient `baratin` : effet oral et méprisant conservé sans anglicisme.
-- `out of your hair` devient `te débarrasser le plancher` : expression idiomatique française naturelle dans la bouche de Cutthroat Dave.
-- `A clean mouth and an honest hand...` devient `Parler vrai et agir droit ouvre bien des portes.` : l'effet proverbial est conservé sans calque littéral maladroit.
-- `a few hundred feet from my location` devient `à une centaine de mètres de ma position` : conversion métrique arrondie, naturelle en français.
-- `Remember the still winter` devient `Souvenez-vous de l’Hiver immobile` : formule volontairement solennelle, à garder stable lors des prochains chapitres.
+- `stillwater` becomes `sans-aura`: the term is deliberately kept despite technical imperfection to preserve continuity with `ch1` and keep a caste name immediately readable.
+- `codswallop` becomes `baratin`: oral, contemptuous effect preserved without anglicism.
+- `out of your hair` becomes `te débarrasser le plancher`: natural French idiom in Cutthroat Dave's voice.
+- `A clean mouth and an honest hand...` becomes `Parler vrai et agir droit ouvre bien des portes.`: proverbial effect preserved without a clumsy literal calque.
+- `a few hundred feet from my location` becomes `à une centaine de mètres de ma position`: rounded, natural metric conversion.
+- `Remember the still winter` becomes `Souvenez-vous de l'Hiver immobile`: deliberately solemn phrase, to keep stable in later chapters.
 
-## Corrections Éditoriales Stabilisées
+## Stabilized Editorial Corrections
 
-Ces corrections viennent de la QA du livre 1. Elles servent de garde-fous pour les prochaines traductions et les futures passes de relecture.
+These corrections come from the Book 1 QA pass. They serve as guardrails for
+future translations and rereads.
 
-Incises françaises :
+French dialogue tags:
 
-- éviter les calques `», je dis`, `», je lui dis`, `», je dis à Kate`, `», je demande`, `», je lui demande`, `», je demande à Daren`, `», je continue` quand il s'agit d'une incise de dialogue ;
-- utiliser les formes françaises naturelles : `», dis-je`, `», lui dis-je`, `», dis-je à Kate`, en gardant l'accord et le destinataire ;
-- pour `I ask`, privilégier une reformulation naturelle comme `Je lui demande : « ... »` ou `Je demande à Daren : « ... »` si l'inversion sonne trop raide ;
-- pour `I continue`, privilégier `Je poursuis : « ... »` quand l'incise française sonne calquée ;
-- éviter les formes inversées au passé composé comme `demandé-je`, `lui demandé-je`, `crié-je`, `commencé-je` ; préférer une phrase avant la réplique ou, ponctuellement, une inversion littéraire correcte comme `demandai-je` si le registre le justifie ;
-- pour les autres verbes d'incise, vérifier au cas par cas : employer l'inversion si elle reste naturelle, ou reformuler si elle sonne trop littéraire ou artificielle ;
-- pour une réplique coupée par l'incise, préférer `« Kate », dis-je, « tu as une minute ? »` plutôt que `« Kate », je dis. « Tu as une minute ? »` ;
-- normaliser la typographie de dialogue : pas de guillemets droits anglais dans les sources FR, et pas de virgule anglaise avant le guillemet fermant du type `« Oui, » dit-elle` ;
-- ne pas corriger mécaniquement les usages narratifs internes comme `je dis seulement`, `je me dis`, `je dis ça` ou une phrase où Barry décrit vraiment l'action de parler hors incise.
+- avoid calques such as `», je dis`, `», je lui dis`, `», je dis à Kate`, `», je demande`, `», je lui demande`, `», je demande à Daren`, `», je continue` when they are dialogue tags;
+- use natural French forms: `», dis-je`, `», lui dis-je`, `», dis-je à Kate`, preserving agreement and addressee;
+- for `I ask`, prefer a natural reformulation such as `Je lui demande : « ... »` or `Je demande à Daren : « ... »` if inversion sounds too stiff;
+- for `I continue`, prefer `Je poursuis : « ... »` when the French tag sounds calqued;
+- avoid inverted passé composé forms such as `demandé-je`, `lui demandé-je`, `crié-je`, `commencé-je`; prefer a sentence before the line or, occasionally, a correct literary inversion such as `demandai-je` if register justifies it;
+- for other tag verbs, check case by case: use inversion if it remains natural, or reformulate if it sounds too literary or artificial;
+- for a line split by a tag, prefer `« Kate », dis-je, « tu as une minute ? »` over `« Kate », je dis. « Tu as une minute ? »`;
+- normalize dialogue typography: no straight English quotes in FR sources, and no English comma before a closing guillemet such as `« Oui, » dit-elle`;
+- do not mechanically correct internal narrative uses such as `je dis seulement`, `je me dis`, `je dis ça`, or a sentence where Barry truly describes the action of speaking outside a tag.
 
-Formulations déjà corrigées :
+Already corrected formulations:
 
-- `I hear he has...` dans un contexte de rumeur rapportée se rend par `il paraît qu'il a...`, pas par `j'entends dire...` ni par `j'imagine...`.
-- `I dare you` dans une provocation orale ne doit pas devenir `Je te défie`, trop raide en français courant ; utiliser une formule naturelle du type `Répète un peu ça, pour voir.`
-- Quand Daren demande spontanément un `slide`, `toboggan` peut rester dans sa réplique, mais la narration physique doit employer `rampe de glace`, pas `glissade de glace`.
-- `custom-made slide` dans cette même scène devient `la rampe faite sur mesure`, pas `le toboggan fabriqué sur mesure`.
-- `I think I'm starting to root for you!` se rend ici par `Je crois que je commence à être de votre côté !`, pas par `Je crois que je commence à vous soutenir !`.
-- `before long` ne doit pas être traduit mécaniquement par `avant longtemps` ; préférer selon le contexte `bientôt`, `peu après` ou une reformulation qui garde le mouvement naturel de la phrase.
-- `Oh gods` / `Oh, gods` / `Oh my gods` ne doivent pas devenir `Oh dieux`, `Oh, dieux`, `Oh mes dieux` ou `Mes dieux` ; choisir selon le contexte `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié` ou `Oh là là`.
-- Quand `sir` est utilisé par un personnage traumatisé comme réflexe de servitude envers toute figure d'autorité, éviter le `monsieur` genré mécanique ; préférer `maître` pour conserver l'effet de soumission, même face à une femme ou un enfant.
-- `Really, now...` ne doit pas devenir `Vraiment, maintenant...` ; préférer selon le ton `Sérieusement ?`, `Ah oui ?`, `Non mais sérieusement ?` ou une reformulation équivalente.
-- `shut the world out` / `shut the whole world out` ne doivent pas devenir `fermer le monde` ; choisir selon le contexte `se couper du monde`, `se fermer aux autres` ou une reformulation équivalente.
-- `That's gonna happen` peut être sarcastique selon le contexte ; ne pas le traduire automatiquement par `Ça va sûrement arriver`, et préférer une réplique comme `Même pas en rêve` quand le personnage refuse clairement.
-- `take a deep breath and think...` ne doit pas devenir mécaniquement `prendre une inspiration avant de réfléchir` ; préférer `souffler/respirer un grand coup et réfléchir...` quand il s'agit de calmer une tension.
-- `I'm saying` / `I mean` ne doivent pas devenir mécaniquement `je dis que` quand ils servent seulement à préciser ou renforcer une idée ; reformuler l'insistance en français naturel.
-- `couldn't live with myself` / `could never live with myself` ne doivent pas devenir `vivre avec moi-même` ; préférer selon le ton `je ne me le pardonnerais jamais`, `je m'en voudrais toute ma vie` ou une reformulation équivalente.
-- `it turns out that...` ne doit pas devenir mécaniquement `il se révèle que...` ; préférer selon le contexte `on comprend alors que...`, `il devient clair que...`, `nous découvrons que...` ou une reformulation équivalente.
-- `all of your lives` ne doit pas devenir mécaniquement `toutes vos vies` quand il s'agit d'un groupe ; préférer selon le ton `vos vies à tous`, `que vous y laissiez tous la vie` ou une reformulation équivalente.
-- `remember correctly` ne doit pas devenir mécaniquement `se souvenir correctement` en dialogue ; préférer selon le contexte `c'est exact`, `tu as bonne mémoire`, `si je me souviens bien` ou une reformulation équivalente.
-- `actually` ne doit pas devenir mécaniquement `vraiment` quand il sert seulement à renforcer une surprise ou une incrédulité ; souvent, la structure française suffit, sinon préférer selon le registre `carrément`, `bel et bien`, `en fait` ou une reformulation équivalente.
-- `shake off` ne doit pas devenir mécaniquement `secouer` pour un effet, une peur, un sort ou une sensation ; préférer selon le contexte `se libérer de`, `se débarrasser de`, `surmonter`, `reprendre le dessus` ou une reformulation équivalente.
-- `wishful thinking` ne doit pas devenir mécaniquement `ressembler à du vœu pieux` ; préférer selon le contexte `relever du vœu pieux`, `prendre ses désirs pour des réalités` ou une reformulation équivalente.
-- `X upon X` ne doit pas devenir mécaniquement `X et encore X` ; préférer une intensification naturelle comme `de véritables montagnes de`, `une quantité impressionnante de`, `à perte de vue` ou une reformulation équivalente selon le contexte.
-- `right back` dans le sens d'un retour ne doit pas devenir `directement en arrière` ; préférer `directement chez nous`, `aussitôt dehors`, `immédiatement de retour` ou une reformulation selon le contexte.
-- `none of our business` ne doit pas devenir mécaniquement `nos affaires` ; préférer `ça ne nous regarde pas`, surtout quand la réplique est reprise avec indignation.
-- `premises` ne doit pas devenir automatiquement `locaux` dans un contexte fantasy ; préférer `enceinte`, `abords`, `forteresse`, `bâtiment` ou une description concrète du lieu.
-- `mass murder` ne doit pas devenir `massacre de masse` ; préférer `massacre`, `meurtre de masse` ou une formule plus orale selon la voix du personnage.
-- `realistically` ne doit pas devenir automatiquement `Réalistement` ; préférer `en réalité`, `dans les faits`, `si on est réalistes` ou une phrase moins adverbiale.
-- `it appears that...` ne doit pas devenir mécaniquement `il apparaît que...` quand Barry constate quelque chose de visible ; préférer `on dirait que`, `il semble que` ou une phrase directe.
+- `I hear he has...` in reported-rumor context becomes `il paraît qu'il a...`, not `j'entends dire...` or `j'imagine...`.
+- `I dare you` in an oral provocation should not become the stiff `Je te défie`; use a natural line such as `Répète un peu ça, pour voir.`
+- When Daren spontaneously asks for a `slide`, `toboggan` may remain in his line, but physical narration should use `rampe de glace`, not `glissade de glace`.
+- `custom-made slide` in the same scene becomes `la rampe faite sur mesure`, not `le toboggan fabriqué sur mesure`.
+- `I think I'm starting to root for you!` becomes `Je crois que je commence à être de votre côté !`, not `Je crois que je commence à vous soutenir !`.
+- `before long` should not be mechanically translated as `avant longtemps`; prefer contextually `bientôt`, `peu après`, or a reformulation that keeps natural movement.
+- `Oh gods` / `Oh, gods` / `Oh my gods` should not become `Oh dieux`, `Oh, dieux`, `Oh mes dieux`, or `Mes dieux`; choose by context from `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié`, or `Oh là là`.
+- When `sir` is used by a traumatized character as a servile reflex toward any authority figure, avoid gender-mechanical `monsieur`; prefer `maître` to preserve the submission effect, even facing a woman or child.
+- `Really, now...` should not become `Vraiment, maintenant...`; prefer by tone `Sérieusement ?`, `Ah oui ?`, `Non mais sérieusement ?`, or an equivalent reformulation.
+- `shut the world out` / `shut the whole world out` should not become `fermer le monde`; choose `se couper du monde`, `se fermer aux autres`, or an equivalent reformulation.
+- `That's gonna happen` may be sarcastic; do not automatically translate it as `Ça va sûrement arriver`, and prefer a line such as `Même pas en rêve` when the character clearly refuses.
+- `take a deep breath and think...` should not mechanically become `prendre une inspiration avant de réfléchir`; prefer `souffler/respirer un grand coup et réfléchir...` when calming tension.
+- `I'm saying` / `I mean` should not mechanically become `je dis que` when used only to clarify or intensify; reformulate the insistence in natural French.
+- `couldn't live with myself` / `could never live with myself` should not become `vivre avec moi-même`; prefer by tone `je ne me le pardonnerais jamais`, `je m'en voudrais toute ma vie`, or equivalent.
+- `it turns out that...` should not mechanically become `il se révèle que...`; prefer by context `on comprend alors que...`, `il devient clair que...`, `nous découvrons que...`, or equivalent.
+- `all of your lives` should not mechanically become `toutes vos vies` when addressing a group; prefer by tone `vos vies à tous`, `que vous y laissiez tous la vie`, or equivalent.
+- `remember correctly` should not mechanically become `se souvenir correctement` in dialogue; prefer by context `c'est exact`, `tu as bonne mémoire`, `si je me souviens bien`, or equivalent.
+- `actually` should not mechanically become `vraiment` when it only reinforces surprise or disbelief; often French structure is enough, otherwise prefer by register `carrément`, `bel et bien`, `en fait`, or equivalent.
+- `shake off` should not mechanically become `secouer` for an effect, fear, spell, or sensation; prefer by context `se libérer de`, `se débarrasser de`, `surmonter`, `reprendre le dessus`, or equivalent.
+- `wishful thinking` should not mechanically become `ressembler à du vœu pieux`; prefer by context `relever du vœu pieux`, `prendre ses désirs pour des réalités`, or equivalent.
+- `X upon X` should not mechanically become `X et encore X`; prefer a natural intensifier such as `de véritables montagnes de`, `une quantité impressionnante de`, `à perte de vue`, or equivalent.
+- `right back` in return sense should not become `directement en arrière`; prefer `directement chez nous`, `aussitôt dehors`, `immédiatement de retour`, or a contextual reformulation.
+- `none of our business` should not mechanically become `nos affaires`; prefer `ça ne nous regarde pas`, especially when the line is repeated with indignation.
+- `premises` should not automatically become `locaux` in fantasy context; prefer `enceinte`, `abords`, `forteresse`, `bâtiment`, or concrete place description.
+- `mass murder` should not become `massacre de masse`; prefer `massacre`, `meurtre de masse`, or a more oral phrase matching the voice.
+- `realistically` should not automatically become `Réalistement`; prefer `en réalité`, `dans les faits`, `si on est réalistes`, or a less adverbial sentence.
+- `it appears that...` should not mechanically become `il apparaît que...` when Barry observes something visible; prefer `on dirait que`, `il semble que`, or a direct sentence.
 
-## Workflow Générique De Traduction D'un Chapitre
+## Generic Chapter Translation Workflow
 
-Ce workflow est obligatoire pour tout chapitre traduit en français. Remplacer `<chapterId>` par l'identifiant réel du chapitre, par exemple `ch4`, `ch11a` ou `b2ch1`.
+This workflow is required for every chapter translated into French. Replace
+`<chapterId>` with the real chapter identifier, for example `ch4`, `ch11a`, or
+`b2ch1`.
 
-Outil de traduction autorisé :
+Authorized translation tool:
 
-- effectuer la traduction narrative, les achievements et la QA éditoriale dans Codex ;
-- ne pas envoyer les textes Magium vers DeepL, Google Translate, une API OpenAI directe, un autre LLM externe, un service SaaS de traduction ou tout outil nécessitant une clé API externe ;
-- ne pas utiliser une clé API pour contourner les limites d'un service de traduction ;
-- conserver les lots de traduction dans le workspace Codex, avec les sources locales du dépôt comme référence ;
-- les recherches documentaires locales restent autorisées, mais elles ne doivent pas transmettre le texte source complet à un fournisseur externe.
+- perform narrative translation, achievements, and editorial QA inside Codex;
+- do not send Magium texts to DeepL, Google Translate, a direct OpenAI API, another external LLM, a translation SaaS service, or any tool requiring an external API key;
+- do not use an API key to bypass a translation service limit;
+- keep translation batches in the Codex workspace, using local repository sources as reference;
+- local documentation searches remain allowed, but they must not transmit the complete source text to an external provider.
 
-Préparation :
+Preparation:
 
-- lire la source anglaise canonique `content/canonical/v1/locales/en/<chapterId>.json` ;
-- relever le nombre exact de clés `messages` et conserver la liste des `messageId` comme référence de couverture ;
-- lire `content/canonical/v1/story/<chapterId>.json` pour repérer les achievements, les personnages importants, les choix, les checks de stats et les scènes longues ;
-- ne jamais modifier à la main `content/archive/original/**`, `content/canonical/v1/**` ni `src/generated/**`.
+- read the canonical English source `content/canonical/v1/locales/en/<chapterId>.json`;
+- record the exact number of `messages` keys and keep the `messageId` list as the coverage reference;
+- read `content/canonical/v1/story/<chapterId>.json` to identify achievements, important characters, choices, stat checks, and long scenes;
+- never manually edit `content/archive/original/**`, `content/canonical/v1/**`, or `src/generated/**`.
 
-Traduction narrative :
+Narrative translation:
 
-- créer ou mettre à jour `content/story-locales/fr/<chapterId>.json` avec `locale: "fr"`, `chapterId: "<chapterId>"` et exactement les mêmes clés `messages` que la locale anglaise ;
-- traduire par lots Codex-only contrôlés, assez petits pour pouvoir relire le résultat avant fusion ;
-- conserver tous les `messageId` intacts, sans ajouter, supprimer ou renommer de clé ;
-- traduire uniquement le texte affiché au joueur : ne pas changer les scene IDs, choice targets, variables, conditions, assignments, specials, checks de stats ou logique de chapitre ;
-- appliquer systématiquement le registre, le glossaire, les unités naturalisées et les règles de tutoiement/vouvoiement de ce document.
+- create or update `content/story-locales/fr/<chapterId>.json` with `locale: "fr"`, `chapterId: "<chapterId>"`, and exactly the same `messages` keys as the English locale;
+- translate in controlled Codex-only batches small enough to review before merging;
+- keep every `messageId` intact, without adding, deleting, or renaming keys;
+- translate only player-visible text: do not change scene IDs, choice targets, variables, conditions, assignments, specials, stat checks, or chapter logic;
+- systematically apply this document's register, glossary, naturalized units, and tu/vous rules.
 
-Achievements du chapitre :
+Chapter achievements:
 
-- rechercher dans `content/canonical/v1/story/<chapterId>.json` toutes les variables d'achievements référencées par le chapitre, généralement sous la forme `v_ac_<chapterId>_*` ;
-- pour chaque variable trouvée, traduire les clés `achievement.<variable>.title` et `achievement.<variable>.caption` depuis `content/canonical/v1/locales/en/achievements.json` ;
-- ajouter ces traductions dans `content/story-locales/fr/achievements.json`, sans supprimer les achievements déjà traduits ;
-- garder un titre court et naturel, et une caption fidèle à l'effet ou au trait humoristique de l'anglais ;
-- privilégier un français joueur naturel plutôt qu'un calque, avec une adresse cohérente en `tu` / `ta` / `ton` quand le succès s'adresse directement au joueur.
+- search `content/canonical/v1/story/<chapterId>.json` for every achievement variable referenced by the chapter, usually shaped like `v_ac_<chapterId>_*`;
+- for each variable, translate `achievement.<variable>.title` and `achievement.<variable>.caption` from `content/canonical/v1/locales/en/achievements.json`;
+- add these translations to `content/story-locales/fr/achievements.json` without deleting already translated achievements;
+- keep the title short and natural, and the caption faithful to the English effect or joke;
+- prefer natural player-facing French over calque, with coherent `tu` / `ta` / `ton` address when the achievement speaks directly to the player.
 
-QA structurelle obligatoire :
+Required structural QA:
 
-- vérifier que le JSON source FR est parseable ;
-- vérifier `locale`, `chapterId`, le nombre de clés et l'égalité stricte des clés avec `en/<chapterId>.json` ;
-- vérifier qu'il n'y a aucune clé en trop, aucune clé manquante et aucun `messageId` modifié ;
-- vérifier que les achievements du chapitre présents dans le story graph ont bien leurs clés FR `title` et `caption` ;
-- vérifier que le chapitre apparaît dans les tests i18n et les docs d'état si la couverture FR publique change.
+- verify that the FR source JSON parses;
+- verify `locale`, `chapterId`, key count, and strict key equality with `en/<chapterId>.json`;
+- verify no extra key, no missing key, and no modified `messageId`;
+- verify that chapter achievements present in the story graph have their FR `title` and `caption` keys;
+- update i18n tests and status docs if public FR coverage changes.
 
-QA éditoriale obligatoire :
+Required editorial QA:
 
-- scanner les restes anglais évidents, les guillemets droits, les guillemets français déséquilibrés, les incises mal ponctuées, les doubles espaces et les espaces parasites ;
-- scanner les incises de dialogue calquées, notamment `», je dis`, `», je lui dis`, `», je dis à`, `», je demande`, `», je lui demande`, `», je demande à`, `», je continue`, puis corriger seulement les vrais cas d'incise ;
-- scanner les termes interdits ou instables : `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, unités impériales non naturalisées ;
-- scanner les formulations corrigées du livre 1 quand le contexte est le même : `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux` ;
-- vérifier les noms propres anglais conservés, notamment les continents, personnages, lieux, races et titres déjà stabilisés ;
-- relire au minimum le début du chapitre, une scène longue, une scène à choix, une scène avec personnages clés, une scène de tension ou de combat, et la fin ou les branches alternatives ;
-- corriger les passages trop littéraux, trop soutenus ou trop neutres pour garder Barry direct, oral, introspectif et légèrement ironique ;
-- ajouter au glossaire tout nouveau terme récurrent stabilisé pendant la traduction.
+- scan for obvious English leftovers, straight quotes, unbalanced French guillemets, badly punctuated dialogue tags, double spaces, and stray spaces;
+- scan calqued first-person dialogue tags, especially `», je dis`, `», je lui dis`, `», je dis à`, `», je demande`, `», je lui demande`, `», je demande à`, `», je continue`, then correct only real tag cases;
+- scan forbidden or unstable terms: `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, non-naturalized imperial units;
+- scan stabilized Book 1 corrections when context matches: `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux`;
+- verify preserved English proper names, especially continents, characters, places, races, and titles already stabilized;
+- reread at least the chapter opening, one long scene, one choice scene, one scene with key characters, one tension or combat scene, and the end or alternative branches;
+- correct passages that are too literal, too formal, or too neutral so Barry remains direct, oral, introspective, and lightly ironic;
+- add to the glossary any new recurring term stabilized during translation.
 
-Génération et validations :
+Generation and validation:
 
-- lancer `pnpm content:all` après toute modification de source traduisible ;
-- confirmer que `content/canonical/v1/locales/fr/<chapterId>.json` et `src/generated/packs/locales__fr__<chapterId>.ts` sont générés par le pipeline ;
-- lancer obligatoirement `pnpm check`, `pnpm test` et `pnpm build` ;
-- considérer la traduction terminée seulement si `pnpm build` conserve aussi `dist:check` vert.
+- run `pnpm content:all` after every translatable source change;
+- confirm that `content/canonical/v1/locales/fr/<chapterId>.json` and `src/generated/packs/locales__fr__<chapterId>.ts` are generated by the pipeline;
+- always run `pnpm check`, `pnpm test`, and `pnpm build`;
+- consider the translation complete only if `pnpm build` also keeps `dist:check` green.
 
-## Journal Des Chapitres Traduits
+## Translated Chapter Log
 
-- `ch3` : traduit avec Codex en mode GPT-5.5, effort moyen, sans fast mode ; source découpée en 18 lots contrôlés ; QA structurelle et éditoriale effectuée ; termes stabilisés pendant ce chapitre : `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, conservation de `Northern Continent` et `Western Continent`.
-- `ch4` : traduit avec Codex en local, sans service de traduction externe ; 108 messages couverts ; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat` et `v_ac_ch4_kneed` traduits ; terme stabilisé : `still winter` -> `Hiver immobile`.
-- `ch5` à `ch11b` : traduits avec Codex en local, sans service de traduction externe ; 1429 messages couverts ; achievements `v_ac_ch5_*` à `v_ac_ch11_*` traduits ; le livre 1 est maintenant couvert en français avec fallback anglais uniquement pour les chapitres non traduits hors livre 1.
+- `ch3`: translated with Codex in GPT-5.5 mode, medium effort, no fast mode; source split into 18 controlled batches; structural and editorial QA completed; terms stabilized during this chapter: `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, keeping `Northern Continent` and `Western Continent`.
+- `ch4`: translated locally with Codex, without external translation service; 108 messages covered; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat`, and `v_ac_ch4_kneed` translated; stabilized term: `still winter` -> `Hiver immobile`.
+- `ch5` through `ch11b`: translated locally with Codex, without external translation service; 1429 messages covered; achievements `v_ac_ch5_*` through `v_ac_ch11_*` translated; Book 1 is now covered in French, with English fallback only for untranslated chapters outside Book 1.
 
-## Points Ouverts
+## Open Points
 
-- Les noms propres de continents (`Eastern Continent`, `Northern Continent`, `Western Continent`) sont conservés en anglais conformément aux règles du projet, même quand la source varie entre majuscule et minuscule.
-- Les titres d'achievements des livres futurs devront arbitrer au cas par cas entre fidélité littérale et effet humoristique équivalent.
+- Continent proper names (`Eastern Continent`, `Northern Continent`, `Western Continent`) remain in English under project rules, even when the source varies capitalization.
+- Future-book achievement titles will need case-by-case arbitration between literal fidelity and equivalent humorous effect.

@@ -1,83 +1,93 @@
-# Pipeline Contenu
+# Content Pipeline
 
-## Objectif
+## Goal
 
-Transformer les fichiers originaux en contenu standard et vérifiable, sans perdre la possibilité d'auditer les sources.
+Transform the original files into standard, verifiable content without losing
+the ability to audit the sources.
 
-Le pipeline produit :
+The pipeline produces:
 
-- une archive brute immuable ;
-- un JSON canonique lisible ;
-- des bundles UI canoniques depuis les sources traduisibles locales ;
-- des bundles story i18n canoniques depuis les sources traduisibles locales ;
-- des paquets runtime compressés et vérifiés ;
-- un index global du contenu.
+- an immutable raw archive;
+- readable canonical JSON;
+- canonical UI bundles from local translatable sources;
+- canonical story i18n bundles from local translatable sources;
+- compressed and verified runtime packs;
+- a global content index.
 
-Les images Book 1 ne font pas partie de ce pipeline de contenu. Elles utilisent le workflow manuel documenté dans `docs/manual-images.md` et les scripts `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`, `pnpm images:normalize -- --book 1` et `pnpm images:check -- --book 1`. `images:stage` prépare tous les moments par défaut ; `--moment <id>` et `--chapter <id>` limitent le scope. Le chemin OpenAI optionnel utilise `pnpm images:refsheets -- --book 1 --missing` et `pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`; ses fichiers restent sous `output/visual/` et n'entrent pas dans le contenu canonique.
+Book 1 images are not part of this content pipeline. They use the manual
+workflow documented in `docs/manual-images.md` and the commands
+`pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`,
+`pnpm images:normalize -- --book 1`, and `pnpm images:check -- --book 1`.
+`images:stage` prepares every moment by default; `--moment <id>` and
+`--chapter <id>` limit the scope. The optional OpenAI path uses
+`pnpm images:refsheets -- --book 1 --missing` and
+`pnpm images:generate:api -- --book 1 --missing --batch --quality high --reference-mode sheets`;
+its files stay under `output/visual/` and never enter canonical content.
 
-## Archive Brute
+## Raw Archive
 
-Chemin :
+Path:
 
 ```text
 content/archive/original/<sourceCommit>/
 ```
 
-Contenu archive :
+Archived content:
 
 - `README.md`
 - `LICENSE`
 - `chapters/**`
 - `manifest.json`
 
-Le manifest contient :
+The manifest contains:
 
-- repository source ;
-- ref demandée (`main` par défaut) ;
-- commit exact ;
-- date d'import ;
-- licence logiciel et données ;
-- liste des fichiers ;
-- taille ;
+- source repository;
+- requested ref (`main` by default);
+- exact commit;
+- import date;
+- software and data license metadata;
+- file list;
+- size;
 - SHA-256.
 
-Le pointeur courant est :
+The current pointer is:
 
 ```text
 content/archive/original/current.json
 ```
 
-## Source GitHub
+## GitHub Source
 
-Par défaut, `content:import` utilise :
+By default, `content:import` uses:
 
 ```text
 raduprv/Magium@main
 ```
 
-Le script résout `main` en SHA exact. C'est volontaire : on bénéficie des fixes de `main`, tout en gardant une build reproductible.
+The script resolves `main` to an exact SHA. This is intentional: the project
+benefits from upstream fixes while keeping a reproducible build.
 
-Pour forcer une autre ref :
+To force another ref:
 
 ```bash
-MAGIUM_SOURCE_REF=<sha-ou-branch> pnpm content:import
+MAGIUM_SOURCE_REF=<sha-or-branch> pnpm content:import
 ```
 
-Pour forcer un retéléchargement même si le SHA courant existe déjà :
+To force a re-download even if the current SHA already exists:
 
 ```bash
 MAGIUM_FORCE_IMPORT=1 pnpm content:import
 ```
 
-## Format Canonique
+## Canonical Format
 
-Chemin :
+Path:
 
 ```text
 content/canonical/v1/
 ```
 
-Fichiers principaux :
+Main files:
 
 ```text
 index.json
@@ -99,48 +109,60 @@ locales/fr/stats.json
 locales/fr/ui.json
 ```
 
-Le graphe `story/<chapterId>.json` contient la logique :
+`story/<chapterId>.json` contains logic:
 
-- scène order ;
-- scènes ;
-- paragraph blocks avec `messageId` ;
-- choices avec `messageId`, target, assignments explicites, special ;
-- conditions en AST ;
-- set variables ;
-- achievements par scène.
+- scene order;
+- scenes;
+- paragraph blocks with `messageId`;
+- choices with `messageId`, target, explicit assignments, and special value;
+- conditions as AST;
+- set variables;
+- achievements unlocked by scene.
 
-Depuis le format runtime V2, et dans les versions suivantes, chaque assignment à la forme :
+Since runtime format V2, and in later versions, every assignment has this shape:
 
 ```json
 { "variable": "v_available_points", "mode": "add", "value": 3 }
 ```
 
-`mode: "set"` affecte une valeur absolue. `mode: "add"` ajoute un delta numérique. Les valeurs signées dans les sources (`+3`, `-3`) deviennent des deltas, ce qui est obligatoire pour les points de stats et les boosts narratifs. Une valeur non signée comme `v_max_stat = 4` reste une affectation absolue.
+`mode: "set"` assigns an absolute value. `mode: "add"` adds a numeric delta.
+Signed source values (`+3`, `-3`) become deltas, which is required for stat
+points and narrative boosts. An unsigned value such as `v_max_stat = 4`
+remains an absolute assignment.
 
-La locale `locales/en/<chapterId>.json` contient les textes originaux :
+`locales/en/<chapterId>.json` contains the original texts:
 
-- paragraphes ;
-- libellés de choix ;
-- textes d'achievement embarqués dans une scène.
+- paragraphs;
+- choice labels;
+- achievement text embedded in a scene.
 
-`locales/en/achievements.json` contient les titres/captions du catalogue d'achievements.
+`locales/en/achievements.json` contains achievement catalog titles and captions.
 
-## Adaptations Produit Du Runtime
+## Runtime Product Adaptations
 
-L'archive brute reste une copie vérifiable des sources originales. Les adaptations produit se font après parsing, avant l'écriture canonique et les packs runtime.
+The raw archive remains a verifiable copy of upstream sources. Product
+adaptations are applied after parsing, before writing canonical content and
+runtime packs.
 
-Le runtime supprime volontairement `Ch11b-Credits`, l'ancien écran commercial de fin du livre 1. `Ch11b-Ending` conserve le dernier texte narratif et son unique bouton pointe directement vers `B2-Ch01a-Intro` avec `special: checkpoint_save`, `v_b1_saved_stats = 1`, `v_chapter_save_counter = 5` et `v_checkpoint_rich = 1`. Les textes de paiement, jetons, IAP, redémarrage et chargement de cette page ne doivent pas être régénérés dans les packs runtime.
+The runtime intentionally removes `Ch11b-Credits`, the old commercial screen at
+the end of Book 1. `Ch11b-Ending` keeps the final narrative text and its single
+button points directly to `B2-Ch01a-Intro` with `special: checkpoint_save`,
+`v_b1_saved_stats = 1`, `v_chapter_save_counter = 5`, and
+`v_checkpoint_rich = 1`. Payment, token, IAP, restart, and loading text from
+that page must not be regenerated into runtime packs.
 
-Les sources UI sont les fichiers éditables :
+Editable UI sources:
 
 ```text
 content/ui-locales/en.json
 content/ui-locales/fr.json
 ```
 
-`content:parse` les copie dans `content/canonical/v1/locales/<locale>/ui.json`, ajoute les locales disponibles dans `index.uiLocales`, puis génère les packs runtime `locales/<locale>/ui`.
+`content:parse` copies them to
+`content/canonical/v1/locales/<locale>/ui.json`, adds available locales to
+`index.uiLocales`, and generates runtime packs `locales/<locale>/ui`.
 
-Les sources story i18n sont les fichiers éditables :
+Editable story i18n sources:
 
 ```text
 content/story-locales/en/stats.json
@@ -155,13 +177,25 @@ content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```
 
-`content:parse` les copie dans `content/canonical/v1/locales/<locale>/`, ajoute les locales disponibles dans `index.storyLocales`, puis génère les packs runtime `locales/<locale>/<bundle>`. Les fichiers de chapitre doivent avoir exactement les mêmes `messageId` que `en`. Les achievements traduits peuvent être partiels par rapport au catalogue complet, mais doivent couvrir strictement les chapitres traduits par la locale. Les stats doivent être complètes pour chaque locale de récit.
+`content:parse` copies them to `content/canonical/v1/locales/<locale>/`, adds
+available story languages to `index.storyLocales`, and generates runtime packs
+`locales/<locale>/<bundle>`. Chapter files must have exactly the same
+`messageId` keys as `en`. Translated achievements may be partial relative to
+the full catalog, but must strictly cover translated chapters for that locale.
+Stats must be complete for every story locale.
 
-Les corrections publiques de traduction ne changent pas ce modèle. Le service `services/translation-api` stocke uniquement des propositions. Une correction de paragraphe cible un segment affiché dans un `messageId` et le changeset remplace uniquement ce segment dans la valeur JSON complète. Un changeset accepté est appliqué par `tools/contributions/apply-changeset.mjs` sur les sources éditables `content/story-locales/<locale>/<chapter>.json`, puis le pipeline régénère canonique et packs. Aucun endpoint public ne doit servir `content/canonical` ou `src/generated` comme JSON brut.
+Public translation corrections do not change this model. The
+`services/translation-api` service stores proposals only. A paragraph
+correction targets one visible segment inside a `messageId`; the changeset
+replaces only that segment in the complete JSON value. An accepted changeset is
+applied by `tools/contributions/apply-changeset.mjs` to editable sources under
+`content/story-locales/<locale>/<chapter>.json`, then the pipeline regenerates
+canonical content and packs. No public endpoint may serve `content/canonical`
+or `src/generated` as raw JSON.
 
 ## Conditions
 
-Les conditions `.magium` sont parsées vers :
+`.magium` conditions are parsed into:
 
 ```json
 {
@@ -177,70 +211,73 @@ Les conditions `.magium` sont parsées vers :
 }
 ```
 
-`anyOf` représente les `||`.
-`allOf` représente les `&&`.
+`anyOf` represents `||`.
+`allOf` represents `&&`.
 
-`True` devient `null`.
-`False` devient `{ "anyOf": [] }`.
+`True` becomes `null`.
+`False` becomes `{ "anyOf": [] }`.
 
-Les lignes `choice(...) if (...)` doivent garder quatre données séparées : target, assignments, `special` et condition. Le parser coupe le `if` après la parenthèse finale du choix pour éviter que la condition soit avalée dans `target`, `special` ou `setVariables`.
+`choice(...) if (...)` lines must keep four separate pieces of data: target,
+assignments, `special`, and condition. The parser cuts the `if` after the final
+choice parenthesis to avoid swallowing the condition into `target`, `special`,
+or `setVariables`.
 
-## Paquets Runtime
+## Runtime Packs
 
-Chemin :
+Path:
 
 ```text
 src/generated/
 ```
 
-Ces fichiers sont générés par `build-canonical.mjs`.
+These files are generated by `build-canonical.mjs`.
 
-`src/generated/contentPacks.ts` expose une table de loaders dynamiques.
-Chaque pack sous `src/generated/packs/` contient :
+`src/generated/contentPacks.ts` exposes a dynamic loader table. Each pack under
+`src/generated/packs/` contains:
 
-- encoding `base64+gzip` ;
-- SHA-256 du blob compressé ;
-- taille ;
-- données encodées.
+- `base64+gzip` encoding;
+- SHA-256 of the compressed blob;
+- size;
+- encoded data.
 
-Le runtime :
+The runtime:
 
-1. importe dynamiquement le pack nécessaire ;
-2. décode base64 ;
-3. vérifie SHA-256 ;
-4. décompresse gzip ;
-5. parse JSON.
+1. dynamically imports the required pack;
+2. decodes base64;
+3. verifies SHA-256;
+4. decompresses gzip;
+5. parses JSON.
 
 ## Validation
 
-`pnpm content:validate` vérifie :
+`pnpm content:validate` checks:
 
-- 54 fichiers `.magium` archivés ;
-- scène order cohérent ;
-- targets existantes ou special explicite ;
-- assignments explicites avec `mode: "set" | "add"` ;
-- absence de condition `if` accidentellement embarquée dans un assignment ou un `special` ;
-- messages présents pour tous les `messageId` ;
-- achievements connus ;
-- clés UI identiques entre `en` et les autres locales UI ;
-- présence des packs `locales/<locale>/ui` dans `src/generated/contentPacks.ts` ;
-- clés strictes des chapitres traduits par rapport à `en` ;
-- clés stats identiques entre `en` et les autres locales de récit ;
-- clés achievements traduites pour les chapitres couverts et packs story présents ;
-- pas d'indice de `.magium` brut dans `src/generated/contentPacks.ts`.
+- 54 archived `.magium` files;
+- coherent scene order;
+- existing targets or explicit special values;
+- explicit assignments with `mode: "set" | "add"`;
+- no condition `if` accidentally embedded in an assignment or `special`;
+- messages present for every `messageId`;
+- known achievements;
+- identical UI keys between `en` and other UI locales;
+- `locales/<locale>/ui` packs present in `src/generated/contentPacks.ts`;
+- strict translated chapter keys against `en`;
+- identical stat keys between `en` and other story locales;
+- translated achievement keys for covered chapters and corresponding story packs;
+- no raw `.magium` hint in `src/generated/contentPacks.ts`.
 
-`pnpm dist:check` vérifie après build :
+`pnpm dist:check` verifies after build:
 
-- aucun `.magium` dans `dist/` ;
-- aucun JSON canonique brut dans `dist/` ;
-- pas d'extrait source brut évident.
+- no `.magium` in `dist/`;
+- no raw canonical JSON in `dist/`;
+- no obvious raw source excerpt.
 
-## Modification Du Parser
+## Parser Changes
 
-Si un fichier `.magium` ne parse pas :
+If a `.magium` file does not parse:
 
-1. ne pas corriger le fichier archive ;
-2. inspecter la syntaxe originale ;
-3. modifier `tools/content/parser.mjs` ;
-4. ajouter/adapter un test dans `tests/parser.test.mjs` ;
-5. relancer `pnpm content:all && pnpm test`.
+1. do not patch the archived file;
+2. inspect the original syntax;
+3. modify `tools/content/parser.mjs`;
+4. add or update a test in `tests/parser.test.mjs`;
+5. rerun `pnpm content:all && pnpm test`.
