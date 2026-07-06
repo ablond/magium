@@ -163,7 +163,8 @@ From the player UI, export always asks for a passphrase:
 - derives a PBKDF2 SHA-256 key;
 - 250,000 iterations;
 - 16-byte salt;
-- produces a file transferable between browsers and devices if `contentVersion` is identical.
+- produces a file transferable between browsers and devices when its playthrough
+  history can be replayed by the current runtime.
 
 `local-key` mode remains accepted only to reject old or non-transferable files
 cleanly; the UI no longer creates exports without a passphrase.
@@ -177,12 +178,14 @@ Import:
 1. parses the container;
 2. derives or retrieves the key;
 3. decrypts;
-4. verifies that the save `contentVersion` matches the current runtime;
-5. replays `history` from the start;
-6. compares the reconstructed state with the decrypted state;
-7. saves only if validation passes.
+4. replays `history` from the start on the current runtime;
+5. compares the reconstructed state with the decrypted state;
+6. stores the replayed state with the current `contentVersion` only if validation passes.
 
-A decrypted but incoherent save must be rejected.
+A decrypted but incoherent save must be rejected. A different `contentVersion`
+is not rejected by itself: older saves are accepted when replay proves that the
+path, variables, stats, achievements, and checkpoint remain compatible with the
+current graph.
 
 `history` contains two event types:
 
@@ -196,14 +199,17 @@ modifies a stat or counter is therefore rejected if it does not match the
 replayed path.
 
 `historyDigest` starts from `magium:v2:initial`. This digest remains stable as
-long as the history format does not change; incompatible save invalidation also
-uses `contentVersion`, which includes the current runtime format and changes
-when the generated graph changes. An exported save must therefore be encrypted
-with a passphrase and target the same `contentVersion`.
+long as the history format does not change. `contentVersion` identifies the
+runtime content that created the save, but restore is optimistic: import and
+local load first try to replay the save against the current runtime, then
+rewrite the stored state with the current `contentVersion` if replay succeeds.
+This keeps UX, copy, translation, and compatible content updates from breaking
+player saves while still rejecting paths that no longer exist or no longer
+produce the same state.
 
 UI-side errors must stay understandable and visible in the Saves panel, for
 example `Unsupported save file`, `Wrong password or damaged save file`,
-`This save belongs to another content version`, or
+`This save cannot be replayed with this content version`, or
 `This save file does not match a playable game`.
 
 ## Acceptable Unencrypted Data

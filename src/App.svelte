@@ -268,11 +268,18 @@
         rememberContributionProfile = true
       }
       context = await loadContextForScene(index.initialSceneId, settings.locale)
-      const loaded = await loadGameState('autosave')
-      if (loaded?.contentVersion === index.contentVersion) {
+      const loaded = await loadGameState('autosave', {
+        contentVersion: index.contentVersion,
+        contextForScene: async (sceneId) => {
+          context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
+          return context
+        },
+      })
+      if (loaded) {
         context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context)
         state = loaded
       } else {
+        context = await loadContextForScene(index.initialSceneId, settings.locale, context)
         state = enterCurrentScene(context, createInitialState(index.contentVersion, settings.locale))
         await saveGameState(state)
       }
@@ -369,14 +376,30 @@
   }
 
   async function loadSlot(slotId: string) {
-    clearStatus()
-    const loaded = await loadGameState(slotId)
-    if (!loaded) return
-    context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context ?? undefined)
-    state = loaded
-    resetStatDraft()
-    await refresh()
-    closePanel({ restoreFocus: false })
+    clearSaveFeedback()
+    try {
+      const targetContentVersion = runtimeContentVersion || state?.contentVersion
+      const loaded = await loadGameState(slotId, targetContentVersion
+        ? {
+            contentVersion: targetContentVersion,
+            contextForScene: async (sceneId) => {
+              context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
+              return context
+            },
+          }
+        : undefined)
+      if (!loaded) {
+        panelError = t(uiMessages, 'errors.saveContentVersion', {}, SAVE_IMPORT_ERROR_MESSAGES.contentVersion)
+        return
+      }
+      context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context ?? undefined)
+      state = loaded
+      resetStatDraft()
+      await refresh()
+      closePanel({ restoreFocus: false })
+    } catch (caught) {
+      panelError = formatCaughtError(caught)
+    }
   }
 
   async function saveManualSlot() {

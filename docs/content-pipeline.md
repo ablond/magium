@@ -173,6 +173,9 @@ content/story-locales/fr/ch4.json
 content/story-locales/fr/ch5.json
 ...
 content/story-locales/fr/ch11b.json
+content/story-locales/fr/b2ch1.json
+...
+content/story-locales/fr/b2ch11c.json
 content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```

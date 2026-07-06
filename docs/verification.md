@@ -178,7 +178,7 @@ Must confirm:
 - 54 generated chapters;
 - 136 achievements;
 - generated UI packs `locales/en/ui` and `locales/fr/ui` with synchronized UI keys;
-- generated and valid Book 1 FR story packs (`locales/fr/ch1` through `locales/fr/ch11b`), `locales/fr/achievements`, `locales/en/stats`, and `locales/fr/stats`, with FR achievements covered for Book 1;
+- generated and valid Book 1 and Book 2 FR story packs (`locales/fr/ch1` through `locales/fr/ch11b`, then `locales/fr/b2ch1` through `locales/fr/b2ch11c`), `locales/fr/achievements`, `locales/en/stats`, and `locales/fr/stats`, with FR achievements covered for Book 1 and Book 2;
 - canonical assignments in `mode: "set" | "add"`;
 - `Ch11b-Credits` absent from runtime content, with `Ch11b-Ending` pointing directly to `B2-Ch01a-Intro` through `checkpoint_save`;
 - no `choice(...) if (...)` condition embedded in `target`, `special`, or `setVariables`;
@@ -201,8 +201,8 @@ Verify:
 1. the page loads directly into Book 1 chapter 1;
 2. clicking `Excited` displays the next scene;
 3. reloading the page resumes progress;
-4. if the browser prefers `fr`, the interface and Book 1 start in French; otherwise use Settings to switch to `Français`;
-5. desktop 1280 x 720: the left rail displays `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` in FR without cutting labels, the reader header no longer shows achievement or autosave badges, the reading area uses Literata at a comfortable width and dense book-like paragraph spacing, with no line/dialogue overlap, Book 1 scenes use narrative packs `fr/ch1` through `fr/ch11b`, short dialogue such as `ch5.Ch5_Intro.p2` renders as several real DOM paragraphs instead of one large `<p>`, and the left rail and open right panel stay visible during long scroll;
+4. if the browser prefers `fr`, the interface and available Book 1 and Book 2 story text start in French; otherwise use Settings to switch to `Français`;
+5. desktop 1280 x 720: the left rail displays `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` in FR without cutting labels, the reader header no longer shows achievement or autosave badges, the reading area uses Literata at a comfortable width and dense book-like paragraph spacing, with no line/dialogue overlap, Book 1 scenes use narrative packs `fr/ch1` through `fr/ch11b`, Book 2 scenes use narrative packs `fr/b2ch1` through `fr/b2ch11c`, short dialogue such as `ch5.Ch5_Intro.p2` renders as several real DOM paragraphs instead of one large `<p>`, and the left rail and open right panel stay visible during long scroll;
 6. mobile 390 x 844: navigation remains compact, story remains dense and readable in FR and EN without UI/text overlap, and panels open as overlays above the story with close button, clickable backdrop, and `Escape`, without pushing content down;
 7. the drop cap for the first alphabetical paragraph rises slightly above the line and does not look like it falls into the paragraph;
 8. the Saves panel clearly separates autosave, local saves, checkpoint, and transfer; it does not show `autosave`, `slotId`, `Ch12`, `route`, `prod`, `local-key`, or `pbkdf2` to the player;
@@ -231,8 +231,8 @@ Verify:
 31. clicking `Export save` opens the password field only then; without a password, the file is not downloaded;
 32. export with passphrase produces a `.magium-save` whose filename contains `magium`, readable chapter, and date;
 33. clicking `Import save` opens the password field and file choice only then;
-34. import with the same passphrase restores progress if current `contentVersion` matches;
-35. wrong password, incompatible file, different `contentVersion`, or incoherent stat / `v_available_points` displays a clear panel error and does not modify the local save;
+34. import with the same passphrase restores progress when replay is compatible, even if the save was created with an older `contentVersion`;
+35. wrong password, incompatible file, non-replayable older `contentVersion`, or incoherent stat / `v_available_points` displays a clear panel error and does not modify the local save;
 36. under `pnpm dev`, the rail shows a `Debug` panel;
 37. the Debug panel can jump to a scene from another chapter and applies scene-entry `setVariables`;
 38. a choice hidden by conditions can be applied from Debug without adding a `history` event;

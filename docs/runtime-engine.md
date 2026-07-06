@@ -281,15 +281,19 @@ behavior.
 
 ## Anti-Tamper Replay
 
-`replayAndValidate(contextForScene, saved)`:
+`replayAndResolveState(contextForScene, saved, targetContentVersion)`:
 
 1. starts again from `Ch1-Intro1`;
 2. replays every event in `saved.history`;
 3. verifies that every choice was available and every stat allocation respected visible stats, caps, and available points;
 4. reloads the target scene before entering a new chapter;
 5. compares current scene, variables, playthrough-scoped achievements, and `historyDigest`.
+6. returns the replayed state stamped with `targetContentVersion` when the save is compatible.
 
-This validation is used during save import.
+`replayAndValidate(contextForScene, saved)` remains as a boolean wrapper around
+the same logic. Save import and local save loading use the resolved state, so a
+save from an older `contentVersion` can survive compatible runtime/content
+updates while a path that no longer replays is still rejected.
 
 Global achievement progress is not part of this comparison. A valid import may
 enrich it after successful replay, but a `.magium-save` remains a playthrough

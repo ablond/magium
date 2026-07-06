@@ -272,7 +272,7 @@ Constraints:
 - keep global achievements in an encrypted store separate from saves;
 - authenticate data through AES-GCM additionalData;
 - maintain a chained `historyDigest`;
-- verify import by replaying the path;
+- verify import and compatible content-version upgrades by replaying the path;
 - also replay stat allocations;
 - reject a decrypted save if its state does not match a playable path.
 
@@ -324,4 +324,4 @@ After UI changes, verify at least:
 - Browser automation tests for post-choice stat check results.
 - Narrative i18n workflow: XLIFF/JSON translation export, import, coverage report.
 - Browser automation tests for export/import and offline behavior.
-- Finer handling of incompatible saves after a `contentVersion` change.
+- Browser automation tests for replay-compatible save import after a `contentVersion` change.

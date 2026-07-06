@@ -4,20 +4,43 @@ import { describe, expect, it } from "vitest";
 
 const root = process.cwd();
 const book1FrenchChapters = ["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8", "ch9", "ch10", "ch11a", "ch11b"];
+const book2FrenchChapters = [
+  "b2ch1",
+  "b2ch2",
+  "b2ch3",
+  "b2ch4a",
+  "b2ch4b",
+  "b2ch5a",
+  "b2ch5b",
+  "b2ch6",
+  "b2ch7",
+  "b2ch8",
+  "b2ch9a",
+  "b2ch9b",
+  "b2ch10a",
+  "b2ch10b",
+  "b2ch11a",
+  "b2ch11b",
+  "b2ch11c",
+];
+const frenchChapters = [...book1FrenchChapters, ...book2FrenchChapters];
 
 async function readJson(relativePath) {
   return JSON.parse(await fs.readFile(path.join(root, relativePath), "utf8"));
 }
 
-async function readBook1AchievementKeys() {
+async function readAchievementKeys(achievementFiles) {
   const currentArchive = await readJson("content/archive/original/current.json");
-  const achievements = await readJson(`${currentArchive.archivePath}/chapters/achievements1.json`);
   const keys = new Set();
 
-  for (const chapterAchievements of Object.values(achievements)) {
-    for (const achievement of chapterAchievements) {
-      keys.add(`achievement.${achievement.variable}.caption`);
-      keys.add(`achievement.${achievement.variable}.title`);
+  for (const achievementFile of achievementFiles) {
+    const achievements = await readJson(`${currentArchive.archivePath}/chapters/${achievementFile}`);
+
+    for (const chapterAchievements of Object.values(achievements)) {
+      for (const achievement of chapterAchievements) {
+        keys.add(`achievement.${achievement.variable}.caption`);
+        keys.add(`achievement.${achievement.variable}.title`);
+      }
     }
   }
 
@@ -30,7 +53,7 @@ describe("generated content i18n", () => {
     const generated = await fs.readFile(path.join(root, "src/generated/contentPacks.ts"), "utf8");
 
     expect(index.storyLocales).toContain("fr");
-    for (const chapterId of book1FrenchChapters) {
+    for (const chapterId of frenchChapters) {
       const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
       const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
 
@@ -67,7 +90,7 @@ describe("generated content i18n", () => {
     ]);
   });
 
-  it("generates complete stat locales and Book 1 French achievement overrides", async () => {
+  it("generates complete stat locales and Book 1 and Book 2 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");
     const frAchievements = await readJson("content/canonical/v1/locales/fr/achievements.json");
@@ -75,11 +98,13 @@ describe("generated content i18n", () => {
 
     expect(Object.keys(frStats.messages).sort()).toEqual(Object.keys(enStats.messages).sort());
     expect(frStats.messages["stat.v_strength"]).toBe("Force");
-    const expectedAchievementKeys = await readBook1AchievementKeys();
+    const expectedAchievementKeys = await readAchievementKeys(["achievements1.json", "achievements2.json"]);
 
     expect(Object.keys(frAchievements.messages).sort()).toEqual(expectedAchievementKeys);
     expect(frAchievements.messages["achievement.v_ac_ch6_immersion.title"]).toBe("Immersion totale");
     expect(frAchievements.messages["achievement.v_ac_ch6_immersion.caption"]).toBe("Vivre de tes propres yeux ce que voit ton personnage.");
+    expect(frAchievements.messages["achievement.v_ac_b2_ch1_distance.title"]).toBe("Longue distance");
+    expect(frAchievements.messages["achievement.v_ac_b2_ch8_trivia.title"]).toBe("Anecdotes sur les sans-aura");
     expect(generated).toContain('"locales/fr/achievements"');
     expect(generated).toContain('"locales/fr/stats"');
   });

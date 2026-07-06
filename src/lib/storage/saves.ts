@@ -1,4 +1,4 @@
-import { replayAndValidate } from '../story/engine'
+import { replayAndResolveState } from '../story/engine'
 import type { GameState, StoryContext } from '../story/types'
 import { base64ToBytes, bytesToBase64, decryptJson, derivePassphraseKey, encryptJson, getLocalSaveKey, type EncryptedBox } from './crypto'
 import { idbAll, idbDelete, idbGet, idbPut } from './idb'
@@ -11,7 +11,7 @@ export const SAVE_IMPORT_ERROR_MESSAGES = {
   exportPasswordRequired: 'Export password is required',
   passwordRequired: 'This backup needs the password used when it was exported',
   passwordOrCorrupt: 'Wrong password or damaged save file',
-  contentVersion: 'This save was made for a different content version',
+  contentVersion: 'This save cannot be replayed with this content version',
   tamper: 'This save file does not match a playable playthrough',
   debug: 'Debug saves cannot be exported',
 } as const
@@ -54,6 +54,11 @@ export type SaveContainer = {
   encrypted: EncryptedBox
 }
 
+export type SaveReplayOptions = {
+  contentVersion: string
+  contextForScene: (sceneId: string) => Promise<StoryContext>
+}
+
 export async function saveGameState(state: GameState, options: { label?: string } = {}): Promise<void> {
   const existing = await idbGet<StoredSaveRecord>('saves', state.slotId)
   const key = await getLocalSaveKey()
@@ -86,14 +91,18 @@ export async function listSaveSummaries(): Promise<SaveSummary[]> {
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
 
-export async function loadGameState(slotId: string): Promise<GameState | null> {
+export async function loadGameState(slotId: string, replayOptions?: SaveReplayOptions): Promise<GameState | null> {
   const records = await idbAll<StoredSaveRecord>('saves')
   const record = records.find((candidate) => candidate.slotId === slotId)
   if (!record) {
     return null
   }
   const key = await getLocalSaveKey()
-  return decryptJson<GameState>(record.encrypted, key, SAVE_ASSOCIATED_DATA)
+  const state = await decryptJson<GameState>(record.encrypted, key, SAVE_ASSOCIATED_DATA)
+  if (!replayOptions) {
+    return state
+  }
+  return resolveStoredStateForRuntime(state, replayOptions)
 }
 
 export async function deleteSave(slotId: string): Promise<void> {
@@ -142,18 +151,15 @@ export async function importSave(
   if (!isGameStateShape(state)) {
     throw new SaveImportError('unsupported')
   }
-  if (state.contentVersion !== expectedContentVersion) {
-    throw new SaveImportError('contentVersion')
-  }
   if (isDebugDirtyState(state)) {
     throw new SaveImportError('debug')
   }
-  const valid = await validateReplay(contextForScene, state)
-  if (!valid) {
-    throw new SaveImportError('tamper')
+  const replayed = await resolveReplay(contextForScene, state, expectedContentVersion)
+  if (!replayed) {
+    throw new SaveImportError(state.contentVersion === expectedContentVersion ? 'tamper' : 'contentVersion')
   }
-  await saveGameState(state)
-  return state
+  await saveGameState(replayed)
+  return replayed
 }
 
 function parseSaveContainer(raw: string): SaveContainer {
@@ -187,14 +193,33 @@ async function decryptSaveContainer(container: SaveContainer, passphrase: string
   }
 }
 
-async function validateReplay(
+async function resolveStoredStateForRuntime(
+  state: GameState,
+  replayOptions: SaveReplayOptions,
+): Promise<GameState | null> {
+  if (!isGameStateShape(state)) {
+    return null
+  }
+  if (isDebugDirtyState(state)) {
+    return state.contentVersion === replayOptions.contentVersion ? state : null
+  }
+  const replayed = await resolveReplay(replayOptions.contextForScene, state, replayOptions.contentVersion)
+  if (!replayed) {
+    return null
+  }
+  await saveGameState(replayed)
+  return replayed
+}
+
+async function resolveReplay(
   contextForScene: (sceneId: string) => Promise<StoryContext>,
   state: GameState,
-): Promise<boolean> {
+  targetContentVersion: string,
+): Promise<GameState | null> {
   try {
-    return await replayAndValidate(contextForScene, state)
+    return await replayAndResolveState(contextForScene, state, targetContentVersion)
   } catch {
-    return false
+    return null
   }
 }
 

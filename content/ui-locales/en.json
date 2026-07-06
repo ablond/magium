@@ -103,7 +103,7 @@
     "errors.noCheckpointAvailable": "No checkpoint is available",
     "errors.noStatPointsSelected": "No stat points selected",
     "errors.notEnoughStatPoints": "Not enough stat points available",
-    "errors.saveContentVersion": "This save belongs to another content version",
+    "errors.saveContentVersion": "This save cannot be replayed with this content version",
     "errors.saveExportPasswordRequired": "Choose an export password before downloading the save.",
     "errors.saveLocalOnly": "This file was not protected for transfer. Export the save again with a password.",
     "errors.savePasswordOrCorrupt": "Wrong password or damaged save file",
