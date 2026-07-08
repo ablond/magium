@@ -37,6 +37,11 @@ Chosen principles:
 | common language | langue commune | Human language, distinct from ancient languages. |
 | golden fox | renard doré / grande renarde | `renard doré` when Barry/Daren talk about a still-vague figure; `grande renarde` when Elaria speaks of her protector. |
 | still winter | Hiver immobile | Event name and coded phrase introduced by Eiden in `ch4`. Capitalize when the expression designates the event. |
+| transceiver | émetteur | Stabilized in Book 1 and reused for Daren's enchanted devices in Book 2. |
+| dwarven ale | ale naine | Keep `ale`, not `bière`, for continuity with Book 1. |
+| glowing pinecone | pomme de pin lumineuse | Book 2 tournament objective. |
+| revenant | revenant / revenante | Inflect naturally by body or entity when French agreement requires it. |
+| trampler | piétineur | Book 2 arena creature. |
 | oildrip | suintenoire | Stabilized in `ch11a` for the Sparrow district health crisis. |
 | time weaver | tisseur / tisseuse du temps | Use feminine `tisseuse du temps` for Rose. |
 | dragon hunter | chasseur de dragons | Caste/function term, naturally inflected in plural. |
@@ -167,7 +172,7 @@ Narrative translation:
 
 Chapter achievements:
 
-- search `content/canonical/v1/story/<chapterId>.json` for every achievement variable referenced by the chapter, usually shaped like `v_ac_<chapterId>_*`;
+- search `content/canonical/v1/story/<chapterId>.json` for every achievement variable referenced by the chapter; Book 1 uses variables shaped like `v_ac_ch...`, while Book 2 uses `v_ac_b2_ch...`;
 - for each variable, translate `achievement.<variable>.title` and `achievement.<variable>.caption` from `content/canonical/v1/locales/en/achievements.json`;
 - add these translations to `content/story-locales/fr/achievements.json` without deleting already translated achievements;
 - keep the title short and natural, and the caption faithful to the English effect or joke;
@@ -186,7 +191,7 @@ Required editorial QA:
 - scan for obvious English leftovers, straight quotes, unbalanced French guillemets, badly punctuated dialogue tags, double spaces, and stray spaces;
 - scan calqued first-person dialogue tags, especially `», je dis`, `», je lui dis`, `», je dis à`, `», je demande`, `», je lui demande`, `», je demande à`, `», je continue`, then correct only real tag cases;
 - scan forbidden or unstable terms: `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, non-naturalized imperial units;
-- scan stabilized Book 1 corrections when context matches: `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux`;
+- scan stabilized Book 1 corrections when context matches: `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux`, lowercase `hiver immobile`;
 - verify preserved English proper names, especially continents, characters, places, races, and titles already stabilized;
 - reread at least the chapter opening, one long scene, one choice scene, one scene with key characters, one tension or combat scene, and the end or alternative branches;
 - correct passages that are too literal, too formal, or too neutral so Barry remains direct, oral, introspective, and lightly ironic;
@@ -204,8 +209,9 @@ Generation and validation:
 - `ch3`: translated with Codex in GPT-5.5 mode, medium effort, no fast mode; source split into 18 controlled batches; structural and editorial QA completed; terms stabilized during this chapter: `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, keeping `Northern Continent` and `Western Continent`.
 - `ch4`: translated locally with Codex, without external translation service; 108 messages covered; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat`, and `v_ac_ch4_kneed` translated; stabilized term: `still winter` -> `Hiver immobile`.
 - `ch5` through `ch11b`: translated locally with Codex, without external translation service; 1429 messages covered; achievements `v_ac_ch5_*` through `v_ac_ch11_*` translated; Book 1 is now covered in French, with English fallback only for untranslated chapters outside Book 1.
+- `b2ch1` through `b2ch11c`: translated locally with Codex in 75 controlled batches, without external translation service; 2517 messages covered; 48 Book 2 achievements translated through their `v_ac_b2_ch...` variables; Book 1 and Book 2 are now covered in French, with English fallback only for untranslated later books.
 
 ## Open Points
 
 - Continent proper names (`Eastern Continent`, `Northern Continent`, `Western Continent`) remain in English under project rules, even when the source varies capitalization.
-- Future-book achievement titles will need case-by-case arbitration between literal fidelity and equivalent humorous effect.
+- Book 3 achievement titles will need case-by-case arbitration between literal fidelity and equivalent humorous effect.

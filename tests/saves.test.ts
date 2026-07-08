@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createInitialState, enterCurrentScene } from '../src/lib/story/engine'
+import { applyChoice, createInitialState, enterCurrentScene, renderCurrentScene } from '../src/lib/story/engine'
 import type { StoryContext } from '../src/lib/story/types'
 import { encryptJson, getLocalSaveKey } from '../src/lib/storage/crypto'
-import { exportSave, importSave, listSaveSummaries, renameSave, saveGameState, SAVE_IMPORT_ERROR_MESSAGES } from '../src/lib/storage/saves'
+import { exportSave, importSave, listSaveSummaries, loadGameState, renameSave, saveGameState, SAVE_IMPORT_ERROR_MESSAGES } from '../src/lib/storage/saves'
 
 const stores = vi.hoisted(() => ({
   keys: new Map<string, unknown>(),
@@ -41,8 +41,8 @@ function makeContext(): StoryContext {
       initialSceneId: 'Ch1-Intro1',
       uiLocales: ['en'],
       storyLocales: ['en'],
-      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 1 }],
-      sceneToChapter: { 'Ch1-Intro1': 'ch1' },
+      chapters: [{ id: 'ch1', key: 'b1ch1', sourceFile: 'chapters/ch1.magium', sceneCount: 2 }],
+      sceneToChapter: { 'Ch1-Intro1': 'ch1', 'Ch1-Checkpoint': 'ch1' },
     },
     locale: 'en',
     chapters: {
@@ -50,13 +50,33 @@ function makeContext(): StoryContext {
         formatVersion: 1,
         chapterId: 'ch1',
         sourceFile: 'chapters/ch1.magium',
-        sceneOrder: ['Ch1-Intro1'],
+        sceneOrder: ['Ch1-Intro1', 'Ch1-Checkpoint'],
         scenes: {
           'Ch1-Intro1': {
             id: 'Ch1-Intro1',
             blocks: [],
-            choices: [],
+            choices: [{
+              id: 'c-checkpoint',
+              messageId: 'choice.checkpoint',
+              target: 'Ch1-Checkpoint',
+              setVariables: [{ variable: 'v_checkpoint_route', mode: 'set', value: 1 }],
+              special: 'checkpoint_save',
+              conditions: null,
+            }],
             setVariables: [],
+            achievements: [],
+          },
+          'Ch1-Checkpoint': {
+            id: 'Ch1-Checkpoint',
+            blocks: [],
+            choices: [],
+            setVariables: [{
+              id: 'enter-checkpoint',
+              variable: 'v_checkpoint_entered',
+              mode: 'set',
+              value: 1,
+              conditions: null,
+            }],
             achievements: [],
           },
         },
@@ -84,8 +104,18 @@ function makeContext(): StoryContext {
   }
 }
 
-function makeState() {
-  return enterCurrentScene(makeContext(), createInitialState(CONTENT_VERSION, 'en'))
+function makeState(contentVersion = CONTENT_VERSION) {
+  return enterCurrentScene(makeContext(), createInitialState(contentVersion, 'en'))
+}
+
+async function makeCheckpointState(contentVersion = CONTENT_VERSION) {
+  const context = makeContext()
+  const initial = enterCurrentScene(context, createInitialState(contentVersion, 'en'))
+  const checkpointChoice = renderCurrentScene(context, initial).choices.find((choice) => choice.id === 'c-checkpoint')
+  if (!checkpointChoice) {
+    throw new Error('Expected checkpoint choice')
+  }
+  return applyChoice(context, initial, checkpointChoice)
 }
 
 async function contextForScene() {
@@ -151,8 +181,26 @@ describe('save export/import', () => {
     expect(stores.saves.size).toBe(0)
   })
 
-  it('rejects a save from a different content version before storing it', async () => {
-    const raw = await exportSave(makeState(), 'portable-secret')
+  it('imports a replay-compatible save from an older content version and stores the current version', async () => {
+    const raw = await exportSave(makeState('content-v0'), 'portable-secret')
+    resetStorage()
+
+    const imported = await importSave(raw, 'portable-secret', 'content-v2', contextForScene)
+    const stored = await loadGameState('autosave')
+
+    expect(imported.contentVersion).toBe('content-v2')
+    expect(stored?.contentVersion).toBe('content-v2')
+  })
+
+  it('rejects an older content-version save when replay cannot reproduce the decrypted state', async () => {
+    const state = makeState('content-v0')
+    const raw = await exportSave({
+      ...state,
+      variables: {
+        ...state.variables,
+        v_strength: 99,
+      },
+    }, 'portable-secret')
     resetStorage()
 
     await expect(importSave(raw, 'portable-secret', 'content-v2', contextForScene))
@@ -174,6 +222,35 @@ describe('save export/import', () => {
     await expect(importSave(raw, 'portable-secret', CONTENT_VERSION, contextForScene))
       .rejects.toThrow(SAVE_IMPORT_ERROR_MESSAGES.tamper)
     expect(stores.saves.size).toBe(0)
+  })
+
+  it('rebuilds imported checkpoints from replay instead of trusting the decrypted payload', async () => {
+    const state = await makeCheckpointState('content-v0')
+    const raw = await exportSave({
+      ...state,
+      checkpoint: state.checkpoint
+        ? {
+            ...state.checkpoint,
+            currentSceneId: 'Ch1-Intro1',
+            variables: { v_current_scene: 'Ch1-Intro1', v_strength: 99 },
+            historyLength: 0,
+            historyDigest: 'tampered-checkpoint',
+          }
+        : null,
+    }, 'portable-secret')
+    resetStorage()
+
+    const imported = await importSave(raw, 'portable-secret', 'content-v2', contextForScene)
+
+    expect(imported.contentVersion).toBe('content-v2')
+    expect(imported.currentSceneId).toBe('Ch1-Checkpoint')
+    expect(imported.variables.v_checkpoint_entered).toBe(1)
+    expect(imported.checkpoint).toMatchObject({
+      currentSceneId: 'Ch1-Checkpoint',
+      historyLength: 1,
+    })
+    expect(imported.checkpoint?.variables.v_strength).toBeUndefined()
+    expect(imported.checkpoint?.historyDigest).not.toBe('tampered-checkpoint')
   })
 
   it('rejects export for debug-dirty local states', async () => {
@@ -229,6 +306,38 @@ describe('save export/import', () => {
       label: 'Before the duel',
       currentSceneId: 'Ch1-Intro1',
       contentVersion: CONTENT_VERSION,
+    })
+  })
+
+  it('loads and upgrades a compatible older local autosave', async () => {
+    await saveGameState(makeState('content-v0'))
+
+    const loaded = await loadGameState('autosave', { contentVersion: 'content-v2', contextForScene })
+    const summaries = await listSaveSummaries()
+
+    expect(loaded?.contentVersion).toBe('content-v2')
+    expect(summaries[0]).toMatchObject({
+      slotId: 'autosave',
+      contentVersion: 'content-v2',
+      currentSceneId: 'Ch1-Intro1',
+    })
+  })
+
+  it('loads and upgrades a compatible older named local save', async () => {
+    await saveGameState({
+      ...makeState('content-v0'),
+      slotId: 'manual-test',
+    }, { label: 'Before the duel' })
+
+    const loaded = await loadGameState('manual-test', { contentVersion: 'content-v2', contextForScene })
+    const summaries = await listSaveSummaries()
+
+    expect(loaded?.contentVersion).toBe('content-v2')
+    expect(summaries[0]).toMatchObject({
+      slotId: 'manual-test',
+      label: 'Before the duel',
+      contentVersion: 'content-v2',
+      currentSceneId: 'Ch1-Intro1',
     })
   })
 

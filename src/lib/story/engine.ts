@@ -264,21 +264,29 @@ export async function replayAndValidate(
   contextForScene: (sceneId: string) => Promise<StoryContext>,
   saved: GameState,
 ): Promise<boolean> {
+  return (await replayAndResolveState(contextForScene, saved)) !== null
+}
+
+export async function replayAndResolveState(
+  contextForScene: (sceneId: string) => Promise<StoryContext>,
+  saved: GameState,
+  targetContentVersion = saved.contentVersion,
+): Promise<GameState | null> {
   let context = await contextForScene('Ch1-Intro1')
-  let state = enterCurrentScene(context, createInitialState(saved.contentVersion, saved.locale, saved.slotId))
+  let state = enterCurrentScene(context, createInitialState(targetContentVersion, saved.locale, saved.slotId))
 
   for (const event of saved.history) {
     if (!isHistoryEvent(event)) {
-      return false
+      return null
     }
     if (state.currentSceneId !== event.sceneId) {
-      return false
+      return null
     }
     if (event.type === 'stats') {
       try {
         state = await applyStatAllocation(state, event.deltas)
       } catch {
-        return false
+        return null
       }
       continue
     }
@@ -286,7 +294,7 @@ export async function replayAndValidate(
     const rendered = renderCurrentScene(context, state)
     const choice = rendered.choices.find((candidate) => candidate.id === event.choiceId)
     if (!choice) {
-      return false
+      return null
     }
     if (choice.target) {
       context = await contextForScene(choice.target)
@@ -294,10 +302,20 @@ export async function replayAndValidate(
     state = await applyChoice(context, state, choice)
   }
 
-  return state.currentSceneId === saved.currentSceneId &&
+  const isValid = state.currentSceneId === saved.currentSceneId &&
     state.historyDigest === saved.historyDigest &&
     stableVariablesEqual(state.variables, saved.variables) &&
     stableAchievementsEqual(state.achievements, saved.achievements)
+  if (!isValid) {
+    return null
+  }
+
+  return {
+    ...state,
+    contentVersion: targetContentVersion,
+    createdAt: saved.createdAt,
+    updatedAt: saved.updatedAt,
+  }
 }
 
 export function findScene(context: StoryContext, sceneId: string): Scene {

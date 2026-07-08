@@ -103,7 +103,7 @@
     "errors.noCheckpointAvailable": "Aucun point de contrôle n'est disponible",
     "errors.noStatPointsSelected": "Aucun point de stat sélectionné",
     "errors.notEnoughStatPoints": "Pas assez de points de stat disponibles",
-    "errors.saveContentVersion": "Cette sauvegarde appartient à une autre version du contenu",
+    "errors.saveContentVersion": "Cette sauvegarde ne peut pas être rejouée avec cette version du contenu",
     "errors.saveExportPasswordRequired": "Choisis un mot de passe d'export avant de télécharger la sauvegarde.",
     "errors.saveLocalOnly": "Ce fichier n'a pas été protégé pour le transfert. Exporte à nouveau la sauvegarde avec un mot de passe.",
     "errors.savePasswordOrCorrupt": "Mot de passe incorrect ou fichier de sauvegarde endommagé",
