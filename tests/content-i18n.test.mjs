@@ -90,6 +90,51 @@ describe("generated content i18n", () => {
     ]);
   });
 
+  it("keeps the Book 2 lessathi refusal on the refusal outcome", async () => {
+    const story = await readJson("content/canonical/v1/story/b2ch2.json");
+    const refusal = story.scenes["B2-Ch02a-Soundproof"].choices.find(
+      (choice) => choice.messageId === "b2ch2.B2_Ch02a_Soundproof.c3",
+    );
+
+    expect(refusal.setVariables).toContainEqual({ variable: "v_b2_ch2_deal", mode: "set", value: 2 });
+  });
+
+  it("keeps Book 2 stillwater, Still Winter, and Beacon terminology distinct", async () => {
+    const winterMismatches = [];
+    const malformedArtifacts = [];
+    const malformedPattern = /\bde le (?:sans-aura|Beacon)\b|l['’]sans-aura\b|\bpendant le sans-aura\b/iu;
+
+    for (const chapterId of book2FrenchChapters) {
+      const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+
+      for (const [messageId, englishText] of Object.entries(en.messages)) {
+        const frenchText = fr.messages[messageId];
+        const englishWinterCount = (englishText.match(/\bstill winter\b/gi) ?? []).length;
+        const frenchWinterCount = (frenchText.match(/Hiver immobile/g) ?? []).length;
+
+        if (englishWinterCount !== frenchWinterCount) {
+          winterMismatches.push({ chapterId, messageId, englishWinterCount, frenchWinterCount });
+        }
+        if (malformedPattern.test(frenchText)) {
+          malformedArtifacts.push({ chapterId, messageId });
+        }
+      }
+    }
+
+    expect(winterMismatches).toEqual([]);
+    expect(malformedArtifacts).toEqual([]);
+
+    const b2ch2 = await readJson("content/canonical/v1/locales/fr/b2ch2.json");
+    const b2ch6 = await readJson("content/canonical/v1/locales/fr/b2ch6.json");
+    expect(b2ch2.messages["b2ch2.B2_Ch02a_Natural.p1"]).toContain("parler du Beacon of Hope");
+    expect(b2ch2.messages["b2ch2.B2_Ch02a_Tunnels.p1"]).toContain("parlé du Beacon of Hope");
+    expect(JSON.stringify(b2ch2.messages)).not.toMatch(/Lueur d['’]Espoir/);
+    expect(b2ch6.messages["b2ch6.B2_Ch06a_Intro.p1"]).toContain(
+      "Tu es cette sans-aura qui suivait constamment Eiden et la renarde pendant l’Hiver immobile !",
+    );
+  });
+
   it("generates complete stat locales and Book 1 and Book 2 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");

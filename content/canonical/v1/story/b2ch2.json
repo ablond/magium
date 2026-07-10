@@ -2621,7 +2621,7 @@
             {
               "variable": "v_b2_ch2_deal",
               "mode": "set",
-              "value": 1
+              "value": 2
             }
           ],
           "special": null,
