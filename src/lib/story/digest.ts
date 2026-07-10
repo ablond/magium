@@ -10,6 +10,14 @@ export async function extendHistoryDigest(previous: string, event: unknown): Pro
   return sha256Hex(`${previous}|${stableStringify(event)}`)
 }
 
+export async function digestHistory(events: readonly unknown[]): Promise<string> {
+  let digest = INITIAL_HISTORY_DIGEST
+  for (const event of events) {
+    digest = await extendHistoryDigest(digest, event)
+  }
+  return digest
+}
+
 export function stableStringify(value: unknown): string {
   return JSON.stringify(sortObject(value))
 }

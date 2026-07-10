@@ -178,14 +178,24 @@ Import:
 1. parses the container;
 2. derives or retrieves the key;
 3. decrypts;
-4. replays `history` from the start on the current runtime;
-5. compares the reconstructed state with the decrypted state;
-6. stores the replayed state with the current `contentVersion` only if validation passes.
+4. normalizes explicitly supported historical events after validating their original digest;
+5. replays `history` from the start on the current runtime;
+6. compares the reconstructed state with the decrypted state;
+7. stores the replayed state with the current `contentVersion` only if validation passes.
 
 A decrypted but incoherent save must be rejected. A different `contentVersion`
 is not rejected by itself: older saves are accepted when replay proves that the
 path, variables, stats, achievements, and checkpoint remain compatible with the
 current graph.
+
+The V4 replay migration handles the Book 2 lessathi false-refusal bug without
+changing consequences already seen by the player. It accepts only the exact
+historical `B2-Ch02a-Soundproof:c3` event whose assignments include
+`v_b2_ch2_deal = 1`, verifies the original history digest, then rewrites it as
+the equivalent `c1` lie/acceptance choice. The new history and any checkpoint
+covering that choice receive recalculated digests before normal replay. This
+also works for saves already marked V3, because the graph correction initially
+shipped without changing `contentVersion`.
 
 `history` contains two event types:
 
@@ -198,8 +208,9 @@ also reconstructs `_aux` variables and point counters. A save that directly
 modifies a stat or counter is therefore rejected if it does not match the
 replayed path.
 
-`historyDigest` starts from `magium:v2:initial`. This digest remains stable as
-long as the history format does not change. `contentVersion` identifies the
+`historyDigest` starts from `magium:v2:initial`. This digest remains stable for
+an unchanged event stream. A supported event migration deliberately rebuilds
+it from the normalized history. `contentVersion` identifies the
 runtime content that created the save, but restore is optimistic: import and
 local load first try to replay the save against the current runtime, then
 rewrite the stored state with the current `contentVersion` if replay succeeds.

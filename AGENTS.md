@@ -33,6 +33,7 @@ Build a playable Magium PWA from the original texts, with:
 - The global achievement collection is also stored in IndexedDB as AES-GCM encrypted data, separate from `GameState.achievements`. `GameState.achievements` remains the replayable state of the current playthrough and can roll back with restart/checkpoint.
 - The Saves panel must remain player-facing: autosave, named/renamable local saves, checkpoint, then transfer. Do not show `slotId`, raw scene IDs, `route`, `prod`, `local-key`, or `pbkdf2` in the player UX.
 - Local saves do not ask for a password. `.magium-save` export/import asks for a password only in the dedicated flow after clicking Export or Import.
+- Replay migrates the exact historical Book 2 false-refusal event (`B2-Ch02a-Soundproof:c3` with `v_b2_ch2_deal = 1`) to the equivalent lie/acceptance event `c1` before validation. Keep this migration exact, verify the original history digest first, and do not broaden it to arbitrary saved assignments.
 - localStorage must contain only non-critical UI preferences.
 
 ## Required Verification Commands

@@ -156,6 +156,12 @@ graph. In the archived source, one conditional refusal branch sets the
 acceptance outcome; the runtime keeps the original label and routes it to the
 ordinary refusal outcome instead.
 
+This graph correction advances the generated runtime format to V4. Saves made
+before the correction recorded that false refusal as choice `c3` with the same
+assignments as the lie/acceptance choice `c1`. Save replay migrates only that
+exact historical event to `c1`, preserving the consequences already played
+while new refusals continue to use the corrected outcome.
+
 Editable UI sources:
 
 ```text

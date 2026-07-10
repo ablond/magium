@@ -283,12 +283,20 @@ behavior.
 
 `replayAndResolveState(contextForScene, saved, targetContentVersion)`:
 
-1. starts again from `Ch1-Intro1`;
-2. replays every event in `saved.history`;
-3. verifies that every choice was available and every stat allocation respected visible stats, caps, and available points;
-4. reloads the target scene before entering a new chapter;
-5. compares current scene, variables, playthrough-scoped achievements, and `historyDigest`.
-6. returns the replayed state stamped with `targetContentVersion` when the save is compatible.
+1. normalizes explicitly supported historical events after verifying their original history digest;
+2. starts again from `Ch1-Intro1`;
+3. replays every event in the normalized history;
+4. verifies that every choice was available and every stat allocation respected visible stats, caps, and available points;
+5. reloads the target scene before entering a new chapter;
+6. compares current scene, variables, playthrough-scoped achievements, and `historyDigest`;
+7. returns the replayed state stamped with `targetContentVersion` when the save is compatible.
+
+The V4 migration recognizes one exact Book 2 event produced before the
+lessathi refusal fix: `B2-Ch02a-Soundproof:c3` with
+`v_b2_ch2_deal = 1`. It rewrites that event to the equivalent `c1` lie choice,
+then recalculates the full history digest and any checkpoint digest that covers
+the event. The assignments and resulting story state do not change. A partial,
+modified, or self-inconsistent event is not migrated.
 
 `replayAndValidate(contextForScene, saved)` remains as a boolean wrapper around
 the same logic. Save import and local save loading use the resolved state, so a

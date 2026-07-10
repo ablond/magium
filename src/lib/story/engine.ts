@@ -1,5 +1,5 @@
 import { evaluateCondition } from './conditions'
-import { extendHistoryDigest, INITIAL_HISTORY_DIGEST } from './digest'
+import { digestHistory, extendHistoryDigest, INITIAL_HISTORY_DIGEST, stableStringify } from './digest'
 import {
   AVAILABLE_POINTS_AUX_VARIABLE,
   AVAILABLE_POINTS_VARIABLE,
@@ -25,6 +25,26 @@ import type {
   StoryContext,
   VariableAssignment,
 } from './types'
+
+const BOOK2_LESSATHI_DEAL_SCENE_ID = 'B2-Ch02a-Soundproof'
+const BOOK2_LESSATHI_DEAL_CONCLUSION_SCENE_ID = 'B2-Ch02a-Deal-conclusion'
+const BOOK2_LESSATHI_FALSE_REFUSAL_CHOICE_ID = `${BOOK2_LESSATHI_DEAL_SCENE_ID}:c3`
+const BOOK2_LESSATHI_LIE_CHOICE_ID = `${BOOK2_LESSATHI_DEAL_SCENE_ID}:c1`
+const BOOK2_LESSATHI_LEGACY_REFUSAL_EVENT: ChoiceHistoryEvent = {
+  type: 'choice',
+  sceneId: BOOK2_LESSATHI_DEAL_SCENE_ID,
+  choiceId: BOOK2_LESSATHI_FALSE_REFUSAL_CHOICE_ID,
+  target: BOOK2_LESSATHI_DEAL_CONCLUSION_SCENE_ID,
+  special: null,
+  assignments: [
+    { variable: 'v_current_scene', mode: 'set', value: BOOK2_LESSATHI_DEAL_CONCLUSION_SCENE_ID },
+    { variable: 'v_b2_ch2_deal', mode: 'set', value: 1 },
+  ],
+}
+const BOOK2_LESSATHI_LIE_EVENT: ChoiceHistoryEvent = {
+  ...BOOK2_LESSATHI_LEGACY_REFUSAL_EVENT,
+  choiceId: BOOK2_LESSATHI_LIE_CHOICE_ID,
+}
 
 export function createInitialState(contentVersion: string, locale: string, slotId = 'autosave'): GameState {
   const now = new Date().toISOString()
@@ -272,10 +292,14 @@ export async function replayAndResolveState(
   saved: GameState,
   targetContentVersion = saved.contentVersion,
 ): Promise<GameState | null> {
+  const migratedSaved = await migrateSavedStateForReplay(saved)
+  if (!migratedSaved) {
+    return null
+  }
   let context = await contextForScene('Ch1-Intro1')
-  let state = enterCurrentScene(context, createInitialState(targetContentVersion, saved.locale, saved.slotId))
+  let state = enterCurrentScene(context, createInitialState(targetContentVersion, migratedSaved.locale, migratedSaved.slotId))
 
-  for (const event of saved.history) {
+  for (const event of migratedSaved.history) {
     if (!isHistoryEvent(event)) {
       return null
     }
@@ -302,10 +326,10 @@ export async function replayAndResolveState(
     state = await applyChoice(context, state, choice)
   }
 
-  const isValid = state.currentSceneId === saved.currentSceneId &&
-    state.historyDigest === saved.historyDigest &&
-    stableVariablesEqual(state.variables, saved.variables) &&
-    stableAchievementsEqual(state.achievements, saved.achievements)
+  const isValid = state.currentSceneId === migratedSaved.currentSceneId &&
+    state.historyDigest === migratedSaved.historyDigest &&
+    stableVariablesEqual(state.variables, migratedSaved.variables) &&
+    stableAchievementsEqual(state.achievements, migratedSaved.achievements)
   if (!isValid) {
     return null
   }
@@ -313,9 +337,48 @@ export async function replayAndResolveState(
   return {
     ...state,
     contentVersion: targetContentVersion,
-    createdAt: saved.createdAt,
-    updatedAt: saved.updatedAt,
+    createdAt: migratedSaved.createdAt,
+    updatedAt: migratedSaved.updatedAt,
   }
+}
+
+async function migrateSavedStateForReplay(saved: GameState): Promise<GameState | null> {
+  const legacyEventIndexes = saved.history
+    .map((event, index) => isLegacyBook2LessathiRefusalEvent(event) ? index : -1)
+    .filter((index) => index >= 0)
+  if (!legacyEventIndexes.length) {
+    return saved
+  }
+
+  if (await digestHistory(saved.history) !== saved.historyDigest) {
+    return null
+  }
+
+  const legacyIndexSet = new Set(legacyEventIndexes)
+  const history = saved.history.map((event, index) =>
+    legacyIndexSet.has(index) ? cloneHistoryEvent(BOOK2_LESSATHI_LIE_EVENT) : cloneHistoryEvent(event)
+  )
+  const historyDigest = await digestHistory(history)
+  const checkpointIncludesMigration = saved.checkpoint && legacyEventIndexes.some(
+    (index) => index < saved.checkpoint!.historyLength,
+  )
+  const checkpoint = checkpointIncludesMigration && saved.checkpoint
+    ? {
+        ...saved.checkpoint,
+        historyDigest: await digestHistory(history.slice(0, saved.checkpoint.historyLength)),
+      }
+    : saved.checkpoint
+
+  return {
+    ...saved,
+    checkpoint,
+    history,
+    historyDigest,
+  }
+}
+
+function isLegacyBook2LessathiRefusalEvent(event: GameHistoryEvent): boolean {
+  return stableStringify(event) === stableStringify(BOOK2_LESSATHI_LEGACY_REFUSAL_EVENT)
 }
 
 export function findScene(context: StoryContext, sceneId: string): Scene {

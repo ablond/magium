@@ -92,11 +92,17 @@ describe("generated content i18n", () => {
 
   it("keeps the Book 2 lessathi refusal on the refusal outcome", async () => {
     const story = await readJson("content/canonical/v1/story/b2ch2.json");
-    const refusal = story.scenes["B2-Ch02a-Soundproof"].choices.find(
+    const choices = story.scenes["B2-Ch02a-Soundproof"].choices;
+    const lie = choices.find(
+      (choice) => choice.messageId === "b2ch2.B2_Ch02a_Soundproof.c1",
+    );
+    const refusal = choices.find(
       (choice) => choice.messageId === "b2ch2.B2_Ch02a_Soundproof.c3",
     );
 
+    expect(lie.setVariables).toContainEqual({ variable: "v_b2_ch2_deal", mode: "set", value: 1 });
     expect(refusal.setVariables).toContainEqual({ variable: "v_b2_ch2_deal", mode: "set", value: 2 });
+    expect(refusal.target).toBe(lie.target);
   });
 
   it("keeps Book 2 stillwater, Still Winter, and Beacon terminology distinct", async () => {

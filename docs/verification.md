@@ -231,7 +231,7 @@ Verify:
 31. clicking `Export save` opens the password field only then; without a password, the file is not downloaded;
 32. export with passphrase produces a `.magium-save` whose filename contains `magium`, readable chapter, and date;
 33. clicking `Import save` opens the password field and file choice only then;
-34. import with the same passphrase restores progress when replay is compatible, even if the save was created with an older `contentVersion`;
+34. import with the same passphrase restores progress when replay is compatible, even if the save was created with an older `contentVersion`; an exact legacy Book 2 false refusal is rewritten to the equivalent lie choice without changing the current scene or variables;
 35. wrong password, incompatible file, non-replayable older `contentVersion`, or incoherent stat / `v_available_points` displays a clear panel error and does not modify the local save;
 36. under `pnpm dev`, the rail shows a `Debug` panel;
 37. the Debug panel can jump to a scene from another chapter and applies scene-entry `setVariables`;
