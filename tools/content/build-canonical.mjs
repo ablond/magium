@@ -27,6 +27,8 @@ import {
 const BOOK1_ENDING_SCENE_ID = "Ch11b-Ending";
 const BOOK1_CREDITS_SCENE_ID = "Ch11b-Credits";
 const BOOK2_INTRO_SCENE_ID = "B2-Ch01a-Intro";
+const BOOK2_LESSATHI_DEAL_SCENE_ID = "B2-Ch02a-Soundproof";
+const BOOK2_LESSATHI_REFUSAL_MESSAGE_ID = "b2ch2.B2_Ch02a_Soundproof.c3";
 const BOOK1_TO_BOOK2_ASSIGNMENTS = [
   { variable: "v_b1_saved_stats", mode: "set", value: 1 },
   { variable: "v_current_scene", mode: "set", value: BOOK2_INTRO_SCENE_ID },
@@ -115,6 +117,25 @@ function applyRuntimeContentAdaptations(parsed, { chapterId, sourceFile }) {
   if (chapterId === "ch11b") {
     pruneBook1CreditsGate(parsed, sourceFile);
   }
+  if (chapterId === "b2ch2") {
+    repairBook2LessathiRefusal(parsed, sourceFile);
+  }
+}
+
+function repairBook2LessathiRefusal(parsed, sourceFile) {
+  const scene = parsed.story.scenes[BOOK2_LESSATHI_DEAL_SCENE_ID];
+  const refusal = scene?.choices.find((choice) => choice.messageId === BOOK2_LESSATHI_REFUSAL_MESSAGE_ID);
+  if (!refusal) {
+    throw new Error(`${sourceFile}: expected the Book 2 lessathi refusal choice`);
+  }
+
+  const dealAssignment = refusal.setVariables.find((assignment) => assignment.variable === "v_b2_ch2_deal");
+  if (!dealAssignment || dealAssignment.mode !== "set" || dealAssignment.value !== 1) {
+    throw new Error(`${sourceFile}: unexpected Book 2 lessathi refusal assignment`);
+  }
+
+  // Upstream labels this branch as a refusal but routes it to the acceptance outcome.
+  dealAssignment.value = 2;
 }
 
 function pruneBook1CreditsGate(parsed, sourceFile) {

@@ -90,6 +90,15 @@ describe("generated content i18n", () => {
     ]);
   });
 
+  it("keeps the Book 2 lessathi refusal on the refusal outcome", async () => {
+    const story = await readJson("content/canonical/v1/story/b2ch2.json");
+    const refusal = story.scenes["B2-Ch02a-Soundproof"].choices.find(
+      (choice) => choice.messageId === "b2ch2.B2_Ch02a_Soundproof.c3",
+    );
+
+    expect(refusal.setVariables).toContainEqual({ variable: "v_b2_ch2_deal", mode: "set", value: 2 });
+  });
+
   it("generates complete stat locales and Book 1 and Book 2 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");

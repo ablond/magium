@@ -151,6 +151,11 @@ button points directly to `B2-Ch01a-Intro` with `special: checkpoint_save`,
 `v_checkpoint_rich = 1`. Payment, token, IAP, restart, and loading text from
 that page must not be regenerated into runtime packs.
 
+The Book 2 choice `Refuse the lessathi's offer` is also repaired in the runtime
+graph. In the archived source, one conditional refusal branch sets the
+acceptance outcome; the runtime keeps the original label and routes it to the
+ordinary refusal outcome instead.
+
 Editable UI sources:
 
 ```text
