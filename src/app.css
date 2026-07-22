@@ -725,6 +725,74 @@ input[type="range"] {
   line-height: 1.45;
 }
 
+.account-heading {
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+}
+
+.account-heading > svg {
+  margin-top: 1px;
+  color: var(--accent-strong);
+}
+
+.account-heading > div {
+  display: grid;
+  gap: 4px;
+}
+
+.account-connected {
+  display: grid;
+  gap: 3px;
+  padding: 11px 12px;
+  border: 1px solid var(--accent-line-strong);
+  border-radius: 8px;
+  background: var(--control-active-bg);
+}
+
+.account-connected strong {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.account-connected span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.account-mode button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.account-form {
+  display: grid;
+  gap: 10px;
+}
+
+.account-form label,
+.account-form .wide {
+  margin-top: 0;
+}
+
+.spinning {
+  animation: account-spin 0.9s linear infinite;
+}
+
+@keyframes account-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinning {
+    animation: none;
+  }
+}
+
 .save-summary {
   display: grid;
   gap: 3px;

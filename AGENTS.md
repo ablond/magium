@@ -11,6 +11,7 @@ Build a playable Magium PWA from the original texts, with:
 - a client-side game engine;
 - prepared multi-language i18n;
 - encrypted local saves that can be exported without an account;
+- optional username/password accounts with client-encrypted cross-device save synchronization;
 - an immersive dark arcane interface, readable on mobile and desktop.
 
 ## Current State To Respect
@@ -23,7 +24,7 @@ Build a playable Magium PWA from the original texts, with:
 - Source UI text lives in `content/ui-locales/en.json` and `content/ui-locales/fr.json`, then is generated into runtime packs `locales/<locale>/ui`.
 - Narrative translation sources live in `content/story-locales/<locale>/*.json`, then are generated into runtime packs `locales/<locale>/<bundle>`.
 - The Settings language choice drives `settings.uiLocale`, `settings.locale`, and `GameState.locale`. A chapter missing in the selected locale falls back to `en`.
-- The PWA can offer a translation correction from a visible paragraph or choice. Pencil icons are hidden by default and appear only when the contribution API URL is configured and the reader enables `settings.translationContributions` in Settings. For narrative text, the player target is the displayed paragraph (`segmentIndex` in the `messageId`), not the complete multi-paragraph block. This contribution goes to the separate `services/translation-api` service; it never directly modifies the runtime or source files.
+- The PWA can offer a translation correction from a visible paragraph or choice. Pencil icons are hidden by default and appear only when the unified API URL is configured and the reader enables `settings.translationContributions` in Settings. For narrative text, the player target is the displayed paragraph (`segmentIndex` in the `messageId`), not the complete multi-paragraph block. A contribution never directly modifies runtime or source files.
 - Public corrections are anonymous by default. Pseudonym and email are optional; pseudonym is used only for requested credits and remains moderated, while email is used only for confirmed follow-up and must be deleted after rejection or publication.
 - An accepted proposal must be grouped into a maintainer changeset, applied to `content/story-locales/<locale>/<chapter>.json`, regenerated with `pnpm content:all`, validated, and delivered by GitHub PR. Never create one PR per individual proposal.
 - Book 1 images use a primary manual ChatGPT workflow: portraits, moment prompts, and WebP files under `public/visuals/book1`, with no RAG or embeddings. An optional OpenAI API path exists only to finish missing illustrations through local reference sheets and Batch API.
@@ -33,6 +34,9 @@ Build a playable Magium PWA from the original texts, with:
 - The global achievement collection is also stored in IndexedDB as AES-GCM encrypted data, separate from `GameState.achievements`. `GameState.achievements` remains the replayable state of the current playthrough and can roll back with restart/checkpoint.
 - The Saves panel must remain player-facing: autosave, named/renamable local saves, checkpoint, then transfer. Do not show `slotId`, raw scene IDs, `route`, `prod`, `local-key`, or `pbkdf2` in the player UX.
 - Local saves do not ask for a password. `.magium-save` export/import asks for a password only in the dedicated flow after clicking Export or Import.
+- Accounts are optional and use only an identifier plus password. There is no email, password recovery, password change, account deletion, social login, or device management in V1.
+- The unified server under `services/translation-api` serves the PWA, account routes, contribution routes, and admin from one process. One shared PostgreSQL keeps account and translation tables logically separated.
+- Cloud synchronization covers non-debug autosave/named saves, deletion tombstones, and global achievements. Every downloaded save must pass replay/migration before local storage. Network failures must never block local saving.
 - Replay migrates the exact historical Book 2 false-refusal event (`B2-Ch02a-Soundproof:c3` with `v_b2_ch2_deal = 1`) to the equivalent lie/acceptance event `c1` before validation. Keep this migration exact, verify the original history digest first, and do not broaden it to arbitrary saved assignments.
 - localStorage must contain only non-critical UI preferences.
 
@@ -83,9 +87,9 @@ tag `YYYYMMDD-HHMMSS` and `latest`. The main Coolify deployment may also build
 the root `Dockerfile` directly through the GitHub App.
 
 To verify the local Docker stack, use `docker compose up -d --build`, then test
-`http://localhost:5173`, `http://localhost:8090/health`, one public proposal,
-and an admin route with the local token `dev-admin-token`. `docker compose down
--v` resets the local PostgreSQL database.
+`http://localhost:5173`, `http://localhost:8090/health`, registration/login/sync,
+one public proposal, and an admin route with the local token `dev-admin-token`.
+`docker compose down -v` resets the local PostgreSQL database.
 
 ## Required Documentation
 
@@ -108,6 +112,7 @@ Priority files:
 - `docs/content-pipeline.md` for import, parsing, canonicalization, and packs;
 - `docs/runtime-engine.md` for the engine;
 - `docs/saves-and-anti-tamper.md` for storage, encryption, and limits;
+- `docs/accounts-and-cloud-saves.md` for account, session, client encryption, sync, conflict, and recovery limits;
 - `docs/i18n.md` for the translation model;
 - `docs/contributions.md` for public proposals, privacy, review API, and changesets;
 - `docs/translation-contributions-system.md` as the exhaustive technical handoff for the translation contribution subsystem, including PWA, API, PostgreSQL, Mailpit, email double opt-in, maintainer admin, diff, changesets, GitHub PR workflow, local Docker, and Coolify;
@@ -142,15 +147,15 @@ through the optional API path documented in `docs/manual-images.md`.
 
 ## Docker And Coolify Packaging
 
-- The production Dockerfile is at the repository root for Coolify's Dockerfile build pack through GitHub App. It builds the app with pnpm, then copies only `dist/` into an `nginxinc/nginx-unprivileged` image exposed on port `8080`.
-- The root Dockerfile accepts build args `VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY` to enable the contribution form in the PWA image. Defaults remain empty.
+- The production Dockerfile is at the repository root for Coolify's Dockerfile build pack through GitHub App. It builds the PWA, then packages `dist/` and the unified Node server in one image exposed on port `8080`.
+- The root Dockerfile embeds `VITE_MAGIUM_API_URL=/` and accepts the public `VITE_MAGIUM_TURNSTILE_SITE_KEY` build arg. All secrets remain runtime variables.
 - Coolify runtime can build from the repository. `pnpm docker:push-prod` remains an optional path for publishing a prebuilt image `ghcr.io/ablond/magium`.
-- `services/translation-api` has its own Dockerfile and must be deployed as a Coolify application separate from the PWA runtime, with a separate PostgreSQL database.
-- The local compose stack runs the PWA in Vite dev mode, the contribution API, and PostgreSQL. Local values are non-secret and must not be copied to production.
-- Do not copy `content/archive`, `content/canonical`, source `src/generated`, `node_modules`, `.env*`, or `.magium-save` exports into the final image.
+- Production is exactly one Magium application plus one external PostgreSQL. The application runs automatic idempotent migrations at startup and refuses to start without `DATABASE_URL` in production.
+- The local compose stack runs the PWA in Vite dev mode, the unified app, one PostgreSQL, and Mailpit. Local values are non-secret and must not be copied to production.
+- Do not copy `content/archive`, `content/canonical`, source `src/generated`, `.env*`, or `.magium-save` exports into the final image. Production server dependencies may remain, but public static serving must be restricted to `dist/`.
 - `.dockerignore` must exclude sensitive or bulky local files, but must not break `pnpm build` in the builder stage.
 - `tools/docker/build-prod-push.sh` validates the image filesystem, starts the container, tests `/`, `/sw.js`, `/manifest.webmanifest`, and SPA fallback before push.
-- Coolify PWA must use the Dockerfile build pack, `Dockerfile` path, exposed port `8080`, no volume, and no runtime environment variable. If deployment uses the private GHCR package instead of the GitHub App build, authenticate the Coolify server with `docker login ghcr.io`.
+- Coolify must use the root Dockerfile build pack, exposed port `8080`, no application volume, one `magium.app` domain, and one PostgreSQL `DATABASE_URL`. If deployment uses the private GHCR package instead of the GitHub App build, authenticate the Coolify server with `docker login ghcr.io`.
 
 ## Content Pipeline
 
@@ -181,8 +186,8 @@ schema, statuses, email, admin, changesets, GitHub dispatch, local Docker, and
 Coolify. `docs/contributions.md` remains the product/functional view.
 
 - When `settings.translationContributions` is enabled and the API URL is configured, the PWA shows discreet pencil icons on visible paragraphs and choices. The player modal must display and prefill only the clicked paragraph; choices are still corrected as a whole. Do not show the player `messageId`, `sceneId`, `chapterId`, `contentVersion`, `segmentIndex`, hash, or other routing detail.
-- PWA build variables are `VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY`.
-- `services/translation-api` is separate from the PWA runtime, exposes `/health`, uses PostgreSQL in production, and can run locally with `docker compose up -d`. It must not serve canonical files or generated packs as public JSON.
+- PWA build variables are `VITE_MAGIUM_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY`.
+- The unified server exposes `/health`, uses one PostgreSQL in production, and can run locally with `docker compose up -d`. It must not serve canonical files or generated packs as public JSON.
 - The documented default captcha is Cloudflare Turnstile in invisible/non-interactive mode, with required API-side Siteverify validation. `TURNSTILE_DISABLED=1` is only for dev/test.
 - Admin routes must stay protected by `ADMIN_TOKEN` for scripts, or by the `/admin` maintainer web session with `HttpOnly` cookie and CSRF for mutating actions. Local compose uses `dev-admin-token` and `dev-admin-password`, non-secret values that are forbidden in production.
 - A public proposal remains in the database until review. The maintainer can accept, reject, or mark stale; acceptance produces an editable final version, not an automatic merge.
@@ -275,14 +280,18 @@ Constraints:
 - maintain a chained `historyDigest`;
 - verify import and compatible content-version upgrades by replaying the path;
 - also replay stat allocations;
-- reject a decrypted save if its state does not match a playable path.
+- reject a decrypted save if its state does not match a playable path;
+- keep account bearer tokens encrypted in IndexedDB and store only their hashes on the server;
+- encrypt every cloud record in the browser with account-derived AES-GCM and record-specific additionalData;
+- keep `debug.dirty` states out of cloud synchronization;
 
 Do not:
 
 - store variables/stats/achievements in plaintext;
 - add a localStorage fallback for game data;
 - feed global achievements from a `debug.dirty` state;
-- accept an import only because it decrypts.
+- accept an import only because it decrypts;
+- send plaintext game states, histories, variables, save labels, or achievement identifiers to account routes.
 
 ## UI / UX
 
@@ -304,7 +313,7 @@ After UI changes, verify at least:
 - scene with a long paragraph;
 - scene starting with `...`;
 - stat check result after a narrative choice, localized FR/EN;
-- Saves panel with autosave, local saves, renaming, checkpoint, export/import with password shown only in the transfer flow;
+- Saves panel with optional account registration/login/sync, autosave, local saves, renaming, checkpoint, export/import with password shown only in the transfer flow;
 - Stats panel before/after reveal, allocation, max 3 then 4, aura stats;
 - achievements panel, including keeping a death achievement after checkpoint rollback or new game;
 - settings/about panels;
@@ -317,7 +326,7 @@ After UI changes, verify at least:
 - The Vite dev server can see `src/generated` change during `content:all` and produce temporary HMR errors. If this happens, reload the page after regeneration. The clean build remains the reference.
 - `content:import` takes the current `main`, then pins the exact SHA in the manifest. It is not an old historical commit.
 - Original `logic.txt` files can help audit behavior, but the main runtime source is `.magium`.
-- The app is 100% client-side. A determined user with DevTools can always patch executed code; do not promise absolute anti-cheat without a backend.
+- The game engine and validation remain client-side even when optional accounts are enabled. A determined user with DevTools can patch executed code; do not promise absolute anti-cheat merely because ciphertext is synchronized through a backend.
 
 ## Logical Next Iterations
 

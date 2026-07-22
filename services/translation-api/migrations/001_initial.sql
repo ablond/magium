@@ -1,8 +1,3 @@
-CREATE TABLE IF NOT EXISTS magium_schema_migrations (
-  name text PRIMARY KEY,
-  applied_at timestamptz NOT NULL DEFAULT now()
-);
-
 CREATE TABLE IF NOT EXISTS translation_proposals (
   id uuid PRIMARY KEY,
   public_id text NOT NULL UNIQUE,

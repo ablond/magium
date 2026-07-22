@@ -33,6 +33,7 @@ export type StoredSaveRecord = {
   label?: string
   createdAt?: string
   updatedAt: string
+  storageUpdatedAt?: string
   contentVersion: string
   encrypted: EncryptedBox
 }
@@ -41,8 +42,17 @@ export type SaveSummary = {
   slotId: string
   label: string | null
   updatedAt: string
+  storageUpdatedAt: string
   contentVersion: string
   currentSceneId: string | null
+}
+
+export type SyncableSave = {
+  slotId: string
+  label: string | null
+  createdAt: string
+  storageUpdatedAt: string
+  state: GameState
 }
 
 export type SaveContainer = {
@@ -59,7 +69,10 @@ export type SaveReplayOptions = {
   contextForScene: (sceneId: string) => Promise<StoryContext>
 }
 
-export async function saveGameState(state: GameState, options: { label?: string } = {}): Promise<void> {
+export async function saveGameState(
+  state: GameState,
+  options: { label?: string; createdAt?: string; storageUpdatedAt?: string } = {},
+): Promise<void> {
   const existing = await idbGet<StoredSaveRecord>('saves', state.slotId)
   const key = await getLocalSaveKey()
   const encrypted = await encryptJson(state, key, SAVE_ASSOCIATED_DATA)
@@ -67,8 +80,9 @@ export async function saveGameState(state: GameState, options: { label?: string 
   await idbPut<StoredSaveRecord>('saves', {
     slotId: state.slotId,
     label,
-    createdAt: existing?.createdAt ?? state.createdAt,
+    createdAt: options.createdAt ?? existing?.createdAt ?? state.createdAt,
     updatedAt: state.updatedAt,
+    storageUpdatedAt: options.storageUpdatedAt ?? state.updatedAt,
     contentVersion: state.contentVersion,
     encrypted,
   })
@@ -83,6 +97,7 @@ export async function listSaveSummaries(): Promise<SaveSummary[]> {
       slotId: record.slotId,
       label: record.label ?? null,
       updatedAt: record.updatedAt,
+      storageUpdatedAt: record.storageUpdatedAt ?? record.updatedAt,
       contentVersion: record.contentVersion,
       currentSceneId: state?.currentSceneId ?? null,
     }
@@ -115,7 +130,43 @@ export async function renameSave(slotId: string, label: string): Promise<void> {
   await idbPut<StoredSaveRecord>('saves', {
     ...record,
     label: normalizeLabel(label),
+    storageUpdatedAt: new Date().toISOString(),
   })
+}
+
+export async function listSyncableSaves(): Promise<SyncableSave[]> {
+  const records = await idbAll<StoredSaveRecord>('saves')
+  const key = await getLocalSaveKey()
+  const saves: SyncableSave[] = []
+  for (const record of records) {
+    const state = await decryptRecordForSummary(record, key)
+    if (!state || !isGameStateShape(state) || isDebugDirtyState(state)) continue
+    saves.push({
+      slotId: record.slotId,
+      label: record.label ?? null,
+      createdAt: record.createdAt ?? state.createdAt,
+      storageUpdatedAt: record.storageUpdatedAt ?? record.updatedAt,
+      state,
+    })
+  }
+  return saves
+}
+
+export async function restoreSyncedSave(
+  save: SyncableSave,
+  replayOptions: SaveReplayOptions,
+): Promise<GameState | null> {
+  if (!isGameStateShape(save.state) || isDebugDirtyState(save.state) || save.state.slotId !== save.slotId) {
+    return null
+  }
+  const replayed = await resolveReplay(replayOptions.contextForScene, save.state, replayOptions.contentVersion)
+  if (!replayed) return null
+  await saveGameState(replayed, {
+    label: save.label ?? undefined,
+    createdAt: save.createdAt,
+    storageUpdatedAt: save.storageUpdatedAt,
+  })
+  return replayed
 }
 
 export async function exportSave(state: GameState, passphrase: string): Promise<string> {

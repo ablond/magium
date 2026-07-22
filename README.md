@@ -11,13 +11,14 @@ chapter is not available.
 
 ## Current State
 
-- Svelte + Vite + TypeScript app, with no backend required for the playable runtime.
-- Optional standalone service in `services/translation-api` for receiving and moderating public translation correction proposals.
+- Svelte + Vite + TypeScript app, with no account or backend required for local play.
+- Optional username/password accounts with client-encrypted cloud synchronization across devices and no email/password recovery.
+- One Magium server under `services/translation-api` serves the built PWA, account routes, translation proposals, and the maintainer admin from the same origin.
 - Content source: `raduprv/Magium@main`, resolved to the currently archived source commit.
 - Raw source archive hashed under `content/archive/original/<sourceCommit>/`.
 - Readable canonical JSON under `content/canonical/v1/`.
 - Compressed and verified runtime packs under `src/generated/`.
-- Local AES-GCM encrypted saves in IndexedDB, named local saves, and password-protected `.magium-save` export/import.
+- Local AES-GCM encrypted saves in IndexedDB, named local saves, password-protected `.magium-save` export/import, and optional client-encrypted cloud synchronization.
 - Global achievement progress stored locally in encrypted IndexedDB, separate from the current playthrough so achievements survive restarts and checkpoint rollbacks.
 - Installable PWA with service worker.
 - Direct reading UI with desktop navigation rail, progressive Stats panel, Saves panel split between autosave/local saves/checkpoint/transfer, comfort settings, Illustrations toggle, About attribution, and global FR/EN language selection.
@@ -47,14 +48,14 @@ pnpm docker:build-prod
 pnpm docker:push-prod
 ```
 
-`pnpm test` also runs the Node tests for `services/translation-api`. On a fresh
-checkout outside Docker Compose, install the root dependencies and the service
-dependencies before running the full validation suite.
+`pnpm test` also runs the Node tests for the unified server. On a fresh checkout
+outside Docker Compose, install the root dependencies and the server dependency
+set before running the full validation suite.
 
 Local Docker commands:
 
 ```bash
-docker compose up -d       # PWA Vite dev server, contribution API, PostgreSQL, Mailpit
+docker compose up -d       # Vite PWA, unified server, PostgreSQL, Mailpit
 docker compose down        # stop services and keep the database
 docker compose down -v     # fully reset the local database
 ```
@@ -62,7 +63,7 @@ docker compose down -v     # fully reset the local database
 With the local compose stack:
 
 - PWA: `http://localhost:5173`
-- Contribution API: `http://localhost:8090`
+- Unified API and production PWA image: `http://localhost:8090`
 - Maintainer admin: `http://localhost:8090/admin`
 - Local Mailpit: `http://localhost:8025`
 - Local admin token: `dev-admin-token`
@@ -106,22 +107,20 @@ pnpm docker:push-prod        # build, validate, push ghcr.io/ablond/magium:<time
 ```
 
 The root `Dockerfile` lets Coolify build directly from the GitHub App with the
-Dockerfile build pack. The production image exposes port `8080`, needs no
-runtime environment variables, and uses no volume. Manual pushes to
-`ghcr.io/ablond/magium` remain available if a prebuilt image deployment is
-preferred.
+Dockerfile build pack. The production image exposes port `8080` and serves the
+PWA plus every API route from one Node process. Production needs one external
+PostgreSQL through `DATABASE_URL`; schema migrations run automatically at
+startup. Manual pushes to `ghcr.io/ablond/magium` remain available.
 
-If public translation contributions are enabled in production, pass
-`VITE_MAGIUM_CONTRIBUTIONS_API_URL` and `VITE_MAGIUM_TURNSTILE_SITE_KEY` as PWA
-Dockerfile build arguments. The API service remains a separate Coolify
-application based on `services/translation-api/Dockerfile`, with PostgreSQL.
+The PWA uses the same origin through `VITE_MAGIUM_API_URL=/`. Only the public
+Turnstile site key remains a build argument. Passwords, database credentials,
+admin secrets, SMTP, and GitHub tokens are runtime variables in Coolify.
 
 ## Structure
 
 ```text
-docker-compose.yml           Local PWA dev, contribution API, PostgreSQL, and Mailpit stack.
+docker-compose.yml           Local Vite PWA, unified server, PostgreSQL, and Mailpit stack.
 .env.example                 Optional local Docker Compose overrides.
-docker/                      Runtime nginx image configuration.
 content/archive/original/    Original archived sources, immutable.
 content/canonical/v1/        Readable canonical JSON, generated.
 content/ui-locales/          Translatable UI shell sources.
@@ -130,7 +129,8 @@ content/schemas/             Documentation schemas.
 public/visuals/book1/        Public prompts and Book 1 WebP images.
 public/legal/                Public contribution, privacy, and moderation page.
 src/generated/               Generated compressed runtime packs imported by the app.
-services/translation-api/    Standalone translation contribution API with PostgreSQL schema.
+services/translation-api/    Unified Node server, migrations, account routes, contributions, and admin.
+src/lib/account/             Account HTTP, local session, and cloud synchronization.
 src/lib/content/             Pack loader and integrity verification.
 src/lib/contributions/       Payloads, Turnstile, and local contribution opt-in storage.
 src/lib/i18n/                UI locale resolution and interpolation.
@@ -152,6 +152,7 @@ docs/                        Detailed technical documentation.
 - [Content pipeline](./docs/content-pipeline.md): archive, parsing, canonical JSON, and runtime packs.
 - [Runtime engine](./docs/runtime-engine.md): scenes, choices, conditions, stats, achievements.
 - [Saves and anti-tamper](./docs/saves-and-anti-tamper.md): IndexedDB, AES-GCM, export/import, limits.
+- [Accounts and cloud saves](./docs/accounts-and-cloud-saves.md): registration, login, client encryption, synchronization, and limits.
 - [I18n](./docs/i18n.md): UI and narrative translation model.
 - [French translation guide](./docs/translation-fr.md): glossary, criteria, and Codex-only chapter translation workflow.
 - [Book 2 French QA](./docs/translation-qa-book2-fr.md): durable register, coverage, and scan record for the Book 2 French pass.
@@ -178,9 +179,9 @@ author's estate or by the Magium community maintainers.
 
 ## Translation Contributions: Quick Handoff
 
-The playable PWA runtime stays static, but public translation corrections use a
-separate `services/translation-api` service with PostgreSQL, local Mailpit, a
-web admin, and a GitHub PR workflow.
+The production PWA and public translation corrections share the unified Magium
+server, with one PostgreSQL, local Mailpit, a web admin, and a GitHub PR
+workflow.
 
 Locally:
 
@@ -213,7 +214,7 @@ workflow is configured. The full technical reference is
 - Never manually edit files under `content/archive/original`, `content/canonical/v1`, or `src/generated`.
 - UI text is edited in `content/ui-locales/*.json`, then regenerated with `pnpm content:all`.
 - Story, achievement, and stat translations are edited in `content/story-locales/<locale>/*.json`, then regenerated with `pnpm content:all`.
-- Public correction proposals are never applied directly: they go through `services/translation-api`, a maintainer changeset, `tools/contributions/apply-changeset.mjs`, and a validated GitHub PR.
+- Public correction proposals are never applied directly: they go through the unified server, a maintainer changeset, `tools/contributions/apply-changeset.mjs`, and a validated GitHub PR.
 - Contribution follow-up emails are optional, confirmed by link, reusable for one year per browser via a local token, stored separately, and deleted after rejection or publication; optional credit pseudonyms remain moderated.
 - The local compose stack provides non-secret values for contribution testing: `docker compose up -d`, PWA on `5173`, API on `8090`, web admin on `/admin`, Mailpit on `8025`, admin token `dev-admin-token`, admin password `dev-admin-password`.
 - Book 1 prompts/images are managed with `pnpm images:prompts -- --book 1`, `pnpm images:stage -- --book 1`, `pnpm images:normalize -- --book 1`, `pnpm images:check -- --book 1`, then `pnpm images:test`; `--moment <id>` and `--chapter <id>` limit staging when needed. `pnpm images:test` requires `ffmpeg`. Do not add RAG or embeddings.

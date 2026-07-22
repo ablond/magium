@@ -5,12 +5,16 @@
     ChevronsRight,
     CircleCheck,
     CircleX,
+    Cloud,
     Download,
     Library,
+    LogIn,
+    LogOut,
     Minus,
     Pencil,
     Plus,
     RotateCcw,
+    RefreshCw,
     Save,
     ScrollText,
     Settings,
@@ -19,10 +23,20 @@
     Trophy,
     Trash2,
     Upload,
+    UserPlus,
     X,
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import ArcaneSigil from './lib/ArcaneSigil.svelte'
+  import { AccountApiError, loginAccount, logoutAccount, registerAccount } from './lib/account/api'
+  import {
+    clearAccountSession,
+    markCloudSaveDeleted,
+    restoreAccountSession,
+    storeAccountSession,
+    type AccountSession,
+  } from './lib/account/storage'
+  import { synchronizeAccount, type AccountSyncResult } from './lib/account/sync'
   import { loadContextForScene, loadIndex, loadLocaleChapter, loadStoryChapter, loadUiLocale } from './lib/content/packedContent'
   import { submitTranslationProposal } from './lib/contributions/api'
   import {
@@ -90,19 +104,22 @@
     recordAchievementUnlocks,
     type AchievementProgress,
   } from './lib/storage/achievementProgress'
-  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, renameSave, saveGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
+  import { deleteSave, exportSave, importSave, listSaveSummaries, loadGameState, renameSave, saveGameState as saveLocalGameState, SAVE_IMPORT_ERROR_MESSAGES, type SaveSummary } from './lib/storage/saves'
   import { getBook1SceneVisual } from './lib/visuals/book1'
 
   type Panel = 'none' | 'saves' | 'abilities' | 'achievements' | 'settings' | 'about' | 'debug'
   type DebugValueKind = 'number' | 'string' | 'boolean'
   type SaveTransferMode = 'none' | 'export' | 'import'
+  type AccountMode = 'login' | 'register'
   type DebugSnapshot = {
     label: string
     state: GameState
   }
 
   const isDebugBuild = import.meta.env.DEV
-  const contributionApiUrl = (import.meta.env.VITE_MAGIUM_CONTRIBUTIONS_API_URL ?? '').trim()
+  const magiumApiUrl = (import.meta.env.VITE_MAGIUM_API_URL ?? '').trim()
+  const contributionApiUrl = magiumApiUrl
+  const accountApiUrl = magiumApiUrl
   const turnstileSiteKey = (import.meta.env.VITE_MAGIUM_TURNSTILE_SITE_KEY ?? '').trim()
   const maxDebugSnapshots = 80
   const debugNumericVariables = [
@@ -188,6 +205,17 @@
   let contributionStatus = ''
   let contributionEmailNotice = ''
   let contributionSubmitted = false
+  let accountSession: AccountSession | null = null
+  let accountMode: AccountMode = 'login'
+  let accountUsername = ''
+  let accountPassword = ''
+  let accountPasswordConfirmation = ''
+  let accountBusy = false
+  let accountError = ''
+  let accountStatus = ''
+  let accountLastSyncedAt = ''
+  let accountSyncPromise: Promise<AccountSyncResult> | null = null
+  let accountSyncTimer: number | null = null
 
   $: chapterTitle = state
     ? describeScene(state.currentSceneId, uiMessages)
@@ -215,6 +243,10 @@
     ? Object.entries(state.variables).sort(([left], [right]) => left.localeCompare(right))
     : []
   $: panelLabel = getPanelLabel(activePanel)
+  $: accountSyncing = accountSyncPromise !== null
+  $: accountSyncLabel = accountLastSyncedAt
+    ? t(uiMessages, 'account.lastSync', { date: formatSaveDateTime(accountLastSyncedAt) }, `Last sync: ${formatSaveDateTime(accountLastSyncedAt)}`)
+    : t(uiMessages, 'account.notSynced', {}, 'Not synchronized yet')
   $: if (!isDebugBuild && activePanel === 'debug') {
     activePanel = 'none'
   }
@@ -268,6 +300,23 @@
         rememberContributionProfile = true
       }
       context = await loadContextForScene(index.initialSceneId, settings.locale)
+      if (accountApiUrl) {
+        accountSession = await restoreAccountSession()
+        if (accountSession) {
+          try {
+            const syncResult = await synchronizeAccount(accountApiUrl, accountSession, {
+              contentVersion: index.contentVersion,
+              contextForScene: async (sceneId) => {
+                context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
+                return context
+              },
+            })
+            accountLastSyncedAt = syncResult.syncedAt
+          } catch (caught) {
+            await handleAccountFailure(caught)
+          }
+        }
+      }
       const loaded = await loadGameState('autosave', {
         contentVersion: index.contentVersion,
         contextForScene: async (sceneId) => {
@@ -301,12 +350,23 @@
 
     updateMobilePanel()
     query.addEventListener('change', updateMobilePanel)
+    const syncWhenVisible = () => {
+      if (document.visibilityState === 'visible') void syncAccountInBackground({ refreshCurrent: true })
+    }
+    document.addEventListener('visibilitychange', syncWhenVisible)
 
     return () => {
       query.removeEventListener('change', updateMobilePanel)
+      document.removeEventListener('visibilitychange', syncWhenVisible)
+      if (accountSyncTimer !== null) window.clearTimeout(accountSyncTimer)
       document.body.classList.remove('panel-modal-open')
     }
   })
+
+  async function saveGameState(...args: Parameters<typeof saveLocalGameState>) {
+    await saveLocalGameState(...args)
+    scheduleAccountSync()
+  }
 
   async function refresh() {
     if (!state) return
@@ -437,6 +497,8 @@
     if (slotId === 'autosave') return
     clearSaveFeedback()
     await deleteSave(slotId)
+    if (accountSession) await markCloudSaveDeleted(accountSession.username, slotId)
+    scheduleAccountSync()
     await refresh()
     panelStatus = t(uiMessages, 'status.deleted', {}, 'Save deleted')
   }
@@ -455,6 +517,7 @@
   async function confirmRenameSlot(slotId: string) {
     clearSaveFeedback()
     await renameSave(slotId, editingSaveName)
+    scheduleAccountSync()
     editingSaveId = ''
     editingSaveName = ''
     await refresh()
@@ -537,6 +600,156 @@
       return
     }
     importInput?.click()
+  }
+
+  async function submitAccount() {
+    if (!accountApiUrl || accountBusy) return
+    accountError = ''
+    accountStatus = ''
+    if (accountMode === 'register' && accountPassword !== accountPasswordConfirmation) {
+      accountError = t(uiMessages, 'account.passwordMismatch', {}, 'Passwords do not match')
+      return
+    }
+    try {
+      accountBusy = true
+      const auth = accountMode === 'register'
+        ? await registerAccount(accountApiUrl, accountUsername, accountPassword)
+        : await loginAccount(accountApiUrl, accountUsername, accountPassword)
+      accountSession = await storeAccountSession(auth, accountPassword)
+      const result = await runAccountSync({ preferRemote: accountMode === 'login' })
+      if (result) {
+        achievementProgress = result.achievementProgress
+        await loadSyncedAutosave()
+      }
+      accountUsername = ''
+      accountPassword = ''
+      accountPasswordConfirmation = ''
+      accountStatus = t(uiMessages, 'account.connectedStatus', {}, 'Account connected and saves synchronized')
+    } catch (caught) {
+      await handleAccountFailure(caught)
+    } finally {
+      accountBusy = false
+    }
+  }
+
+  async function disconnectAccount() {
+    if (!accountSession || accountBusy) return
+    accountError = ''
+    accountStatus = ''
+    const session = accountSession
+    try {
+      accountBusy = true
+      await runAccountSync()
+      await logoutAccount(accountApiUrl, session.token)
+    } catch {
+      // Local logout must remain available when the account service is offline.
+    } finally {
+      await clearAccountSession()
+      accountSession = null
+      accountSyncPromise = null
+      accountBusy = false
+      accountStatus = t(uiMessages, 'account.disconnectedStatus', {}, 'Disconnected. Saves stay on this device.')
+    }
+  }
+
+  async function syncAccountInBackground(options: { refreshCurrent?: boolean } = {}) {
+    if (!accountSession || !accountApiUrl || loading) return
+    try {
+      const result = await runAccountSync()
+      if (!result) return
+      achievementProgress = result.achievementProgress
+      if (options.refreshCurrent && state && result.restoredSlotIds.includes(state.slotId)) {
+        const loaded = await loadGameState(state.slotId, accountReplayOptions())
+        if (loaded && loaded.updatedAt > state.updatedAt) {
+          context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context ?? undefined)
+          state = loaded
+          resetStatDraft()
+          await refresh()
+        }
+      }
+    } catch (caught) {
+      await handleAccountFailure(caught)
+    }
+  }
+
+  async function runAccountSync(options: { preferRemote?: boolean } = {}): Promise<AccountSyncResult | null> {
+    if (!accountSession || !accountApiUrl || !runtimeContentVersion) return null
+    if (accountSyncPromise) return accountSyncPromise
+    accountSyncPromise = synchronizeAccount(accountApiUrl, accountSession, accountReplayOptions(), options)
+    try {
+      const result = await accountSyncPromise
+      accountLastSyncedAt = result.syncedAt
+      accountError = ''
+      return result
+    } finally {
+      accountSyncPromise = null
+    }
+  }
+
+  function scheduleAccountSync() {
+    if (!accountSession || !accountApiUrl || typeof window === 'undefined') return
+    if (accountSyncTimer !== null) window.clearTimeout(accountSyncTimer)
+    accountSyncTimer = window.setTimeout(() => {
+      accountSyncTimer = null
+      void syncAccountInBackground()
+    }, 750)
+  }
+
+  function accountReplayOptions() {
+    return {
+      contentVersion: runtimeContentVersion,
+      contextForScene: async (sceneId: string) => {
+        context = await loadContextForScene(sceneId, settings.locale, context ?? undefined)
+        return context
+      },
+    }
+  }
+
+  async function loadSyncedAutosave() {
+    const loaded = await loadGameState('autosave', accountReplayOptions())
+    if (!loaded) {
+      await refresh()
+      return
+    }
+    context = await loadContextForScene(loaded.currentSceneId, loaded.locale, context ?? undefined)
+    state = loaded
+    resetStatDraft()
+    await refresh()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  async function handleAccountFailure(caught: unknown) {
+    if (caught instanceof AccountApiError && caught.statusCode === 401 && accountSession) {
+      await clearAccountSession()
+      accountSession = null
+      accountError = t(uiMessages, 'account.sessionExpired', {}, 'Session expired. Sign in again.')
+      return
+    }
+    if (caught instanceof AccountApiError) {
+      const key = caught.statusCode === 409
+        ? 'account.errorUsernameTaken'
+        : caught.statusCode === 401
+          ? 'account.errorCredentials'
+          : caught.statusCode === 429
+            ? 'account.errorRateLimit'
+            : 'account.errorService'
+      accountError = t(uiMessages, key, {}, caught.message)
+      return
+    }
+    accountError = t(
+      uiMessages,
+      'account.errorService',
+      {},
+      'The account service is currently unavailable. Local saves still work.',
+    )
+  }
+
+  function setAccountMode(mode: AccountMode) {
+    accountMode = mode
+    accountError = ''
+    accountStatus = ''
+    accountPassword = ''
+    accountPasswordConfirmation = ''
   }
 
   function updateSettings(next: Partial<ReaderSettings>) {
@@ -1439,6 +1652,73 @@
           <h2>{t(uiMessages, 'saves.title', {}, 'Saves')}</h2>
           <p class="panel-copy">{t(uiMessages, 'saves.copy', {}, 'The game saves automatically after every choice. Use local saves to keep several playthroughs, and export only when you want a file to keep or move elsewhere.')}</p>
 
+          {#if accountApiUrl}
+            <section class="save-section account-section">
+              <div class="save-section-heading account-heading">
+                <Cloud size={19} />
+                <div>
+                  <h3>{t(uiMessages, 'account.title', {}, 'Account and synchronization')}</h3>
+                  <p>{t(uiMessages, 'account.copy', {}, 'Connect the same account on another device to retrieve your saves and achievements.')}</p>
+                </div>
+              </div>
+              {#if accountSession}
+                <div class="account-connected">
+                  <strong>{accountSession.username}</strong>
+                  <span>{accountSyncLabel}</span>
+                </div>
+                <div class="panel-actions">
+                  <button disabled={accountBusy || accountSyncing} on:click={() => syncAccountInBackground({ refreshCurrent: true })}>
+                    <RefreshCw size={17} class={accountSyncing ? 'spinning' : undefined} />
+                    {accountSyncing ? t(uiMessages, 'account.syncing', {}, 'Synchronizing...') : t(uiMessages, 'account.syncNow', {}, 'Synchronize')}
+                  </button>
+                  <button disabled={accountBusy || accountSyncing} on:click={disconnectAccount}>
+                    <LogOut size={17} />
+                    {t(uiMessages, 'account.logout', {}, 'Sign out')}
+                  </button>
+                </div>
+              {:else}
+                <div class="segmented account-mode">
+                  <button class:active={accountMode === 'login'} disabled={accountBusy} on:click={() => setAccountMode('login')}>
+                    <LogIn size={16} /> {t(uiMessages, 'account.login', {}, 'Sign in')}
+                  </button>
+                  <button class:active={accountMode === 'register'} disabled={accountBusy} on:click={() => setAccountMode('register')}>
+                    <UserPlus size={16} /> {t(uiMessages, 'account.register', {}, 'Create account')}
+                  </button>
+                </div>
+                <form class="account-form" on:submit|preventDefault={submitAccount}>
+                  <label>
+                    {t(uiMessages, 'account.username', {}, 'Username')}
+                    <input bind:value={accountUsername} minlength="3" maxlength="32" pattern="[A-Za-z0-9._-]+" autocomplete="username" disabled={accountBusy} required />
+                  </label>
+                  <label>
+                    {t(uiMessages, 'account.password', {}, 'Password')}
+                    <input type="password" bind:value={accountPassword} minlength="6" maxlength="256" autocomplete={accountMode === 'login' ? 'current-password' : 'new-password'} disabled={accountBusy} required />
+                  </label>
+                  {#if accountMode === 'register'}
+                    <label>
+                      {t(uiMessages, 'account.passwordConfirmation', {}, 'Confirm password')}
+                      <input type="password" bind:value={accountPasswordConfirmation} minlength="6" maxlength="256" autocomplete="new-password" disabled={accountBusy} required />
+                    </label>
+                  {/if}
+                  <p class="help">{t(uiMessages, 'account.noRecovery', {}, 'No email and no password recovery: keep this password safe.')}</p>
+                  <button class="wide" type="submit" disabled={accountBusy}>
+                    {#if accountMode === 'register'}<UserPlus size={17} />{:else}<LogIn size={17} />{/if}
+                    {accountBusy
+                      ? t(uiMessages, 'account.connecting', {}, 'Connecting...')
+                      : accountMode === 'register'
+                        ? t(uiMessages, 'account.registerAction', {}, 'Create my account')
+                        : t(uiMessages, 'account.loginAction', {}, 'Sign in')}
+                  </button>
+                </form>
+              {/if}
+              {#if accountError}
+                <p class="notice panel-notice error" role="alert">{accountError}</p>
+              {:else if accountStatus}
+                <p class="notice panel-notice" role="status" aria-live="polite">{accountStatus}</p>
+              {/if}
+            </section>
+          {/if}
+
           <section class="save-section">
             <div class="save-section-heading">
               <h3>{t(uiMessages, 'saves.autosaveTitle', {}, 'Automatic save')}</h3>
@@ -1833,7 +2113,16 @@
       <button type="button" class="confirm-scrim" aria-label={t(uiMessages, 'saves.deleteConfirmCancel', {}, 'Cancel')} on:click={cancelRemoveSlot}></button>
       <div class="confirm-modal" role="dialog" aria-modal="true" aria-label={t(uiMessages, 'saves.deleteConfirmTitle', {}, 'Delete this save?')} tabindex="-1">
         <h3>{t(uiMessages, 'saves.deleteConfirmTitle', {}, 'Delete this save?')}</h3>
-        <p>{t(uiMessages, 'saves.deleteConfirmCopy', {}, 'This only removes the local save. Your automatic save stays available.')}</p>
+        <p>
+          {accountSession
+            ? t(
+                uiMessages,
+                'saves.deleteConfirmCopySynced',
+                {},
+                'This removes the save from this device and your connected account. Your automatic save stays available.',
+              )
+            : t(uiMessages, 'saves.deleteConfirmCopy', {}, 'This only removes the local save. Your automatic save stays available.')}
+        </p>
         <div class="save-summary">
           <strong>{saveTitle(pendingDeleteSave)}</strong>
           <span>{saveChapter(pendingDeleteSave)}</span>

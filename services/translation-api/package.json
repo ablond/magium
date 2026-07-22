@@ -1,5 +1,5 @@
 {
-  "name": "@magium/translation-api",
+  "name": "@magium/server",
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
