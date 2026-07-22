@@ -2,14 +2,11 @@
 
 ## Overview
 
-The playable runtime is a static PWA. There is no backend, account system, or
-cloud storage required to play, save, or replay a game.
-
-An optional standalone service handles public translation contributions. It is
-not part of the game runtime, does not serve raw canonical JSON, and never
-publishes a correction without maintainer review and a GitHub PR. Its
-maintainer UI is served by the API service at `/admin`, protected by a server
-password, `HttpOnly` cookie, and CSRF. The reader-facing PWA remains static.
+The playable runtime remains a local-first PWA: no account or network is
+required to play, save, or replay. In production, one Node server serves the
+built PWA plus optional accounts, cloud synchronization, translation
+contributions, and the maintainer admin. One external PostgreSQL stores both
+feature families in separate tables.
 
 The system is split into these layers:
 
@@ -29,14 +26,14 @@ The system is split into these layers:
    - Encrypted local storage.
    - PWA UI.
    - Optional display of Book 1 moment illustrations.
-5. Production image
-   - Vite build under Node/pnpm.
-   - Only `dist/` is copied into `nginxinc/nginx-unprivileged`.
-   - Static service exposed on `8080` for Coolify.
-6. Translation contribution service
-   - Standalone Node API under `services/translation-api`.
-   - PostgreSQL storage for proposals and confirmed email contacts.
-   - Batch review, GitHub Actions dispatch, and one PR per changeset.
+5. Production server
+   - Vite build and one Node runtime image exposed on `8080`.
+   - Same-origin PWA, account routes, contribution routes, `/admin`, and `/health`.
+   - Automatic idempotent PostgreSQL migrations.
+6. PostgreSQL
+   - `translation_*` tables for proposals, contacts, consents, and changesets.
+   - `user_*` tables for scrypt password hashes, hashed sessions, and opaque encrypted records.
+   - Independent Coolify resource with its own backups and lifecycle.
 
 ## Data Flow
 
@@ -76,14 +73,23 @@ content/canonical/v1/{locales/en,story}/ch*.json
   -> src/App.svelte
 
 PWA contribution form
-  -> services/translation-api
-  -> PostgreSQL proposals + optional contacts
+  -> same-origin Magium server
+  -> shared PostgreSQL translation tables + optional contacts
   -> maintainer changeset
   -> .github/workflows/translation-changeset-pr.yml
   -> tools/contributions/apply-changeset.mjs
   -> content/story-locales/<locale>/<chapter>.json
   -> pnpm content:all && pnpm check && pnpm test && pnpm build
   -> GitHub pull request
+
+PWA account section
+  -> same-origin Magium server registration/login
+  -> PBKDF2 account key in the browser
+  -> AES-GCM save and achievement records
+  -> PostgreSQL opaque sync records
+  -> another browser login
+  -> local decryption + replay validation
+  -> encrypted IndexedDB saves
 ```
 
 ## Technical Choices
@@ -93,11 +99,13 @@ PWA contribution form
 - Native IndexedDB: better than localStorage for encrypted blobs and CryptoKey storage.
 - Global achievements: encrypted local IndexedDB collection, separate from `GameState.achievements`, so restarts/checkpoints do not lose unlocked achievements while anti-tamper replay stays strict.
 - Web Crypto API: AES-GCM, PBKDF2, and SHA-256 without extra dependencies.
+- Accounts: optional username/password service; server passwords use salted `scrypt`, raw session tokens are stored only by the client, and PostgreSQL keeps only token hashes.
+- Cloud saves: one browser-derived non-exportable AES-GCM key per account, per-record encryption with associated data, per-save last-write-wins merge, deletion tombstones, and replay validation after download.
 - Runtime packs as TS modules: no public `.json` files and lazy loading through dynamic imports.
 - Global language setting: FR/EN updates UI shell, `GameState.locale`, available narrative text, achievements, and stats. Missing translated chapters fall back to `en`.
-- Translation contributions: anonymous-by-default PWA form, configurable Cloudflare Turnstile, optional confirmed email, optional credit pseudonym, separate API, one GitHub PR per changeset.
+- Translation contributions: anonymous-by-default PWA form, configurable Cloudflare Turnstile, optional confirmed email, optional credit pseudonym, one GitHub PR per changeset.
 - Book 1 images: manual ChatGPT workflow, no RAG, no embeddings. Public prompts stay short and paraphrased; portraits live under `public/visuals/book1/characters`, displayable illustrations under `public/visuals/book1/moments`.
-- Production Docker: the root `Dockerfile` is compatible with Coolify's Dockerfile build pack through the GitHub App. The builder runs `pnpm build`; the runtime stage contains only public `dist/` assets and exposes `8080`.
+- Production Docker: the root `Dockerfile` builds the PWA and one Node runtime. The runtime serves only `dist/` as public files, exposes `8080`, and connects to one external PostgreSQL.
 
 ## Code Landmarks
 
@@ -105,8 +113,8 @@ PWA contribution form
 - Global styles: `src/app.css`
 - UI i18n sources: `content/ui-locales/*.json`
 - Story i18n sources: `content/story-locales/**/*.json`
-- Contribution API: `services/translation-api`
-- Contribution maintainer UI: `services/translation-api` on `/admin`
+- Unified production server, account modules, migrations, and maintainer UI: `services/translation-api`
+- Account client and synchronization: `src/lib/account/*.ts`
 - Translation changeset application: `tools/contributions/apply-changeset.mjs`
 - UI i18n helper: `src/lib/i18n/ui.ts`
 - Runtime loader: `src/lib/content/packedContent.ts`
@@ -119,7 +127,7 @@ PWA contribution form
 - Encryption: `src/lib/storage/crypto.ts`
 - Content pipeline: `tools/content/*.mjs`
 - Manual image pipeline: `tools/images/*.mjs`, `public/visuals/book1`
-- Production Docker: `Dockerfile`, `docker/nginx.conf`, `tools/docker/build-prod-push.sh`
+- Production Docker: `Dockerfile`, `tools/docker/build-prod-push.sh`
 
 ## Important Contracts
 
@@ -129,9 +137,12 @@ PWA contribution form
 - The build must not expose `.magium` files.
 - The app may display original story text, but it must come from runtime packs and not from a directly downloadable raw file.
 - The PWA may send a correction proposal to the API, but the API must never become a runtime translation source. The final source remains `content/story-locales/**` after PR.
+- The PWA may use the same-origin account routes for optional synchronization, but local play and local saves must remain functional when the server is absent or offline.
+- Account routes must never receive plaintext `GameState`, variables, history, save labels, or achievement identifiers. They store independently encrypted records only.
+- Cloud saves must pass replay/migration validation before entering the local save store. `debug.dirty` saves must never be synchronized.
 - Contribution emails are temporary personal data: optional, confirmed before notification, not public, and deleted after grouped rejection/stale/publication notification.
 - Canonical UI JSON follows the same rule: the app loads compressed `locales/<locale>/ui` packs, not raw JSON files.
 - Canonical story i18n JSON follows the same rule: the app loads compressed `locales/<locale>/<bundle>` packs, not raw JSON files.
-- The final Docker image must serve only `dist/`; it must not contain `content/archive`, `content/canonical`, `node_modules`, `.env*`, `.magium-save` exports, or `.magium` sources.
+- The final Docker image may contain production server dependencies, but public static serving is restricted to `dist/`. It must not contain `content/archive`, `content/canonical`, `.env*`, `.magium-save` exports, or `.magium` sources.
 - The engine stores choices and stat allocations in typed `history` events, then validates imports by replay.
 - Canonical assignments declare `mode: "set"` or `mode: "add"`; the runtime must not reinterpret deltas from raw strings.

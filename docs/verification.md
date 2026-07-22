@@ -13,10 +13,9 @@ pnpm build
 ```
 
 These commands must pass before an iteration is considered complete. The
-`services/translation-api` service keeps its own `package.json` and lockfile so
-it remains independently buildable by Docker/Coolify; its dependencies must
-therefore be installed in addition to root dependencies before `pnpm test` on a
-fresh checkout.
+unified server keeps its production dependencies under
+`services/translation-api`; install that dependency set in addition to root
+dependencies before `pnpm test` on a fresh checkout.
 
 Dependabot version PRs intentionally use a cooldown. pnpm 11 also enforces a
 minimum release age by default; if CI fails with
@@ -55,8 +54,8 @@ pnpm docker:push-prod
 
 - regenerates content through `content:all`;
 - runs Vitest excluding manual Book 1 tests that depend on `ffmpeg`;
-- covers parser, engine, i18n, and contribution changesets;
-- also runs `pnpm --dir services/translation-api test`.
+- covers parser, engine, i18n, storage, account synchronization, and contribution changesets;
+- also runs the Node tests for the unified PWA/account/contribution server.
 
 `pnpm build`:
 
@@ -107,27 +106,40 @@ pnpm docker:push-prod
 `pnpm docker:build-prod`:
 
 - builds `ghcr.io/ablond/magium:<timestamp>` locally;
-- verifies the runtime filesystem;
-- starts the unprivileged nginx container on a temporary local port;
-- checks `/`, `/sw.js`, `/manifest.webmanifest`, and SPA fallback.
+- verifies the public runtime filesystem;
+- starts a temporary PostgreSQL and the production Node image;
+- checks migrations, `/health`, account registration, `/`, `/sw.js`,
+  `/manifest.webmanifest`, API 404 behavior, and SPA fallback.
 
 `docker compose config`:
 
-- verifies syntax for the local PWA dev, contribution API, PostgreSQL, and Mailpit stack;
+- verifies syntax for the local Vite PWA, unified app, one PostgreSQL, and Mailpit stack;
 - confirms local default values are enough without a `.env` file.
 
-For a local contribution-stack change, also verify:
+For a local server, contribution, or account change, also verify:
 
 ```bash
-docker build -f services/translation-api/Dockerfile services/translation-api
 docker compose up -d --build
 curl http://localhost:5173
 curl http://localhost:8090/health
 curl http://localhost:8090/admin
 curl -H "Authorization: Bearer dev-admin-token" http://localhost:8090/v1/admin/proposals
+curl -H 'Content-Type: application/json' \
+  -d '{"username":"local-player","password":"local-secret"}' \
+  http://localhost:8090/v1/accounts/register
 curl http://localhost:8025
 docker compose down
 ```
+
+Then use two clean browser contexts:
+
+1. create an account in the Saves panel and advance the story;
+2. create and rename a named save, then unlock an achievement if practical;
+3. connect the same account in the second context and verify autosave, named save, label, and achievement restoration;
+4. delete the named save in one context, synchronize both, and verify that it is not recreated;
+5. take the unified app offline, make another choice, and verify the local save still succeeds;
+6. restart the app and verify the pending local progression synchronizes;
+7. confirm a Debug-dirty save never appears on the second device.
 
 For a maintainer-admin change, also check in a browser:
 
@@ -285,15 +297,16 @@ check carefully instead of removing it.
 
 ## Docker Image Check
 
-The Docker script must reject:
+The Docker script must reject from the public `dist/` tree:
 
 - `.magium` in the runtime filesystem;
 - raw canonical JSON in the runtime filesystem;
-- `node_modules`;
 - `.env*`;
 - obvious raw source excerpts such as `ID: Ch1-Intro1` or `chapters/ch1.magium`.
 
-The expected final image serves only `dist/` through nginx on port `8080`.
+The expected final image runs one Node process on port `8080`. Production
+dependencies are allowed inside the image, but the static handler must expose
+only `/app/dist`.
 
 ## Local Artifacts
 

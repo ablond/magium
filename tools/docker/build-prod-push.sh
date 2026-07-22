@@ -73,12 +73,16 @@ VALIDATION_REF="$TIMESTAMP_REF"
 
 cleanup_paths=()
 cleanup_containers=()
+cleanup_networks=()
 cleanup() {
   for container in "${cleanup_containers[@]:-}"; do
     docker rm -f "$container" >/dev/null 2>&1 || true
   done
   for path in "${cleanup_paths[@]:-}"; do
     rm -rf "$path"
+  done
+  for network in "${cleanup_networks[@]:-}"; do
+    docker network rm "$network" >/dev/null 2>&1 || true
   done
 }
 trap cleanup EXIT
@@ -115,7 +119,7 @@ container="$(docker create "$VALIDATION_REF")"
 cleanup_containers+=("$container")
 tmp_dir="$(mktemp -d)"
 cleanup_paths+=("$tmp_dir")
-docker cp "$container:/usr/share/nginx/html" "$tmp_dir/html"
+docker cp "$container:/app/dist" "$tmp_dir/html"
 docker rm "$container" >/dev/null
 cleanup_containers=("${cleanup_containers[@]/$container}")
 
@@ -157,7 +161,39 @@ http_get() {
 }
 
 echo "Starting $VALIDATION_REF for HTTP validation"
-run_container="$(docker run -d --rm -p 127.0.0.1::8080 "$VALIDATION_REF")"
+validation_network="magium-validation-${TAG//[^a-zA-Z0-9_.-]/-}"
+docker network create "$validation_network" >/dev/null
+cleanup_networks+=("$validation_network")
+database_container="$(docker run -d --rm \
+  --network "$validation_network" \
+  --network-alias postgres \
+  -e POSTGRES_DB=magium \
+  -e POSTGRES_USER=magium \
+  -e POSTGRES_PASSWORD=magium-validation \
+  postgres:18-alpine)"
+cleanup_containers+=("$database_container")
+
+for _ in $(seq 1 30); do
+  if docker exec "$database_container" pg_isready -U magium -d magium >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+done
+if ! docker exec "$database_container" pg_isready -U magium -d magium >/dev/null 2>&1; then
+  echo "Validation PostgreSQL did not become ready" >&2
+  exit 1
+fi
+
+run_container="$(docker run -d --rm \
+  --network "$validation_network" \
+  -p 127.0.0.1::8080 \
+  -e DATABASE_URL=postgres://magium:magium-validation@postgres:5432/magium \
+  -e PUBLIC_URL=http://localhost \
+  -e TURNSTILE_DISABLED=1 \
+  -e ADMIN_TOKEN=validation-admin-token \
+  -e ADMIN_PASSWORD=validation-admin-password \
+  -e ADMIN_SESSION_SECRET=validation-admin-session-secret \
+  "$VALIDATION_REF")"
 cleanup_containers+=("$run_container")
 
 port=""
@@ -178,6 +214,27 @@ http_get "http://127.0.0.1:${port}/" | grep -q '<div id="app"></div>'
 http_get "http://127.0.0.1:${port}/sw.js" | grep -q 'CACHE_NAME'
 http_get "http://127.0.0.1:${port}/manifest.webmanifest" | grep -q '"name": "Magium"'
 http_get "http://127.0.0.1:${port}/not-a-real-route" | grep -q '<div id="app"></div>'
+http_get "http://127.0.0.1:${port}/health" | grep -q '"status":"ok"'
+
+if ! command -v curl >/dev/null 2>&1; then
+  echo "curl is required for API validation" >&2
+  exit 2
+fi
+api_404_body="$tmp_dir/api-404.json"
+api_404_status="$(curl -sS -o "$api_404_body" -w '%{http_code}' \
+  "http://127.0.0.1:${port}/v1/not-a-real-route")"
+if [[ "$api_404_status" != "404" ]]; then
+  echo "Unknown API route returned HTTP $api_404_status instead of 404" >&2
+  exit 1
+fi
+grep -q '"error":"Not found"' "$api_404_body"
+
+account_response="$(curl -fsS \
+  -H 'content-type: application/json' \
+  -d '{"username":"docker-validation","password":"docker-validation-password"}' \
+  "http://127.0.0.1:${port}/v1/accounts/register")"
+grep -q '"username":"docker-validation"' <<<"$account_response"
+grep -q '"token":' <<<"$account_response"
 
 docker rm -f "$run_container" >/dev/null
 cleanup_containers=("${cleanup_containers[@]/$run_container}")

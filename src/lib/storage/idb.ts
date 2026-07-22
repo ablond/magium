@@ -1,7 +1,7 @@
 const DB_NAME = 'magium-pwa'
-const DB_VERSION = 4
+const DB_VERSION = 5
 
-type StoreName = 'achievementProgress' | 'contributionEmailConsents' | 'contributionEmailPending' | 'contributionProfile' | 'keys' | 'saves'
+type StoreName = 'account' | 'achievementProgress' | 'contributionEmailConsents' | 'contributionEmailPending' | 'contributionProfile' | 'keys' | 'saves'
 
 let dbPromise: Promise<IDBDatabase> | null = null
 
@@ -30,6 +30,9 @@ export function openDatabase(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains('contributionEmailPending')) {
         db.createObjectStore('contributionEmailPending')
+      }
+      if (!db.objectStoreNames.contains('account')) {
+        db.createObjectStore('account')
       }
     }
     request.onsuccess = () => resolve(request.result)

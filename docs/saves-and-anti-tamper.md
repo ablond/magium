@@ -2,7 +2,8 @@
 
 ## Goal
 
-Store progress without a user account while avoiding:
+Store progress locally without requiring a user account, optionally synchronize
+it across devices, and avoid:
 
 - plaintext variables in localStorage;
 - simple manual stat modification;
@@ -16,6 +17,8 @@ Files:
 - `src/lib/storage/crypto.ts`
 - `src/lib/storage/saves.ts`
 - `src/lib/storage/achievementProgress.ts`
+- `src/lib/account/storage.ts`
+- `src/lib/account/sync.ts`
 
 IndexedDB database:
 
@@ -26,11 +29,14 @@ magium-pwa
 Object stores:
 
 - `achievementProgress`
+- `account`
 - `keys`
 - `saves`
 
 `achievementProgress` stores the global achievement collection as one encrypted
 record.
+`account` stores an optional encrypted bearer session, a non-exportable account
+sync key, and per-account deletion tombstones.
 `keys` stores the local AES-GCM key.
 `saves` stores encrypted `StoredSaveRecord` values.
 
@@ -130,6 +136,7 @@ choices and allocations.
 
 The panel separates player use cases:
 
+- account and synchronization appears only when the account API URL is configured;
 - autosave states that the current game is saved after every choice and stat allocation;
 - local saves allow creating, loading, renaming, and deleting save points without a password;
 - checkpoint remains a separate action with a readable chapter label;
@@ -142,6 +149,37 @@ as `Ch12`. It shows a save name, a date, and a readable chapter like
 
 Visible statuses stay player-oriented, for example `Save file downloaded` or
 `Save imported and ready`.
+
+## Optional Account Synchronization
+
+`VITE_MAGIUM_API_URL` enables a compact account section in the Saves
+panel. Registration and login use a username and password only. There is no
+email and no password-recovery flow.
+
+After login, the browser derives a non-exportable AES-GCM key with the account
+password and the server-provided salt. Saves and global achievements are
+decrypted locally, encrypted again as independent cloud records, then sent to
+the unified Magium server. The server sees record identifiers, timestamps,
+deletion flags, and ciphertext, but not game-state or achievement plaintext.
+
+Synchronization includes:
+
+- autosave;
+- all named non-debug saves;
+- save labels inside encrypted payloads;
+- global achievement progress;
+- tombstones for named-save deletion.
+
+Cloud saves follow the same replay and compatible-content migration path as
+local loads. A downloaded payload that decrypts but does not replay is ignored.
+`debug.dirty` saves stay local and are excluded before cloud encryption.
+
+The app saves locally first and schedules network synchronization separately.
+An offline or failing account service must never make a narrative choice, stat
+allocation, manual save, rename, or deletion fail locally.
+
+See `docs/accounts-and-cloud-saves.md` for the endpoint, merge, encryption,
+session, deployment, and known-limit contracts.
 
 ## Export
 

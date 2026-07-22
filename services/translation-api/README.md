@@ -1,197 +1,96 @@
-# Magium Translation API
+# Magium Server
 
-Standalone service for receiving, moderating, and grouping public translation
-correction proposals.
+This directory contains the single production server for Magium. One Node
+process serves:
 
-The PWA stays static. This service does not serve raw narrative content; it
-receives only proposals targeted by hash, technical identifiers, and the
-displayed segment needed for maintainer review.
+- the built PWA from `dist/`;
+- `/v1/accounts/*` and `/v1/account/*`;
+- `/v1/translation-proposals/*`;
+- `/v1/admin/*` and the maintainer UI under `/admin`;
+- `/health`.
 
-The complete subsystem handoff reference is
-[../../docs/translation-contributions-system.md](../../docs/translation-contributions-system.md).
-This README remains a short service-specific sheet.
+The directory keeps its historical name to avoid a broad path-only move, but it
+is no longer a standalone translation microservice. The root Dockerfile is the
+only production image.
 
-## Variables
+## Dependencies And Tests
+
+```bash
+pnpm --dir services/translation-api install --frozen-lockfile
+pnpm test:server
+```
+
+`tests/unified-server.node.mjs` verifies that the PWA, accounts, contributions,
+and admin routes are exposed by the same HTTP server. Account-specific modules
+live under `src/account/`; translation and admin modules remain under `src/`.
+
+## Database
+
+The server requires one PostgreSQL database in production. `src/database.js`
+runs every SQL file under `migrations/` in lexical order, guarded by a
+PostgreSQL advisory lock. Applied migration filenames are recorded in
+`magium_schema_migrations`.
+
+The initial migration is idempotent and may run against:
+
+- an empty database;
+- an existing translation database;
+- a database where account tables already exist.
+
+`schema.sql` is a readable snapshot of the current application tables. Runtime
+startup uses `migrations/`, not a Docker entrypoint mount.
+
+## Runtime Configuration
+
+Required in production:
 
 ```text
-PORT=8090
 DATABASE_URL=postgres://...
-PUBLIC_API_URL=https://tr.magium.app
-PUBLIC_WEB_URL=https://magium.app
-ALLOWED_ORIGIN=https://magium.app
+PUBLIC_URL=https://magium.app
 ADMIN_TOKEN=...
 ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
+TURNSTILE_SECRET_KEY=...
+EMAIL_CONSENT_SECRET=...
+```
+
+Common optional variables:
+
+```text
+PORT=8080
+STATIC_DIR=/app/dist
 ADMIN_COOKIE_SECURE=1
 ADMIN_SESSION_TTL_HOURS=8
-ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS=900000
-ADMIN_LOGIN_RATE_LIMIT_MAX=5
+SESSION_TTL_DAYS=30
+AUTH_RATE_LIMIT_WINDOW_MS=900000
+AUTH_RATE_LIMIT_MAX=10
+AUTH_MAX_JSON_BODY_BYTES=16384
+MAX_SYNC_BODY_BYTES=5000000
+MAX_SYNC_RECORDS=500
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX=20
 MAX_JSON_BODY_BYTES=131072
 TRUST_PROXY=0
-TURNSTILE_SECRET_KEY=...
-PSEUDONYM_BLOCKLIST=...
-SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
+SMTP_URL=smtp://...
 EMAIL_FROM=Magium <no-reply@magium.app>
-EMAIL_WEBHOOK_URL=https://...
-EMAIL_WEBHOOK_TOKEN=...
-EMAIL_CONSENT_SECRET=...
 GITHUB_TOKEN_FOR_DISPATCH=...
-GITHUB_REPOSITORY_TARGET=owner/repo
+GITHUB_REPOSITORY_TARGET=ablond/magium
 GITHUB_WORKFLOW_FILE=translation-changeset-pr.yml
 GITHUB_REF_NAME=main
 ```
 
-`TURNSTILE_DISABLED=1` is reserved for local development and tests.
-`MAX_JSON_BODY_BYTES` defaults to `131072` and limits JSON bodies before
-parsing.
-`TRUST_PROXY=0` is the safe default: rate limiting uses the socket address. Set
-`TRUST_PROXY=1` only behind a reverse proxy that overwrites or cleans
-`X-Forwarded-For`.
+`PUBLIC_API_URL` and `PUBLIC_WEB_URL` remain supported for the split local Vite
+development topology. Production should use the single `PUBLIC_URL`.
 
-## Local Docker
+## Security Boundaries
 
-From the repository root:
-
-```bash
-docker compose up -d
-```
-
-The stack starts:
-
-- PWA Vite dev: `http://localhost:5173`
-- API: `http://localhost:8090`
-- Maintainer admin: `http://localhost:8090/admin`
-- PostgreSQL 18: `localhost:5432`
-- Mailpit: `http://localhost:8025`
-
-Default local values:
-
-- `ADMIN_TOKEN=dev-admin-token`
-- `ADMIN_PASSWORD=dev-admin-password`
-- `ADMIN_SESSION_SECRET=dev-admin-session-secret`
-- `TURNSTILE_DISABLED=1`
-- `DATABASE_URL=postgres://magium_translation:magium_translation@postgres:5432/magium_translation`
-- `SMTP_URL=smtp://mailpit:1025`
-- `EMAIL_FROM=Magium <no-reply@magium.app>`
-- `EMAIL_CONSENT_SECRET=dev-email-consent-secret`
-- `MAX_JSON_BODY_BYTES=131072`
-- `TRUST_PROXY=0`
-
-Full reset:
-
-```bash
-docker compose down -v
-```
-
-The local compose stack uses `postgres:18-alpine` with a volume mounted at
-`/var/lib/postgresql`. This layout differs from PostgreSQL 17; delete the old
-local volume before restarting with PostgreSQL 18.
-
-Healthcheck:
-
-```bash
-curl http://localhost:8090/health
-```
-
-## Docker Coolify
-
-The API service has its own Dockerfile:
-
-```bash
-docker build -f services/translation-api/Dockerfile services/translation-api
-```
-
-In Coolify, create a separate application:
-
-- base directory: `services/translation-api`
-- Dockerfile: `Dockerfile`
-- port: `8090`
-- PostgreSQL: separate service
-
-In production, set at least `DATABASE_URL`, `ADMIN_TOKEN`, `ADMIN_PASSWORD`,
-`ADMIN_SESSION_SECRET`, `PUBLIC_API_URL=https://tr.magium.app`,
-`PUBLIC_WEB_URL=https://magium.app`, `ALLOWED_ORIGIN=https://magium.app`,
-`TURNSTILE_SECRET_KEY`, and `EMAIL_CONSENT_SECRET`. To enable email
-notifications, also configure Brevo SMTP through `SMTP_URL` and
-`EMAIL_FROM=Magium <no-reply@magium.app>`. For the web admin at
-`https://tr.magium.app/admin`, set `ADMIN_COOKIE_SECURE=1`. Keep
-`MAX_JSON_BODY_BYTES=131072`. Keep `TRUST_PROXY=0` unless Coolify or the front
-proxy guarantees that `X-Forwarded-For` is cleaned before reaching the
-container.
-
-Expected Brevo configuration:
-
-```text
-SMTP_URL=smtp://<BREVO_SMTP_LOGIN_URL_ENCODED>:<BREVO_SMTP_KEY_URL_ENCODED>@smtp-relay.brevo.com:587
-EMAIL_FROM=Magium <no-reply@magium.app>
-```
-
-Verify in Brevo that sender `no-reply@magium.app` or domain `magium.app` is
-authorized before public activation. Brevo SMTP credentials must stay in
-Coolify.
-
-## Flow
-
-1. The PWA sends `POST /v1/translation-proposals`.
-2. If an email is provided, the service sends a confirmation link unless a browser token already confirms that email.
-3. The maintainer handles proposals through `GET /admin` or through admin routes protected by `ADMIN_TOKEN`.
-4. Accepted proposals are grouped into a changeset.
-5. `POST /v1/admin/changesets/<id>/dispatch-pr` triggers the GitHub workflow.
-6. After publication, `POST /v1/admin/changesets/<id>/published` notifies confirmed emails per recipient and then deletes them.
-
-Rejections and stale markings can also be applied in batch with
-`POST /v1/admin/proposals/bulk-review`. In that case, confirmed contacts are
-grouped by normalized email to avoid multiple emails to the same person.
-
-If no email transport is configured, proposals requesting notification are
-rejected without storing the address.
-
-If `EMAIL_WEBHOOK_URL` is used outside production, the sent payload contains
-`{ from, to, subject, text, html }` with
-`from=Magium <no-reply@magium.app>` by default. SMTP transport also sends both
-`text` and `html` versions.
-
-Email confirmation creates reusable consent for one year per browser. The
-consent table does not store raw email: only an HMAC of normalized email and a
-browser token hash.
-
-## Public Routes
-
-- `POST /v1/translation-proposals`
-- `GET /v1/translation-proposals/:publicId/status`
-- `GET|POST /v1/translation-proposals/:publicId/confirm-email`
-
-## Admin Routes
-
-- `GET /v1/admin/proposals`
-- `POST /v1/admin/proposals/:publicId/review`
-- `POST /v1/admin/proposals/bulk-review`
-- `POST /v1/admin/changesets`
-- `GET /v1/admin/changesets`
-- `GET /v1/admin/changesets/:publicId`
-- `GET /v1/admin/changesets/:publicId/export`
-- `POST /v1/admin/changesets/:publicId/dispatch-pr`
-- `POST /v1/admin/changesets/:publicId/stale`
-- `POST /v1/admin/changesets/:publicId/published`
-
-## Maintainer Web Interface
-
-`GET /admin` serves a framework-free web interface for listing proposals,
-accepting, rejecting, marking proposals as stale, batch-processing rejection or
-stale marking for pending proposals, creating a changeset, exporting a changeset,
-triggering the PR, and then marking a batch published or stale.
-
-A proposal detail shows the target original text, a visual original/proposal
-diff, and an editable retained final version. Older proposals that do not yet
-contain original text remain visible, without diff.
-
-The interface uses `ADMIN_PASSWORD` to open a signed `HttpOnly` cookie session
-with `ADMIN_SESSION_SECRET`. POST actions performed with a cookie require the
-CSRF token returned by `/admin/session`. Machine calls may keep using
-`Authorization: Bearer ADMIN_TOKEN`.
-
-## Database
-
-Run `schema.sql` on PostgreSQL before the first startup.
+- Production refuses to start without `DATABASE_URL`.
+- Account passwords are salted and hashed with `scrypt`.
+- Only SHA-256 session-token hashes are stored in PostgreSQL.
+- Cloud records are encrypted in the browser; the server must never receive a
+  plaintext game state, label, history, variable, or achievement identifier.
+- Admin browser sessions use `HttpOnly` cookies and CSRF protection.
+- Translation follow-up emails stay outside public proposal/admin payloads and
+  are deleted after their documented lifecycle.
+- Static serving is restricted to `STATIC_DIR`; unknown `/v1/*` paths return a
+  JSON 404 and never fall back to `index.html`.

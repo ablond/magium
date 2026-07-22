@@ -24,7 +24,7 @@ The flow is privacy-first:
 
 The PWA may show a discreet pencil icon on visible paragraphs and choices. This
 surface is opt-in: icons are hidden by default, fully absent when
-`VITE_MAGIUM_CONTRIBUTIONS_API_URL` is not configured, and visible only when the
+`VITE_MAGIUM_API_URL` is not configured, and visible only when the
 reader enables `Translation corrections` in Settings. For narrative text, the
 icon targets the displayed paragraph, not the whole `messageId` block when that
 block contains multiple paragraphs separated by blank lines. The form shows
@@ -55,7 +55,7 @@ multi-paragraph blocks remain a maintainer/manual case.
 PWA build variables:
 
 ```text
-VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
+VITE_MAGIUM_API_URL=/
 VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 ```
 
@@ -74,8 +74,8 @@ Local Docker with `docker compose up -d` starts:
 
 ## Contribution API
 
-The service lives under `services/translation-api`. It is separate from the
-static PWA image and can be deployed as a distinct Coolify service with
+The server implementation lives under `services/translation-api`, but the root
+Dockerfile packages it with the PWA as one Coolify application backed by one
 PostgreSQL.
 
 `GET /health` returns `{ "status": "ok" }` for Docker Compose and Coolify.
@@ -120,9 +120,7 @@ DATABASE_URL=postgres://...
 ADMIN_TOKEN=...
 ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
-PUBLIC_API_URL=https://tr.magium.app
-PUBLIC_WEB_URL=https://magium.app
-ALLOWED_ORIGIN=https://magium.app
+PUBLIC_URL=https://magium.app
 TURNSTILE_SECRET_KEY=...
 EMAIL_CONSENT_SECRET=...
 ADMIN_COOKIE_SECURE=1
@@ -154,11 +152,8 @@ In production, `SMTP_URL` should point to Brevo SMTP
 `Magium <no-reply@magium.app>`. The sender `no-reply@magium.app` or the
 `magium.app` domain must be verified in Brevo before public activation.
 
-Production domains:
-
-- reading app: `https://magium.app`;
-- contribution API and maintainer admin: `https://tr.magium.app`, with admin at `https://tr.magium.app/admin`;
-- `ALLOWED_ORIGIN` must remain strictly `https://magium.app`.
+Production uses one domain: the reader, public API, and maintainer admin live at
+`https://magium.app`, with admin at `https://magium.app/admin`.
 
 In local Docker, compose sets `SMTP_URL=smtp://mailpit:1025` and
 `EMAIL_FROM=Magium <no-reply@magium.app>`. Emails are visible in Mailpit at

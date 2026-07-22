@@ -199,7 +199,7 @@ the full catalog, but must strictly cover translated chapters for that locale.
 Stats must be complete for every story locale.
 
 Public translation corrections do not change this model. The
-`services/translation-api` service stores proposals only. A paragraph
+The contribution subsystem in the unified Magium server stores proposals only. A paragraph
 correction targets one visible segment inside a `messageId`; the changeset
 replaces only that segment in the complete JSON value. An accepted changeset is
 applied by `tools/contributions/apply-changeset.mjs` to editable sources under

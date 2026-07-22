@@ -72,6 +72,26 @@ export async function mergeAchievementProgressFromState(state: GameState): Promi
   return recordAchievementUnlocks(Object.keys(state.achievements), state.contentVersion)
 }
 
+export async function mergeAchievementProgressFromSync(remote: AchievementProgress): Promise<AchievementProgress> {
+  if (!isAchievementProgress(remote)) {
+    return loadAchievementProgress()
+  }
+  const local = await loadAchievementProgress()
+  const achievements = { ...local.achievements, ...remote.achievements }
+  const changed = Object.keys(achievements).length !== Object.keys(local.achievements).length
+  const next: AchievementProgress = {
+    schemaVersion: 1,
+    contentVersion: remote.contentVersion ?? local.contentVersion,
+    achievements,
+    createdAt: local.createdAt || remote.createdAt,
+    updatedAt: changed
+      ? new Date().toISOString()
+      : [local.updatedAt, remote.updatedAt].sort().at(-1) ?? local.updatedAt,
+  }
+  await storeAchievementProgress(next)
+  return next
+}
+
 export function filterNewAchievementUnlocks(
   progress: AchievementProgress,
   achievements: AchievementDefinition[],

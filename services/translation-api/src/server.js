@@ -1,18 +1,34 @@
 import http from 'node:http'
 import { readFile } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
 import { URL } from 'node:url'
+import { createAccountMemoryRepository } from './account/repository.memory.js'
+import { createAccountPostgresRepositoryFromPool } from './account/repository.postgres.js'
+import { createAccountRouter } from './account/router.js'
 import { createAdminAuth } from './admin-auth.js'
 import { buildTextDiffParts } from './admin-diff.js'
+import { createDatabase } from './database.js'
 import { buildEmailConsentRedirectUrl, createEmailConsent, extendEmailConsent, randomConsentToken, verifyEmailConsent } from './email-consents.js'
 import { dispatchChangesetWorkflow } from './github.js'
 import { DEFAULT_EMAIL_FROM, confirmationEmail, createMailer, proposalsClosedEmail, proposalsPublishedEmail } from './mailer.js'
 import { buildChangeset, buildPublicStatus, hashSecret, normalizeProposalInput, randomEmailToken, reviewProposal } from './proposals.js'
 import { createMemoryRepository } from './repository.memory.js'
-import { createPostgresRepository } from './repository.postgres.js'
+import { createPostgresRepositoryFromPool } from './repository.postgres.js'
+import { serveStatic } from './static.js'
 import { verifyTurnstileToken } from './turnstile.js'
 
 const config = readConfig()
-const repository = await createRepository(config)
+if (process.env.NODE_ENV === 'production' && !config.databaseUrl) {
+  throw new Error('DATABASE_URL is required in production')
+}
+const databasePool = await createDatabase(config.databaseUrl)
+const repository = databasePool
+  ? createPostgresRepositoryFromPool(databasePool)
+  : createMemoryRepository()
+const accountRepository = databasePool
+  ? createAccountPostgresRepositoryFromPool(databasePool)
+  : createAccountMemoryRepository()
+const accountRouter = createAccountRouter({ config: config.account, repository: accountRepository })
 const mailer = await createMailer(config)
 const adminAuth = createAdminAuth(config)
 const rateLimiter = createRateLimiter(config.rateLimitWindowMs, config.rateLimitMax)
@@ -28,8 +44,11 @@ const server = http.createServer(async (request, response) => {
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   server.listen(config.port, () => {
-    console.info(`[translation-api] listening on :${config.port}`)
+    console.info(`[magium] listening on :${config.port}`)
   })
+  for (const signal of ['SIGINT', 'SIGTERM']) {
+    process.once(signal, () => shutdown(signal))
+  }
 }
 
 export { server }
@@ -44,9 +63,12 @@ async function route(request, response) {
   }
 
   if (request.method === 'GET' && url.pathname === '/health') {
+    if (databasePool) await databasePool.query('SELECT 1')
     writeJson(response, 200, { status: 'ok' })
     return
   }
+
+  if (await accountRouter(request, response, url)) return
 
   if (request.method === 'GET' && (url.pathname === '/admin' || url.pathname === '/admin/')) {
     await serveAdminIndex(response)
@@ -99,7 +121,19 @@ async function route(request, response) {
     return
   }
 
+  if (url.pathname.startsWith('/v1/') || url.pathname.startsWith('/admin/')) {
+    writeJson(response, 404, { error: 'Not found' })
+    return
+  }
+  if (await serveStatic(request, response, url, { staticDir: config.staticDir })) return
   writeJson(response, 404, { error: 'Not found' })
+}
+
+async function shutdown(signal) {
+  console.info(`[magium] received ${signal}, shutting down`)
+  await new Promise((resolve) => server.close(resolve))
+  if (databasePool) await databasePool.end()
+  process.exit(0)
 }
 
 async function createTranslationProposal(request, response) {
@@ -614,9 +648,11 @@ async function getReusableEmailConsent({ email, consentId, consentToken, now }) 
 }
 
 function readConfig() {
+  const publicUrl = (process.env.PUBLIC_URL ?? '').replace(/\/+$/, '')
   return {
-    port: Number(process.env.PORT ?? 8090),
+    port: Number(process.env.PORT ?? 8080),
     databaseUrl: process.env.DATABASE_URL ?? '',
+    staticDir: process.env.STATIC_DIR ?? fileURLToPath(new URL('../../../dist/', import.meta.url)),
     adminToken: process.env.ADMIN_TOKEN ?? '',
     adminPassword: process.env.ADMIN_PASSWORD ?? '',
     adminSessionSecret: process.env.ADMIN_SESSION_SECRET ?? '',
@@ -624,8 +660,8 @@ function readConfig() {
     adminSessionTtlHours: Number(process.env.ADMIN_SESSION_TTL_HOURS ?? 8),
     adminLoginRateLimitWindowMs: Number(process.env.ADMIN_LOGIN_RATE_LIMIT_WINDOW_MS ?? 15 * 60 * 1000),
     adminLoginRateLimitMax: Number(process.env.ADMIN_LOGIN_RATE_LIMIT_MAX ?? 5),
-    publicApiUrl: (process.env.PUBLIC_API_URL ?? `http://localhost:${process.env.PORT ?? 8090}`).replace(/\/+$/, ''),
-    publicWebUrl: (process.env.PUBLIC_WEB_URL ?? '').replace(/\/+$/, ''),
+    publicApiUrl: (publicUrl || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT ?? 8080}`).replace(/\/+$/, ''),
+    publicWebUrl: (publicUrl || process.env.PUBLIC_WEB_URL || '').replace(/\/+$/, ''),
     allowedOrigin: process.env.ALLOWED_ORIGIN ?? '*',
     turnstileSecretKey: process.env.TURNSTILE_SECRET_KEY ?? '',
     turnstileDisabled: process.env.TURNSTILE_DISABLED === '1' || process.env.NODE_ENV === 'test',
@@ -643,14 +679,17 @@ function readConfig() {
     githubRepository: process.env.GITHUB_REPOSITORY_TARGET ?? '',
     githubWorkflowFile: process.env.GITHUB_WORKFLOW_FILE ?? 'translation-changeset-pr.yml',
     githubRef: process.env.GITHUB_REF_NAME ?? 'main',
+    account: {
+      allowedOrigins: (process.env.ALLOWED_ORIGIN ?? '').split(',').map((value) => value.trim()).filter(Boolean),
+      sessionTtlDays: readPositiveIntegerEnv('SESSION_TTL_DAYS', 30),
+      authRateLimitWindowMs: readPositiveIntegerEnv('AUTH_RATE_LIMIT_WINDOW_MS', 900_000),
+      authRateLimitMax: readPositiveIntegerEnv('AUTH_RATE_LIMIT_MAX', 10),
+      maxJsonBodyBytes: readPositiveIntegerEnv('AUTH_MAX_JSON_BODY_BYTES', 16_384),
+      maxSyncBodyBytes: readPositiveIntegerEnv('MAX_SYNC_BODY_BYTES', 5_000_000),
+      maxSyncRecords: readPositiveIntegerEnv('MAX_SYNC_RECORDS', 500),
+      trustProxy: process.env.TRUST_PROXY === '1',
+    },
   }
-}
-
-async function createRepository(nextConfig) {
-  if (nextConfig.databaseUrl) {
-    return createPostgresRepository(nextConfig.databaseUrl)
-  }
-  return createMemoryRepository()
 }
 
 async function readJson(request) {
@@ -691,7 +730,7 @@ function writeError(response, caught) {
 
 function writeCorsHeaders(response) {
   response.setHeader('access-control-allow-origin', config.allowedOrigin)
-  response.setHeader('access-control-allow-methods', 'GET,POST,OPTIONS')
+  response.setHeader('access-control-allow-methods', 'GET,POST,PUT,OPTIONS')
   response.setHeader('access-control-allow-headers', 'content-type,authorization,x-admin-csrf')
   response.setHeader('access-control-allow-credentials', 'true')
 }

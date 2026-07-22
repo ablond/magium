@@ -10,9 +10,9 @@ Coolify deployment is in [docs/deployment-coolify.md](./deployment-coolify.md).
 
 ## 1. Overview
 
-The game runtime remains a static PWA. Public contributions go through a
-separate API service, with maintainer review and GitHub PR before any
-integration.
+The game remains a local-first PWA. In production, the built PWA and public
+contribution routes are served by the same Magium Node application, with
+maintainer review and GitHub PR before any integration.
 
 End-to-end flow:
 
@@ -21,7 +21,7 @@ PWA reader
   -> enables Translation corrections in Settings
   -> correction pencil on paragraph/choice
   -> POST /v1/translation-proposals
-  -> services/translation-api + PostgreSQL
+  -> same-origin Magium server + PostgreSQL
   -> maintainer /admin
   -> accept/reject/stale
   -> maintainer changeset
@@ -38,14 +38,14 @@ Roles:
 - Reader: proposes a correction from a visible paragraph or choice, without an account.
 - Maintainer: reviews, compares diff, accepts/rejects/marks stale, groups into a changeset, dispatches the PR.
 - PWA: displays the form, computes hashes, handles Turnstile and local opt-in storage.
-- Translation API: validates, stores, protects admin, sends emails, exposes changesets, triggers GitHub.
+- Magium server: serves the PWA, validates contributions, protects admin, sends emails, exposes changesets, and triggers GitHub.
 - PostgreSQL: stores proposals, temporary email contacts, anonymized email consents, and changesets.
 - GitHub Actions: applies the changeset to editable sources, regenerates, and opens a PR.
-- Coolify: hosts the static PWA and API as two distinct applications.
+- Coolify: hosts one Magium application and one PostgreSQL resource.
 
 V1 limits:
 
-- no user accounts;
+- contribution submission does not require an account;
 - no public voting;
 - no collaborative translation of a complete new language;
 - no PR per individual proposal;
@@ -64,7 +64,7 @@ docker compose up -d --build
 Services:
 
 - PWA Vite dev: `http://localhost:5173`
-- Translation API: `http://localhost:8090`
+- Unified app/API: `http://localhost:8090`
 - Maintainer admin: `http://localhost:8090/admin`
 - Mailpit: `http://localhost:8025`
 - PostgreSQL 18: `localhost:5432`
@@ -100,10 +100,9 @@ docker compose down
 to copy it before starting the stack because `docker-compose.yml` provides
 development defaults.
 
-If an older PostgreSQL 18 volume exists, `schema.sql` is replayed only at volume
-initialization. The API service also applies compatibility columns at startup
-with `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` to avoid breaking an already
-created local database.
+The server runs ordered, idempotent migrations at every startup. Existing
+translation tables are preserved while account tables and missing compatibility
+columns are added.
 
 ## 3. Data Model
 
@@ -306,7 +305,7 @@ Browser double opt-in:
 
 1. First proposal with email: the API creates an unconfirmed contact and sends a link.
 2. The link calls `/confirm-email`.
-3. The API confirms the contact, creates email consent, and redirects to `PUBLIC_WEB_URL`.
+3. The API confirms the contact, creates email consent, and redirects to `PUBLIC_URL`.
 4. The redirect contains a local `translation-email-consent` fragment.
 5. The PWA shows a visible confirmation notice after returning to the reader, then cleans the URL fragment.
 6. If the link is opened in the same browser as the initial proposal, the PWA stores the consent token in IndexedDB without storing raw email in this consent.
@@ -352,7 +351,7 @@ POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
 Workflow inputs:
 
 - `changeset_id`: changeset `publicId`.
-- `api_url`: API `PUBLIC_API_URL`.
+- `api_url`: public `PUBLIC_URL`.
 
 API variables required for dispatch:
 
@@ -361,7 +360,7 @@ GITHUB_TOKEN_FOR_DISPATCH=...
 GITHUB_REPOSITORY_TARGET=ablond/magium
 GITHUB_WORKFLOW_FILE=translation-changeset-pr.yml
 GITHUB_REF_NAME=main
-PUBLIC_API_URL=https://tr.magium.app
+PUBLIC_URL=https://magium.app
 ```
 
 Recommended GitHub token:
@@ -406,49 +405,23 @@ Changeset application:
 
 Important:
 
-- GitHub Actions must reach `PUBLIC_API_URL` from the Internet, therefore `https://tr.magium.app` in production.
-- `PUBLIC_API_URL=http://localhost:8090` does not work for a real GitHub PR.
+- GitHub Actions must reach the public API URL from the Internet, therefore `https://magium.app` in production.
+- `PUBLIC_URL=http://localhost:8090` does not work for a real GitHub PR.
 - `GITHUB_TOKEN_FOR_DISPATCH` and `MAGIUM_TRANSLATION_API_TOKEN` are two different secrets.
 
 ## 8. Coolify Deployment
 
-Production deployment has two Coolify applications:
+Production deployment has exactly one Coolify application plus one PostgreSQL.
+The application uses the root Dockerfile, port `8080`, domain `magium.app`, no
+application volume, and `/health`. The admin is available at
+`https://magium.app/admin`.
 
-1. Static Magium PWA on `https://magium.app`.
-2. Translation API and maintainer admin on `https://tr.magium.app`.
-
-### PWA
-
-Configuration:
-
-- source: GitHub repo through GitHub App;
-- build pack: Dockerfile;
-- Dockerfile: root `Dockerfile`;
-- base directory: root;
-- port: `8080`;
-- production domain: `magium.app`;
-- volume: none.
-
-Build args if contributions are enabled:
+Public build arguments:
 
 ```text
-VITE_MAGIUM_CONTRIBUTIONS_API_URL=https://tr.magium.app
+VITE_MAGIUM_API_URL=/
 VITE_MAGIUM_TURNSTILE_SITE_KEY=...
 ```
-
-### Translation API
-
-Configuration:
-
-- source: same GitHub repo;
-- build pack: Dockerfile;
-- base directory: `services/translation-api`;
-- Dockerfile: `Dockerfile`;
-- port: `8090`;
-- production domain: `tr.magium.app`;
-- maintainer admin: `https://tr.magium.app/admin`;
-- healthcheck: `/health`;
-- PostgreSQL database: separate Coolify service.
 
 Required variables:
 
@@ -457,9 +430,7 @@ DATABASE_URL=postgres://...
 ADMIN_TOKEN=...
 ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
-PUBLIC_API_URL=https://tr.magium.app
-PUBLIC_WEB_URL=https://magium.app
-ALLOWED_ORIGIN=https://magium.app
+PUBLIC_URL=https://magium.app
 TURNSTILE_SECRET_KEY=...
 EMAIL_CONSENT_SECRET=...
 ADMIN_COOKIE_SECURE=1
@@ -488,10 +459,8 @@ TRUST_PROXY=0
 
 Production checklist:
 
-- `PUBLIC_API_URL=https://tr.magium.app`.
-- `PUBLIC_WEB_URL=https://magium.app`.
-- `ALLOWED_ORIGIN=https://magium.app`.
-- Maintainer admin available at `https://tr.magium.app/admin`.
+- `PUBLIC_URL=https://magium.app`.
+- Maintainer admin available at `https://magium.app/admin`.
 - `ADMIN_COOKIE_SECURE=1` required in HTTPS production.
 - `MAX_JSON_BODY_BYTES=131072` limits JSON requests before parsing.
 - `TRUST_PROXY=0` remains the safe default; use `TRUST_PROXY=1` only behind a proxy that cleans `X-Forwarded-For`.
@@ -549,10 +518,10 @@ Check the fine-grained PAT permissions and workflow state.
 
 Likely causes:
 
-- `PUBLIC_API_URL` is not reachable from GitHub Actions;
-- `PUBLIC_API_URL` points to `localhost`;
+- `PUBLIC_URL` is not reachable from GitHub Actions;
+- `PUBLIC_URL` points to `localhost`;
 - GitHub secret `MAGIUM_TRANSLATION_API_TOKEN` is absent or differs from `ADMIN_TOKEN`;
-- `ALLOWED_ORIGIN` does not affect GitHub server calls, but a reverse proxy may block them.
+- the Coolify proxy or access policy blocks GitHub server calls.
 
 ### `email notifications are not configured`
 
@@ -620,11 +589,11 @@ Symptom: missing column error such as `current_text`, `segment_index`, or
 
 Fixes:
 
-- restart the API so compatibility `ALTER TABLE ... IF NOT EXISTS` migrations can run;
-- locally, apply the schema or start from zero:
+- restart the unified app so ordered migrations can run;
+- inspect applied migrations or start from zero locally:
 
 ```bash
-docker compose exec -T postgres psql -U magium_translation -d magium_translation -f /docker-entrypoint-initdb.d/001-translation-api.sql
+docker compose exec -T postgres psql -U magium_translation -d magium_translation -c 'SELECT name, applied_at FROM magium_schema_migrations ORDER BY name'
 docker compose down -v
 ```
 
@@ -663,7 +632,6 @@ If Docker, Coolify, the API, or packaging is touched:
 
 ```bash
 docker compose config
-docker build -f services/translation-api/Dockerfile services/translation-api
 pnpm docker:build-prod
 ```
 
@@ -725,6 +693,7 @@ Covered tests:
 - `services/translation-api/tests/privacy-flow.node.mjs`: email, consent, deletion.
 - `services/translation-api/tests/admin-flow.node.mjs`: admin session, CSRF, changesets.
 - `services/translation-api/tests/admin-diff.node.mjs`: admin diff.
+- `services/translation-api/tests/unified-server.node.mjs`: same-origin static/account/contribution/admin server and migration behavior.
 
 Do not run `pnpm images:check -- --book 1` for an iteration that does not touch
 Book 1 images.
@@ -736,13 +705,16 @@ Book 1 images.
 - `src/lib/contributions/storage.ts`: local opt-in profile and email consent.
 - `src/lib/contributions/turnstile.ts`: Turnstile integration.
 - `services/translation-api/src/server.js`: API/admin routes.
+- `services/translation-api/src/database.js`: shared PostgreSQL pool and automatic migrations.
+- `services/translation-api/src/account/`: account authentication, routes, and repositories.
 - `services/translation-api/src/proposals.js`: proposal validation and transitions.
 - `services/translation-api/src/admin-auth.js`: admin session, cookie, CSRF.
 - `services/translation-api/src/admin-diff.js`: admin visual diff.
 - `services/translation-api/src/email-consents.js`: email consent.
 - `services/translation-api/src/mailer.js`: SMTP/webhook email.
 - `services/translation-api/src/github.js`: GitHub workflow dispatch.
-- `services/translation-api/schema.sql`: PostgreSQL schema.
+- `services/translation-api/migrations/`: runtime PostgreSQL migrations.
+- `services/translation-api/schema.sql`: readable schema snapshot.
 - `services/translation-api/admin/`: vanilla admin UI.
 - `tools/contributions/apply-changeset.mjs`: JSON application and stale detection.
 - `.github/workflows/translation-changeset-pr.yml`: PR automation.
