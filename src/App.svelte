@@ -1688,7 +1688,7 @@
                 <form class="account-form" on:submit|preventDefault={submitAccount}>
                   <label>
                     {t(uiMessages, 'account.username', {}, 'Username')}
-                    <input bind:value={accountUsername} minlength="3" maxlength="32" pattern="[A-Za-z0-9._-]+" autocomplete="username" disabled={accountBusy} required />
+                    <input bind:value={accountUsername} minlength="3" maxlength="32" pattern="[A-Za-z0-9._\-]+" autocomplete="username" disabled={accountBusy} required />
                   </label>
                   <label>
                     {t(uiMessages, 'account.password', {}, 'Password')}
