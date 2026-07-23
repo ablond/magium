@@ -11,7 +11,7 @@ Chosen principles:
 - preserve long sentences when they carry momentum or panic;
 - keep useful repetitions, especially during tense moments;
 - translate dialogue into natural French, with more contracted or colloquial tone when the character is familiar or aggressive;
-- keep English proper names: Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Western Continent;
+- keep English proper names: Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Southern Continent, Western Continent;
 - keep `Cutthroat` and `Cutthroat Dave` as proper names when they designate the character; do not translate them as `coupe-gorge`.
 
 ## Characteristic Style Patterns
@@ -32,13 +32,16 @@ Chosen principles:
 | white magic | magie blanche | Standard fantasy term. |
 | throwing knives / daggers | couteaux de lancer / dagues | Choose according to source context. |
 | checkpoint | point de contrôle | Coherent UI and narrative term. |
+| Load from last checkpoint | Charger depuis le dernier point de contrôle | Repeated player choice; keep identical in every chapter. |
+| Load game | Charger une partie | Repeated player choice; keep identical in every chapter. |
+| Invest points now / later | Investir les points maintenant / plus tard | Repeated stat-allocation choices; retain the established wording from Books 1 and 2. |
 | stat device / stat booster | appareil de stats | Stabilized in `ch3` to avoid `amplificateur` or `dispositif`, which are too technical and less coherent with `ch1`/`ch2`. |
 | abilities | Stats | French UI label retained for the stats panel. Technical IDs `abilities.*` stay in English. |
 | common language | langue commune | Human language, distinct from ancient languages. |
 | golden fox | renard doré / grande renarde | `renard doré` when Barry/Daren talk about a still-vague figure; `grande renarde` when Elaria speaks of her protector. |
 | still winter | Hiver immobile | Event name and coded phrase introduced by Eiden in `ch4`. Capitalize when the expression designates the event. |
 | transceiver | émetteur | Stabilized in Book 1 and reused for Daren's enchanted devices in Book 2. |
-| dwarven ale | ale naine | Keep `ale`, not `bière`, for continuity with Book 1. |
+| dwarven ale | ale naine | Term stabilized in Book 2 and kept throughout Book 3. Book 1 still contains a few legacy `bière naine` variants outside the scope of the Book 3 pass. |
 | glowing pinecone | pomme de pin lumineuse | Book 2 tournament objective. |
 | revenant | revenant / revenante | Inflect naturally by body or entity when French agreement requires it. |
 | trampler | piétineur | Book 2 arena creature. |
@@ -46,7 +49,12 @@ Chosen principles:
 | time weaver | tisseur / tisseuse du temps | Use feminine `tisseuse du temps` for Rose. |
 | dragon hunter | chasseur de dragons | Caste/function term, naturally inflected in plural. |
 | ethereal | éthéré | Magical adjective, especially for intangible beings or effects. |
-| Northern Continent / Western Continent | Northern Continent / Western Continent | Proper names kept in English, like `Eastern Continent`. |
+| ethereal plane / earthen plane / magical plane | plan éthéré / plan terrestre / plan magique | Keep the cosmological distinction stable. As a noun, `ethereal` becomes `éthéré` / `éthérée`. |
+| Overseer / Overseer protocol | Superviseur / protocole du Superviseur | Book 3 protocol designation. Keep the capital and its repetitive, bureaucratic third-person voice. |
+| king of the underground | roi des souterrains | Book 3 political title. |
+| drowns / droons / droynes / drones | unchanged | Book 3 running nomenclature joke. Breynan says `drowns`, Melindra says `droons`, Albert hesitates between `drowns` and `droynes`, then Billy Bob corrects everyone with `DRONES`. Never flatten these variants before the correction. |
+| seredium | seredium | Material name kept unchanged and without an accent. |
+| Eastern / Northern / Southern / Western Continent | unchanged | Proper continent names remain in English. |
 | Strength | Force | Stat. |
 | Toughness | Résistance | Stat. |
 | Speed | Vitesse | Stat. |
@@ -84,6 +92,10 @@ French without fake precision.
 | Barry -> Daren | Tu | Fast companionship after the rescue. |
 | Daren -> Barry | Tu | Protective, then familiar tone. |
 | Unknown female voice -> Daren | Vous | Initial politeness toward a legendary figure. |
+| Barry's established group | Tu | Barry, Daren, Kate, Hadrik, Flower, Illuna, Arraka, Leila, and Melindra are familiar companions by Book 3. |
+| Superviseur -> humans | Vous | Programmed, formal, bureaucratic address. |
+| Barry's group -> Superviseur | Tu | The group treats the protocol as a familiar adversary or interlocutor, not as a respected official. |
+| New Book 3 authorities | Vous initially | Meridith, Reidzek, the king of the underground, and other authorities remain formal until the text clearly establishes familiarity. |
 
 ## Notable Adaptations
 
@@ -93,6 +105,8 @@ French without fake precision.
 - `A clean mouth and an honest hand...` becomes `Parler vrai et agir droit ouvre bien des portes.`: proverbial effect preserved without a clumsy literal calque.
 - `a few hundred feet from my location` becomes `à une centaine de mètres de ma position`: rounded, natural metric conversion.
 - `Remember the still winter` becomes `Souvenez-vous de l'Hiver immobile`: deliberately solemn phrase, to keep stable in later chapters.
+- `Overseer` becomes `Superviseur`, with repeated system formulas translated consistently rather than varied for style; `Overseer protocol` becomes `protocole du Superviseur`.
+- The `drowns` / `droons` / `droynes` sequence remains deliberately inconsistent until Billy Bob's `DRONES` correction. This is a character and comedy cue, not a glossary error.
 
 ## Stabilized Editorial Corrections
 
@@ -167,12 +181,14 @@ Narrative translation:
 - create or update `content/story-locales/fr/<chapterId>.json` with `locale: "fr"`, `chapterId: "<chapterId>"`, and exactly the same `messages` keys as the English locale;
 - translate in controlled Codex-only batches small enough to review before merging;
 - keep every `messageId` intact, without adding, deleting, or renaming keys;
+- preserve the count and order of blank-line-separated segments inside every paragraph message, because public corrections map the displayed French paragraph to the English source through `segmentIndex`;
 - translate only player-visible text: do not change scene IDs, choice targets, variables, conditions, assignments, specials, stat checks, or chapter logic;
 - systematically apply this document's register, glossary, naturalized units, and tu/vous rules.
 
 Chapter achievements:
 
-- search `content/canonical/v1/story/<chapterId>.json` for every achievement variable referenced by the chapter; Book 1 uses variables shaped like `v_ac_ch...`, while Book 2 uses `v_ac_b2_ch...`;
+- search `content/canonical/v1/story/<chapterId>.json` for every achievement variable referenced by the chapter; Book 1 uses variables shaped like `v_ac_ch...`, Book 2 uses `v_ac_b2_ch...`, and Book 3 uses `v_ac_b3_ch...`;
+- also derive the complete expected achievement set from the archived `achievementsN.json` catalog for the translated book, because a catalogued achievement may not be referenced by the current graph;
 - for each variable, translate `achievement.<variable>.title` and `achievement.<variable>.caption` from `content/canonical/v1/locales/en/achievements.json`;
 - add these translations to `content/story-locales/fr/achievements.json` without deleting already translated achievements;
 - keep the title short and natural, and the caption faithful to the English effect or joke;
@@ -183,6 +199,7 @@ Required structural QA:
 - verify that the FR source JSON parses;
 - verify `locale`, `chapterId`, key count, and strict key equality with `en/<chapterId>.json`;
 - verify no extra key, no missing key, and no modified `messageId`;
+- verify strict segment-count equality with the English value for every paragraph message;
 - verify that chapter achievements present in the story graph have their FR `title` and `caption` keys;
 - update i18n tests and status docs if public FR coverage changes.
 
@@ -193,7 +210,9 @@ Required editorial QA:
 - scan forbidden or unstable terms: `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, non-naturalized imperial units;
 - scan stabilized Book 1 corrections when context matches: `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux`, lowercase `hiver immobile`;
 - verify preserved English proper names, especially continents, characters, places, races, and titles already stabilized;
-- reread at least the chapter opening, one long scene, one choice scene, one scene with key characters, one tension or combat scene, and the end or alternative branches;
+- reread every controlled batch once as standalone French, without looking at the English first, and rewrite anything that sounds translated, stiff, or unnatural;
+- compare the revised batch against the English a second time to catch omissions, softened meaning, invented details, broken jokes, or altered causal relationships;
+- reread at least the chapter opening, one long scene, one choice scene, one scene with key characters, one tension or combat scene, and the end or alternative branches in their wider chapter context;
 - correct passages that are too literal, too formal, or too neutral so Barry remains direct, oral, introspective, and lightly ironic;
 - add to the glossary any new recurring term stabilized during translation.
 
@@ -209,9 +228,9 @@ Generation and validation:
 - `ch3`: translated with Codex in GPT-5.5 mode, medium effort, no fast mode; source split into 18 controlled batches; structural and editorial QA completed; terms stabilized during this chapter: `appareil de stats`, `langue commune`, `renard doré` / `grande renarde`, keeping `Northern Continent` and `Western Continent`.
 - `ch4`: translated locally with Codex, without external translation service; 108 messages covered; achievements `v_ac_ch4_noble`, `v_ac_ch4_cutthroat`, and `v_ac_ch4_kneed` translated; stabilized term: `still winter` -> `Hiver immobile`.
 - `ch5` through `ch11b`: translated locally with Codex, without external translation service; 1429 messages covered; achievements `v_ac_ch5_*` through `v_ac_ch11_*` translated; Book 1 is now covered in French, with English fallback only for untranslated chapters outside Book 1.
-- `b2ch1` through `b2ch11c`: translated locally with Codex in 75 controlled batches, without external translation service; 2517 messages covered; 48 Book 2 achievements translated through their `v_ac_b2_ch...` variables; Book 1 and Book 2 are now covered in French, with English fallback only for untranslated later books.
+- `b2ch1` through `b2ch11c`: translated locally with Codex in 75 controlled batches, without external translation service; 2517 messages covered; 48 Book 2 achievements translated through their `v_ac_b2_ch...` variables.
+- `b3ch1` through `b3ch12b`: translated and adapted locally with Codex in 113 controlled batches of at most about 6000 source words, without external translation service; 3485 messages and 14965 displayed paragraph segments covered; all 53 archived Book 3 achievements translated, including `v_ac_b3_ch9_prize`, which is absent from the current story graphs. Every currently available chapter is now covered in French.
 
 ## Open Points
 
-- Continent proper names (`Eastern Continent`, `Northern Continent`, `Western Continent`) remain in English under project rules, even when the source varies capitalization.
-- Book 3 achievement titles will need case-by-case arbitration between literal fidelity and equivalent humorous effect.
+- Continent proper names (`Eastern Continent`, `Northern Continent`, `Southern Continent`, `Western Continent`) remain in English under project rules, even when earlier French text or the source varies capitalization.
