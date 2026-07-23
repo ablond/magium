@@ -23,7 +23,35 @@ const book2FrenchChapters = [
   "b2ch11b",
   "b2ch11c",
 ];
-const frenchChapters = [...book1FrenchChapters, ...book2FrenchChapters];
+const book3FrenchChapters = [
+  "b3ch1",
+  "b3ch2a",
+  "b3ch2b",
+  "b3ch2c",
+  "b3ch3a",
+  "b3ch3b",
+  "b3ch4a",
+  "b3ch4b",
+  "b3ch5a",
+  "b3ch5b",
+  "b3ch6a",
+  "b3ch6b",
+  "b3ch6c",
+  "b3ch7a",
+  "b3ch8a",
+  "b3ch8b",
+  "b3ch9a",
+  "b3ch9b",
+  "b3ch9c",
+  "b3ch10a",
+  "b3ch10b",
+  "b3ch10c",
+  "b3ch11a",
+  "b3ch12a",
+  "b3ch12b",
+];
+const frenchChapters = [...book1FrenchChapters, ...book2FrenchChapters, ...book3FrenchChapters];
+const paragraphBreak = /\r?\n(?:[ \t]*\r?\n)+/;
 
 async function readJson(relativePath) {
   return JSON.parse(await fs.readFile(path.join(root, relativePath), "utf8"));
@@ -62,6 +90,48 @@ describe("generated content i18n", () => {
       expect(Object.keys(fr.messages).sort()).toEqual(Object.keys(en.messages).sort());
       expect(generated).toContain(`"locales/fr/${chapterId}"`);
     }
+  });
+
+  it("preserves Book 3 paragraph segmentation for targeted translation corrections", async () => {
+    let messageCount = 0;
+    let englishSegmentCount = 0;
+    let frenchSegmentCount = 0;
+
+    for (const chapterId of book3FrenchChapters) {
+      const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+      expect(Object.keys(fr.messages), chapterId).toEqual(Object.keys(en.messages));
+      expect(
+        Object.entries(fr.messages).filter(
+          ([, frenchText]) => typeof frenchText !== "string" || frenchText.trim() === "",
+        ),
+        chapterId,
+      ).toEqual([]);
+      for (const [messageId, frenchText] of Object.entries(fr.messages)) {
+        expect(
+          (frenchText.match(/«/g) ?? []).length,
+          `${chapterId}/${messageId} outer guillemets`,
+        ).toBe((frenchText.match(/»/g) ?? []).length);
+        expect(
+          (frenchText.match(/‹/g) ?? []).length,
+          `${chapterId}/${messageId} inner guillemets`,
+        ).toBe((frenchText.match(/›/g) ?? []).length);
+      }
+      messageCount += Object.keys(en.messages).length;
+
+      for (const [messageId, englishText] of Object.entries(en.messages)) {
+        if (!/\.p\d+$/.test(messageId)) continue;
+        const englishSegments = englishText.split(paragraphBreak).filter((segment) => segment.trim());
+        const frenchSegments = fr.messages[messageId].split(paragraphBreak).filter((segment) => segment.trim());
+        englishSegmentCount += englishSegments.length;
+        frenchSegmentCount += frenchSegments.length;
+        expect(frenchSegments.length, `${chapterId}/${messageId}`).toBe(englishSegments.length);
+      }
+    }
+
+    expect(messageCount).toBe(3_485);
+    expect(englishSegmentCount).toBe(14_965);
+    expect(frenchSegmentCount).toBe(14_965);
   });
 
   it("prunes the obsolete Book 1 credits gate from runtime content", async () => {
@@ -105,12 +175,13 @@ describe("generated content i18n", () => {
     expect(refusal.target).toBe(lie.target);
   });
 
-  it("keeps Book 2 stillwater, Still Winter, and Beacon terminology distinct", async () => {
+  it("keeps Book 2 and Book 3 stillwater, Still Winter, and Beacon terminology distinct", async () => {
     const winterMismatches = [];
+    const book3StillwaterMismatches = [];
     const malformedArtifacts = [];
     const malformedPattern = /\bde le (?:sans-aura|Beacon)\b|l['’]sans-aura\b|\bpendant le sans-aura\b/iu;
 
-    for (const chapterId of book2FrenchChapters) {
+    for (const chapterId of [...book2FrenchChapters, ...book3FrenchChapters]) {
       const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
       const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
 
@@ -119,8 +190,15 @@ describe("generated content i18n", () => {
         const englishWinterCount = (englishText.match(/\bstill winter\b/gi) ?? []).length;
         const frenchWinterCount = (frenchText.match(/Hiver immobile/g) ?? []).length;
 
-        if (englishWinterCount !== frenchWinterCount) {
+        const isBook3 = book3FrenchChapters.includes(chapterId);
+        if (
+          (!isBook3 && englishWinterCount !== frenchWinterCount) ||
+          (isBook3 && englishWinterCount > 0 && frenchWinterCount === 0)
+        ) {
           winterMismatches.push({ chapterId, messageId, englishWinterCount, frenchWinterCount });
+        }
+        if (isBook3 && /\bstillwaters?\b/i.test(englishText) && !/sans-aura/i.test(frenchText)) {
+          book3StillwaterMismatches.push({ chapterId, messageId });
         }
         if (malformedPattern.test(frenchText)) {
           malformedArtifacts.push({ chapterId, messageId });
@@ -129,6 +207,7 @@ describe("generated content i18n", () => {
     }
 
     expect(winterMismatches).toEqual([]);
+    expect(book3StillwaterMismatches).toEqual([]);
     expect(malformedArtifacts).toEqual([]);
 
     const b2ch2 = await readJson("content/canonical/v1/locales/fr/b2ch2.json");
@@ -141,7 +220,117 @@ describe("generated content i18n", () => {
     );
   });
 
-  it("generates complete stat locales and Book 1 and Book 2 French achievement overrides", async () => {
+  it("keeps Book 3 protocol and proper-name terminology stable", async () => {
+    const mismatches = [];
+    const glossaryTerms = [
+      { source: /\bdwarven ale\b/i, target: /\bale naine\b/i, term: "dwarven ale" },
+    ];
+
+    for (const chapterId of book3FrenchChapters) {
+      const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+
+      for (const [messageId, englishText] of Object.entries(en.messages)) {
+        const frenchText = fr.messages[messageId];
+        for (const { source, target, term } of glossaryTerms) {
+          if (source.test(englishText) && !target.test(frenchText)) {
+            mismatches.push({ chapterId, messageId, term });
+          }
+        }
+        if (/\bbefore long\b/i.test(englishText) && /avant longtemps/i.test(frenchText)) {
+          mismatches.push({ chapterId, messageId, term: "before long" });
+        }
+        const terms = ["Beacon of Hope", "Southern Continent", "Eastern Continent", "Northern Continent", "Western Continent", "seredium"];
+        for (const term of terms) {
+          const sourceCount = (englishText.match(new RegExp(`\\b${term}\\b`, "gi")) ?? []).length;
+          const translatedCount = (frenchText.match(new RegExp(`\\b${term}\\b`, "gi")) ?? []).length;
+          if (sourceCount > 0 && translatedCount === 0) {
+            mismatches.push({ chapterId, messageId, term, sourceCount, translatedCount });
+          }
+        }
+
+        const overseerCount = (englishText.match(/\boverseer\b/gi) ?? []).length;
+        const supervisorCount = (frenchText.match(/\bSuperviseur\b/g) ?? []).length;
+        if ((overseerCount > 0 && supervisorCount === 0) || /\boverseer\b/i.test(frenchText)) {
+          mismatches.push({ chapterId, messageId, term: "Overseer/Superviseur", overseerCount, supervisorCount });
+        }
+
+        const overseerProtocolCount = (englishText.match(/\bOverseer protocol\b/gi) ?? []).length;
+        const supervisorProtocolCount = (frenchText.match(/\bprotocole du Superviseur\b/gi) ?? []).length;
+        if (overseerProtocolCount > 0 && supervisorProtocolCount === 0) {
+          mismatches.push({ chapterId, messageId, term: "Overseer protocol", overseerProtocolCount, supervisorProtocolCount });
+        }
+      }
+    }
+
+    expect(mismatches).toEqual([]);
+
+    const b3ch2b = await readJson("content/canonical/v1/locales/fr/b3ch2b.json");
+    const b3ch2c = await readJson("content/canonical/v1/locales/fr/b3ch2c.json");
+    const b3ch4a = await readJson("content/canonical/v1/locales/fr/b3ch4a.json");
+    const b3ch9c = await readJson("content/canonical/v1/locales/fr/b3ch9c.json");
+    const b3ch12a = await readJson("content/canonical/v1/locales/fr/b3ch12a.json");
+    expect(b3ch2b.messages["b3ch2b.B3_Ch02b_Weird.p1"]).toContain("droons");
+    expect(b3ch2c.messages["b3ch2c.B3_Ch02c_Alice.p1"]).toMatch(/\bdrowns\b[\s\S]*\bdroons\b[\s\S]*\bdrowns\b[\s\S]*\bdroynes\b/);
+    expect(b3ch2c.messages["b3ch2c.B3_Ch02c_Transceiver.p1"]).toContain("émetteur");
+    expect(b3ch4a.messages["b3ch4a.B3_Ch04a_Attention.p1"]).toMatch(/\bdroons\b[\s\S]*\bDRONES\b[\s\S]*\bdrones\b/);
+    expect(b3ch9c.messages["b3ch9c.B3_Ch09c_Maintenance.p1"]).toContain("roi des souterrains");
+    expect(b3ch9c.messages["b3ch9c.B3_Ch09c_Maintenance.p1"]).toContain("protocole du Superviseur");
+    expect(b3ch12a.messages["b3ch12a.B3_Ch12a_Hermit.p1"]).toContain("plan éthéré");
+    expect(b3ch12a.messages["b3ch12a.B3_Ch12a_Hermit.p1"]).toContain("appareil de stats");
+    expect(b3ch12a.messages["b3ch12a.B3_Ch12a_Manner.p1"]).toContain("Renforcement d’aura");
+
+    const combinedBook3 = JSON.stringify(
+      await Promise.all(
+        book3FrenchChapters.map(async (chapterId) =>
+          (await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`)).messages,
+        ),
+      ),
+    );
+    expect(combinedBook3).not.toMatch(/\b(?:amplificateur|dispositif) de stats\b/i);
+    expect(combinedBook3).not.toMatch(/\bbière naine\b/i);
+    expect(combinedBook3).not.toMatch(/\boverseer\b/i);
+    expect(combinedBook3).not.toContain("'");
+    expect(combinedBook3).not.toContain('\\"');
+    expect(combinedBook3).not.toMatch(/[“”]/);
+    expect(combinedBook3).not.toMatch(/\b[\p{L}]+é-je\b/u);
+    expect(combinedBook3).not.toMatch(/\bréponds-je\b/i);
+    expect(combinedBook3).not.toMatch(/(?<!-)--(?!-)/);
+    expect(combinedBook3).not.toMatch(
+      /vibr(?:e|ent|er|ant|ation)[^.?!\n]{0,100}bruyamment/iu,
+    );
+    expect(combinedBook3).not.toMatch(
+      /vivre avec moi-même|(?:Oh,? |Mes )dieux|Vraiment, maintenant/i,
+    );
+    expect(combinedBook3).not.toMatch(
+      /\b(?:mile|miles|yard|yards|feet|foot|inch|inches)\b/i,
+    );
+  });
+
+  it("keeps repeated Book 3 player choices consistent", async () => {
+    const repeatedChoices = new Map([
+      ["Load from last checkpoint", "Charger depuis le dernier point de contrôle"],
+      ["Load game", "Charger une partie"],
+      ["Invest points now", "Investir les points maintenant"],
+      [
+        "Invest points later(by pressing the stats button on the top of the screen)",
+        "Investir les points plus tard (en appuyant sur le bouton Stats en haut de l’écran)",
+      ],
+    ]);
+
+    for (const chapterId of book3FrenchChapters) {
+      const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+
+      for (const [messageId, englishText] of Object.entries(en.messages)) {
+        const expectedFrench = repeatedChoices.get(englishText);
+        if (expectedFrench === undefined) continue;
+        expect(fr.messages[messageId], `${chapterId}/${messageId}`).toBe(expectedFrench);
+      }
+    }
+  });
+
+  it("generates complete stat locales and Book 1 through Book 3 French achievement overrides", async () => {
     const enStats = await readJson("content/canonical/v1/locales/en/stats.json");
     const frStats = await readJson("content/canonical/v1/locales/fr/stats.json");
     const frAchievements = await readJson("content/canonical/v1/locales/fr/achievements.json");
@@ -149,15 +338,58 @@ describe("generated content i18n", () => {
 
     expect(Object.keys(frStats.messages).sort()).toEqual(Object.keys(enStats.messages).sort());
     expect(frStats.messages["stat.v_strength"]).toBe("Force");
-    const expectedAchievementKeys = await readAchievementKeys(["achievements1.json", "achievements2.json"]);
+    const expectedAchievementKeys = await readAchievementKeys(["achievements1.json", "achievements2.json", "achievements3.json"]);
 
     expect(Object.keys(frAchievements.messages).sort()).toEqual(expectedAchievementKeys);
+    const book3AchievementKeys = await readAchievementKeys(["achievements3.json"]);
+    const book3AchievementVariables = new Set(
+      book3AchievementKeys.map((key) => key.replace(/^achievement\./, "").replace(/\.(?:caption|title)$/, "")),
+    );
+    const book3AchievementMessages = Object.fromEntries(
+      book3AchievementKeys.map((key) => [key, frAchievements.messages[key]]),
+    );
+    expect(book3AchievementKeys).toHaveLength(106);
+    expect(book3AchievementVariables.size).toBe(53);
+    expect(
+      Object.entries(book3AchievementMessages).filter(
+        ([, value]) => typeof value !== "string" || value.trim() === "",
+      ),
+    ).toEqual([]);
+    expect(JSON.stringify(book3AchievementMessages)).not.toContain("'");
     expect(frAchievements.messages["achievement.v_ac_ch6_immersion.title"]).toBe("Immersion totale");
     expect(frAchievements.messages["achievement.v_ac_ch6_immersion.caption"]).toBe("Vivre de tes propres yeux ce que voit ton personnage.");
     expect(frAchievements.messages["achievement.v_ac_b2_ch1_distance.title"]).toBe("Longue distance");
     expect(frAchievements.messages["achievement.v_ac_b2_ch8_trivia.title"]).toBe("Anecdotes sur les sans-aura");
+    expect(frAchievements.messages["achievement.v_ac_b3_ch9_prize.title"]).toBe("Prix de consolation");
+    expect(frAchievements.messages["achievement.v_ac_b3_ch9_targets.caption"]).toContain("Superviseur");
+    expect(frAchievements.messages["achievement.v_ac_b3_ch12_dagger.title"]).toBe("One Dagger Man");
+    expect(frAchievements.messages["achievement.v_ac_b3_ch12_average.title"]).toBe("(Plus que) Monsieur Tout-le-monde");
+    expect(frAchievements.messages["achievement.v_ac_b3_ch9_consolation.title"]).toBeUndefined();
     expect(generated).toContain('"locales/fr/achievements"');
     expect(generated).toContain('"locales/fr/stats"');
+  });
+
+  it("uses the localized Book 3 achievement titles inside chapter messages", async () => {
+    const frAchievements = await readJson("content/canonical/v1/locales/fr/achievements.json");
+    let embeddedAchievementCount = 0;
+
+    for (const chapterId of book3FrenchChapters) {
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+      const story = await readJson(`content/canonical/v1/story/${chapterId}.json`);
+
+      for (const scene of Object.values(story.scenes)) {
+        for (const achievement of scene.achievements) {
+          expect(fr.messages[achievement.messageId], `${chapterId}/${achievement.messageId}`).toBe(
+            frAchievements.messages[`achievement.${achievement.variable}.title`],
+          );
+          embeddedAchievementCount += 1;
+        }
+      }
+    }
+
+    // v_ac_b3_ch9_prize is present in achievements3.json but intentionally absent
+    // from the story graphs, so 52 of the 53 Book 3 titles are embedded in chapters.
+    expect(embeddedAchievementCount).toBe(52);
   });
 
   it("uses Stats as the French player-facing label for the abilities panel", async () => {

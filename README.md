@@ -3,11 +3,12 @@
 Modern PWA for playing Magium from the original texts in
 `raduprv/Magium`.
 
-The V1 story starts from the original English text, with all of Book 1 and
-Book 2 playable in French (`ch1` through `ch11b`, then `b2ch1` through
-`b2ch11c`). The FR/EN language setting drives the interface, available story
-text, stat labels, achievements, and fallback to English when a translated
-chapter is not available.
+The V1 story starts from the original English text, with all currently
+available chapters of Book 1, Book 2, and Book 3 playable in French (`ch1`
+through `ch11b`, `b2ch1` through `b2ch11c`, then `b3ch1` through `b3ch12b`).
+The FR/EN language setting drives the interface, available story text, stat
+labels, achievements, and fallback to English when a translated chapter is not
+available.
 
 ## Current State
 
@@ -156,6 +157,7 @@ docs/                        Detailed technical documentation.
 - [I18n](./docs/i18n.md): UI and narrative translation model.
 - [French translation guide](./docs/translation-fr.md): glossary, criteria, and Codex-only chapter translation workflow.
 - [Book 2 French QA](./docs/translation-qa-book2-fr.md): durable register, coverage, and scan record for the Book 2 French pass.
+- [Book 3 French QA](./docs/translation-qa-book3-fr.md): complete coverage, Book 3 terminology, editorial method, and validation record.
 - [Public contributions](./docs/contributions.md): PWA translation corrections, batch review, and GitHub PR flow.
 - [Translation contribution system](./docs/translation-contributions-system.md): full PWA/API/PostgreSQL/email/admin/GitHub/Coolify handoff reference.
 - [Manual images](./docs/manual-images.md): ChatGPT Images prompts, portraits, and Book 1 illustrations.

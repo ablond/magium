@@ -104,6 +104,12 @@ locales/fr/ch4.json
 locales/fr/ch5.json
 ...
 locales/fr/ch11b.json
+locales/fr/b2ch1.json
+...
+locales/fr/b2ch11c.json
+locales/fr/b3ch1.json
+...
+locales/fr/b3ch12b.json
 locales/fr/achievements.json
 locales/fr/stats.json
 locales/fr/ui.json
@@ -187,6 +193,9 @@ content/story-locales/fr/ch11b.json
 content/story-locales/fr/b2ch1.json
 ...
 content/story-locales/fr/b2ch11c.json
+content/story-locales/fr/b3ch1.json
+...
+content/story-locales/fr/b3ch12b.json
 content/story-locales/fr/achievements.json
 content/story-locales/fr/stats.json
 ```

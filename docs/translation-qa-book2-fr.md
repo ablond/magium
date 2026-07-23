@@ -52,8 +52,9 @@ Structural checks:
 - all files have exactly the same `messages` keys as their English source;
 - Book 2 achievement translations cover every variable from archived
   `achievements2.json`;
-- i18n tests now expect Book 1 + Book 2 French narrative and achievement
-  coverage.
+- this Book 2 pass extended the i18n tests from Book 1 to Book 1 + Book 2
+  French narrative and achievement coverage; later books extend the same
+  checks independently.
 
 Current scan result:
 

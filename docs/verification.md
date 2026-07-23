@@ -190,7 +190,7 @@ Must confirm:
 - 54 generated chapters;
 - 136 achievements;
 - generated UI packs `locales/en/ui` and `locales/fr/ui` with synchronized UI keys;
-- generated and valid Book 1 and Book 2 FR story packs (`locales/fr/ch1` through `locales/fr/ch11b`, then `locales/fr/b2ch1` through `locales/fr/b2ch11c`), `locales/fr/achievements`, `locales/en/stats`, and `locales/fr/stats`, with FR achievements covered for Book 1 and Book 2;
+- generated and valid Book 1 through Book 3 FR story packs (`locales/fr/ch1` through `locales/fr/ch11b`, `locales/fr/b2ch1` through `locales/fr/b2ch11c`, then `locales/fr/b3ch1` through `locales/fr/b3ch12b`), `locales/fr/achievements`, `locales/en/stats`, and `locales/fr/stats`, with all 136 achievements covered in French;
 - canonical assignments in `mode: "set" | "add"`;
 - `Ch11b-Credits` absent from runtime content, with `Ch11b-Ending` pointing directly to `B2-Ch01a-Intro` through `checkpoint_save`;
 - no `choice(...) if (...)` condition embedded in `target`, `special`, or `setVariables`;
@@ -213,8 +213,8 @@ Verify:
 1. the page loads directly into Book 1 chapter 1;
 2. clicking `Excited` displays the next scene;
 3. reloading the page resumes progress;
-4. if the browser prefers `fr`, the interface and available Book 1 and Book 2 story text start in French; otherwise use Settings to switch to `Français`;
-5. desktop 1280 x 720: the left rail displays `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` in FR without cutting labels, the reader header no longer shows achievement or autosave badges, the reading area uses Literata at a comfortable width and dense book-like paragraph spacing, with no line/dialogue overlap, Book 1 scenes use narrative packs `fr/ch1` through `fr/ch11b`, Book 2 scenes use narrative packs `fr/b2ch1` through `fr/b2ch11c`, short dialogue such as `ch5.Ch5_Intro.p2` renders as several real DOM paragraphs instead of one large `<p>`, and the left rail and open right panel stay visible during long scroll;
+4. if the browser prefers `fr`, the interface and all available Book 1 through Book 3 story text start in French; otherwise use Settings to switch to `Français`;
+5. desktop 1280 x 720: the left rail displays `Lire`, `Stats`, `Sauvegardes`, `Succès`, `Paramètres`, `À propos` in FR without cutting labels, the reader header no longer shows achievement or autosave badges, the reading area uses Literata at a comfortable width and dense book-like paragraph spacing, with no line/dialogue overlap, Book 1 scenes use narrative packs `fr/ch1` through `fr/ch11b`, Book 2 scenes use `fr/b2ch1` through `fr/b2ch11c`, Book 3 scenes use `fr/b3ch1` through `fr/b3ch12b`, short dialogue such as `ch5.Ch5_Intro.p2` renders as several real DOM paragraphs instead of one large `<p>`, and the left rail and open right panel stay visible during long scroll;
 6. mobile 390 x 844: navigation remains compact, story remains dense and readable in FR and EN without UI/text overlap, and panels open as overlays above the story with close button, clickable backdrop, and `Escape`, without pushing content down;
 7. the drop cap for the first alphabetical paragraph rises slightly above the line and does not look like it falls into the paragraph;
 8. the Saves panel clearly separates autosave, local saves, checkpoint, and transfer; it does not show `autosave`, `slotId`, `Ch12`, `route`, `prod`, `local-key`, or `pbkdf2` to the player;
