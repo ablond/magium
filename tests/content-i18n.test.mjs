@@ -175,48 +175,119 @@ describe("generated content i18n", () => {
     expect(refusal.target).toBe(lie.target);
   });
 
-  it("keeps Book 2 and Book 3 stillwater, Still Winter, and Beacon terminology distinct", async () => {
+  it("keeps stillwater, Still Winter, and Beacon terminology distinct across all French content", async () => {
     const winterMismatches = [];
-    const book3StillwaterMismatches = [];
+    const stillwaterMismatches = [];
+    const forbiddenStillwaterArtifacts = [];
+    const conversationalMistakeMismatches = [];
     const malformedArtifacts = [];
     const malformedPattern = /\bde le (?:sans-aura|Beacon)\b|l['’]sans-aura\b|\bpendant le sans-aura\b/iu;
+    const globallyForbiddenStillwaterPattern = /\bstillwaters?\b|\bsans aura\b|\bsans-auras\b|\bHivers immobiles\b/iu;
+    const literalCastePattern = /\beaux?(?:[- ]immobiles?|[- ]calmes?)\b/iu;
+    const intentionalStillwaterCountDifferences = new Map([
+      ["b2ch10b.B2_Ch10b_Fascinated.p1", { english: 3, french: 4 }],
+      ["b2ch6.B2_Ch06a_Intro2.p1", { english: 5, french: 4 }],
+      ["b2ch9b.B2_Ch09b_Reveal.p3", { english: 3, french: 2 }],
+      ["b3ch10c.B3_Ch10c_Deserved.p1", { english: 6, french: 5 }],
+      ["b3ch12b.B3_Ch12b_Attack2.p1", { english: 3, french: 2 }],
+      ["b3ch7a.B3_Ch07a_Barbarian.p1", { english: 2, french: 1 }],
+      ["ch4.Ch4_Fewer_enemies.p1", { english: 4, french: 5 }],
+    ]);
+    const seenIntentionalStillwaterCountDifferences = new Set();
 
-    for (const chapterId of [...book2FrenchChapters, ...book3FrenchChapters]) {
-      const en = await readJson(`content/canonical/v1/locales/en/${chapterId}.json`);
-      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+    for (const bundleId of [...frenchChapters, "achievements"]) {
+      const en = await readJson(`content/canonical/v1/locales/en/${bundleId}.json`);
+      const fr = await readJson(`content/canonical/v1/locales/fr/${bundleId}.json`);
 
       for (const [messageId, englishText] of Object.entries(en.messages)) {
         const frenchText = fr.messages[messageId];
         const englishWinterCount = (englishText.match(/\bstill winter\b/gi) ?? []).length;
         const frenchWinterCount = (frenchText.match(/Hiver immobile/g) ?? []).length;
+        const englishStillwaterCount = (englishText.match(/\bstillwaters?\b/gi) ?? []).length;
+        const frenchStillwaterCount = (frenchText.match(/\bsans-aura\b/gi) ?? []).length;
+        const intentionalCounts = intentionalStillwaterCountDifferences.get(messageId);
+        const hasEnglishStillwater = /\bstillwaters?\b/i.test(englishText);
 
-        const isBook3 = book3FrenchChapters.includes(chapterId);
-        if (
-          (!isBook3 && englishWinterCount !== frenchWinterCount) ||
-          (isBook3 && englishWinterCount > 0 && frenchWinterCount === 0)
-        ) {
-          winterMismatches.push({ chapterId, messageId, englishWinterCount, frenchWinterCount });
+        if (englishWinterCount !== frenchWinterCount) {
+          winterMismatches.push({ bundleId, messageId, englishWinterCount, frenchWinterCount });
         }
-        if (isBook3 && /\bstillwaters?\b/i.test(englishText) && !/sans-aura/i.test(frenchText)) {
-          book3StillwaterMismatches.push({ chapterId, messageId });
+        if (intentionalCounts) {
+          seenIntentionalStillwaterCountDifferences.add(messageId);
+        }
+        if (
+          englishStillwaterCount !== (intentionalCounts?.english ?? englishStillwaterCount) ||
+          frenchStillwaterCount !== (intentionalCounts?.french ?? englishStillwaterCount)
+        ) {
+          stillwaterMismatches.push({
+            bundleId,
+            messageId,
+            englishStillwaterCount,
+            frenchStillwaterCount,
+            intentionalCounts,
+          });
+        }
+        if (
+          globallyForbiddenStillwaterPattern.test(frenchText) ||
+          (hasEnglishStillwater && literalCastePattern.test(frenchText))
+        ) {
+          forbiddenStillwaterArtifacts.push({ bundleId, messageId });
+        }
+        if (/\bmy mistake\b/i.test(englishText) && /c['’]est ma faute/i.test(frenchText)) {
+          conversationalMistakeMismatches.push({ bundleId, messageId });
         }
         if (malformedPattern.test(frenchText)) {
-          malformedArtifacts.push({ chapterId, messageId });
+          malformedArtifacts.push({ bundleId, messageId });
         }
       }
     }
 
     expect(winterMismatches).toEqual([]);
-    expect(book3StillwaterMismatches).toEqual([]);
+    expect(stillwaterMismatches).toEqual([]);
+    expect(
+      [...intentionalStillwaterCountDifferences.keys()].filter(
+        (messageId) => !seenIntentionalStillwaterCountDifferences.has(messageId),
+      ),
+    ).toEqual([]);
+    expect(forbiddenStillwaterArtifacts).toEqual([]);
+    expect(conversationalMistakeMismatches).toEqual([]);
     expect(malformedArtifacts).toEqual([]);
 
     const b2ch2 = await readJson("content/canonical/v1/locales/fr/b2ch2.json");
     const b2ch6 = await readJson("content/canonical/v1/locales/fr/b2ch6.json");
+    const b2ch8 = await readJson("content/canonical/v1/locales/fr/b2ch8.json");
     expect(b2ch2.messages["b2ch2.B2_Ch02a_Natural.p1"]).toContain("parler du Beacon of Hope");
     expect(b2ch2.messages["b2ch2.B2_Ch02a_Tunnels.p1"]).toContain("parlé du Beacon of Hope");
     expect(JSON.stringify(b2ch2.messages)).not.toMatch(/Lueur d['’]Espoir/);
     expect(b2ch6.messages["b2ch6.B2_Ch06a_Intro.p1"]).toContain(
       "Tu es cette sans-aura qui suivait constamment Eiden et la renarde pendant l’Hiver immobile !",
+    );
+    expect(b2ch8.messages["b2ch8.B2_Ch08a_Obliterated.p1"]).toContain(
+      "D’accord, d’accord, j’ai eu tort",
+    );
+    expect(b2ch8.messages["b2ch8.B2_Ch08a_Imprisoned.p1"]).toContain("Au temps pour moi");
+    expect(b2ch8.messages["b2ch8.B2_Ch08a_Powers.p1"]).toContain("Au temps pour moi");
+  });
+
+  it("keeps the main French narration out of first-person plural passé simple", async () => {
+    const mismatches = [];
+    const firstPersonPluralPast = /\bnous\s+[\p{L}-]+(?:âmes|îmes|ûmes)\b|\b[\p{L}-]+(?:âmes|îmes|ûmes)-nous\b/giu;
+
+    for (const chapterId of frenchChapters) {
+      const fr = await readJson(`content/canonical/v1/locales/fr/${chapterId}.json`);
+
+      for (const [messageId, frenchText] of Object.entries(fr.messages)) {
+        const matches = frenchText.match(firstPersonPluralPast);
+        if (matches) {
+          mismatches.push({ chapterId, messageId, matches });
+        }
+      }
+    }
+
+    expect(mismatches).toEqual([]);
+
+    const b2ch8 = await readJson("content/canonical/v1/locales/fr/b2ch8.json");
+    expect(b2ch8.messages["b2ch8.B2_Ch08a_Hobby.p1"]).toContain(
+      "Quand nous décidons qu'il est enfin temps d'installer le camp",
     );
   });
 

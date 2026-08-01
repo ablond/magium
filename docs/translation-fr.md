@@ -10,6 +10,7 @@ Chosen principles:
 
 - preserve long sentences when they carry momentum or panic;
 - keep useful repetitions, especially during tense moments;
+- keep the main narration in the present; use the passé composé for immediate anterior events and the imparfait or plus-que-parfait for genuine background, reserving the passé simple for deliberately historical, legendary, or formal voices;
 - translate dialogue into natural French, with more contracted or colloquial tone when the character is familiar or aggressive;
 - keep English proper names: Barry, Daren, Cutthroat Dave, Olmnar, Varathia, Magium, Eastern Continent, Northern Continent, Southern Continent, Western Continent;
 - keep `Cutthroat` and `Cutthroat Dave` as proper names when they designate the character; do not translate them as `coupe-gorge`.
@@ -26,7 +27,7 @@ Chosen principles:
 
 | Original | French | Note |
 | --- | --- | --- |
-| stillwater | sans-aura | Stabilized choice from `ch2`. The term remains technically imperfect, because `stillwaters` have an aura indistinguishable from an ordinary human's rather than no aura at all, but it is short, readable, already established in `ch1`, and works as a caste name. |
+| stillwater | sans-aura | Stabilized choice from `ch2`. Use it as an invariable caste name: `un sans-aura`, `une sans-aura`, `des sans-aura`. The term remains technically imperfect, because `stillwaters` have an aura indistinguishable from an ordinary human's rather than no aura at all, but it is short, readable, already established in `ch1`, and works as a caste name. Never derive it from the literal image of water. |
 | mage | mage | Standard fantasy term. |
 | shield spell | sort de bouclier | Transparent term to reuse. |
 | white magic | magie blanche | Standard fantasy term. |
@@ -136,6 +137,7 @@ Already corrected formulations:
 - `Oh gods` / `Oh, gods` / `Oh my gods` should not become `Oh dieux`, `Oh, dieux`, `Oh mes dieux`, or `Mes dieux`; choose by context from `Par les dieux`, `Par tous les dieux`, `Oh non`, `Pitié`, or `Oh là là`.
 - When `sir` is used by a traumatized character as a servile reflex toward any authority figure, avoid gender-mechanical `monsieur`; prefer `maître` to preserve the submission effect, even facing a woman or child.
 - `Really, now...` should not become `Vraiment, maintenant...`; prefer by tone `Sérieusement ?`, `Ah oui ?`, `Non mais sérieusement ?`, or an equivalent reformulation.
+- Conversational `my mistake` should become `j'ai eu tort` or `au temps pour moi`; reserve `c'est ma faute` for a speaker who accepts real responsibility for an outcome.
 - `shut the world out` / `shut the whole world out` should not become `fermer le monde`; choose `se couper du monde`, `se fermer aux autres`, or an equivalent reformulation.
 - `That's gonna happen` may be sarcastic; do not automatically translate it as `Ça va sûrement arriver`, and prefer a line such as `Même pas en rêve` when the character clearly refuses.
 - `take a deep breath and think...` should not mechanically become `prendre une inspiration avant de réfléchir`; prefer `souffler/respirer un grand coup et réfléchir...` when calming tension.
@@ -207,7 +209,7 @@ Required editorial QA:
 
 - scan for obvious English leftovers, straight quotes, unbalanced French guillemets, badly punctuated dialogue tags, double spaces, and stray spaces;
 - scan calqued first-person dialogue tags, especially `», je dis`, `», je lui dis`, `», je dis à`, `», je demande`, `», je lui demande`, `», je demande à`, `», je continue`, then correct only real tag cases;
-- scan forbidden or unstable terms: `stillwater`, `eau calme`, `amplificateur de stats`, `dispositif de stats`, `maximiser`, non-naturalized imperial units;
+- scan forbidden or unstable terms: untranslated `stillwater`, `sans aura`, `sans-auras`, caste renderings such as `eau calme`, `eau(x) immobile(s)`, `eau(x)-immobile(s)`, `flaque`, or `Hivers immobiles`, plus `amplificateur de stats`, `dispositif de stats`, `maximiser`, and non-naturalized imperial units; `Hiver immobile` is reserved exclusively for the `still winter` event;
 - scan stabilized Book 1 corrections when context matches: `j'entends dire`, `Je te défie`, `glissade de glace`, `toboggan fabriqué sur mesure`, `Je crois que je commence à vous soutenir`, `Oh dieux`, lowercase `hiver immobile`;
 - verify preserved English proper names, especially continents, characters, places, races, and titles already stabilized;
 - reread every controlled batch once as standalone French, without looking at the English first, and rewrite anything that sounds translated, stiff, or unnatural;
